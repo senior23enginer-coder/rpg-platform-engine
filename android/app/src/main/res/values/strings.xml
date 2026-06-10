@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RPG Platform Engine</string>
+    <string name="title_activity_main">RPG Platform Engine</string>
+    <string name="package_name">com.mac2394q02.rpgplatform</string>
+    <string name="custom_url_scheme">com.mac2394q02.rpgplatform</string>
+</resources>
