@@ -1,0 +1,95 @@
+{
+  "id": "daysgone",
+  "name": "Days Gone",
+  "short": "DG",
+  "description": "Oregon postapocaliptico con moto, gasolina, hordas e infestaciones.",
+  "tags": [
+    "days gone",
+    "bike",
+    "hordes",
+    "survival",
+    "camps"
+  ],
+  "templateFuture": true,
+  "campaigns": [
+    {
+      "id": "farewell_wilderness",
+      "title": "Farewell Wilderness",
+      "implemented": false,
+      "description": "Plantilla futura para campamentos, rutas y hordas."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "challenge_mode",
+        "name": "Challenge Mode",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "survival_mode",
+        "name": "Survival Mode",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "bike_skins_pack",
+        "name": "Bike Skins Pack",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "horde_challenges",
+        "name": "Horde Challenges",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "moto",
+        "name": "Moto",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "gasolina",
+        "name": "Gasolina",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "reparacion",
+        "name": "Reparacion",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "hordas",
+        "name": "Hordas",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "infestaciones",
+        "name": "Infestaciones",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "confianza_de_campamentos",
+        "name": "Confianza de campamentos",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "ruido_y_persecucion",
+        "name": "Ruido y persecucion",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": []
+  }
+}

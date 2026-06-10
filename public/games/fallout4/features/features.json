@@ -1,0 +1,78 @@
+{
+  "features": [
+    {
+      "id": "asentamientos",
+      "name": "Asentamientos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "servoarmadura",
+      "name": "Servoarmadura",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "crafting_avanzado",
+      "name": "Crafting avanzado",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "compa_eros",
+      "name": "Compa?eros",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "vats_tactico",
+      "name": "VATS tactico",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "radiacion_avanzada",
+      "name": "Radiacion avanzada",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "mods_de_armas_y_armaduras",
+      "name": "Mods de armas y armaduras",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": [
+    {
+      "id": "modo_supervivencia",
+      "name": "Modo supervivencia",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "enemigos_legendarios",
+      "name": "Enemigos legendarios",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "misiones_radiantes",
+      "name": "Misiones radiantes",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "ataques_a_asentamientos",
+      "name": "Ataques a asentamientos",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "clima_radiactivo",
+      "name": "Clima radiactivo",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    }
+  ]
+}

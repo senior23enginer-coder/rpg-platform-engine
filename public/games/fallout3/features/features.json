@@ -1,0 +1,72 @@
+{
+  "features": [
+    {
+      "id": "karma",
+      "name": "Karma",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "condicion_de_equipo",
+      "name": "Condicion de equipo",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "reparacion_clasica",
+      "name": "Reparacion clasica",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "vats_clasico",
+      "name": "VATS clasico",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "radiose_ales",
+      "name": "Radiose?ales",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "mapa_del_yermo_capital",
+      "name": "Mapa del Yermo Capital",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": [
+    {
+      "id": "encuentros_de_supermutantes",
+      "name": "Encuentros de supermutantes",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "enclave_avanzado",
+      "name": "Enclave avanzado",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "exploracion_de_metro",
+      "name": "Exploracion de metro",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "saqueadores_del_yermo",
+      "name": "Saqueadores del yermo",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "eventos_de_karma",
+      "name": "Eventos de karma",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    }
+  ]
+}

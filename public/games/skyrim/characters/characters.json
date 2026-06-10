@@ -1,0 +1,72 @@
+{
+  "creationMode": "template_future",
+  "attributes": [
+    {
+      "id": "STR",
+      "name": "Fuerza",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "PER",
+      "name": "Percepcion",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "END",
+      "name": "Resistencia",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "CHA",
+      "name": "Carisma",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "INT",
+      "name": "Inteligencia",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "AGI",
+      "name": "Agilidad",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "id": "LCK",
+      "name": "Suerte",
+      "default": 5,
+      "min": 1,
+      "max": 10
+    }
+  ],
+  "skills": [],
+  "origins": [],
+  "archetypes": [],
+  "seeds": [
+    {
+      "id": "skyrim_seed",
+      "name": "The Elder Scrolls V: Skyrim - personaje base",
+      "attributes": {
+        "STR": 5,
+        "PER": 5,
+        "END": 5,
+        "CHA": 5,
+        "INT": 5,
+        "AGI": 5,
+        "LCK": 5
+      }
+    }
+  ]
+}

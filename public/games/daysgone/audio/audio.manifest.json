@@ -1,0 +1,46 @@
+{
+  "tracks": {
+    "background": [
+      {
+        "id": "daysgone_background",
+        "name": "Fondo generado",
+        "mode": "generated"
+      }
+    ],
+    "combat": [
+      {
+        "id": "daysgone_combat",
+        "name": "Combate generado",
+        "mode": "generated"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "daysgone_exploration",
+        "name": "Exploracion generada",
+        "mode": "generated"
+      }
+    ],
+    "vault": [
+      {
+        "id": "daysgone_interior",
+        "name": "Interior generado",
+        "mode": "generated"
+      }
+    ],
+    "day": [
+      {
+        "id": "daysgone_day",
+        "name": "Dia generado",
+        "mode": "generated"
+      }
+    ],
+    "night": [
+      {
+        "id": "daysgone_night",
+        "name": "Noche generada",
+        "mode": "generated"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "ruta_hacia_el_campamento",
+      "name": "Ruta hacia el campamento",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

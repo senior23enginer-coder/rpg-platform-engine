@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "despertar_en_goodsprings",
+      "name": "Despertar en Goodsprings",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

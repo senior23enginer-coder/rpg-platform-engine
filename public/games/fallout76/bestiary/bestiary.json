@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "scorched",
+      "name": "Scorched",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "mole_miner",
+      "name": "Mole miner",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "supermutante_de_appalachia",
+      "name": "Supermutante de Appalachia",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

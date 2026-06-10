@@ -1,0 +1,16 @@
+{
+  "missions": [
+    {
+      "id": "salida_del_vault_111",
+      "name": "Salida del Vault 111",
+      "type": "main",
+      "implemented": true
+    },
+    {
+      "id": "reconstruir_sanctuary",
+      "name": "Reconstruir Sanctuary",
+      "type": "side",
+      "implemented": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "radscorpion",
+      "name": "Radscorpion",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "supermutante_clasico",
+      "name": "Supermutante clasico",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "saqueador",
+      "name": "Saqueador",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

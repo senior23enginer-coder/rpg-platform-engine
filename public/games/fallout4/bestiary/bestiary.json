@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "saqueador",
+      "name": "Saqueador",
+      "hp": 8,
+      "template": false
+    },
+    {
+      "id": "ghoul_salvaje",
+      "name": "Ghoul salvaje",
+      "hp": 12,
+      "template": false
+    },
+    {
+      "id": "synth",
+      "name": "Synth",
+      "hp": 16,
+      "template": false
+    }
+  ],
+  "npcs": []
+}

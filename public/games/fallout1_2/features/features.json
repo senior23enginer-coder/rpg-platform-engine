@@ -1,0 +1,47 @@
+{
+  "features": [
+    {
+      "id": "mapa_mundial",
+      "name": "Mapa mundial",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "ap_clasico",
+      "name": "AP clasico",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "disparos_localizados",
+      "name": "Disparos localizados",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "habilidades_clasicas",
+      "name": "Habilidades clasicas",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "dialogos_ramificados",
+      "name": "Dialogos ramificados",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "karma_clasico",
+      "name": "Karma clasico",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "reputacion_por_ciudad",
+      "name": "Reputacion por ciudad",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": []
+}

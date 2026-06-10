@@ -1,0 +1,46 @@
+{
+  "tracks": {
+    "background": [
+      {
+        "id": "skyrim_background",
+        "name": "Fondo generado",
+        "mode": "generated"
+      }
+    ],
+    "combat": [
+      {
+        "id": "skyrim_combat",
+        "name": "Combate generado",
+        "mode": "generated"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "skyrim_exploration",
+        "name": "Exploracion generada",
+        "mode": "generated"
+      }
+    ],
+    "vault": [
+      {
+        "id": "skyrim_interior",
+        "name": "Interior generado",
+        "mode": "generated"
+      }
+    ],
+    "day": [
+      {
+        "id": "skyrim_day",
+        "name": "Dia generado",
+        "mode": "generated"
+      }
+    ],
+    "night": [
+      {
+        "id": "skyrim_night",
+        "name": "Noche generada",
+        "mode": "generated"
+      }
+    ]
+  }
+}

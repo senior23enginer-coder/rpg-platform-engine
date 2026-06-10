@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "radroach",
+      "name": "Radroach",
+      "hp": 8,
+      "template": false
+    },
+    {
+      "id": "saqueador",
+      "name": "Saqueador",
+      "hp": 12,
+      "template": false
+    },
+    {
+      "id": "supermutante",
+      "name": "Supermutante",
+      "hp": 16,
+      "template": false
+    }
+  ],
+  "npcs": []
+}

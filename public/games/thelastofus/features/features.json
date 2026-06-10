@@ -1,0 +1,59 @@
+{
+  "features": [
+    {
+      "id": "escucha",
+      "name": "Escucha",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "infectados",
+      "name": "Infectados",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "corredores",
+      "name": "Corredores",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "acechadores",
+      "name": "Acechadores",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "chasqueadores",
+      "name": "Chasqueadores",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "gordinflones",
+      "name": "Gordinflones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "crafting_rapido",
+      "name": "Crafting rapido",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "sigilo_dramatico",
+      "name": "Sigilo dramatico",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "recursos_escasos",
+      "name": "Recursos escasos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": []
+}

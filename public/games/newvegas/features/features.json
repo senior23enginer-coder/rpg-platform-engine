@@ -1,0 +1,78 @@
+{
+  "features": [
+    {
+      "id": "facciones",
+      "name": "Facciones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "reputacion",
+      "name": "Reputacion",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "hardcore_mode",
+      "name": "Hardcore mode",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "municion_especial",
+      "name": "Municion especial",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "disfraces_de_faccion",
+      "name": "Disfraces de faccion",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "casinos",
+      "name": "Casinos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "compa_eros",
+      "name": "Compa?eros",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": [
+    {
+      "id": "ruta_ncr",
+      "name": "Ruta NCR",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "ruta_legion",
+      "name": "Ruta Legion",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "ruta_mr_house",
+      "name": "Ruta Mr. House",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "ruta_yes_man",
+      "name": "Ruta Yes Man",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    },
+    {
+      "id": "encuentros_del_mojave",
+      "name": "Encuentros del Mojave",
+      "description": "Extra opcional para ampliar la campa?a.",
+      "enabled": false
+    }
+  ]
+}

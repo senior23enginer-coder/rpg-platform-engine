@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "buscar_el_chip_de_agua",
+      "name": "Buscar el chip de agua",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

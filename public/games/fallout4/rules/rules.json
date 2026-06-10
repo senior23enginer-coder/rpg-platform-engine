@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "turnEvents": true,
+    "weather": true,
+    "dayNight": true,
+    "survival": false,
+    "radiation": true,
+    "ammo": true,
+    "loot": true,
+    "enemyAI": true,
+    "opportunityAttack": true,
+    "cover": true,
+    "hardcoreDamage": false,
+    "worldEvents": true
+  },
+  "templateFuture": false
+}

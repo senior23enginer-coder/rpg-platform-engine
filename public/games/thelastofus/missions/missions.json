@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "salir_de_la_zona_de_cuarentena",
+      "name": "Salir de la zona de cuarentena",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

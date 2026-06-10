@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "nosalis",
+      "name": "Nosalis",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "watchman",
+      "name": "Watchman",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "bandido_del_metro",
+      "name": "Bandido del metro",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

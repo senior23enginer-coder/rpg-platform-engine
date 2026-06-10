@@ -1,0 +1,119 @@
+{
+  "id": "metro",
+  "name": "Metro",
+  "short": "METRO",
+  "description": "Tuneles, estaciones, superficie toxica, municion-moneda y horror de supervivencia.",
+  "tags": [
+    "metro",
+    "ranger",
+    "surface",
+    "stealth",
+    "survival horror"
+  ],
+  "templateFuture": true,
+  "campaigns": [
+    {
+      "id": "moscow_metro",
+      "title": "Metro de Moscu",
+      "implemented": false,
+      "description": "Plantilla futura para rutas de estaciones y superficie."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "ranger_mode",
+        "name": "Ranger Mode",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "faction_pack",
+        "name": "Faction Pack",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "tower_pack",
+        "name": "Tower Pack",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "developer_pack",
+        "name": "Developer Pack",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "chronicles_pack",
+        "name": "Chronicles Pack",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "the_two_colonels",
+        "name": "The Two Colonels",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "sam_s_story",
+        "name": "Sam's Story",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "mascara_y_filtros",
+        "name": "Mascara y filtros",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "municion_como_moneda",
+        "name": "Municion como moneda",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "oscuridad_y_miedo",
+        "name": "Oscuridad y miedo",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "estaciones",
+        "name": "Estaciones",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "anomalias",
+        "name": "Anomalias",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "superficie",
+        "name": "Superficie",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "sigilo",
+        "name": "Sigilo",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "recursos_escasos",
+        "name": "Recursos escasos",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": []
+  }
+}

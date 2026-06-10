@@ -1,0 +1,191 @@
+{
+  "id": "fallout76",
+  "name": "Fallout 76",
+  "short": "FO76",
+  "description": "Appalachia online adaptada a eventos publicos, C.A.M.P. y expediciones.",
+  "tags": [
+    "fallout",
+    "appalachia",
+    "camp",
+    "daily ops",
+    "expeditions"
+  ],
+  "templateFuture": true,
+  "campaigns": [
+    {
+      "id": "appalachia_events",
+      "title": "Appalachia modular",
+      "implemented": false,
+      "description": "Plantilla futura para eventos y temporadas de Appalachia."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "wild_appalachia",
+        "name": "Wild Appalachia",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "nuclear_winter",
+        "name": "Nuclear Winter",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "wastelanders",
+        "name": "Wastelanders",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "the_legendary_run",
+        "name": "The Legendary Run",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "one_wasteland_for_all",
+        "name": "One Wasteland For All",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "steel_dawn",
+        "name": "Steel Dawn",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "locked_and_loaded",
+        "name": "Locked & Loaded",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "steel_reign",
+        "name": "Steel Reign",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "fallout_worlds",
+        "name": "Fallout Worlds",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "night_of_the_moth",
+        "name": "Night of the Moth",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "invaders_from_beyond",
+        "name": "Invaders from Beyond",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "test_your_metal",
+        "name": "Test Your Metal",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "the_pitt",
+        "name": "The Pitt",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "nuka_world_on_tour",
+        "name": "Nuka-World on Tour",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "mutation_invasion",
+        "name": "Mutation Invasion",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "once_in_a_blue_moon",
+        "name": "Once in a Blue Moon",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "atlantic_city_boardwalk_paradise",
+        "name": "Atlantic City: Boardwalk Paradise",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "atlantic_city_america_s_playground",
+        "name": "Atlantic City: America's Playground",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "skyline_valley",
+        "name": "Skyline Valley",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "eventos_publicos",
+        "name": "Eventos publicos",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "c_a_m_p",
+        "name": "C.A.M.P.",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "mutaciones",
+        "name": "Mutaciones",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "equipos_publicos",
+        "name": "Equipos publicos",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "daily_ops",
+        "name": "Daily Ops",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "expediciones",
+        "name": "Expediciones",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "legendarios",
+        "name": "Legendarios",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "cartas_perk",
+        "name": "Cartas perk",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": []
+  }
+}

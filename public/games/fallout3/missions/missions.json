@@ -1,0 +1,16 @@
+{
+  "missions": [
+    {
+      "id": "escape_del_vault_101",
+      "name": "Escape del Vault 101",
+      "type": "main",
+      "implemented": true
+    },
+    {
+      "id": "llegar_a_megaton",
+      "name": "Llegar a Megaton",
+      "type": "side",
+      "implemented": true
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "id": "fallout3",
+  "name": "Fallout 3",
+  "short": "FO3",
+  "description": "Capital Wasteland, Vault 101, Megaton, karma y exploracion clasica.",
+  "tags": [
+    "fallout",
+    "yermo",
+    "capital wasteland",
+    "vault",
+    "karma"
+  ],
+  "templateFuture": false,
+  "campaigns": [
+    {
+      "id": "vault101_megaton",
+      "title": "Vault 101 -> Megaton",
+      "implemented": true,
+      "description": "Comienzas tu viaje saliendo del Refugio 101 con destino a Megaton."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "operation_anchorage",
+        "name": "Operation Anchorage",
+        "description": "Contenido disponible para activar.",
+        "enabled": false
+      },
+      {
+        "id": "the_pitt",
+        "name": "The Pitt",
+        "description": "Contenido disponible para activar.",
+        "enabled": false
+      },
+      {
+        "id": "broken_steel",
+        "name": "Broken Steel",
+        "description": "Contenido disponible para activar.",
+        "enabled": false
+      },
+      {
+        "id": "point_lookout",
+        "name": "Point Lookout",
+        "description": "Contenido disponible para activar.",
+        "enabled": false
+      },
+      {
+        "id": "mothership_zeta",
+        "name": "Mothership Zeta",
+        "description": "Contenido disponible para activar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "karma",
+        "name": "Karma",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "condicion_de_equipo",
+        "name": "Condicion de equipo",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "reparacion_clasica",
+        "name": "Reparacion clasica",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "vats_clasico",
+        "name": "VATS clasico",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "radiose_ales",
+        "name": "Radiose?ales",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "mapa_del_yermo_capital",
+        "name": "Mapa del Yermo Capital",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": [
+      {
+        "id": "encuentros_de_supermutantes",
+        "name": "Encuentros de supermutantes",
+        "description": "Extra opcional para ampliar la campa?a.",
+        "enabled": false
+      },
+      {
+        "id": "enclave_avanzado",
+        "name": "Enclave avanzado",
+        "description": "Extra opcional para ampliar la campa?a.",
+        "enabled": false
+      },
+      {
+        "id": "exploracion_de_metro",
+        "name": "Exploracion de metro",
+        "description": "Extra opcional para ampliar la campa?a.",
+        "enabled": false
+      },
+      {
+        "id": "saqueadores_del_yermo",
+        "name": "Saqueadores del yermo",
+        "description": "Extra opcional para ampliar la campa?a.",
+        "enabled": false
+      },
+      {
+        "id": "eventos_de_karma",
+        "name": "Eventos de karma",
+        "description": "Extra opcional para ampliar la campa?a.",
+        "enabled": false
+      }
+    ]
+  }
+}

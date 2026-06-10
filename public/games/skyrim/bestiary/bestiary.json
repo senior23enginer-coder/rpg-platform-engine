@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "draugr",
+      "name": "Draugr",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "bandido",
+      "name": "Bandido",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "dragon",
+      "name": "Dragon",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

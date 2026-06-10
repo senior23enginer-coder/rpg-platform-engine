@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "gecko",
+      "name": "Gecko",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "cazador",
+      "name": "Cazador",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "saqueador_del_mojave",
+      "name": "Saqueador del Mojave",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

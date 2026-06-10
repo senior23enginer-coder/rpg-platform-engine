@@ -1,0 +1,46 @@
+{
+  "tracks": {
+    "background": [
+      {
+        "id": "metro_background",
+        "name": "Fondo generado",
+        "mode": "generated"
+      }
+    ],
+    "combat": [
+      {
+        "id": "metro_combat",
+        "name": "Combate generado",
+        "mode": "generated"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "metro_exploration",
+        "name": "Exploracion generada",
+        "mode": "generated"
+      }
+    ],
+    "vault": [
+      {
+        "id": "metro_interior",
+        "name": "Interior generado",
+        "mode": "generated"
+      }
+    ],
+    "day": [
+      {
+        "id": "metro_day",
+        "name": "Dia generado",
+        "mode": "generated"
+      }
+    ],
+    "night": [
+      {
+        "id": "metro_night",
+        "name": "Noche generada",
+        "mode": "generated"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "cruzar_la_estacion",
+      "name": "Cruzar la estacion",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

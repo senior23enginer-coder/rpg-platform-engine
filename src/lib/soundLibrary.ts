@@ -1,0 +1,239 @@
+﻿import type { AudioManifest } from "../types/game";
+
+export const soundLibrary: AudioManifest = {
+  "tracks": {
+    "background": [
+      {
+        "id": "01_fallout_4_main_theme",
+        "name": "Fallout 4 Main Theme",
+        "path": "/sounds/fallout_4_soundtrack_score/01%20Fallout%204%20Main%20Theme.mp3"
+      },
+      {
+        "id": "02_the_commonwealth",
+        "name": "The Commonwealth",
+        "path": "/sounds/fallout_4_soundtrack_score/02%20The%20Commonwealth.mp3"
+      },
+      {
+        "id": "11_hope_remains",
+        "name": "Hope Remains",
+        "path": "/sounds/fallout_4_soundtrack_score/11%20Hope%20Remains.mp3"
+      },
+      {
+        "id": "48_lone_wandering",
+        "name": "Lone Wandering",
+        "path": "/sounds/fallout_4_soundtrack_score/48%20Lone%20Wandering.mp3"
+      },
+      {
+        "id": "54_humanity_s_hope",
+        "name": "Humanity's Hope",
+        "path": "/sounds/fallout_4_soundtrack_score/54%20Humanity's%20Hope.mp3"
+      },
+      {
+        "id": "65_fallout_4_main_theme_spinner_m",
+        "name": "Fallout 4 Main Theme ('Spinner' M",
+        "path": "/sounds/fallout_4_soundtrack_score/65%20Fallout%204%20Main%20Theme%20('Spinner'%20M.mp3"
+      }
+    ],
+    "combat": [
+      {
+        "id": "06_combat_ready",
+        "name": "Combat Ready",
+        "path": "/sounds/fallout_4_soundtrack_score/06%20Combat%20Ready.mp3"
+      },
+      {
+        "id": "13_predator_and_prey",
+        "name": "Predator and Prey",
+        "path": "/sounds/fallout_4_soundtrack_score/13%20Predator%20and%20Prey.mp3"
+      },
+      {
+        "id": "14_war_in_the_wastes",
+        "name": "War in the Wastes",
+        "path": "/sounds/fallout_4_soundtrack_score/14%20War%20in%20the%20Wastes.mp3"
+      },
+      {
+        "id": "15_time_to_die",
+        "name": "Time to Die",
+        "path": "/sounds/fallout_4_soundtrack_score/15%20Time%20to%20Die.mp3"
+      },
+      {
+        "id": "25_the_warlord",
+        "name": "The Warlord",
+        "path": "/sounds/fallout_4_soundtrack_score/25%20The%20Warlord.mp3"
+      },
+      {
+        "id": "30_v_a_t_s_or_die",
+        "name": "V.A.T.S. or Die",
+        "path": "/sounds/fallout_4_soundtrack_score/30%20V.A.T.S.%20or%20Die.mp3"
+      },
+      {
+        "id": "33_war_of_wills",
+        "name": "War of Wills",
+        "path": "/sounds/fallout_4_soundtrack_score/33%20War%20of%20Wills.mp3"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "08_wandering_the_blasted_forest_p",
+        "name": "Wandering - The Blasted Forest, P",
+        "path": "/sounds/fallout_4_soundtrack_score/08%20Wandering%20-%20The%20Blasted%20Forest%2C%20P.mp3"
+      },
+      {
+        "id": "09_brightness_calling",
+        "name": "Brightness Calling",
+        "path": "/sounds/fallout_4_soundtrack_score/09%20Brightness%20Calling.mp3"
+      },
+      {
+        "id": "12_wandering_the_blasted_forest_p",
+        "name": "Wandering - The Blasted Forest, P",
+        "path": "/sounds/fallout_4_soundtrack_score/12%20Wandering%20-%20The%20Blasted%20Forest%2C%20P.mp3"
+      },
+      {
+        "id": "17_wandering_the_city_pt_1",
+        "name": "Wandering - The City, Pt. 1",
+        "path": "/sounds/fallout_4_soundtrack_score/17%20Wandering%20-%20The%20City%2C%20Pt.%201.mp3"
+      },
+      {
+        "id": "23_wandering_the_city_pt_2",
+        "name": "Wandering - The City, Pt. 2",
+        "path": "/sounds/fallout_4_soundtrack_score/23%20Wandering%20-%20The%20City%2C%20Pt.%202.mp3"
+      },
+      {
+        "id": "28_wandering_the_city_pt_3",
+        "name": "Wandering - The City, Pt. 3",
+        "path": "/sounds/fallout_4_soundtrack_score/28%20Wandering%20-%20The%20City%2C%20Pt.%203.mp3"
+      },
+      {
+        "id": "31_wandering_the_foothills_pt_1",
+        "name": "Wandering - The Foothills, Pt. 1",
+        "path": "/sounds/fallout_4_soundtrack_score/31%20Wandering%20-%20The%20Foothills%2C%20Pt.%201.mp3"
+      },
+      {
+        "id": "34_wandering_the_foothills_pt_2",
+        "name": "Wandering - The Foothills, Pt. 2",
+        "path": "/sounds/fallout_4_soundtrack_score/34%20Wandering%20-%20The%20Foothills%2C%20Pt.%202.mp3"
+      },
+      {
+        "id": "40_wandering_the_foothills_pt_3",
+        "name": "Wandering- The Foothills, Pt. 3",
+        "path": "/sounds/fallout_4_soundtrack_score/40%20Wandering-%20The%20Foothills%2C%20Pt.%203.mp3"
+      },
+      {
+        "id": "44_explore_and_discover",
+        "name": "Explore and Discover",
+        "path": "/sounds/fallout_4_soundtrack_score/44%20Explore%20and%20Discover.mp3"
+      },
+      {
+        "id": "45_wandering_the_glowing_sea_pt",
+        "name": "Wandering - The Glowing Sea, Pt.",
+        "path": "/sounds/fallout_4_soundtrack_score/45%20Wandering%20-%20The%20Glowing%20Sea%2C%20Pt..mp3"
+      },
+      {
+        "id": "48_lone_wandering",
+        "name": "Lone Wandering",
+        "path": "/sounds/fallout_4_soundtrack_score/48%20Lone%20Wandering.mp3"
+      },
+      {
+        "id": "49_wandering_the_glowing_sea_pt",
+        "name": "Wandering - The Glowing Sea, Pt.",
+        "path": "/sounds/fallout_4_soundtrack_score/49%20Wandering%20-%20The%20Glowing%20Sea%2C%20Pt..mp3"
+      },
+      {
+        "id": "53_wandering_the_coast_pt_1",
+        "name": "Wandering - The Coast, Pt. 1",
+        "path": "/sounds/fallout_4_soundtrack_score/53%20Wandering%20-%20The%20Coast%2C%20Pt.%201.mp3"
+      },
+      {
+        "id": "57_wandering_the_coast_pt_2",
+        "name": "Wandering - The Coast, Pt. 2",
+        "path": "/sounds/fallout_4_soundtrack_score/57%20Wandering%20-%20The%20Coast%2C%20Pt.%202.mp3"
+      },
+      {
+        "id": "61_wandering_the_coast_pt_3",
+        "name": "Wandering - The Coast, Pt. 3",
+        "path": "/sounds/fallout_4_soundtrack_score/61%20Wandering%20-%20The%20Coast%2C%20Pt.%203.mp3"
+      }
+    ],
+    "vault": [
+      {
+        "id": "04_portal_to_the_past",
+        "name": "Portal to the Past",
+        "path": "/sounds/fallout_4_soundtrack_score/04%20Portal%20to%20the%20Past.mp3"
+      },
+      {
+        "id": "07_deeper_and_darker",
+        "name": "Deeper and Darker",
+        "path": "/sounds/fallout_4_soundtrack_score/07%20Deeper%20and%20Darker.mp3"
+      },
+      {
+        "id": "19_concrete_mysteries",
+        "name": "Concrete Mysteries",
+        "path": "/sounds/fallout_4_soundtrack_score/19%20Concrete%20Mysteries.mp3"
+      },
+      {
+        "id": "27_lonely_walls",
+        "name": "Lonely Walls",
+        "path": "/sounds/fallout_4_soundtrack_score/27%20Lonely%20Walls.mp3"
+      },
+      {
+        "id": "64_science_secrecy",
+        "name": "Science & Secrecy",
+        "path": "/sounds/fallout_4_soundtrack_score/64%20Science%20%26%20Secrecy.mp3"
+      }
+    ],
+    "day": [
+      {
+        "id": "09_brightness_calling",
+        "name": "Brightness Calling",
+        "path": "/sounds/fallout_4_soundtrack_score/09%20Brightness%20Calling.mp3"
+      },
+      {
+        "id": "10_of_the_people_for_the_people",
+        "name": "Of the People, for the People",
+        "path": "/sounds/fallout_4_soundtrack_score/10%20Of%20the%20People%2C%20for%20the%20People.mp3"
+      },
+      {
+        "id": "18_rebuild_renew",
+        "name": "Rebuild, Renew",
+        "path": "/sounds/fallout_4_soundtrack_score/18%20Rebuild%2C%20Renew.mp3"
+      },
+      {
+        "id": "38_liberty_lives",
+        "name": "Liberty Lives",
+        "path": "/sounds/fallout_4_soundtrack_score/38%20Liberty%20Lives.mp3"
+      }
+    ],
+    "night": [
+      {
+        "id": "07_deeper_and_darker",
+        "name": "Deeper and Darker",
+        "path": "/sounds/fallout_4_soundtrack_score/07%20Deeper%20and%20Darker.mp3"
+      },
+      {
+        "id": "27_lonely_walls",
+        "name": "Lonely Walls",
+        "path": "/sounds/fallout_4_soundtrack_score/27%20Lonely%20Walls.mp3"
+      },
+      {
+        "id": "32_darkness_falls",
+        "name": "Darkness Falls",
+        "path": "/sounds/fallout_4_soundtrack_score/32%20Darkness%20Falls.mp3"
+      },
+      {
+        "id": "39_lost_boston",
+        "name": "Lost Boston",
+        "path": "/sounds/fallout_4_soundtrack_score/39%20Lost%20Boston.mp3"
+      },
+      {
+        "id": "46_the_stars_my_solace",
+        "name": "The Stars My Solace",
+        "path": "/sounds/fallout_4_soundtrack_score/46%20The%20Stars%20My%20Solace.mp3"
+      },
+      {
+        "id": "51_echoes_of_the_dead",
+        "name": "Echoes of the Dead",
+        "path": "/sounds/fallout_4_soundtrack_score/51%20Echoes%20of%20the%20Dead.mp3"
+      }
+    ]
+  }
+};
+

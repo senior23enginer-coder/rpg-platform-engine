@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "freaker",
+      "name": "Freaker",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "ripper",
+      "name": "Ripper",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "horda_peque_a",
+      "name": "Horda peque?a",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

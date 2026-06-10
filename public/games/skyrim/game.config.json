@@ -1,0 +1,156 @@
+{
+  "id": "skyrim",
+  "name": "The Elder Scrolls V: Skyrim",
+  "short": "TESV",
+  "description": "Fantasia nordica con razas, magia, gritos, dragones, gremios y artesania.",
+  "tags": [
+    "skyrim",
+    "tes",
+    "dragons",
+    "magic",
+    "guilds",
+    "survival"
+  ],
+  "templateFuture": true,
+  "campaigns": [
+    {
+      "id": "helgen_whiterun",
+      "title": "Helgen -> Carrera Blanca",
+      "implemented": false,
+      "description": "Plantilla futura para campa?as de Dragonborn y gremios."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "dawnguard",
+        "name": "Dawnguard",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "hearthfire",
+        "name": "Hearthfire",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "dragonborn",
+        "name": "Dragonborn",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "survival_mode",
+        "name": "Survival Mode",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "fishing",
+        "name": "Fishing",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "saints_and_seducers",
+        "name": "Saints & Seducers",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "rare_curios",
+        "name": "Rare Curios",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "alternative_armors",
+        "name": "Alternative Armors",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "camping",
+        "name": "Camping",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "razas",
+        "name": "Razas",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "magia",
+        "name": "Magia",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "gritos",
+        "name": "Gritos",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "dragones",
+        "name": "Dragones",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "gremios",
+        "name": "Gremios",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "mazmorras",
+        "name": "Mazmorras",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "forja",
+        "name": "Forja",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "alquimia",
+        "name": "Alquimia",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "encantamiento",
+        "name": "Encantamiento",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "crimenes",
+        "name": "Crimenes",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "casas",
+        "name": "Casas",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "seguidores",
+        "name": "Seguidores",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": []
+  }
+}

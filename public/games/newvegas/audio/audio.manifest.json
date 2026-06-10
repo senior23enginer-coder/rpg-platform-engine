@@ -1,0 +1,46 @@
+{
+  "tracks": {
+    "background": [
+      {
+        "id": "newvegas_background",
+        "name": "Fondo generado",
+        "mode": "generated"
+      }
+    ],
+    "combat": [
+      {
+        "id": "newvegas_combat",
+        "name": "Combate generado",
+        "mode": "generated"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "newvegas_exploration",
+        "name": "Exploracion generada",
+        "mode": "generated"
+      }
+    ],
+    "vault": [
+      {
+        "id": "newvegas_interior",
+        "name": "Interior generado",
+        "mode": "generated"
+      }
+    ],
+    "day": [
+      {
+        "id": "newvegas_day",
+        "name": "Dia generado",
+        "mode": "generated"
+      }
+    ],
+    "night": [
+      {
+        "id": "newvegas_night",
+        "name": "Noche generada",
+        "mode": "generated"
+      }
+    ]
+  }
+}

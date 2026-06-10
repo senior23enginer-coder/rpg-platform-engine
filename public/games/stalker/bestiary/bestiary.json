@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "blind_dog",
+      "name": "Blind dog",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "bloodsucker",
+      "name": "Bloodsucker",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "bandido",
+      "name": "Bandido",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

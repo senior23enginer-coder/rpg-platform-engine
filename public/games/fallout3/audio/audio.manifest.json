@@ -1,0 +1,46 @@
+{
+  "tracks": {
+    "background": [
+      {
+        "id": "fallout3_background",
+        "name": "Fondo generado",
+        "mode": "generated"
+      }
+    ],
+    "combat": [
+      {
+        "id": "fallout3_combat",
+        "name": "Combate generado",
+        "mode": "generated"
+      }
+    ],
+    "exploration": [
+      {
+        "id": "fallout3_exploration",
+        "name": "Exploracion generada",
+        "mode": "generated"
+      }
+    ],
+    "vault": [
+      {
+        "id": "fallout3_interior",
+        "name": "Interior generado",
+        "mode": "generated"
+      }
+    ],
+    "day": [
+      {
+        "id": "fallout3_day",
+        "name": "Dia generado",
+        "mode": "generated"
+      }
+    ],
+    "night": [
+      {
+        "id": "fallout3_night",
+        "name": "Noche generada",
+        "mode": "generated"
+      }
+    ]
+  }
+}

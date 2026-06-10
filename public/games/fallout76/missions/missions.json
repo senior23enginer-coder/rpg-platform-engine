@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "abrir_vault_76",
+      "name": "Abrir Vault 76",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

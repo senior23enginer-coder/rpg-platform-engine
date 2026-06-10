@@ -1,0 +1,101 @@
+{
+  "id": "fallout1_2",
+  "name": "Fallout 1 & 2",
+  "short": "FO1/2",
+  "description": "Yermo clasico por turnos con AP, dialogos ramificados y reputacion local.",
+  "tags": [
+    "fallout",
+    "classic",
+    "turn based",
+    "ap",
+    "isometric"
+  ],
+  "templateFuture": true,
+  "campaigns": [
+    {
+      "id": "classic_wasteland",
+      "title": "Yermo clasico",
+      "implemented": false,
+      "description": "Plantilla futura para campa?as de Fallout clasico y Fallout 2."
+    }
+  ],
+  "content": {
+    "dlc": [
+      {
+        "id": "fallout_clasico",
+        "name": "Fallout clasico",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "fallout_2_clasico",
+        "name": "Fallout 2 clasico",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "contenido_restaurado",
+        "name": "Contenido restaurado",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "encuentros_clasicos",
+        "name": "Encuentros clasicos",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      },
+      {
+        "id": "campa_as_del_yermo_clasico",
+        "name": "Campa?as del yermo clasico",
+        "description": "Modulo estructurado listo para completar.",
+        "enabled": false
+      }
+    ],
+    "features": [
+      {
+        "id": "mapa_mundial",
+        "name": "Mapa mundial",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "ap_clasico",
+        "name": "AP clasico",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "disparos_localizados",
+        "name": "Disparos localizados",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "habilidades_clasicas",
+        "name": "Habilidades clasicas",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "dialogos_ramificados",
+        "name": "Dialogos ramificados",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "karma_clasico",
+        "name": "Karma clasico",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      },
+      {
+        "id": "reputacion_por_ciudad",
+        "name": "Reputacion por ciudad",
+        "description": "Regla o sistema disponible para este juego.",
+        "enabled": true
+      }
+    ],
+    "extras": []
+  }
+}

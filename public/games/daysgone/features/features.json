@@ -1,0 +1,47 @@
+{
+  "features": [
+    {
+      "id": "moto",
+      "name": "Moto",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "gasolina",
+      "name": "Gasolina",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "reparacion",
+      "name": "Reparacion",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "hordas",
+      "name": "Hordas",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "infestaciones",
+      "name": "Infestaciones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "confianza_de_campamentos",
+      "name": "Confianza de campamentos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "ruido_y_persecucion",
+      "name": "Ruido y persecucion",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": []
+}

@@ -1,0 +1,23 @@
+{
+  "creatures": [
+    {
+      "id": "corredor",
+      "name": "Corredor",
+      "hp": 8,
+      "template": true
+    },
+    {
+      "id": "acechador",
+      "name": "Acechador",
+      "hp": 12,
+      "template": true
+    },
+    {
+      "id": "chasqueador",
+      "name": "Chasqueador",
+      "hp": 16,
+      "template": true
+    }
+  ],
+  "npcs": []
+}

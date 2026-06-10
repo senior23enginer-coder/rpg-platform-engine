@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {
+      "id": "primer_encargo_en_la_zona",
+      "name": "Primer encargo en La Zona",
+      "type": "main",
+      "implemented": false
+    }
+  ]
+}

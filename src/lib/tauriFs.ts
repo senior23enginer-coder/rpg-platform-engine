@@ -1,0 +1,66 @@
+import type { GameConfig } from "../types/game";
+import { seedGame } from "./seedLibrary";
+
+export async function pickGamesFolder(): Promise<string | null> {
+  try {
+    const { open } = await import("@tauri-apps/plugin-dialog");
+    const selected = await open({
+      directory: true,
+      multiple: false,
+      title: "Selecciona la carpeta games/"
+    });
+
+    if (typeof selected === "string") return selected;
+    return null;
+  } catch (error) {
+    console.warn("Folder picker unavailable in web preview.", error);
+    return null;
+  }
+}
+
+export async function readText(path: string): Promise<string | null> {
+  try {
+    const { readTextFile } = await import("@tauri-apps/plugin-fs");
+    return await readTextFile(path);
+  } catch (error) {
+    console.warn("Cannot read text file:", path, error);
+    return null;
+  }
+}
+
+export async function writeText(path: string, contents: string): Promise<boolean> {
+  try {
+    const { writeTextFile } = await import("@tauri-apps/plugin-fs");
+    await writeTextFile(path, contents);
+    return true;
+  } catch (error) {
+    console.warn("Cannot write text file:", path, error);
+    return false;
+  }
+}
+
+export async function loadLibraryFromFolder(folderPath: string): Promise<GameConfig[]> {
+  try {
+    const { readDir, readTextFile } = await import("@tauri-apps/plugin-fs");
+    const entries = await readDir(folderPath);
+    const games: GameConfig[] = [];
+
+    for (const entry of entries) {
+      if (!entry.isDirectory) continue;
+      const configPath = `${folderPath}/${entry.name}/game.config.json`;
+      try {
+        const raw = await readTextFile(configPath);
+        const game = JSON.parse(raw) as GameConfig;
+        game.configPath = configPath;
+        games.push(game);
+      } catch (error) {
+        console.warn("Invalid game config:", configPath, error);
+      }
+    }
+
+    return games.length ? games : [seedGame];
+  } catch (error) {
+    console.warn("Using seed library fallback.", error);
+    return [seedGame];
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "features": [
+    {
+      "id": "anomalias",
+      "name": "Anomalias",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "artefactos",
+      "name": "Artefactos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "detectores",
+      "name": "Detectores",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "emisiones",
+      "name": "Emisiones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "facciones",
+      "name": "Facciones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "condicion_de_armas",
+      "name": "Condicion de armas",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "radiacion",
+      "name": "Radiacion",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "mutantes",
+      "name": "Mutantes",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "economia_de_supervivencia",
+      "name": "Economia de supervivencia",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": []
+}

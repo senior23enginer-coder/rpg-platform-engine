@@ -1,0 +1,53 @@
+{
+  "features": [
+    {
+      "id": "eventos_publicos",
+      "name": "Eventos publicos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "c_a_m_p",
+      "name": "C.A.M.P.",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "mutaciones",
+      "name": "Mutaciones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "equipos_publicos",
+      "name": "Equipos publicos",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "daily_ops",
+      "name": "Daily Ops",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "expediciones",
+      "name": "Expediciones",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "legendarios",
+      "name": "Legendarios",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    },
+    {
+      "id": "cartas_perk",
+      "name": "Cartas perk",
+      "description": "Regla o sistema disponible para este juego.",
+      "enabled": true
+    }
+  ],
+  "extras": []
+}
