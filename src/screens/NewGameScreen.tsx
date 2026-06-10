@@ -2,6 +2,7 @@ import { ArrowLeft, Box, ClipboardList, Compass, Crosshair, HeartPulse, Plus, Se
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { CharacterSheetConfig, GameConfig } from "../types/game";
+import { gameHeroVars, loadGameCharacterSheet } from "../lib/gameLibrary";
 
 type Props = {
   game: GameConfig;
@@ -22,6 +23,12 @@ type RuntimeCharacterSheetConfig = CharacterSheetConfig & {
   origins?: SheetOption[];
   archetypes?: SheetOption[];
 };
+
+const fallbackPlayerOptions = [
+  { value: 1, label: "1 jugador", mode: "Solitario" },
+  { value: 2, label: "2 jugadores", mode: "Cooperativo" },
+  { value: 4, label: "3-4 jugadores", mode: "Grupo" },
+];
 
 const gameSheetLabels: Record<string, { species: string; quote: string; system: string }> = {
   fallout3: { species: "Habitante del refugio", quote: "La radiacion no siempre mata. A veces transforma.", system: "Sistema Fallout 2d20" },
@@ -74,10 +81,9 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   }, [game]);
 
   const campaign = game.campaigns[0];
-  const gameArtStyle = {
-    "--active-game-art": `url("/games/${game.id}/assets/hero/generated.png")`,
-    "--active-game-net-art": `url("/games/${game.id}/assets/hero/internet.jpg")`,
-  } as CSSProperties;
+  const gameArtStyle = gameHeroVars(game) as CSSProperties;
+  const playerOptions = (game.playerOptions?.length ? game.playerOptions : fallbackPlayerOptions)
+    .filter((option) => option.value <= (game.maxPlayers ?? 4));
   const sheetLabels = gameSheetLabels[game.id] ?? {
     species: `${game.name} - personaje`,
     quote: "Tu universo. Tu historia. Tu aventura.",
@@ -94,8 +100,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     let active = true;
     setStage("setup");
     setSheetConfig(characters);
-    fetch(`/games/${game.id}/characters/characters.json`)
-      .then((response) => (response.ok ? response.json() : characters))
+    loadGameCharacterSheet(game)
       .then((config: RuntimeCharacterSheetConfig) => {
         if (active) setSheetConfig(config);
       })
@@ -112,10 +117,11 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     setAttributes(Object.fromEntries(sheetConfig.attributes.map((attr) => [attr.id, attr.default])));
     setCharacterName(sheetConfig.seeds?.[0]?.name ?? "Superviviente");
     setOriginId((sheetConfig.origins?.[0] ?? fallbackOrigins[0]).id);
+    setPlayers((current) => Math.min(current, game.maxPlayers ?? 4));
     setGender("");
     setAge("");
     setNotes("");
-  }, [sheetConfig]);
+  }, [game.maxPlayers, sheetConfig]);
 
   function handleStart() {
     if (stage === "setup") {
@@ -304,7 +310,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
             <span className="gear-small"><Settings size={34} /></span>
             <strong>{game.name}</strong>
           </div>
-          <p>{game.description}</p>
+          <p>{game.loadedDescription ?? game.description}</p>
         </section>
 
         <section className="setup-block campaign-card">
@@ -334,11 +340,11 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         <section className="setup-block players-block">
           <h3><Users size={20} /> 4. Jugadores</h3>
           <div className="player-options">
-            {[1, 2, 4].map((value) => (
-              <button key={value} className={players === value ? "selected" : ""} onClick={() => setPlayers(value)}>
-                {value === 1 ? <User size={42} /> : <Users size={46} />}
-                <strong>{value === 4 ? "3-4" : value} jugador{value > 1 ? "es" : ""}</strong>
-                <small>{value === 1 ? "Solitario" : value === 2 ? "Cooperativo" : "Grupo"}</small>
+            {playerOptions.map((option) => (
+              <button key={option.value} className={players === option.value ? "selected" : ""} onClick={() => setPlayers(option.value)}>
+                {option.value === 1 ? <User size={42} /> : <Users size={46} />}
+                <strong>{option.label}</strong>
+                <small>{option.mode}</small>
               </button>
             ))}
           </div>

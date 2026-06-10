@@ -13,21 +13,33 @@ import {
   User,
   Vault,
 } from "lucide-react";
+import type { GameConfig } from "../types/game";
 import type { PlayerProfile } from "../types/profile";
+import { resolveUserAsset } from "../lib/userLibrary";
 
 type Props = {
   profile: PlayerProfile;
+  games: GameConfig[];
   onSave: (profile: PlayerProfile) => void;
   onBack: () => void;
 };
 
-export function ProfileScreen({ profile, onSave, onBack }: Props) {
+export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
   const [name, setName] = useState(profile.name);
   const [email, setEmail] = useState(profile.email ?? "");
-  const totalSessions = profile.history.reduce((sum, item) => sum + item.sessions, 0);
-  const completedAdventures = Math.max(0, profile.saves.filter((save) => save.level >= 10).length);
-  const latestActivity = profile.history
-    .map((entry) => new Date(entry.lastPlayedAt))
+  const avatarPath = resolveUserAsset(profile, profile.avatar);
+  const gameNameById = new Map(games.map((game) => [game.id, game.name]));
+  const totalSessions = profile.openSessions ?? 0;
+  const gameProfiles = profile.saves;
+  const gameProfilesStarted = Math.max(profile.gameProfilesStarted ?? 0, gameProfiles.length);
+  const completedAdventures = profile.completedCampaigns ?? 0;
+  const latestActivity = [
+    profile.lastActivityAt,
+    ...gameProfiles.map((save) => save.updatedAt),
+  ]
+    .filter(Boolean)
+    .map((date) => new Date(String(date)))
+    .filter((date) => !Number.isNaN(date.getTime()))
     .sort((left, right) => right.getTime() - left.getTime())[0];
 
   function signIn() {
@@ -36,11 +48,12 @@ export function ProfileScreen({ profile, onSave, onBack }: Props) {
       name: name.trim() || "Operador",
       email: email.trim() || "operador@vault.local",
       signedIn: true,
+      lastActivityAt: new Date().toISOString(),
     });
   }
 
   function signOut() {
-    onSave({ ...profile, signedIn: false });
+    onSave({ ...profile, signedIn: false, lastActivityAt: new Date().toISOString() });
   }
 
   return (
@@ -59,7 +72,7 @@ export function ProfileScreen({ profile, onSave, onBack }: Props) {
 
       <article className="profile-ref-hero">
         <div className="profile-ref-avatar">
-          <User size={64} />
+          {avatarPath ? <img src={avatarPath} alt="" /> : <User size={64} />}
         </div>
         <div className="profile-ref-identity">
           <strong>{profile.signedIn ? profile.name : "Invitado local"}</strong>
@@ -69,7 +82,7 @@ export function ProfileScreen({ profile, onSave, onBack }: Props) {
         <div className="profile-ref-stat">
           <Gamepad2 size={34} />
           <span>Perfiles de juego</span>
-          <strong>{profile.history.length}</strong>
+          <strong>{gameProfilesStarted}</strong>
           <small>Guardados</small>
         </div>
         <div className="profile-ref-stat">
@@ -123,21 +136,32 @@ export function ProfileScreen({ profile, onSave, onBack }: Props) {
               <h3><Clock3 size={32} /> Historia de juegos</h3>
               <p>Perfiles de juego creados en este equipo.</p>
             </div>
-            <span>{profile.history.length} perfiles</span>
+            <span>{gameProfilesStarted} perfiles</span>
           </header>
           <div className="profile-history-table">
             <div className="profile-history-head">
               <span>Perfil</span>
+              <span>Juego</span>
               <span>Ultima partida</span>
               <span>Sesiones</span>
               <span />
             </div>
-            {profile.history.map((entry) => (
-              <div className="profile-history-row" key={entry.gameId}>
-                <span><User size={18} /> {entry.gameId}</span>
-                <span>{new Date(entry.lastPlayedAt).toLocaleString()}</span>
-                <strong>{entry.sessions} sesiones</strong>
-                <button aria-label={`Opciones ${entry.gameId}`}><MoreHorizontal size={20} /></button>
+            {gameProfiles.length === 0 && (
+              <div className="profile-history-row profile-history-empty">
+                <span><User size={18} /> Sin perfiles guardados</span>
+                <span>--</span>
+                <span>--</span>
+                <strong>0 sesiones</strong>
+                <span />
+              </div>
+            )}
+            {gameProfiles.map((save) => (
+              <div className="profile-history-row" key={save.saveId}>
+                <span><User size={18} /> {save.playerName}</span>
+                <span>{gameNameById.get(save.gameId) ?? save.gameId}</span>
+                <span>{new Date(save.updatedAt).toLocaleString()}</span>
+                <strong>{save.sessions ?? 0} sesiones</strong>
+                <button aria-label={`Opciones ${save.name}`}><MoreHorizontal size={20} /></button>
               </div>
             ))}
           </div>

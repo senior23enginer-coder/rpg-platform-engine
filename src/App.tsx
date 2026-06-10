@@ -15,9 +15,9 @@ import { RulesScreen } from "./screens/RulesScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig } from "./types/game";
-import type { PlayerProfile, UserSettings } from "./types/profile";
-import { seedCharacters, seedGames } from "./lib/seedLibrary";
-import { soundLibrary } from "./lib/soundLibrary";
+import type { GameHistoryEntry, PlayerProfile, UserSettings } from "./types/profile";
+import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
+import { loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import {
   getActiveCampaign,
   getActiveSave,
@@ -27,34 +27,24 @@ import {
 } from "./lib/playerProfile";
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
-function manifestForGame(gameId: string, manifest: AudioManifest): AudioManifest {
-  return {
-    tracks: Object.fromEntries(
-      Object.entries(manifest.tracks).map(([category, tracks]) => [
-        category,
-        tracks.map((track) => ({
-          ...track,
-          mode: "file" as const,
-          path: track.path?.replace(/^\/sounds\//, `/games/${gameId}/audio/sounds/`),
-        })),
-      ])
-    ),
-  };
+const bundledGames = loadBundledGames();
+
+function upsertHistoryEntry(history: GameHistoryEntry[], entry: GameHistoryEntry) {
+  const exists = history.some((item) => item.gameId === entry.gameId);
+  if (!exists) return [entry, ...history];
+  return history.map((item) => (item.gameId === entry.gameId ? { ...item, ...entry } : item));
 }
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
-  const [games, setGames] = useState<GameConfig[]>(seedGames);
-  const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(seedGames));
+  const [games, setGames] = useState<GameConfig[]>(bundledGames);
+  const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(bundledGames));
+  const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
 
   const activeGame = games.find((game) => game.id === profile.activeGameId) ?? games[0];
   const activeGameSaves = getGameSaves(profile, activeGame.id);
   const activeSave = getActiveSave(profile, activeGame.id);
   const activeCampaign = getActiveCampaign(activeGame, profile);
-  const activeAudioManifest = useMemo(
-    () => manifestForGame(activeGame.id, soundLibrary),
-    [activeGame.id]
-  );
 
   const recommendedGames = useMemo(() => {
     const pool = games.filter((game) => game.id !== activeGame.id);
@@ -67,6 +57,16 @@ export default function App() {
     document.documentElement.dataset.hud = profile.settings.hudColor;
     setMusicVolume(profile.settings.volumes.music * profile.settings.volumes.master);
   }, [profile]);
+
+  useEffect(() => {
+    let active = true;
+    loadGameAudioManifest(activeGame).then((manifest) => {
+      if (active) setActiveAudioManifest(manifest);
+    });
+    return () => {
+      active = false;
+    };
+  }, [activeGame]);
 
   useEffect(() => {
     if (!profile.settings.audioEnabled) {
@@ -98,14 +98,16 @@ export default function App() {
   }
 
   function selectGame(gameId: string, nextScreen: Screen = "newGame") {
+    const now = new Date().toISOString();
     setProfile((current) => ({
       ...current,
+      lastActivityAt: now,
       activeGameId: gameId,
-      history: current.history.map((entry) =>
-        entry.gameId === gameId
-          ? { ...entry, lastPlayedAt: new Date().toISOString(), sessions: entry.sessions + 1 }
-          : entry
-      ),
+      history: upsertHistoryEntry(current.history, {
+        gameId,
+        lastPlayedAt: now,
+        sessions: 0,
+      }),
     }));
     setScreen(nextScreen);
   }
@@ -117,21 +119,22 @@ export default function App() {
   function loadSave(saveId: string) {
     const save = profile.saves.find((item) => item.saveId === saveId);
     if (!save) return;
+    const now = new Date().toISOString();
 
     setProfile((current) => ({
       ...current,
+      lastActivityAt: now,
       activeGameId: save.gameId,
-      history: current.history.map((entry) =>
-        entry.gameId === save.gameId
-          ? {
-              ...entry,
-              activeSaveId: save.saveId,
-              activeCampaignId: save.campaignId,
-              lastPlayedAt: new Date().toISOString(),
-              sessions: entry.sessions + 1,
-            }
-          : entry
+      saves: current.saves.map((item) =>
+        item.saveId === saveId ? { ...item, updatedAt: now } : item
       ),
+      history: upsertHistoryEntry(current.history, {
+        gameId: save.gameId,
+        sessions: 0,
+        activeSaveId: save.saveId,
+        activeCampaignId: save.campaignId,
+        lastPlayedAt: now,
+      }),
     }));
     setScreen("home");
   }
@@ -257,14 +260,10 @@ export default function App() {
               characters={seedCharacters}
               onContent={() => setScreen("content")}
               onBack={() => setScreen("home")}
-              onStart={(characterName, attributes) => {
+              onStart={(characterName) => {
                 const campaignId = activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
                 const now = new Date().toISOString();
                 const saveId = `${activeGame.id}_${Date.now()}`;
-                const attributeLevel = Math.max(
-                  1,
-                  Math.round(Object.values(attributes).reduce((sum, value) => sum + Number(value || 0), 0) / 8)
-                );
                 setProfile((current) => ({
                   ...current,
                   activeGameId: activeGame.id,
@@ -273,25 +272,25 @@ export default function App() {
                       saveId,
                       gameId: activeGame.id,
                       campaignId,
+                      playerName: characterName,
                       name: `${characterName} - ${activeGame.name}`,
                       currentMission: activeCampaign?.title ?? "Explorando Yermo",
                       currentZone: activeGame.name,
-                      level: attributeLevel,
+                      level: 1,
+                      sessions: 0,
                       updatedAt: now,
                     },
                     ...current.saves,
                   ],
-                  history: current.history.map((entry) =>
-                    entry.gameId === activeGame.id
-                      ? {
-                          ...entry,
-                          activeCampaignId: campaignId,
-                          activeSaveId: saveId,
-                          lastPlayedAt: now,
-                          sessions: entry.sessions + 1,
-                        }
-                      : entry
-                  ),
+                  history: upsertHistoryEntry(current.history, {
+                    gameId: activeGame.id,
+                    sessions: 0,
+                    activeCampaignId: campaignId,
+                    activeSaveId: saveId,
+                    lastPlayedAt: now,
+                  }),
+                  lastActivityAt: now,
+                  gameProfilesStarted: current.saves.length + 1,
                 }));
                 setScreen("home");
               }}
@@ -307,7 +306,7 @@ export default function App() {
             />
           )}
 
-          {screen === "dice" && <DiceScreen gameId={activeGame.id} />}
+          {screen === "dice" && <DiceScreen game={activeGame} />}
           {screen === "settings" && (
             <SettingsScreen
               manifest={activeAudioManifest}
@@ -319,13 +318,14 @@ export default function App() {
           {screen === "rules" && <RulesScreen onBack={() => setScreen("home")} />}
           {screen === "files" && (
             <FilesScreen
-              onLoadGames={setGames}
+              onLoadGames={(loadedGames) => setGames(loadedGames.map((game) => normalizeGameConfig(game)))}
               onEditConfig={() => setScreen("jsonEditor")}
             />
           )}
           {screen === "profile" && (
             <ProfileScreen
               profile={profile}
+              games={games}
               onSave={setProfile}
               onBack={() => setScreen("home")}
             />

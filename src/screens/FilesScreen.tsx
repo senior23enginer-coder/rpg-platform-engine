@@ -33,7 +33,12 @@ export function FilesScreen({ onLoadGames, onEditConfig }: Props) {
     features/features.json
     characters/characters.json
     dlc/
-    audio/audio.manifest.json`}</pre>
+    audio/audio.manifest.json
+
+users/
+  invitado-local/
+    profile.json
+    avatar.svg`}</pre>
         </article>
 
         <article className="file-card">

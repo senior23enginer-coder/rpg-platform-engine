@@ -1530,10 +1530,10 @@ button:hover {
 .hero-panel:not(.game-fallout3):not(.game-fallout4) {
   background-image:
     linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.68) 35%, rgba(5, 8, 4, 0.08) 68%, rgba(5, 8, 4, 0.48)),
-    var(--uiux-hero) !important;
-  background-size: auto 100% !important;
+    var(--active-game-home-art, var(--active-game-net-art)) !important;
+  background-size: cover !important;
   background-repeat: no-repeat !important;
-  background-position: right center !important;
+  background-position: center !important;
 }
 
 .hero-copy h2 {
@@ -1738,17 +1738,12 @@ textarea {
   }
 }
 
-/* Internet/game-specific imagery layer */
-.hero-panel.game-fallout3 { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-fallout3) !important; }
-.hero-panel.game-fallout4 { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-fallout4) !important; }
-.hero-panel.game-newvegas { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-newvegas) !important; }
-.hero-panel.game-metro { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-metro) !important; }
-.hero-panel.game-daysgone { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-daysgone) !important; }
-.hero-panel.game-thelastofus { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-thelastofus) !important; }
-.hero-panel.game-skyrim { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--net-skyrim) !important; }
-.hero-panel.game-fallout76 { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--gen-fallout76) !important; }
-.hero-panel.game-fallout1_2 { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--gen-fallout1-2) !important; }
-.hero-panel.game-stalker { background-image: linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%), var(--gen-stalker) !important; }
+/* Active game imagery comes from public/games/<game>/game.config.json */
+.hero-panel {
+  background-image:
+    linear-gradient(90deg, rgba(3, 7, 3, 0.94), rgba(4, 8, 4, 0.58) 38%, rgba(5, 8, 4, 0.1) 70%),
+    var(--active-game-home-art, var(--active-game-net-art)) !important;
+}
 
 .game-fallout3 .game-cover,
 .campaign-preview.game-fallout3,
@@ -1798,6 +1793,12 @@ textarea {
 .recommend-card {
   background-size: cover !important;
   background-position: center !important;
+}
+
+.campaign-panel .campaign-preview {
+  background-image:
+    linear-gradient(transparent, rgba(0, 0, 0, 0.62)),
+    var(--active-game-campaign-art, var(--active-game-preview-art)) !important;
 }
 
 /* Library screen cloned from uiux library reference */
@@ -2212,26 +2213,26 @@ textarea {
   --pip-muted: #a8be91;
   --pip-text: #d8ead0;
   --pip-danger: #d97848;
-  --art-wasteland: url("/assets/wasteland-hero.png");
-  --uiux-hero: url("/assets/uiux-copied/dashboard-hero.png");
-  --uiux-campaign: url("/assets/uiux-copied/campaign-thumb.png");
-  --uiux-save-1: url("/assets/uiux-copied/save-megaton.png");
-  --uiux-save-2: url("/assets/uiux-copied/save-ruins.png");
-  --uiux-save-3: url("/assets/uiux-copied/save-vault.png");
-  --uiux-dice: url("/assets/uiux-copied/dice-set.png");
-  --uiux-rec-nv: url("/assets/uiux-copied/rec-newvegas.png");
-  --uiux-rec-fo4: url("/assets/uiux-copied/rec-fallout4.png");
-  --uiux-rec-skyrim: url("/assets/uiux-copied/rec-skyrim.png");
-  --net-fallout3: url("/assets/internet-games/fallout3.jpg");
-  --net-fallout4: url("/assets/internet-games/fallout4.jpg");
-  --net-newvegas: url("/assets/internet-games/newvegas.jpg");
-  --net-metro: url("/assets/internet-games/metro.jpg");
-  --net-daysgone: url("/assets/internet-games/daysgone.jpg");
-  --net-thelastofus: url("/assets/internet-games/thelastofus.jpg");
-  --net-skyrim: url("/assets/internet-games/skyrim.jpg");
-  --gen-fallout76: url("/assets/generated-games/fallout76.png");
-  --gen-fallout1-2: url("/assets/generated-games/fallout1_2.png");
-  --gen-stalker: url("/assets/generated-games/stalker.png");
+  --art-wasteland: url("/platform/wasteland-hero.png");
+  --uiux-hero: url("/platform/uiux-copied/dashboard-hero.png");
+  --uiux-campaign: url("/platform/uiux-copied/campaign-thumb.png");
+  --uiux-save-1: url("/platform/uiux-copied/save-megaton.png");
+  --uiux-save-2: url("/platform/uiux-copied/save-ruins.png");
+  --uiux-save-3: url("/platform/uiux-copied/save-vault.png");
+  --uiux-dice: url("/platform/uiux-copied/dice-set.png");
+  --uiux-rec-nv: url("/platform/uiux-copied/rec-newvegas.png");
+  --uiux-rec-fo4: url("/platform/uiux-copied/rec-fallout4.png");
+  --uiux-rec-skyrim: url("/platform/uiux-copied/rec-skyrim.png");
+  --net-fallout3: url("/games/fallout3/assets/hero/internet.jpg");
+  --net-fallout4: url("/games/fallout4/assets/hero/internet.jpg");
+  --net-newvegas: url("/games/newvegas/assets/hero/internet.jpg");
+  --net-metro: url("/games/metro/assets/hero/internet.jpg");
+  --net-daysgone: url("/games/daysgone/assets/hero/internet.jpg");
+  --net-thelastofus: url("/games/thelastofus/assets/hero/internet.jpg");
+  --net-skyrim: url("/games/skyrim/assets/hero/internet.jpg");
+  --gen-fallout76: url("/games/fallout76/assets/hero/generated.png");
+  --gen-fallout1-2: url("/games/fallout1_2/assets/hero/generated.png");
+  --gen-stalker: url("/games/stalker/assets/hero/generated.png");
   --terminal-grid:
     linear-gradient(rgba(125, 255, 88, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(125, 255, 88, 0.035) 1px, transparent 1px);
@@ -2983,6 +2984,15 @@ button:hover {
   max-width: 210px;
 }
 
+.topbar-profile-avatar {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(143, 255, 114, 0.58);
+}
+
 .game-card {
   min-height: 394px;
 }
@@ -2994,52 +3004,52 @@ button:hover {
 
 .game-fallout3 .game-cover,
 .recommend-card.game-fallout3 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/fallout3.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/fallout3/assets/cover/fallout3.svg");
 }
 
 .game-fallout4 .game-cover,
 .recommend-card.game-fallout4 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/fallout4.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/fallout4/assets/cover/fallout4.svg");
 }
 
 .game-newvegas .game-cover,
 .recommend-card.game-newvegas {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/newvegas.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/newvegas/assets/cover/newvegas.svg");
 }
 
 .game-fallout76 .game-cover,
 .recommend-card.game-fallout76 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/fallout76.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/fallout76/assets/cover/fallout76.svg");
 }
 
 .game-fallout1_2 .game-cover,
 .recommend-card.game-fallout1_2 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/fallout1_2.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/fallout1_2/assets/cover/fallout1_2.svg");
 }
 
 .game-metro .game-cover,
 .recommend-card.game-metro {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/metro.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/metro/assets/cover/metro.svg");
 }
 
 .game-daysgone .game-cover,
 .recommend-card.game-daysgone {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/daysgone.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/daysgone/assets/cover/daysgone.svg");
 }
 
 .game-thelastofus .game-cover,
 .recommend-card.game-thelastofus {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/thelastofus.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/thelastofus/assets/cover/thelastofus.svg");
 }
 
 .game-stalker .game-cover,
 .recommend-card.game-stalker {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/stalker.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/stalker/assets/cover/stalker.svg");
 }
 
 .game-skyrim .game-cover,
 .recommend-card.game-skyrim {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/assets/covers/skyrim.svg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)), url("/games/skyrim/assets/cover/skyrim.svg");
 }
 
 .card-actions {
@@ -3151,7 +3161,7 @@ button:hover {
 .hero-panel:not(.game-fallout3):not(.game-fallout4) {
   background-image:
     linear-gradient(90deg, rgba(3, 7, 3, 0.82), rgba(4, 8, 4, 0.18) 58%, rgba(5, 8, 4, 0.56)),
-    var(--uiux-hero) !important;
+    var(--active-game-home-art, var(--active-game-net-art)) !important;
   background-size: cover !important;
   background-position: center !important;
 }
@@ -3276,14 +3286,13 @@ button:hover {
 .hero-panel.game-fallout4 {
   background-image:
     linear-gradient(90deg, rgba(3, 7, 3, 0.9), rgba(4, 8, 4, 0.24) 58%, rgba(5, 8, 4, 0.72)),
-    var(--art-wasteland);
+    var(--active-game-home-art, var(--active-game-net-art));
 }
 
 .hero-panel:not(.game-fallout3):not(.game-fallout4) {
   background-image:
     linear-gradient(90deg, rgba(3, 7, 3, 0.9), rgba(4, 8, 4, 0.3) 58%, rgba(5, 8, 4, 0.76)),
-    var(--terminal-noise),
-    linear-gradient(135deg, #26341d, #060906 70%);
+    var(--active-game-home-art, var(--active-game-net-art));
 }
 
 .hero-copy h2 {
@@ -3357,16 +3366,16 @@ button:hover {
   background-position: center;
 }
 
-.save-thumb.game-fallout3 { background-image: url("/assets/covers/fallout3.svg"); }
-.save-thumb.game-fallout4 { background-image: url("/assets/covers/fallout4.svg"); }
-.save-thumb.game-newvegas { background-image: url("/assets/covers/newvegas.svg"); }
-.save-thumb.game-fallout76 { background-image: url("/assets/covers/fallout76.svg"); }
-.save-thumb.game-fallout1_2 { background-image: url("/assets/covers/fallout1_2.svg"); }
-.save-thumb.game-metro { background-image: url("/assets/covers/metro.svg"); }
-.save-thumb.game-daysgone { background-image: url("/assets/covers/daysgone.svg"); }
-.save-thumb.game-thelastofus { background-image: url("/assets/covers/thelastofus.svg"); }
-.save-thumb.game-stalker { background-image: url("/assets/covers/stalker.svg"); }
-.save-thumb.game-skyrim { background-image: url("/assets/covers/skyrim.svg"); }
+.save-thumb.game-fallout3 { background-image: url("/games/fallout3/assets/cover/fallout3.svg"); }
+.save-thumb.game-fallout4 { background-image: url("/games/fallout4/assets/cover/fallout4.svg"); }
+.save-thumb.game-newvegas { background-image: url("/games/newvegas/assets/cover/newvegas.svg"); }
+.save-thumb.game-fallout76 { background-image: url("/games/fallout76/assets/cover/fallout76.svg"); }
+.save-thumb.game-fallout1_2 { background-image: url("/games/fallout1_2/assets/cover/fallout1_2.svg"); }
+.save-thumb.game-metro { background-image: url("/games/metro/assets/cover/metro.svg"); }
+.save-thumb.game-daysgone { background-image: url("/games/daysgone/assets/cover/daysgone.svg"); }
+.save-thumb.game-thelastofus { background-image: url("/games/thelastofus/assets/cover/thelastofus.svg"); }
+.save-thumb.game-stalker { background-image: url("/games/stalker/assets/cover/stalker.svg"); }
+.save-thumb.game-skyrim { background-image: url("/games/skyrim/assets/cover/skyrim.svg"); }
 
 .dashboard-row {
   grid-template-columns: minmax(0, 1fr) 360px;
@@ -3389,16 +3398,16 @@ button:hover {
   background-position: center;
 }
 
-.campaign-preview.game-fallout3 { background-image: url("/assets/covers/fallout3.svg"); }
-.campaign-preview.game-fallout4 { background-image: url("/assets/covers/fallout4.svg"); }
-.campaign-preview.game-newvegas { background-image: url("/assets/covers/newvegas.svg"); }
-.campaign-preview.game-fallout76 { background-image: url("/assets/covers/fallout76.svg"); }
-.campaign-preview.game-fallout1_2 { background-image: url("/assets/covers/fallout1_2.svg"); }
-.campaign-preview.game-metro { background-image: url("/assets/covers/metro.svg"); }
-.campaign-preview.game-daysgone { background-image: url("/assets/covers/daysgone.svg"); }
-.campaign-preview.game-thelastofus { background-image: url("/assets/covers/thelastofus.svg"); }
-.campaign-preview.game-stalker { background-image: url("/assets/covers/stalker.svg"); }
-.campaign-preview.game-skyrim { background-image: url("/assets/covers/skyrim.svg"); }
+.campaign-preview.game-fallout3 { background-image: url("/games/fallout3/assets/cover/fallout3.svg"); }
+.campaign-preview.game-fallout4 { background-image: url("/games/fallout4/assets/cover/fallout4.svg"); }
+.campaign-preview.game-newvegas { background-image: url("/games/newvegas/assets/cover/newvegas.svg"); }
+.campaign-preview.game-fallout76 { background-image: url("/games/fallout76/assets/cover/fallout76.svg"); }
+.campaign-preview.game-fallout1_2 { background-image: url("/games/fallout1_2/assets/cover/fallout1_2.svg"); }
+.campaign-preview.game-metro { background-image: url("/games/metro/assets/cover/metro.svg"); }
+.campaign-preview.game-daysgone { background-image: url("/games/daysgone/assets/cover/daysgone.svg"); }
+.campaign-preview.game-thelastofus { background-image: url("/games/thelastofus/assets/cover/thelastofus.svg"); }
+.campaign-preview.game-stalker { background-image: url("/games/stalker/assets/cover/stalker.svg"); }
+.campaign-preview.game-skyrim { background-image: url("/games/skyrim/assets/cover/skyrim.svg"); }
 
 .recommend-grid {
   grid-template-columns: repeat(3, 1fr);
@@ -4136,6 +4145,10 @@ button:hover {
   border-radius: 8px;
 }
 
+.setup-game-loaded > p {
+  white-space: pre-line;
+}
+
 .campaign-choice {
   display: grid;
   grid-template-columns: 190px minmax(0, 1fr);
@@ -4178,7 +4191,7 @@ button:hover {
 
 .player-options {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 14px;
   margin-bottom: 12px;
 }
@@ -5192,7 +5205,7 @@ button:hover {
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(2, 8, 2, 0.12)),
-    url("/assets/uiux-copied/settings-hud-preview.png") center / cover no-repeat;
+    url("/platform/uiux-copied/settings-hud-preview.png") center / cover no-repeat;
 }
 
 .settings-ref-hud-preview .vault-boy-line,
@@ -5297,12 +5310,20 @@ button:hover {
   font-size: clamp(17px, 1.35vw, 24px);
 }
 
-.world-preview,
+.world-preview {
+  background-image:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(2, 8, 3, 0.16)),
+    var(--active-game-preview-art),
+    var(--uiux-hero);
+  background-position: center;
+  background-size: cover;
+}
+
 .campaign-choice-art {
   background-image:
     linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(2, 8, 3, 0.16)),
-    var(--active-game-net-art),
-    var(--active-game-art),
+    var(--active-game-campaign-art),
+    var(--active-game-preview-art),
     var(--uiux-hero);
   background-position: center;
   background-size: cover;
@@ -6150,6 +6171,13 @@ button:hover {
   box-shadow: 0 0 0 10px rgba(126, 255, 87, 0.08), inset 0 0 28px rgba(126, 255, 87, 0.2);
 }
 
+.profile-ref-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .profile-ref-identity strong {
   display: block;
   color: #8fff72;
@@ -6333,7 +6361,7 @@ button:hover {
 .profile-history-head,
 .profile-history-row {
   display: grid;
-  grid-template-columns: minmax(170px, 1fr) minmax(180px, 0.95fr) 110px 36px;
+  grid-template-columns: minmax(150px, 1fr) minmax(130px, 0.8fr) minmax(180px, 0.95fr) 110px 36px;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
@@ -6362,6 +6390,10 @@ button:hover {
 }
 
 .profile-history-row span:nth-child(2) {
+  color: #9eff78;
+}
+
+.profile-history-row span:nth-child(3) {
   color: #d7f2c2;
 }
 

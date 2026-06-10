@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import { ArrowLeft, CheckCircle, Filter, Plus, Search, Settings, Star } from "lucide-react";
 import type { GameConfig } from "../types/game";
+import { gameArt } from "../lib/gameLibrary";
 
 type Props = {
   games: GameConfig[];
@@ -45,14 +46,7 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
       return a.name.localeCompare(b.name);
     });
   }, [activeId, games, installedOnly, query, sortMode]);
-  const artFor = (gameId: string): CSSProperties => ({
-    backgroundImage: `
-      linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)),
-      url("/games/${gameId}/assets/hero/internet.jpg"),
-      url("/games/${gameId}/assets/hero/generated.png"),
-      url("/games/${gameId}/assets/cover/${gameId}.svg")
-    `,
-  });
+  const artFor = (game: GameConfig): CSSProperties => ({ backgroundImage: gameArt(game) });
 
   return (
     <section className="screen-panel library-screen-ref">
@@ -112,7 +106,7 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
 
           return (
             <article key={game.id} className={`library-ref-card game-${game.id} ${active ? "active" : ""}`}>
-              <div className="library-card-art" style={artFor(game.id)} />
+              <div className="library-card-art" style={artFor(game)} />
               <span className={`library-install-badge ${installed ? "installed" : ""}`}>
                 {installed ? "Instalado" : "No instalado"}
               </span>
@@ -128,7 +122,7 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
                 <span>{installed ? "Config personalizado" : "Config disponible"}</span>
               </div>
 
-              <small className="config-path">games/{game.id}/game.config.json</small>
+              <small className="config-path">{game.configPath ?? `games/${game.id}/game.config.json`}</small>
 
               <div className="library-card-actions">
                 <button onClick={() => onConfigure(game.id)}>{installed ? "Configurar" : "Instalar"}</button>

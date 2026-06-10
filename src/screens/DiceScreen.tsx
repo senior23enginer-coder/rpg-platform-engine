@@ -1,6 +1,8 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import type { GameConfig } from "../types/game";
+import { diceCatalog } from "../lib/gameLibrary";
 
 function parseRoll(expression: string) {
   const match = expression.replace(/\s+/g, "").match(/^(\d*)d(\d+|%)([+-]\d+)?$/i);
@@ -122,10 +124,10 @@ function createDieBodyTexture(sides: number, gameId = "fallout3") {
   return texture;
 }
 
-function loadDieBodyTexture(gameId: string, sides: number) {
+function loadDieBodyTexture(catalogPath: string | undefined, sides: number, gameId: string) {
   const loader = new THREE.TextureLoader();
   const texture = loader.load(
-    `/games/${gameId}/assets/dice/catalog.png`,
+    catalogPath ?? `/games/${gameId}/assets/dice/catalog.png`,
     (loadedTexture) => {
       loadedTexture.colorSpace = THREE.SRGBColorSpace;
       loadedTexture.wrapS = THREE.RepeatWrapping;
@@ -249,9 +251,10 @@ type ThreeDieProps = {
   sides: number;
   rolling: boolean;
   gameId: string;
+  catalogPath?: string;
 };
 
-function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
+function ThreeDie({ face, sides, rolling, gameId, catalogPath }: ThreeDieProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const meshRef = useRef<THREE.Mesh | null>(null);
   const edgeRef = useRef<THREE.LineSegments | null>(null);
@@ -295,7 +298,7 @@ function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
     scene.add(rimLight);
     scene.add(new THREE.AmbientLight(0x315528, 1.25));
 
-    const bodyTexture = loadDieBodyTexture(gameId, sides);
+    const bodyTexture = loadDieBodyTexture(catalogPath, sides, gameId);
     textureRef.current = bodyTexture;
 
     const material = new THREE.MeshStandardMaterial({
@@ -468,7 +471,7 @@ function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [gameId]);
+  }, [catalogPath, gameId]);
 
   useEffect(() => {
     const die = meshRef.current;
@@ -480,7 +483,7 @@ function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
 
     const material = die.material as THREE.MeshStandardMaterial;
     textureRef.current?.dispose();
-    textureRef.current = loadDieBodyTexture(gameId, sides);
+    textureRef.current = loadDieBodyTexture(catalogPath, sides, gameId);
     material.map = textureRef.current;
     material.needsUpdate = true;
 
@@ -499,7 +502,7 @@ function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
     const labels = buildLabelGroup(sides, face);
     die.add(labels);
     labelGroupRef.current = labels;
-  }, [face, gameId, sides]);
+  }, [catalogPath, face, gameId, sides]);
 
   useEffect(() => {
     if (!rolling) return;
@@ -541,13 +544,14 @@ function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
   );
 }
 
-export function DiceScreen({ gameId = "fallout3" }: { gameId?: string }) {
+export function DiceScreen({ game }: { game: GameConfig }) {
   const [expression, setExpression] = useState("2d20+3");
   const [face, setFace] = useState(20);
   const [sides, setSides] = useState(20);
   const [rolling, setRolling] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
   const timeoutRef = useRef<number>();
+  const catalogPath = diceCatalog(game);
 
   function roll(expr = expression) {
     const result = parseRoll(expr);
@@ -584,9 +588,9 @@ export function DiceScreen({ gameId = "fallout3" }: { gameId?: string }) {
         <div className="dice-stage">
           <div
             className="dice-catalog-preview"
-            style={{ "--dice-catalog": `url("/games/${gameId}/assets/dice/catalog.png")` } as CSSProperties}
+            style={{ "--dice-catalog": `url("${catalogPath}")` } as CSSProperties}
           />
-          <ThreeDie face={face} sides={sides} rolling={rolling} gameId={gameId} />
+          <ThreeDie face={face} sides={sides} rolling={rolling} gameId={game.id} catalogPath={catalogPath} />
         </div>
 
         <div className="dice-buttons">

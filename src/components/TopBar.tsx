@@ -1,5 +1,6 @@
 import { Activity, Box, ChevronDown, Monitor, Settings, Volume2 } from "lucide-react";
 import type { PlayerProfile } from "../types/profile";
+import { resolveUserAsset } from "../lib/userLibrary";
 
 type Props = {
   profile: PlayerProfile;
@@ -8,6 +9,8 @@ type Props = {
 };
 
 export function TopBar({ profile, onProfile, onSettings }: Props) {
+  const avatarPath = resolveUserAsset(profile, profile.avatar);
+
   return (
     <header className="topbar">
       <div className="topbar-logo">
@@ -34,7 +37,7 @@ export function TopBar({ profile, onProfile, onSettings }: Props) {
         </div>
 
         <button className="status-card profile-card" onClick={onProfile}>
-          <Box size={24} />
+          {avatarPath ? <img className="topbar-profile-avatar" src={avatarPath} alt="" /> : <Box size={24} />}
           <span>
             <small>{profile.name}</small>
             <strong>Nivel {profile.level}</strong>

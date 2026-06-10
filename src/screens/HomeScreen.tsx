@@ -2,6 +2,7 @@ import { Dice5, Folder, Save, Star } from "lucide-react";
 import type { CSSProperties } from "react";
 import type { Campaign, GameConfig } from "../types/game";
 import type { PlayerSave } from "../types/profile";
+import { gameArt, gameHeroVars } from "../lib/gameLibrary";
 
 type Props = {
   game: GameConfig;
@@ -27,18 +28,13 @@ export function HomeScreen({
   const activeCount = Object.values(game.content)
     .flat()
     .filter((item) => item.enabled).length;
-  const artFor = (gameId: string): CSSProperties => ({
-    backgroundImage: `
-      linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)),
-      url("/games/${gameId}/assets/hero/internet.jpg"),
-      url("/games/${gameId}/assets/hero/generated.png"),
-      url("/games/${gameId}/assets/cover/${gameId}.svg")
-    `,
-  });
+  const artFor = (target: GameConfig): CSSProperties => ({ backgroundImage: gameArt(target) });
+  const activeHeroStyle = gameHeroVars(game) as CSSProperties;
+  const savedGame = (gameId: string) => recommended.find((item) => item.id === gameId) ?? game;
 
   return (
     <section className="home-layout">
-      <div className={`hero-panel game-${game.id}`} style={artFor(game.id)}>
+      <div className={`hero-panel game-${game.id}`} style={activeHeroStyle}>
         <div className="hero-copy">
           <span className="eyebrow">Juego seleccionado</span>
           <h2>{game.name}</h2>
@@ -69,7 +65,7 @@ export function HomeScreen({
 
           {saves.map((entry) => (
             <button key={entry.saveId} className="save-mini">
-              <span className={`save-thumb game-${entry.gameId}`} style={artFor(entry.gameId)} />
+              <span className={`save-thumb game-${entry.gameId}`} style={artFor(savedGame(entry.gameId))} />
               <span className="save-copy">
                 <strong>{entry.name}</strong>
                 <small>Nivel {entry.level}</small>
@@ -101,7 +97,7 @@ export function HomeScreen({
             <strong>Campaña activa</strong>
           </div>
           <div className="campaign-body">
-            <div className={`campaign-preview game-${game.id}`} style={artFor(game.id)} />
+            <div className={`campaign-preview game-${game.id}`} style={activeHeroStyle} />
             <div>
               <h3>{campaign?.title ?? "Campaña guiada"}</h3>
               <p>{save?.currentMission ?? "Explorando Yermo"}</p>
@@ -123,7 +119,7 @@ export function HomeScreen({
           <div className="panel-title"><Folder size={18} /><strong>Recomendados para ti</strong></div>
           <div className="recommend-grid">
             {recommended.map((item) => (
-              <button key={item.id} className={`recommend-card game-${item.id}`} style={artFor(item.id)} onClick={() => onSelectRecommended(item.id)}>
+              <button key={item.id} className={`recommend-card game-${item.id}`} style={artFor(item)} onClick={() => onSelectRecommended(item.id)}>
                 {item.name}
               </button>
             ))}

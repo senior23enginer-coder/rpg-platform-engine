@@ -1,0 +1,35 @@
+{
+  "id": "invitado-local",
+  "name": "Invitado local",
+  "level": 1,
+  "basePath": "/users/invitado-local",
+  "profilePath": "/users/invitado-local/profile.json",
+  "openSessions": 0,
+  "gameProfilesStarted": 0,
+  "completedCampaigns": 0,
+  "email": "",
+  "avatar": "avatar.svg",
+  "signedIn": false,
+  "activeGameId": "daysgone",
+  "history": [],
+  "saves": [],
+  "settings": {
+    "theme": "dark",
+    "hudColor": "green",
+    "animatedBackground": true,
+    "audioEnabled": false,
+    "tracks": {
+      "background": "01_fallout_4_main_theme",
+      "combat": "06_combat_ready",
+      "exploration": "44_explore_and_discover",
+      "vault": "07_deeper_and_darker",
+      "day": "09_brightness_calling",
+      "night": "32_darkness_falls"
+    },
+    "volumes": {
+      "music": 0.7,
+      "sfx": 0.8,
+      "master": 1
+    }
+  }
+}

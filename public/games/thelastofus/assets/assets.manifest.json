@@ -1,31 +1,31 @@
 {
   "gameId": "thelastofus",
-  "basePath": "/games/thelastofus/assets",
-  "cover": "/games/thelastofus/assets/cover/thelastofus.svg",
+  "basePath": ".",
+  "cover": "cover/thelastofus.svg",
   "hero": {
-    "generated": "/games/thelastofus/assets/hero/generated.png",
-    "internet": "/games/thelastofus/assets/hero/internet.jpg"
+    "generated": "hero/generated.png",
+    "internet": "hero/internet.jpg"
   },
   "contentThumbs": {
     "dlc": [
-      "/games/thelastofus/assets/content-thumbs/dlc/factions_mode_rules.png",
-      "/games/thelastofus/assets/content-thumbs/dlc/left_behind.png",
-      "/games/thelastofus/assets/content-thumbs/dlc/no_return_inspired_encounters.png"
+      "content-thumbs/dlc/factions_mode_rules.png",
+      "content-thumbs/dlc/left_behind.png",
+      "content-thumbs/dlc/no_return_inspired_encounters.png"
     ],
     "features": [
-      "/games/thelastofus/assets/content-thumbs/features/acechadores.png",
-      "/games/thelastofus/assets/content-thumbs/features/chasqueadores.png",
-      "/games/thelastofus/assets/content-thumbs/features/corredores.png",
-      "/games/thelastofus/assets/content-thumbs/features/crafting_rapido.png",
-      "/games/thelastofus/assets/content-thumbs/features/escucha.png",
-      "/games/thelastofus/assets/content-thumbs/features/gordinflones.png",
-      "/games/thelastofus/assets/content-thumbs/features/infectados.png",
-      "/games/thelastofus/assets/content-thumbs/features/recursos_escasos.png",
-      "/games/thelastofus/assets/content-thumbs/features/sigilo_dramatico.png"
+      "content-thumbs/features/acechadores.png",
+      "content-thumbs/features/chasqueadores.png",
+      "content-thumbs/features/corredores.png",
+      "content-thumbs/features/crafting_rapido.png",
+      "content-thumbs/features/escucha.png",
+      "content-thumbs/features/gordinflones.png",
+      "content-thumbs/features/infectados.png",
+      "content-thumbs/features/recursos_escasos.png",
+      "content-thumbs/features/sigilo_dramatico.png"
     ],
     "extras": []
   },
   "sourceCovers": [
-    "/games/thelastofus/assets/source-covers/dlc/left_behind.jpg"
+    "source-covers/dlc/left_behind.jpg"
   ]
 }

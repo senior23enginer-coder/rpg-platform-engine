@@ -2,6 +2,7 @@ import { ArrowLeft, CheckCircle2, Download, FolderOpen, Save, XCircle } from "lu
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { ContentItem, GameConfig } from "../types/game";
+import { contentThumbnail, gameHeroVars, resolveGameAsset } from "../lib/gameLibrary";
 
 type Props = {
   game: GameConfig;
@@ -14,14 +15,14 @@ type Props = {
 function ContentCard({
   item,
   category,
-  gameId,
+  game,
   onToggle,
   onSelect,
   selected,
 }: {
   item: ContentItem;
   category: "dlc" | "features" | "extras";
-  gameId: string;
+  game: GameConfig;
   onToggle: () => void;
   onSelect: () => void;
   selected: boolean;
@@ -31,9 +32,9 @@ function ContentCard({
       <div
         className="content-icon content-image"
         style={{
-          "--content-card-thumb": `url("/games/${gameId}/assets/content-thumbs/${category}/${item.id}.png")`,
-          "--content-card-art": `url("/games/${gameId}/assets/hero/generated.png")`,
-          "--content-card-net-art": `url("/games/${gameId}/assets/hero/internet.jpg")`,
+          "--content-card-thumb": `url("${contentThumbnail(game, category, item.id, item.thumbnail)}")`,
+          "--content-card-art": `url("${resolveGameAsset(game, game.assets?.generatedHero ?? "assets/hero/generated.png")}")`,
+          "--content-card-net-art": `url("${resolveGameAsset(game, game.assets?.hero ?? "assets/hero/internet.jpg")}")`,
         } as CSSProperties}
       />
       <div>
@@ -84,10 +85,7 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
   return (
     <section
       className="screen-panel content-screen"
-      style={{
-        "--active-game-art": `url("/games/${game.id}/assets/hero/generated.png")`,
-        "--active-game-net-art": `url("/games/${game.id}/assets/hero/internet.jpg")`,
-      } as CSSProperties}
+      style={gameHeroVars(game) as CSSProperties}
     >
       <div className="screen-heading back-heading">
         <div>
@@ -106,7 +104,7 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
 
         <div className="content-select">
           <strong>Archivo</strong>
-          <span><FolderOpen size={36} /> games/{game.id}/game.config.json</span>
+          <span><FolderOpen size={36} /> {game.configPath ?? `games/${game.id}/game.config.json`}</span>
           <div className="inline-actions">
             <button onClick={exportConfig}><Download size={16} /> Exportar config JSON</button>
             <button onClick={onEditJson}>Editar formulario</button>
@@ -118,9 +116,9 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
         <article
           className="content-detail-panel"
           style={{
-            "--content-card-thumb": `url("/games/${game.id}/assets/content-thumbs/${selected.category}/${selected.item.id}.png")`,
-            "--content-card-art": `url("/games/${game.id}/assets/hero/generated.png")`,
-            "--content-card-net-art": `url("/games/${game.id}/assets/hero/internet.jpg")`,
+            "--content-card-thumb": `url("${contentThumbnail(game, selected.category, selected.item.id, selected.item.thumbnail)}")`,
+            "--content-card-art": `url("${resolveGameAsset(game, game.assets?.generatedHero ?? "assets/hero/generated.png")}")`,
+            "--content-card-net-art": `url("${resolveGameAsset(game, game.assets?.hero ?? "assets/hero/internet.jpg")}")`,
           } as CSSProperties}
         >
           <div className="content-detail-art" />
@@ -137,7 +135,7 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
             <div className="detail-facts">
               <span>ID: {selected.item.id}</span>
               <span>{selected.item.enabled ? "Activado" : "Desactivado"}</span>
-              <span>Asset: games/{game.id}/assets/content-thumbs/{selected.category}/{selected.item.id}.png</span>
+              <span>Asset: {contentThumbnail(game, selected.category, selected.item.id, selected.item.thumbnail)}</span>
             </div>
           </div>
           <div className="content-detail-adds">
@@ -168,7 +166,7 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
                 key={item.id}
                 item={item}
                 category={category}
-                gameId={game.id}
+                game={game}
                 onToggle={() => onToggle(category, item.id)}
                 onSelect={() => setSelectedKey(`${category}:${item.id}`)}
                 selected={selectedKey === `${category}:${item.id}`}

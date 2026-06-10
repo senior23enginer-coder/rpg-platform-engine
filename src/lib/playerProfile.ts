@@ -1,7 +1,8 @@
 import type { GameConfig } from "../types/game";
 import type { PlayerProfile, PlayerSave, UserSettings } from "../types/profile";
+import { loadBundledUserProfiles } from "./userLibrary";
 
-const PROFILE_KEY = "rpg-platform.player-profile.v1";
+const PROFILE_KEY = "rpg-platform.player-profile.v4";
 
 export const defaultSettings: UserSettings = {
   theme: "dark",
@@ -32,55 +33,104 @@ export function seedSaves(games: GameConfig[]): PlayerSave[] {
       saveId: "fo3_megaton_001",
       gameId: "fallout3",
       campaignId: fallout3?.campaigns[0]?.id ?? "vault101_megaton",
+      playerName: "Operador",
       name: "Megaton - Exploracion",
       currentMission: "Envio de agua limpia",
       currentZone: "Megaton",
       level: 18,
+      sessions: 0,
       updatedAt: "2026-06-09T14:32:00-05:00",
     },
     {
       saveId: "fo3_metro_002",
       gameId: "fallout3",
       campaignId: fallout3?.campaigns[0]?.id ?? "vault101_megaton",
+      playerName: "Operador",
       name: "Estacion de Metro Central",
       currentMission: "Explorar tuneles del metro",
       currentZone: "Metro Central",
       level: 12,
+      sessions: 0,
       updatedAt: "2026-06-08T23:11:00-05:00",
     },
     {
       saveId: "fo4_sanctuary_001",
       gameId: "fallout4",
       campaignId: fallout4?.campaigns[0]?.id ?? "sanctuary_commonwealth",
+      playerName: "Operador",
       name: "Sanctuary - Reconstruccion",
       currentMission: "Reforzar el asentamiento",
       currentZone: "Sanctuary",
       level: 7,
+      sessions: 0,
       updatedAt: "2026-06-07T19:07:00-05:00",
     },
   ];
 }
 
-export function createDefaultProfile(games: GameConfig[]): PlayerProfile {
-  const saves = seedSaves(games);
+function createBlankDefaultProfile(games: GameConfig[]): PlayerProfile {
   return {
-    id: "local-operator",
-    name: "Operador",
-    email: "operador@vault.local",
-    avatar: "local",
-    level: 42,
+    id: "invitado-local",
+    name: "Invitado local",
+    email: "",
+    avatar: "avatar.svg",
+    basePath: "/users/invitado-local",
+    profilePath: "/users/invitado-local/profile.json",
+    level: 1,
+    openSessions: 0,
+    gameProfilesStarted: 0,
+    completedCampaigns: 0,
+    lastActivityAt: undefined,
     signedIn: false,
     activeGameId: games[0]?.id ?? "fallout3",
-    saves,
-    history: games.map((game, index) => ({
-      gameId: game.id,
-      sessions: index < 2 ? 3 - index : 0,
-      lastPlayedAt: index === 0 ? "2026-06-09T14:32:00-05:00" : "2026-06-07T19:07:00-05:00",
-      activeCampaignId: game.campaigns[0]?.id,
-      activeSaveId: saves.find((save) => save.gameId === game.id)?.saveId,
-    })),
+    saves: [],
+    history: [],
     settings: defaultSettings,
   };
+}
+
+function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fallback = createBlankDefaultProfile(games)): PlayerProfile {
+  const saves = (profile.saves ?? []).map((save) => ({
+    ...save,
+    playerName: save.playerName ?? save.name?.split(" - ")[0] ?? profile.name ?? "Invitado local",
+    sessions: save.sessions ?? 0,
+  }));
+  const latestActivity = [
+    profile.lastActivityAt,
+    ...saves.map((save) => save.updatedAt),
+    ...(profile.history ?? []).map((entry) => entry.lastPlayedAt),
+  ]
+    .filter(Boolean)
+    .map((date) => new Date(String(date)))
+    .filter((date) => !Number.isNaN(date.getTime()))
+    .sort((left, right) => right.getTime() - left.getTime())[0];
+
+  return {
+    ...fallback,
+    ...profile,
+    name: profile.name || fallback.name,
+    level: profile.level ?? 1,
+    avatar: profile.avatar === "local" ? fallback.avatar : profile.avatar ?? fallback.avatar,
+    basePath: profile.avatar === "local" ? fallback.basePath : profile.basePath ?? fallback.basePath,
+    profilePath: profile.profilePath ?? fallback.profilePath,
+    openSessions: profile.openSessions ?? 0,
+    gameProfilesStarted: profile.gameProfilesStarted ?? saves.length,
+    completedCampaigns: profile.completedCampaigns ?? 0,
+    lastActivityAt: latestActivity?.toISOString(),
+    saves,
+    history: profile.history ?? [],
+    settings: {
+      ...defaultSettings,
+      ...profile.settings,
+      tracks: { ...defaultSettings.tracks, ...profile.settings?.tracks },
+      volumes: { ...defaultSettings.volumes, ...profile.settings?.volumes },
+    },
+  };
+}
+
+export function createDefaultProfile(games: GameConfig[]): PlayerProfile {
+  const bundledUser = loadBundledUserProfiles()[0];
+  return normalizeProfile(bundledUser ?? createBlankDefaultProfile(games), games);
 }
 
 export function loadProfile(games: GameConfig[]): PlayerProfile {
@@ -88,16 +138,7 @@ export function loadProfile(games: GameConfig[]): PlayerProfile {
     const raw = window.localStorage.getItem(PROFILE_KEY);
     if (!raw) return createDefaultProfile(games);
     const parsed = JSON.parse(raw) as PlayerProfile;
-    return {
-      ...createDefaultProfile(games),
-      ...parsed,
-      settings: {
-        ...defaultSettings,
-        ...parsed.settings,
-        tracks: { ...defaultSettings.tracks, ...parsed.settings?.tracks },
-        volumes: { ...defaultSettings.volumes, ...parsed.settings?.volumes },
-      },
-    };
+    return normalizeProfile(parsed, games);
   } catch {
     return createDefaultProfile(games);
   }

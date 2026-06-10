@@ -1,4 +1,5 @@
 import type { GameConfig } from "../types/game";
+import { normalizeGameConfig } from "./gameLibrary";
 import { seedGame } from "./seedLibrary";
 
 export async function pickGamesFolder(): Promise<string | null> {
@@ -50,9 +51,7 @@ export async function loadLibraryFromFolder(folderPath: string): Promise<GameCon
       const configPath = `${folderPath}/${entry.name}/game.config.json`;
       try {
         const raw = await readTextFile(configPath);
-        const game = JSON.parse(raw) as GameConfig;
-        game.configPath = configPath;
-        games.push(game);
+        games.push(normalizeGameConfig(JSON.parse(raw) as GameConfig, configPath));
       } catch (error) {
         console.warn("Invalid game config:", configPath, error);
       }

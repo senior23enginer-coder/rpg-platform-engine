@@ -2,7 +2,21 @@
   "id": "daysgone",
   "name": "Days Gone",
   "short": "DG",
-  "description": "Oregon postapocaliptico con moto, gasolina, hordas e infestaciones.",
+  "description": "Days Gone es un juego de rol, aventura y mundo abierto en tierras salvajes dos anos despues de una pandemia mundial.",
+  "loadedDescription": "Days Gone es un juego de rol, aventura y mundo abierto que transcurre en tierras salvajes y hostiles dos anos despues de una devastadora pandemia mundial. Conviertete en Deacon St. John, un cazarrecompensas que recorre los caminos destrozados y lucha brutalmente para sobrevivir y encontrar la razon de su existencia.\n\nUn mundo abierto hostil: con la potencia de PlayStation 4 y Unreal Engine 4, Days Gone ofrece una experiencia increiblemente realista y detallada de mundo abierto. Sumergete en gigantescos y hostiles entornos y explora sus secretos. Hurga en vehiculos, casas, paradas de camiones y pueblos abandonados en busca de recursos. Pero ten cuidado: los ciclos de dia y noche, junto con los sistemas climaticos dinamicos, afectan el gameplay y el comportamiento de los enemigos.\n\nUn brutal sistema sandbox de rol: perfecciona tu supervivencia con una combinacion amplia de estrategias y resuelve cada situacion desde la interpretacion, la exploracion, el sigilo, el combate, el saqueo y la gestion de recursos. Crea elementos personalizados con las piezas y partes que encuentras en el campo, desde brutales armas de pelea hasta trampas y mas. Actua con inteligencia, porque cada decision marca la diferencia entre la vida y la muerte.",
+  "maxPlayers": 2,
+  "playerOptions": [
+    {
+      "value": 1,
+      "label": "1 jugador",
+      "mode": "Solitario"
+    },
+    {
+      "value": 2,
+      "label": "2 jugadores",
+      "mode": "Cooperativo"
+    }
+  ],
   "tags": [
     "days gone",
     "bike",
@@ -16,6 +30,7 @@
       "id": "farewell_wilderness",
       "title": "Farewell Wilderness",
       "implemented": false,
+      "image": "assets/hero/campaign.webp",
       "description": "Plantilla futura para campamentos, rutas y hordas."
     }
   ],
@@ -91,5 +106,25 @@
       }
     ],
     "extras": []
-  }
+  },
+  "assets": {
+    "hero": "assets/hero/internet.jpg",
+    "generatedHero": "assets/hero/generated.png",
+    "homeHero": "assets/hero/home-menu.jpg",
+    "worldPreview": "assets/hero/internet.jpg",
+    "campaignImage": "assets/hero/campaign.webp",
+    "cover": "assets/cover/daysgone.svg",
+    "diceCatalog": "assets/dice/catalog.png",
+    "contentThumbs": {
+      "dlc": "assets/content-thumbs/dlc/{id}.png",
+      "features": "assets/content-thumbs/features/{id}.png",
+      "extras": "assets/content-thumbs/extras/{id}.png"
+    }
+  },
+  "manifests": {
+    "assets": "assets/assets.manifest.json",
+    "audio": "audio/audio.manifest.json"
+  },
+  "characterSheet": "characters/characters.json",
+  "rules": "rules/rules.json"
 }

@@ -1,34 +1,34 @@
 {
   "gameId": "metro",
-  "basePath": "/games/metro/assets",
-  "cover": "/games/metro/assets/cover/metro.svg",
+  "basePath": ".",
+  "cover": "cover/metro.svg",
   "hero": {
-    "generated": "/games/metro/assets/hero/generated.png",
-    "internet": "/games/metro/assets/hero/internet.jpg"
+    "generated": "hero/generated.png",
+    "internet": "hero/internet.jpg"
   },
   "contentThumbs": {
     "dlc": [
-      "/games/metro/assets/content-thumbs/dlc/chronicles_pack.png",
-      "/games/metro/assets/content-thumbs/dlc/developer_pack.png",
-      "/games/metro/assets/content-thumbs/dlc/faction_pack.png",
-      "/games/metro/assets/content-thumbs/dlc/ranger_mode.png",
-      "/games/metro/assets/content-thumbs/dlc/sam_s_story.png",
-      "/games/metro/assets/content-thumbs/dlc/the_two_colonels.png",
-      "/games/metro/assets/content-thumbs/dlc/tower_pack.png"
+      "content-thumbs/dlc/chronicles_pack.png",
+      "content-thumbs/dlc/developer_pack.png",
+      "content-thumbs/dlc/faction_pack.png",
+      "content-thumbs/dlc/ranger_mode.png",
+      "content-thumbs/dlc/sam_s_story.png",
+      "content-thumbs/dlc/the_two_colonels.png",
+      "content-thumbs/dlc/tower_pack.png"
     ],
     "features": [
-      "/games/metro/assets/content-thumbs/features/anomalias.png",
-      "/games/metro/assets/content-thumbs/features/estaciones.png",
-      "/games/metro/assets/content-thumbs/features/mascara_y_filtros.png",
-      "/games/metro/assets/content-thumbs/features/municion_como_moneda.png",
-      "/games/metro/assets/content-thumbs/features/oscuridad_y_miedo.png",
-      "/games/metro/assets/content-thumbs/features/recursos_escasos.png",
-      "/games/metro/assets/content-thumbs/features/sigilo.png",
-      "/games/metro/assets/content-thumbs/features/superficie.png"
+      "content-thumbs/features/anomalias.png",
+      "content-thumbs/features/estaciones.png",
+      "content-thumbs/features/mascara_y_filtros.png",
+      "content-thumbs/features/municion_como_moneda.png",
+      "content-thumbs/features/oscuridad_y_miedo.png",
+      "content-thumbs/features/recursos_escasos.png",
+      "content-thumbs/features/sigilo.png",
+      "content-thumbs/features/superficie.png"
     ],
     "extras": []
   },
   "sourceCovers": [
-    "/games/metro/assets/source-covers/dlc/the_two_colonels.jpg"
+    "source-covers/dlc/the_two_colonels.jpg"
   ]
 }

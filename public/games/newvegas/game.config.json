@@ -135,5 +135,22 @@
         "enabled": false
       }
     ]
-  }
+  },
+  "assets": {
+    "hero": "assets/hero/internet.jpg",
+    "generatedHero": "assets/hero/generated.png",
+    "cover": "assets/cover/newvegas.svg",
+    "diceCatalog": "assets/dice/catalog.png",
+    "contentThumbs": {
+      "dlc": "assets/content-thumbs/dlc/{id}.png",
+      "features": "assets/content-thumbs/features/{id}.png",
+      "extras": "assets/content-thumbs/extras/{id}.png"
+    }
+  },
+  "manifests": {
+    "assets": "assets/assets.manifest.json",
+    "audio": "audio/audio.manifest.json"
+  },
+  "characterSheet": "characters/characters.json",
+  "rules": "rules/rules.json"
 }

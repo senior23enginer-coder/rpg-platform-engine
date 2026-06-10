@@ -1,42 +1,42 @@
 {
   "gameId": "skyrim",
-  "basePath": "/games/skyrim/assets",
-  "cover": "/games/skyrim/assets/cover/skyrim.svg",
+  "basePath": ".",
+  "cover": "cover/skyrim.svg",
   "hero": {
-    "generated": "/games/skyrim/assets/hero/generated.png",
-    "internet": "/games/skyrim/assets/hero/internet.jpg"
+    "generated": "hero/generated.png",
+    "internet": "hero/internet.jpg"
   },
   "contentThumbs": {
     "dlc": [
-      "/games/skyrim/assets/content-thumbs/dlc/alternative_armors.png",
-      "/games/skyrim/assets/content-thumbs/dlc/camping.png",
-      "/games/skyrim/assets/content-thumbs/dlc/dawnguard.png",
-      "/games/skyrim/assets/content-thumbs/dlc/dragonborn.png",
-      "/games/skyrim/assets/content-thumbs/dlc/fishing.png",
-      "/games/skyrim/assets/content-thumbs/dlc/hearthfire.png",
-      "/games/skyrim/assets/content-thumbs/dlc/rare_curios.png",
-      "/games/skyrim/assets/content-thumbs/dlc/saints_and_seducers.png",
-      "/games/skyrim/assets/content-thumbs/dlc/survival_mode.png"
+      "content-thumbs/dlc/alternative_armors.png",
+      "content-thumbs/dlc/camping.png",
+      "content-thumbs/dlc/dawnguard.png",
+      "content-thumbs/dlc/dragonborn.png",
+      "content-thumbs/dlc/fishing.png",
+      "content-thumbs/dlc/hearthfire.png",
+      "content-thumbs/dlc/rare_curios.png",
+      "content-thumbs/dlc/saints_and_seducers.png",
+      "content-thumbs/dlc/survival_mode.png"
     ],
     "features": [
-      "/games/skyrim/assets/content-thumbs/features/alquimia.png",
-      "/games/skyrim/assets/content-thumbs/features/casas.png",
-      "/games/skyrim/assets/content-thumbs/features/crimenes.png",
-      "/games/skyrim/assets/content-thumbs/features/dragones.png",
-      "/games/skyrim/assets/content-thumbs/features/encantamiento.png",
-      "/games/skyrim/assets/content-thumbs/features/forja.png",
-      "/games/skyrim/assets/content-thumbs/features/gremios.png",
-      "/games/skyrim/assets/content-thumbs/features/gritos.png",
-      "/games/skyrim/assets/content-thumbs/features/magia.png",
-      "/games/skyrim/assets/content-thumbs/features/mazmorras.png",
-      "/games/skyrim/assets/content-thumbs/features/razas.png",
-      "/games/skyrim/assets/content-thumbs/features/seguidores.png"
+      "content-thumbs/features/alquimia.png",
+      "content-thumbs/features/casas.png",
+      "content-thumbs/features/crimenes.png",
+      "content-thumbs/features/dragones.png",
+      "content-thumbs/features/encantamiento.png",
+      "content-thumbs/features/forja.png",
+      "content-thumbs/features/gremios.png",
+      "content-thumbs/features/gritos.png",
+      "content-thumbs/features/magia.png",
+      "content-thumbs/features/mazmorras.png",
+      "content-thumbs/features/razas.png",
+      "content-thumbs/features/seguidores.png"
     ],
     "extras": []
   },
   "sourceCovers": [
-    "/games/skyrim/assets/source-covers/dlc/dawnguard.jpg",
-    "/games/skyrim/assets/source-covers/dlc/dragonborn.jpg",
-    "/games/skyrim/assets/source-covers/dlc/hearthfire.jpg"
+    "source-covers/dlc/dawnguard.jpg",
+    "source-covers/dlc/dragonborn.jpg",
+    "source-covers/dlc/hearthfire.jpg"
   ]
 }

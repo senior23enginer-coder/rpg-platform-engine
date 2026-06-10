@@ -1,42 +1,42 @@
 {
   "gameId": "fallout3",
-  "basePath": "/games/fallout3/assets",
-  "cover": "/games/fallout3/assets/cover/fallout3.svg",
+  "basePath": ".",
+  "cover": "cover/fallout3.svg",
   "hero": {
-    "generated": "/games/fallout3/assets/hero/generated.png",
-    "internet": "/games/fallout3/assets/hero/internet.jpg"
+    "generated": "hero/generated.png",
+    "internet": "hero/internet.jpg"
   },
   "contentThumbs": {
     "dlc": [
-      "/games/fallout3/assets/content-thumbs/dlc/broken_steel.png",
-      "/games/fallout3/assets/content-thumbs/dlc/mothership_zeta.png",
-      "/games/fallout3/assets/content-thumbs/dlc/operation_anchorage.png",
-      "/games/fallout3/assets/content-thumbs/dlc/point_lookout.png",
-      "/games/fallout3/assets/content-thumbs/dlc/the_pitt.png"
+      "content-thumbs/dlc/broken_steel.png",
+      "content-thumbs/dlc/mothership_zeta.png",
+      "content-thumbs/dlc/operation_anchorage.png",
+      "content-thumbs/dlc/point_lookout.png",
+      "content-thumbs/dlc/the_pitt.png"
     ],
     "features": [
-      "/games/fallout3/assets/content-thumbs/features/condicion_de_equipo.png",
-      "/games/fallout3/assets/content-thumbs/features/karma.png",
-      "/games/fallout3/assets/content-thumbs/features/mapa_del_yermo_capital.png",
-      "/games/fallout3/assets/content-thumbs/features/radiose_ales.png",
-      "/games/fallout3/assets/content-thumbs/features/reparacion_clasica.png",
-      "/games/fallout3/assets/content-thumbs/features/vats_clasico.png"
+      "content-thumbs/features/condicion_de_equipo.png",
+      "content-thumbs/features/karma.png",
+      "content-thumbs/features/mapa_del_yermo_capital.png",
+      "content-thumbs/features/radiose_ales.png",
+      "content-thumbs/features/reparacion_clasica.png",
+      "content-thumbs/features/vats_clasico.png"
     ],
     "extras": [
-      "/games/fallout3/assets/content-thumbs/extras/enclave_avanzado.png",
-      "/games/fallout3/assets/content-thumbs/extras/encuentros_de_supermutantes.png",
-      "/games/fallout3/assets/content-thumbs/extras/eventos_de_karma.png",
-      "/games/fallout3/assets/content-thumbs/extras/exploracion_de_metro.png",
-      "/games/fallout3/assets/content-thumbs/extras/saqueadores_del_yermo.png"
+      "content-thumbs/extras/enclave_avanzado.png",
+      "content-thumbs/extras/encuentros_de_supermutantes.png",
+      "content-thumbs/extras/eventos_de_karma.png",
+      "content-thumbs/extras/exploracion_de_metro.png",
+      "content-thumbs/extras/saqueadores_del_yermo.png"
     ]
   },
   "sourceCovers": [
-    "/games/fallout3/assets/source-covers/dlc/broken_steel.jpg",
-    "/games/fallout3/assets/source-covers/dlc/broken_steel.png",
-    "/games/fallout3/assets/source-covers/dlc/mothership_zeta.jpg",
-    "/games/fallout3/assets/source-covers/dlc/mothership_zeta.png",
-    "/games/fallout3/assets/source-covers/dlc/operation_anchorage.jpg",
-    "/games/fallout3/assets/source-covers/dlc/point_lookout.jpg",
-    "/games/fallout3/assets/source-covers/dlc/the_pitt.jpg"
+    "source-covers/dlc/broken_steel.jpg",
+    "source-covers/dlc/broken_steel.png",
+    "source-covers/dlc/mothership_zeta.jpg",
+    "source-covers/dlc/mothership_zeta.png",
+    "source-covers/dlc/operation_anchorage.jpg",
+    "source-covers/dlc/point_lookout.jpg",
+    "source-covers/dlc/the_pitt.jpg"
   ]
 }

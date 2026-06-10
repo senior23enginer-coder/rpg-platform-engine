@@ -1,32 +1,32 @@
 {
   "gameId": "fallout1_2",
-  "basePath": "/games/fallout1_2/assets",
-  "cover": "/games/fallout1_2/assets/cover/fallout1_2.svg",
+  "basePath": ".",
+  "cover": "cover/fallout1_2.svg",
   "hero": {
-    "generated": "/games/fallout1_2/assets/hero/generated.png",
-    "internet": "/games/fallout1_2/assets/hero/internet.jpg"
+    "generated": "hero/generated.png",
+    "internet": "hero/internet.jpg"
   },
   "contentThumbs": {
     "dlc": [
-      "/games/fallout1_2/assets/content-thumbs/dlc/campa_as_del_yermo_clasico.png",
-      "/games/fallout1_2/assets/content-thumbs/dlc/contenido_restaurado.png",
-      "/games/fallout1_2/assets/content-thumbs/dlc/encuentros_clasicos.png",
-      "/games/fallout1_2/assets/content-thumbs/dlc/fallout_2_clasico.png",
-      "/games/fallout1_2/assets/content-thumbs/dlc/fallout_clasico.png"
+      "content-thumbs/dlc/campa_as_del_yermo_clasico.png",
+      "content-thumbs/dlc/contenido_restaurado.png",
+      "content-thumbs/dlc/encuentros_clasicos.png",
+      "content-thumbs/dlc/fallout_2_clasico.png",
+      "content-thumbs/dlc/fallout_clasico.png"
     ],
     "features": [
-      "/games/fallout1_2/assets/content-thumbs/features/ap_clasico.png",
-      "/games/fallout1_2/assets/content-thumbs/features/dialogos_ramificados.png",
-      "/games/fallout1_2/assets/content-thumbs/features/disparos_localizados.png",
-      "/games/fallout1_2/assets/content-thumbs/features/habilidades_clasicas.png",
-      "/games/fallout1_2/assets/content-thumbs/features/karma_clasico.png",
-      "/games/fallout1_2/assets/content-thumbs/features/mapa_mundial.png",
-      "/games/fallout1_2/assets/content-thumbs/features/reputacion_por_ciudad.png"
+      "content-thumbs/features/ap_clasico.png",
+      "content-thumbs/features/dialogos_ramificados.png",
+      "content-thumbs/features/disparos_localizados.png",
+      "content-thumbs/features/habilidades_clasicas.png",
+      "content-thumbs/features/karma_clasico.png",
+      "content-thumbs/features/mapa_mundial.png",
+      "content-thumbs/features/reputacion_por_ciudad.png"
     ],
     "extras": []
   },
   "sourceCovers": [
-    "/games/fallout1_2/assets/source-covers/dlc/fallout_2_clasico.jpg",
-    "/games/fallout1_2/assets/source-covers/dlc/fallout_clasico.jpg"
+    "source-covers/dlc/fallout_2_clasico.jpg",
+    "source-covers/dlc/fallout_clasico.jpg"
   ]
 }
