@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
@@ -75,7 +76,7 @@ function createNumberTexture(text: string, size = 170, color = "#f0c35a") {
   return texture;
 }
 
-function createDieBodyTexture(sides: number) {
+function createDieBodyTexture(sides: number, gameId = "fallout3") {
   const canvas = document.createElement("canvas");
   canvas.width = 512;
   canvas.height = 512;
@@ -118,6 +119,29 @@ function createDieBodyTexture(sides: number) {
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(1.5, 1.5);
   texture.needsUpdate = true;
+  return texture;
+}
+
+function loadDieBodyTexture(gameId: string, sides: number) {
+  const loader = new THREE.TextureLoader();
+  const texture = loader.load(
+    `/games/${gameId}/assets/dice/catalog.png`,
+    (loadedTexture) => {
+      loadedTexture.colorSpace = THREE.SRGBColorSpace;
+      loadedTexture.wrapS = THREE.RepeatWrapping;
+      loadedTexture.wrapT = THREE.RepeatWrapping;
+      loadedTexture.offset.set(0.52, 0.34);
+      loadedTexture.repeat.set(0.22, 0.22);
+      loadedTexture.needsUpdate = true;
+    },
+    undefined,
+    () => undefined
+  );
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.offset.set(0.52, 0.34);
+  texture.repeat.set(0.22, 0.22);
   return texture;
 }
 
@@ -224,9 +248,10 @@ type ThreeDieProps = {
   face: number;
   sides: number;
   rolling: boolean;
+  gameId: string;
 };
 
-function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
+function ThreeDie({ face, sides, rolling, gameId }: ThreeDieProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const meshRef = useRef<THREE.Mesh | null>(null);
   const edgeRef = useRef<THREE.LineSegments | null>(null);
@@ -270,7 +295,7 @@ function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
     scene.add(rimLight);
     scene.add(new THREE.AmbientLight(0x315528, 1.25));
 
-    const bodyTexture = createDieBodyTexture(sides);
+    const bodyTexture = loadDieBodyTexture(gameId, sides);
     textureRef.current = bodyTexture;
 
     const material = new THREE.MeshStandardMaterial({
@@ -443,7 +468,7 @@ function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [gameId]);
 
   useEffect(() => {
     const die = meshRef.current;
@@ -455,7 +480,7 @@ function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
 
     const material = die.material as THREE.MeshStandardMaterial;
     textureRef.current?.dispose();
-    textureRef.current = createDieBodyTexture(sides);
+    textureRef.current = loadDieBodyTexture(gameId, sides);
     material.map = textureRef.current;
     material.needsUpdate = true;
 
@@ -474,7 +499,7 @@ function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
     const labels = buildLabelGroup(sides, face);
     die.add(labels);
     labelGroupRef.current = labels;
-  }, [face, sides]);
+  }, [face, gameId, sides]);
 
   useEffect(() => {
     if (!rolling) return;
@@ -516,7 +541,7 @@ function ThreeDie({ face, sides, rolling }: ThreeDieProps) {
   );
 }
 
-export function DiceScreen() {
+export function DiceScreen({ gameId = "fallout3" }: { gameId?: string }) {
   const [expression, setExpression] = useState("2d20+3");
   const [face, setFace] = useState(20);
   const [sides, setSides] = useState(20);
@@ -554,10 +579,14 @@ export function DiceScreen() {
     <section className="dice-layout-screen">
       <article className="dice-main-card">
         <h2>Herramienta de dados 3D</h2>
-        <p>Dado poligonal real con Three.js, iluminacion y rotacion 3D.</p>
+        <p>Dado poligonal real con skin del juego seleccionado.</p>
 
         <div className="dice-stage">
-          <ThreeDie face={face} sides={sides} rolling={rolling} />
+          <div
+            className="dice-catalog-preview"
+            style={{ "--dice-catalog": `url("/games/${gameId}/assets/dice/catalog.png")` } as CSSProperties}
+          />
+          <ThreeDie face={face} sides={sides} rolling={rolling} gameId={gameId} />
         </div>
 
         <div className="dice-buttons">

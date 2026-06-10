@@ -307,7 +307,7 @@ export default function App() {
             />
           )}
 
-          {screen === "dice" && <DiceScreen />}
+          {screen === "dice" && <DiceScreen gameId={activeGame.id} />}
           {screen === "settings" && (
             <SettingsScreen
               manifest={activeAudioManifest}

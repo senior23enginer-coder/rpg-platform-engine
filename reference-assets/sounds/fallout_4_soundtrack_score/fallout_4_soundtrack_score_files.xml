@@ -1,0 +1,2920 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files>
+  <file name="01 Fallout 4 Main Theme.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>01 Fallout 4 Main Theme.mp3</original>
+    <mtime>1608679640</mtime>
+    <size>40280</size>
+    <md5>729ca6b519c522f7b42fd628c3c7993a</md5>
+    <crc32>050f195d</crc32>
+    <sha1>e2c824398f7e6c187712644cf6c36de5b3867cc1</sha1>
+  </file>
+  <file name="01 Fallout 4 Main Theme.mp3" source="original">
+    <mtime>1608677928</mtime>
+    <size>7492995</size>
+    <md5>4b55b1ed0ef8d3b4aa7627b9bf14b68a</md5>
+    <crc32>a78247a6</crc32>
+    <sha1>de3dd120909772eb5e8be5355379ef217b85bcb3</sha1>
+    <format>VBR MP3</format>
+    <length>182.1</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Fallout 4 Main Theme</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>1/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="01 Fallout 4 Main Theme.png" source="derivative">
+    <format>PNG</format>
+    <original>01 Fallout 4 Main Theme.mp3</original>
+    <mtime>1608678730</mtime>
+    <size>26619</size>
+    <md5>4da780cb907738ab32249881554384d6</md5>
+    <crc32>eb6a9a7a</crc32>
+    <sha1>a0f4b14eb07aea666971de0e8a0d66c7a07fdeac</sha1>
+  </file>
+  <file name="01 Fallout 4 Main Theme_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>01 Fallout 4 Main Theme.mp3</original>
+    <mtime>1608679560</mtime>
+    <size>295849</size>
+    <md5>3634e8d77c6c4d052970c1232553604d</md5>
+    <crc32>1ea33ec3</crc32>
+    <sha1>90148e9938d55fd69382edffbfbcd426469a394d</sha1>
+  </file>
+  <file name="02 The Commonwealth.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>02 The Commonwealth.mp3</original>
+    <mtime>1608680159</mtime>
+    <size>46760</size>
+    <md5>243d94d68c6905e7a0c855ef2775195e</md5>
+    <crc32>a7f6d0cd</crc32>
+    <sha1>2bcf073ec65b89cfa42ae9996d70eb330c270cab</sha1>
+  </file>
+  <file name="02 The Commonwealth.mp3" source="original">
+    <mtime>1608677948</mtime>
+    <size>10236893</size>
+    <md5>ab17aae87680a64785e39e4f235d1a0d</md5>
+    <crc32>4162fb54</crc32>
+    <sha1>6f6c2dff41569d888b4035db0648af8d19abe250</sha1>
+    <format>VBR MP3</format>
+    <length>250.7</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Commonwealth</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>2/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="02 The Commonwealth.png" source="derivative">
+    <format>PNG</format>
+    <original>02 The Commonwealth.mp3</original>
+    <mtime>1608679257</mtime>
+    <size>24715</size>
+    <md5>30836b6fabdd2f50b0de93d533e2fe20</md5>
+    <crc32>2c47435e</crc32>
+    <sha1>d100c967aacf2b53917d13e875535da549b802ca</sha1>
+  </file>
+  <file name="02 The Commonwealth_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>02 The Commonwealth.mp3</original>
+    <mtime>1608679369</mtime>
+    <size>267745</size>
+    <md5>87f73ad90752b2a3372d06e6e050b3b5</md5>
+    <crc32>b741d62f</crc32>
+    <sha1>f30511be5ac6ae7286a462ebd0fb9fe99ebdd2aa</sha1>
+  </file>
+  <file name="03 Of Green and Grey.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>03 Of Green and Grey.mp3</original>
+    <mtime>1608680135</mtime>
+    <size>56368</size>
+    <md5>1d444c7abeb751ef75d1eaac08d0adc7</md5>
+    <crc32>1f0632d8</crc32>
+    <sha1>5b50f9eef9d78a793df7b18f2fb887379a5472ad</sha1>
+  </file>
+  <file name="03 Of Green and Grey.mp3" source="original">
+    <mtime>1608677969</mtime>
+    <size>11661090</size>
+    <md5>069e0d2bd0c98f510d3d8713cf1981e7</md5>
+    <crc32>cfec5d3d</crc32>
+    <sha1>60ad057b4998cad911a4e7a1e23df6247593a576</sha1>
+    <format>VBR MP3</format>
+    <length>286.3</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Of Green and Grey</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>3/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="03 Of Green and Grey.png" source="derivative">
+    <format>PNG</format>
+    <original>03 Of Green and Grey.mp3</original>
+    <mtime>1608678689</mtime>
+    <size>23129</size>
+    <md5>4094c6687c2ec8805c6eaee19958c5d0</md5>
+    <crc32>0ed48829</crc32>
+    <sha1>701670e74f8f97116ccd2fb412955c34b7292f53</sha1>
+  </file>
+  <file name="03 Of Green and Grey_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>03 Of Green and Grey.mp3</original>
+    <mtime>1608679270</mtime>
+    <size>248832</size>
+    <md5>8487c23756a1df526af622adc6f4a1ff</md5>
+    <crc32>083151d3</crc32>
+    <sha1>104162e55b9c1b92522abfed5bea86e1352e9f65</sha1>
+  </file>
+  <file name="04 Portal to the Past.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>04 Portal to the Past.mp3</original>
+    <mtime>1608680085</mtime>
+    <size>50000</size>
+    <md5>08e9b861c3bb4549c273bd879f15842a</md5>
+    <crc32>494804e1</crc32>
+    <sha1>cdb399ceeba98840561408420e2a427c5815c02d</sha1>
+  </file>
+  <file name="04 Portal to the Past.mp3" source="original">
+    <mtime>1608677985</mtime>
+    <size>8898381</size>
+    <md5>83786a0e1d3fa0aa84da752dd706c835</md5>
+    <crc32>04eb5b81</crc32>
+    <sha1>2f3a250f600605011b7f9fe06e159fcde18e9248</sha1>
+    <format>VBR MP3</format>
+    <length>217.23</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Portal to the Past</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>4/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="04 Portal to the Past.png" source="derivative">
+    <format>PNG</format>
+    <original>04 Portal to the Past.mp3</original>
+    <mtime>1608679011</mtime>
+    <size>25371</size>
+    <md5>eeb68d6367468dc80e849577b21d82e1</md5>
+    <crc32>3d12cace</crc32>
+    <sha1>409ca588ca884597867166629ca99ca1a068e895</sha1>
+  </file>
+  <file name="04 Portal to the Past_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>04 Portal to the Past.mp3</original>
+    <mtime>1608679320</mtime>
+    <size>266708</size>
+    <md5>87fe4737c3eea54347aef1d963af87c5</md5>
+    <crc32>551f5f19</crc32>
+    <sha1>069cd84ec6ad37d0da8e3fa1250596f3b567fd90</sha1>
+  </file>
+  <file name="05 Standoff.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>05 Standoff.mp3</original>
+    <mtime>1608680052</mtime>
+    <size>15720</size>
+    <md5>12d76cf24a8f8df6ecf0e051a41b5596</md5>
+    <crc32>df3a0e0e</crc32>
+    <sha1>8b1e3b5db0a7b180c94b51e39fc0c18d1966b4fd</sha1>
+  </file>
+  <file name="05 Standoff.mp3" source="original">
+    <mtime>1608677992</mtime>
+    <size>5499318</size>
+    <md5>22da8af2c6464027a158fa08cb2b45b4</md5>
+    <crc32>37451365</crc32>
+    <sha1>00a8f590fb61d627106ac0be56b10f863a170178</sha1>
+    <format>VBR MP3</format>
+    <length>132.26</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Standoff</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>5/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="05 Standoff.png" source="derivative">
+    <format>PNG</format>
+    <original>05 Standoff.mp3</original>
+    <mtime>1608678636</mtime>
+    <size>34844</size>
+    <md5>905519cb2556fd586a6f467df249cd75</md5>
+    <crc32>bf76e661</crc32>
+    <sha1>f91123220534449d11b65e72fe91ef49f64261fc</sha1>
+  </file>
+  <file name="05 Standoff_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>05 Standoff.mp3</original>
+    <mtime>1608679299</mtime>
+    <size>301116</size>
+    <md5>0b14171c737644ab3ad2b42505783214</md5>
+    <crc32>70f5fbc1</crc32>
+    <sha1>34981fd122e7c243e59bbc993a550790cd7fb833</sha1>
+  </file>
+  <file name="06 Combat Ready.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>06 Combat Ready.mp3</original>
+    <mtime>1608680185</mtime>
+    <size>21216</size>
+    <md5>c2f9f72209e8d3a43ff0999c89d5bfb5</md5>
+    <crc32>d75a9f1c</crc32>
+    <sha1>6eec5b2011e8c28f53ac8547a8a4942cbf8ef1ab</sha1>
+  </file>
+  <file name="06 Combat Ready.mp3" source="original">
+    <mtime>1608678006</mtime>
+    <size>5098081</size>
+    <md5>e9ab91de80ba3a322dce662624cc246f</md5>
+    <crc32>baa69c7f</crc32>
+    <sha1>72bd9569c32531ba5b7b54b9ae3fc0da6072324e</sha1>
+    <format>VBR MP3</format>
+    <length>122.23</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Combat Ready</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>6/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="06 Combat Ready.png" source="derivative">
+    <format>PNG</format>
+    <original>06 Combat Ready.mp3</original>
+    <mtime>1608678789</mtime>
+    <size>35160</size>
+    <md5>374ccf0eeafb4953c5b1c06d96bb6e1c</md5>
+    <crc32>6e61429a</crc32>
+    <sha1>89e1beb80070c228cd5c67ba3fb215477bf9f43f</sha1>
+  </file>
+  <file name="06 Combat Ready_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>06 Combat Ready.mp3</original>
+    <mtime>1608679337</mtime>
+    <size>305641</size>
+    <md5>a56bd9dd5761ab39a62761ea4bb2f06c</md5>
+    <crc32>ff017687</crc32>
+    <sha1>1f0dfdab850074e4de693f42a1f9c15ca35a9b14</sha1>
+  </file>
+  <file name="07 Deeper and Darker.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>07 Deeper and Darker.mp3</original>
+    <mtime>1608680313</mtime>
+    <size>39552</size>
+    <md5>4ce21fd712d3df05d36834aa2115a6d9</md5>
+    <crc32>d95003f6</crc32>
+    <sha1>ce94ae6b6b970781510d919cae8d8518d6ab1048</sha1>
+  </file>
+  <file name="07 Deeper and Darker.mp3" source="original">
+    <mtime>1608678025</mtime>
+    <size>9224388</size>
+    <md5>128cde56712c8586ead21e162b0028ea</md5>
+    <crc32>7260f1c8</crc32>
+    <sha1>811d46c942464543f5653751117a7d2449d9ff7d</sha1>
+    <format>VBR MP3</format>
+    <length>225.38</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Deeper and Darker</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>7/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="07 Deeper and Darker.png" source="derivative">
+    <format>PNG</format>
+    <original>07 Deeper and Darker.mp3</original>
+    <mtime>1608678801</mtime>
+    <size>29594</size>
+    <md5>c1ed8ea3a431d70ff9be1aa210074a8f</md5>
+    <crc32>c33733a5</crc32>
+    <sha1>8a4ab19f253daeba0090b46c4efe46a77c73bb4a</sha1>
+  </file>
+  <file name="07 Deeper and Darker_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>07 Deeper and Darker.mp3</original>
+    <mtime>1608679309</mtime>
+    <size>280906</size>
+    <md5>9578798e3961ccedf12d70c04d8028e6</md5>
+    <crc32>1f49b797</crc32>
+    <sha1>937dca0153b0061f35f538b8d6d5c2f5dd439204</sha1>
+  </file>
+  <file name="08 Wandering - The Blasted Forest, P.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>08 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608680276</mtime>
+    <size>16024</size>
+    <md5>37fe33fe2f3d291b7e8ae885b32ff96f</md5>
+    <crc32>0febfa5f</crc32>
+    <sha1>d5657018541239730c2437066d46123d2a9fcd04</sha1>
+  </file>
+  <file name="08 Wandering - The Blasted Forest, P.mp3" source="original">
+    <mtime>1608678031</mtime>
+    <size>3807657</size>
+    <md5>1dd2fe62bf97536a569ce599d59f7576</md5>
+    <crc32>fc700eea</crc32>
+    <sha1>342e4dc20157ab7372255332d05c972c4c8e2db4</sha1>
+    <format>VBR MP3</format>
+    <length>89.97</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Blasted Forest, Pt. 1</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>8/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="08 Wandering - The Blasted Forest, P.png" source="derivative">
+    <format>PNG</format>
+    <original>08 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608678895</mtime>
+    <size>20856</size>
+    <md5>4821e0e3ac8eb6494f93b4d234f7c8d6</md5>
+    <crc32>12bc484d</crc32>
+    <sha1>18a5c728bce89edc25c94fc059e4798514a0676c</sha1>
+  </file>
+  <file name="08 Wandering - The Blasted Forest, P_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>08 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608679281</mtime>
+    <size>284942</size>
+    <md5>75327642d81f7ee047588f891c6fa006</md5>
+    <crc32>fab6bbec</crc32>
+    <sha1>47cf45c9ceecae20101904474999928ffbef6e29</sha1>
+  </file>
+  <file name="09 Brightness Calling.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>09 Brightness Calling.mp3</original>
+    <mtime>1608680434</mtime>
+    <size>57720</size>
+    <md5>8a52c970d8f88c118710e74c3d770168</md5>
+    <crc32>fd76195b</crc32>
+    <sha1>fd1a410db28a06148f5c46675ba52f7df68be62f</sha1>
+  </file>
+  <file name="09 Brightness Calling.mp3" source="original">
+    <mtime>1608678045</mtime>
+    <size>12161597</size>
+    <md5>8ba5ca54f44e79ea5246ade54b3937bf</md5>
+    <crc32>d3036c1f</crc32>
+    <sha1>056755130442a1c4b6193a4ce030d2552d27a6b9</sha1>
+    <format>VBR MP3</format>
+    <length>298.81</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Brightness Calling</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>9/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="09 Brightness Calling.png" source="derivative">
+    <format>PNG</format>
+    <original>09 Brightness Calling.mp3</original>
+    <mtime>1608678589</mtime>
+    <size>26076</size>
+    <md5>f956e6a7c8bef795a7a43c71118cf38d</md5>
+    <crc32>ea2ff644</crc32>
+    <sha1>fe9a88e7c59822edb6e87b93e256d485e876e6f4</sha1>
+  </file>
+  <file name="09 Brightness Calling_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>09 Brightness Calling.mp3</original>
+    <mtime>1608679353</mtime>
+    <size>294645</size>
+    <md5>72f075fe2b17a2c0801762cf3ee5f03b</md5>
+    <crc32>0382afdd</crc32>
+    <sha1>661fa1faa773bdd67da08a2c2f470ec9618e3992</sha1>
+  </file>
+  <file name="10 Of the People, for the People.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>10 Of the People, for the People.mp3</original>
+    <mtime>1608680201</mtime>
+    <size>53424</size>
+    <md5>fd2d5260a20a65fb8d242f9fe16ab71b</md5>
+    <crc32>55b30eb8</crc32>
+    <sha1>f128e259de27565345ddf90ad2585f1fcc17316f</sha1>
+  </file>
+  <file name="10 Of the People, for the People.mp3" source="original">
+    <mtime>1608678059</mtime>
+    <size>12281772</size>
+    <md5>207c24b85a89978aa54a5d932503d1c3</md5>
+    <crc32>e4e45036</crc32>
+    <sha1>e9284db8ee91b8a281fe482689f425cf610bcf97</sha1>
+    <format>VBR MP3</format>
+    <length>301.82</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Of the People, for the People</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>10/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="10 Of the People, for the People.png" source="derivative">
+    <format>PNG</format>
+    <original>10 Of the People, for the People.mp3</original>
+    <mtime>1608678822</mtime>
+    <size>29844</size>
+    <md5>b9aa9c2f8afc04076a133b00d42c70fd</md5>
+    <crc32>41c5956c</crc32>
+    <sha1>e19191364b3e31ac157cd046d4333378d1644a20</sha1>
+  </file>
+  <file name="10 Of the People, for the People_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>10 Of the People, for the People.mp3</original>
+    <mtime>1608679277</mtime>
+    <size>313680</size>
+    <md5>cd473f518ae4f04e8c7763cde5e1c23e</md5>
+    <crc32>23ab28a3</crc32>
+    <sha1>997a99fbb0c76cb31dc830bb59c6749b3f237bb4</sha1>
+  </file>
+  <file name="11 Hope Remains.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>11 Hope Remains.mp3</original>
+    <mtime>1608680099</mtime>
+    <size>61384</size>
+    <md5>10e80e8c8356fc41f2e71448caf34da5</md5>
+    <crc32>5581c285</crc32>
+    <sha1>f75f81e5dcfd10aa535558e04979ea7202c7d110</sha1>
+  </file>
+  <file name="11 Hope Remains.mp3" source="original">
+    <mtime>1608678073</mtime>
+    <size>10603649</size>
+    <md5>3f0412b004c6f88b775ea23f485359ac</md5>
+    <crc32>0ceeb0d6</crc32>
+    <sha1>206e8de121d72d8477b3d254f1402eabbfd3df9c</sha1>
+    <format>VBR MP3</format>
+    <length>259.87</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Hope Remains</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>11/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="11 Hope Remains.png" source="derivative">
+    <format>PNG</format>
+    <original>11 Hope Remains.mp3</original>
+    <mtime>1608678610</mtime>
+    <size>24314</size>
+    <md5>3e8c4b870fa273e96326c94d3a942a15</md5>
+    <crc32>97fe4de6</crc32>
+    <sha1>1601355e8b970d0abb03d4e316f74bb793a612a2</sha1>
+  </file>
+  <file name="11 Hope Remains_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>11 Hope Remains.mp3</original>
+    <mtime>1608679435</mtime>
+    <size>267092</size>
+    <md5>545c46e591704da4b38300c38402d9bf</md5>
+    <crc32>903c807e</crc32>
+    <sha1>020fbe1a2e1989266af8d5fd2d304d2581c92629</sha1>
+  </file>
+  <file name="12 Wandering - The Blasted Forest, P.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>12 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608680210</mtime>
+    <size>23664</size>
+    <md5>dc8eb726d26ff9a3e6a88f8e1ab612c6</md5>
+    <crc32>6ddfdfdd</crc32>
+    <sha1>0ecd01d590c7b2d4afbe46f6ec3268257de686ac</sha1>
+  </file>
+  <file name="12 Wandering - The Blasted Forest, P.mp3" source="original">
+    <mtime>1608678086</mtime>
+    <size>4969584</size>
+    <md5>f2fe84e7b274dcca52047553f9cc6769</md5>
+    <crc32>be20d7b8</crc32>
+    <sha1>9e75aceb57af7c33dabbe345c3dffa491760f05b</sha1>
+    <format>VBR MP3</format>
+    <length>119.01</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Blasted Forest, Pt. 2</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>12/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="12 Wandering - The Blasted Forest, P.png" source="derivative">
+    <format>PNG</format>
+    <original>12 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608678751</mtime>
+    <size>22289</size>
+    <md5>50888e0bc140b257fc3ea2118e3dde75</md5>
+    <crc32>55c18913</crc32>
+    <sha1>20ec8f17670cdd0ef0a15b3b9c3a4dca61e79008</sha1>
+  </file>
+  <file name="12 Wandering - The Blasted Forest, P_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>12 Wandering - The Blasted Forest, P.mp3</original>
+    <mtime>1608679391</mtime>
+    <size>253102</size>
+    <md5>f5c5974955f7d3cc2ea4d6df1b8939d5</md5>
+    <crc32>4136c4eb</crc32>
+    <sha1>d2b5575b9626e074333ff2706e24770de2e3518a</sha1>
+  </file>
+  <file name="13 Predator and Prey.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>13 Predator and Prey.mp3</original>
+    <mtime>1608680220</mtime>
+    <size>17536</size>
+    <md5>f9fe179610e714b04607b1daa763c31b</md5>
+    <crc32>88d50468</crc32>
+    <sha1>82b5f73321ff144e8d81a3f3edd93cc75048b5e9</sha1>
+  </file>
+  <file name="13 Predator and Prey.mp3" source="original">
+    <mtime>1608678099</mtime>
+    <size>5274675</size>
+    <md5>f4edb117dde9a922af179556f2f27028</md5>
+    <crc32>c488d087</crc32>
+    <sha1>2acd05b13c077b09f86d175bb2d3e5d7f2b75b23</sha1>
+    <format>VBR MP3</format>
+    <length>126.64</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Predator and Prey</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>13/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="13 Predator and Prey.png" source="derivative">
+    <format>PNG</format>
+    <original>13 Predator and Prey.mp3</original>
+    <mtime>1608678876</mtime>
+    <size>32778</size>
+    <md5>8f113b478d3efa88483ec07a675651f6</md5>
+    <crc32>3db95805</crc32>
+    <sha1>d0a140e96700cf1afaf0a5d736a20a56a7097284</sha1>
+  </file>
+  <file name="13 Predator and Prey_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>13 Predator and Prey.mp3</original>
+    <mtime>1608679408</mtime>
+    <size>304361</size>
+    <md5>749d6bc6f6e020f710277af34b2afa6a</md5>
+    <crc32>3c6d34ba</crc32>
+    <sha1>c51f100bdf05a02b136731f2c58b33fc1c54b94c</sha1>
+  </file>
+  <file name="14 War in the Wastes.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>14 War in the Wastes.mp3</original>
+    <mtime>1608680232</mtime>
+    <size>32592</size>
+    <md5>06340192a485042fd4629a55b2ad874c</md5>
+    <crc32>4e2ec8f0</crc32>
+    <sha1>db39edd7c0bd3461821af753c15fd7a92daa2ea7</sha1>
+  </file>
+  <file name="14 War in the Wastes.mp3" source="original">
+    <mtime>1608678108</mtime>
+    <size>7780340</size>
+    <md5>143ddd8c8b366092235a9aebf2dfdbac</md5>
+    <crc32>77b6a971</crc32>
+    <sha1>4e9d91be3feaa94c89650499afdd68736c5edd5e</sha1>
+    <format>VBR MP3</format>
+    <length>189.28</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>War in the Wastes</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>14/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="14 War in the Wastes.png" source="derivative">
+    <format>PNG</format>
+    <original>14 War in the Wastes.mp3</original>
+    <mtime>1608678865</mtime>
+    <size>36108</size>
+    <md5>102f0990b10208840415bcc0a81c0db9</md5>
+    <crc32>c7a86cd4</crc32>
+    <sha1>e2077c9bd925c23a9dcb967b52835746f60c9e9a</sha1>
+  </file>
+  <file name="14 War in the Wastes_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>14 War in the Wastes.mp3</original>
+    <mtime>1608679377</mtime>
+    <size>322805</size>
+    <md5>e2b177f1de2c2a2fc1bfa011c7eca42f</md5>
+    <crc32>8751d3c3</crc32>
+    <sha1>71839212ebf28d58169ffe29f2c4737624de56cb</sha1>
+  </file>
+  <file name="15 Time to Die.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>15 Time to Die.mp3</original>
+    <mtime>1608680254</mtime>
+    <size>21200</size>
+    <md5>90cad53dd90ed33be963c78ab30b6cce</md5>
+    <crc32>03d99f7b</crc32>
+    <sha1>ae61fd2dce9d2702d2d5ea8c6cb2297cef85d081</sha1>
+  </file>
+  <file name="15 Time to Die.mp3" source="original">
+    <mtime>1608678121</mtime>
+    <size>5550522</size>
+    <md5>3184fc79924e21e69045d392770fe789</md5>
+    <crc32>a58aa133</crc32>
+    <sha1>1206ca792ba60592b10608a8a04133cbf17e13c6</sha1>
+    <format>VBR MP3</format>
+    <length>133.54</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Time to Die</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>15/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="15 Time to Die.png" source="derivative">
+    <format>PNG</format>
+    <original>15 Time to Die.mp3</original>
+    <mtime>1608678845</mtime>
+    <size>35966</size>
+    <md5>8a84fc00a0984de5b19f075f31187e03</md5>
+    <crc32>19224efb</crc32>
+    <sha1>af02ac82e5e2a3370727f00820c740e319fdbb09</sha1>
+  </file>
+  <file name="15 Time to Die_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>15 Time to Die.mp3</original>
+    <mtime>1608679381</mtime>
+    <size>309997</size>
+    <md5>aea27f00b0ad2c04977f04ca84ad4a0e</md5>
+    <crc32>1dc53b1f</crc32>
+    <sha1>53f5608719decd1ac0721396b0a8c804c3af6a54</sha1>
+  </file>
+  <file name="16 Uninvited.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>16 Uninvited.mp3</original>
+    <mtime>1608680288</mtime>
+    <size>51784</size>
+    <md5>01d0ed69bedb6c9dfa7dfacb23d1f3f3</md5>
+    <crc32>43621370</crc32>
+    <sha1>b639b28fb0cc256b25a6a4c6f9b1e33d9c4aea48</sha1>
+  </file>
+  <file name="16 Uninvited.mp3" source="original">
+    <mtime>1608678134</mtime>
+    <size>10577524</size>
+    <md5>71db96e808cd9c4eaa83f8927bf0f2bd</md5>
+    <crc32>a9ccc789</crc32>
+    <sha1>88f8a70bbf8f732d60b79378c07977d5483faa8b</sha1>
+    <format>VBR MP3</format>
+    <length>259.21</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Uninvited</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>16/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="16 Uninvited.png" source="derivative">
+    <format>PNG</format>
+    <original>16 Uninvited.mp3</original>
+    <mtime>1608678720</mtime>
+    <size>29423</size>
+    <md5>97d9ffd4fde8ae57ed133976242dd718</md5>
+    <crc32>75f6e5bd</crc32>
+    <sha1>533d92b69adc72d541df588f6f21fc4b2aa676b3</sha1>
+  </file>
+  <file name="16 Uninvited_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>16 Uninvited.mp3</original>
+    <mtime>1608679446</mtime>
+    <size>290012</size>
+    <md5>eb496f01553e47a96beaed5939162858</md5>
+    <crc32>d6172936</crc32>
+    <sha1>24ba24a11c13cc12cfc354ad470bf42ca2dc8aaf</sha1>
+  </file>
+  <file name="17 Wandering - The City, Pt. 1.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>17 Wandering - The City, Pt. 1.mp3</original>
+    <mtime>1608680300</mtime>
+    <size>32528</size>
+    <md5>0f198934af3a594d69cd0d3b771d5536</md5>
+    <crc32>239aecdd</crc32>
+    <sha1>6b098d49bb9dc90adc48dd276dc8f7651b7d1cb7</sha1>
+  </file>
+  <file name="17 Wandering - The City, Pt. 1.mp3" source="original">
+    <mtime>1608678145</mtime>
+    <size>7245362</size>
+    <md5>290750df15209ef93fe453ded722bcef</md5>
+    <crc32>c769fed4</crc32>
+    <sha1>2d74a69f49fedd66470c45ed8c7cfe09998f76c9</sha1>
+    <format>VBR MP3</format>
+    <length>175.91</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The City, Pt. 1</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>17/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="17 Wandering - The City, Pt. 1.png" source="derivative">
+    <format>PNG</format>
+    <original>17 Wandering - The City, Pt. 1.mp3</original>
+    <mtime>1608679237</mtime>
+    <size>22215</size>
+    <md5>328c9971e1bd1a379c7ce8d8a9f296be</md5>
+    <crc32>f8a3ec5a</crc32>
+    <sha1>041d410086ecd975d74078027f2f27704b146960</sha1>
+  </file>
+  <file name="17 Wandering - The City, Pt. 1_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>17 Wandering - The City, Pt. 1.mp3</original>
+    <mtime>1608679458</mtime>
+    <size>308075</size>
+    <md5>98511ee8be21ad328f43c858d1afefed</md5>
+    <crc32>094263a0</crc32>
+    <sha1>a231c5f3f5a48d89ece8de42e7ebb6b41605a3c9</sha1>
+  </file>
+  <file name="18 Rebuild, Renew.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>18 Rebuild, Renew.mp3</original>
+    <mtime>1608680330</mtime>
+    <size>62984</size>
+    <md5>82ea87055a1db567a46309e415783ad2</md5>
+    <crc32>1c5fa3ba</crc32>
+    <sha1>d9be8d067af06de0ad1425f8a5727b949ef0c215</sha1>
+  </file>
+  <file name="18 Rebuild, Renew.mp3" source="original">
+    <mtime>1608678160</mtime>
+    <size>15053872</size>
+    <md5>5ada0a54d2d84e19b9ca4d6ce402f476</md5>
+    <crc32>77c57118</crc32>
+    <sha1>0d97571cf40acc1e4443a5d24e0f519e65643dc2</sha1>
+    <format>VBR MP3</format>
+    <length>371.12</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Rebuild, Renew</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>18/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="18 Rebuild, Renew.png" source="derivative">
+    <format>PNG</format>
+    <original>18 Rebuild, Renew.mp3</original>
+    <mtime>1608678812</mtime>
+    <size>30576</size>
+    <md5>15d05d8475c0423f1f4dc6a57de68831</md5>
+    <crc32>119b45b2</crc32>
+    <sha1>f9ac0bfd3ebf2f19b8b8264c0b47be94685a6dd8</sha1>
+  </file>
+  <file name="18 Rebuild, Renew_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>18 Rebuild, Renew.mp3</original>
+    <mtime>1608679470</mtime>
+    <size>300424</size>
+    <md5>de0a654012ef970485e12be535c3a96f</md5>
+    <crc32>2a93adf5</crc32>
+    <sha1>8c8fc00f1035e70bec3b0152b0c12244d92b6cbf</sha1>
+  </file>
+  <file name="19 Concrete Mysteries.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>19 Concrete Mysteries.mp3</original>
+    <mtime>1608680343</mtime>
+    <size>53120</size>
+    <md5>cc322e7873fbc0415b454f40b5896b87</md5>
+    <crc32>7e96c27f</crc32>
+    <sha1>ff45f15455a5b5b7d35f1b198f60337f8e8c77ae</sha1>
+  </file>
+  <file name="19 Concrete Mysteries.mp3" source="original">
+    <mtime>1608678179</mtime>
+    <size>10755165</size>
+    <md5>9a434f300ca15f067985e5860a7b5676</md5>
+    <crc32>8f9daeae</crc32>
+    <sha1>baa957b7105394bd1b450a7d0c56bfa3a5463387</sha1>
+    <format>VBR MP3</format>
+    <length>263.65</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Concrete Mysteries</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>19/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="19 Concrete Mysteries.png" source="derivative">
+    <format>PNG</format>
+    <original>19 Concrete Mysteries.mp3</original>
+    <mtime>1608678834</mtime>
+    <size>28561</size>
+    <md5>7f9ab0853e8b4a848bd3ab4c30d539f4</md5>
+    <crc32>e1b31a26</crc32>
+    <sha1>171d5970241c88163dd85ad027a285eeaf0c5a39</sha1>
+  </file>
+  <file name="19 Concrete Mysteries_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>19 Concrete Mysteries.mp3</original>
+    <mtime>1608679485</mtime>
+    <size>295655</size>
+    <md5>2e9b988d7dfc37424268600d9199b834</md5>
+    <crc32>c7bdbdbe</crc32>
+    <sha1>9a49191af262932cd908f5f0ba7fc9e313ed3b1b</sha1>
+  </file>
+  <file name="20 Tread Carefully.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>20 Tread Carefully.mp3</original>
+    <mtime>1608680267</mtime>
+    <size>58624</size>
+    <md5>c83cc44e6b25a08f69fb5e931d5bcfb0</md5>
+    <crc32>a4da27a4</crc32>
+    <sha1>9a1d75ec2982b975d4fb02e66d7ae60535b3bf5a</sha1>
+  </file>
+  <file name="20 Tread Carefully.mp3" source="original">
+    <mtime>1608678201</mtime>
+    <size>11304779</size>
+    <md5>e94bba479d521e593a47c59ee1820939</md5>
+    <crc32>a6989038</crc32>
+    <sha1>d910f702149264430993a9dc0f816aaafbfa5a6a</sha1>
+    <format>VBR MP3</format>
+    <length>277.39</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Tread Carefully</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>20/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="20 Tread Carefully.png" source="derivative">
+    <format>PNG</format>
+    <original>20 Tread Carefully.mp3</original>
+    <mtime>1608678677</mtime>
+    <size>23498</size>
+    <md5>72978041d355d1bc7be29ea79ace79f6</md5>
+    <crc32>407e014a</crc32>
+    <sha1>a54627c3276faae4469f2a130a60c850d9ff52b2</sha1>
+  </file>
+  <file name="20 Tread Carefully_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>20 Tread Carefully.mp3</original>
+    <mtime>1608679571</mtime>
+    <size>294242</size>
+    <md5>0ba2da33105097b8cf15d73bacfad586</md5>
+    <crc32>d04172e8</crc32>
+    <sha1>b49680ed8d317d6cdc2e47af6262d4d459477dec</sha1>
+  </file>
+  <file name="21 The Infiltrator.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>21 The Infiltrator.mp3</original>
+    <mtime>1608680072</mtime>
+    <size>17560</size>
+    <md5>d0bf3d80f97122bea1338bab3c5cb8ba</md5>
+    <crc32>159b8e0a</crc32>
+    <sha1>78b5ba688f25df8cc1e8f57c376b65412f92d8b5</sha1>
+  </file>
+  <file name="21 The Infiltrator.mp3" source="original">
+    <mtime>1608678212</mtime>
+    <size>5950722</size>
+    <md5>eda4f916054fcf859382b6ad349b32c4</md5>
+    <crc32>97295add</crc32>
+    <sha1>2efb402e88a294ab2c3167ec1e4f3821a31d9365</sha1>
+    <format>VBR MP3</format>
+    <length>143.54</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Infiltrator</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>21/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="21 The Infiltrator.png" source="derivative">
+    <format>PNG</format>
+    <original>21 The Infiltrator.mp3</original>
+    <mtime>1608679085</mtime>
+    <size>31614</size>
+    <md5>bd33d369eaebe65b31845506173c6c1a</md5>
+    <crc32>79bed15c</crc32>
+    <sha1>ccc44eab767f3c05e91600aa60500a140a633093</sha1>
+  </file>
+  <file name="21 The Infiltrator_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>21 The Infiltrator.mp3</original>
+    <mtime>1608679513</mtime>
+    <size>317832</size>
+    <md5>279942a2971ac702c11c4ccabeb500ea</md5>
+    <crc32>8b9566f1</crc32>
+    <sha1>2e2ba0ca87126984cc22806d62e138fa77a87c66</sha1>
+  </file>
+  <file name="22 No Quarter.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>22 No Quarter.mp3</original>
+    <mtime>1608679652</mtime>
+    <size>27432</size>
+    <md5>db1708a4246aeefccf7f3c3095e855bb</md5>
+    <crc32>b9aaf013</crc32>
+    <sha1>0c890a5d8d008ddac5c97f6df4b20178894e1fb5</sha1>
+  </file>
+  <file name="22 No Quarter.mp3" source="original">
+    <mtime>1608678229</mtime>
+    <size>7188921</size>
+    <md5>8afd15b6b7b95df0e64d23dc9d5fe9a1</md5>
+    <crc32>e668c2e1</crc32>
+    <sha1>a0af606a9ed47c75172a2f32199b68f3a9b97066</sha1>
+    <format>VBR MP3</format>
+    <length>174.5</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>No Quarter</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>22/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="22 No Quarter.png" source="derivative">
+    <format>PNG</format>
+    <original>22 No Quarter.mp3</original>
+    <mtime>1608679064</mtime>
+    <size>35815</size>
+    <md5>040ca311f991ed9439512776ecc9bf28</md5>
+    <crc32>4cc30e80</crc32>
+    <sha1>ce80c6dd1314c5c5e1b9ee67893abdf041d46072</sha1>
+  </file>
+  <file name="22 No Quarter_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>22 No Quarter.mp3</original>
+    <mtime>1608679551</mtime>
+    <size>311070</size>
+    <md5>4d35acb2c74d96153bfa26da05829cfe</md5>
+    <crc32>8ffce423</crc32>
+    <sha1>51789a90c2db6f6322d25b9af598a3a1bf47cb79</sha1>
+  </file>
+  <file name="23 Wandering - The City, Pt. 2.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>23 Wandering - The City, Pt. 2.mp3</original>
+    <mtime>1608680109</mtime>
+    <size>33312</size>
+    <md5>7296a7972a74af466e3c6bab217a2f42</md5>
+    <crc32>6cf601ec</crc32>
+    <sha1>f870d11683ebeda3e360bf122d7c0a2c99181a28</sha1>
+  </file>
+  <file name="23 Wandering - The City, Pt. 2.mp3" source="original">
+    <mtime>1608678244</mtime>
+    <size>6164938</size>
+    <md5>0ddc6b0b3fb6c01a5ea7cf42367972f9</md5>
+    <crc32>9f5f9dc3</crc32>
+    <sha1>c89008bda42a40ffba04918bc8abe805d15b3ec7</sha1>
+    <format>VBR MP3</format>
+    <length>148.9</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The City, Pt. 2</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>23/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="23 Wandering - The City, Pt. 2.png" source="derivative">
+    <format>PNG</format>
+    <original>23 Wandering - The City, Pt. 2.mp3</original>
+    <mtime>1608679130</mtime>
+    <size>22620</size>
+    <md5>88e71c5f2382f17d71bba41cdd0eb3eb</md5>
+    <crc32>789eed6c</crc32>
+    <sha1>453059246f63fcbcc32b31b1ef8b437be4136a2f</sha1>
+  </file>
+  <file name="23 Wandering - The City, Pt. 2_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>23 Wandering - The City, Pt. 2.mp3</original>
+    <mtime>1608679373</mtime>
+    <size>287925</size>
+    <md5>c8e9273e1c11737585e398e6995ca4a2</md5>
+    <crc32>9d6b89e8</crc32>
+    <sha1>0da3b04c418766855b6a212b0cfbd3b6a1cf56d0</sha1>
+  </file>
+  <file name="24 The Vigilant.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>24 The Vigilant.mp3</original>
+    <mtime>1608680122</mtime>
+    <size>43528</size>
+    <md5>43d6673f4fc1007c7620548b0ccfcc47</md5>
+    <crc32>323f8bd0</crc32>
+    <sha1>0b836097338d47ae976b237db3a2d2c9125b6d0c</sha1>
+  </file>
+  <file name="24 The Vigilant.mp3" source="original">
+    <mtime>1608678261</mtime>
+    <size>8864939</size>
+    <md5>79664b22e40423ad39c1962d1c4ff664</md5>
+    <crc32>1d99bc25</crc32>
+    <sha1>ff61a6a77a9764df0ce8ec073c328085a6e5d4d6</sha1>
+    <format>VBR MP3</format>
+    <length>216.4</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Vigilant</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>24/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="24 The Vigilant.png" source="derivative">
+    <format>PNG</format>
+    <original>24 The Vigilant.mp3</original>
+    <mtime>1608679216</mtime>
+    <size>30226</size>
+    <md5>3deca1022cba893705561c16806ef0ff</md5>
+    <crc32>846ef05f</crc32>
+    <sha1>b8e8a6fbfd74fbefc04907383ce4f2c90b04370d</sha1>
+  </file>
+  <file name="24 The Vigilant_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>24 The Vigilant.mp3</original>
+    <mtime>1608679586</mtime>
+    <size>301186</size>
+    <md5>f291f7f3c381ff111c5b3748503981a4</md5>
+    <crc32>639c4621</crc32>
+    <sha1>5db7e3322afe735dca92fd3fe0a196c259ec45bf</sha1>
+  </file>
+  <file name="25 The Warlord.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>25 The Warlord.mp3</original>
+    <mtime>1608680144</mtime>
+    <size>17568</size>
+    <md5>4e230706a6fed1a2d50941c0d08f9ee5</md5>
+    <crc32>51e29259</crc32>
+    <sha1>ceccf12e861046c4d2bf58cbca36d1da28f08ac7</sha1>
+  </file>
+  <file name="25 The Warlord.mp3" source="original">
+    <mtime>1608678270</mtime>
+    <size>4365607</size>
+    <md5>20ff7f770b755f4cec11146465b4795a</md5>
+    <crc32>bd6cc24e</crc32>
+    <sha1>a0ca5a94f602aa5a1477331cfd24cfe68aff8fcf</sha1>
+    <format>VBR MP3</format>
+    <length>103.92</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Warlord</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>25/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="25 The Warlord.png" source="derivative">
+    <format>PNG</format>
+    <original>25 The Warlord.mp3</original>
+    <mtime>1608679196</mtime>
+    <size>35414</size>
+    <md5>8636483c7178eb1294afc022d2870326</md5>
+    <crc32>2ca96916</crc32>
+    <sha1>86d1e8e296c56904b369a38160c1704054a7ab38</sha1>
+  </file>
+  <file name="25 The Warlord_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>25 The Warlord.mp3</original>
+    <mtime>1608679595</mtime>
+    <size>317982</size>
+    <md5>0e14411634d89243731c406ecf48da68</md5>
+    <crc32>789dcb71</crc32>
+    <sha1>ed9c41e7fda7a96b3600b5fadec9d882d61e1115</sha1>
+  </file>
+  <file name="26 Red Brick, Broken.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>26 Red Brick, Broken.mp3</original>
+    <mtime>1608680172</mtime>
+    <size>53320</size>
+    <md5>e362ff70587241ea1ab488eaec08b123</md5>
+    <crc32>9a4b26ea</crc32>
+    <sha1>4cb4a2bdb05dec4ef45fa4ab0fe8e401b4ab4840</sha1>
+  </file>
+  <file name="26 Red Brick, Broken.mp3" source="original">
+    <mtime>1608678290</mtime>
+    <size>10707099</size>
+    <md5>d9de0e35f937915d9a0e3026137f3fe2</md5>
+    <crc32>c80785d7</crc32>
+    <sha1>444719afae5447635e7087b5d10cb9ad1343633a</sha1>
+    <format>VBR MP3</format>
+    <length>262.45</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Red Brick, Broken</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>26/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="26 Red Brick, Broken.png" source="derivative">
+    <format>PNG</format>
+    <original>26 Red Brick, Broken.mp3</original>
+    <mtime>1608678710</mtime>
+    <size>33053</size>
+    <md5>c4b5ea08d10164107d99011845bffdd8</md5>
+    <crc32>845fefc2</crc32>
+    <sha1>aec5aee8181437736d7407e3002f9dbaf3342c33</sha1>
+  </file>
+  <file name="26 Red Brick, Broken_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>26 Red Brick, Broken.mp3</original>
+    <mtime>1608679611</mtime>
+    <size>291891</size>
+    <md5>fe31f67e4008996b5feed96a848551c3</md5>
+    <crc32>a6c55970</crc32>
+    <sha1>b8ce0a04878f1b1a08a401233cf8e8c4e02fd01d</sha1>
+  </file>
+  <file name="27 Lonely Walls.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>27 Lonely Walls.mp3</original>
+    <mtime>1608680358</mtime>
+    <size>63448</size>
+    <md5>43218daba378f6b07c220fee45cf3fbe</md5>
+    <crc32>9eac7b49</crc32>
+    <sha1>432bbc1cbca43d68f6020263b0f790767c34cb0b</sha1>
+  </file>
+  <file name="27 Lonely Walls.mp3" source="original">
+    <mtime>1608678308</mtime>
+    <size>10474082</size>
+    <md5>27c2a40f2751985b9b6c0bca60950dcf</md5>
+    <crc32>9fde44a8</crc32>
+    <sha1>63757e0003b3d30b38a5db5284e519a5cf27231b</sha1>
+    <format>VBR MP3</format>
+    <length>256.63</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Lonely Walls</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>27/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="27 Lonely Walls.png" source="derivative">
+    <format>PNG</format>
+    <original>27 Lonely Walls.mp3</original>
+    <mtime>1608678769</mtime>
+    <size>26277</size>
+    <md5>12a4e254f00a367cdf7b31d065046dec</md5>
+    <crc32>6424f549</crc32>
+    <sha1>4e8cb3ce0ecb2848212a7888dd4943469570e9e6</sha1>
+  </file>
+  <file name="27 Lonely Walls_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>27 Lonely Walls.mp3</original>
+    <mtime>1608679418</mtime>
+    <size>273454</size>
+    <md5>8aeec89e3c3d39daf24bb7b96e28cab7</md5>
+    <crc32>273f9d30</crc32>
+    <sha1>e36c3f1ec7080298c4d0269f67338a548b0aeb9d</sha1>
+  </file>
+  <file name="28 Wandering - The City, Pt. 3.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>28 Wandering - The City, Pt. 3.mp3</original>
+    <mtime>1608680371</mtime>
+    <size>38352</size>
+    <md5>e41e115cddd5b4c24d9076b9f13bca76</md5>
+    <crc32>1fdee158</crc32>
+    <sha1>8773a4d96bb3a2f4f9377c5d2a86fc2cad8f0622</sha1>
+  </file>
+  <file name="28 Wandering - The City, Pt. 3.mp3" source="original">
+    <mtime>1608678318</mtime>
+    <size>9458456</size>
+    <md5>57fe87844340a2d6c5d6edfc73efbfa6</md5>
+    <crc32>cf69d151</crc32>
+    <sha1>c837e91dce8c7b1e0094f190ea512f3556e41ada</sha1>
+    <format>VBR MP3</format>
+    <length>231.24</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The City, Pt. 3</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>28/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="28 Wandering - The City, Pt. 3.png" source="derivative">
+    <format>PNG</format>
+    <original>28 Wandering - The City, Pt. 3.mp3</original>
+    <mtime>1608678988</mtime>
+    <size>27636</size>
+    <md5>f253403bcf3f3f64f2bec4f10d435a78</md5>
+    <crc32>f3470139</crc32>
+    <sha1>8c76450a8bc43a31db67868b533923d1aa130487</sha1>
+  </file>
+  <file name="28 Wandering - The City, Pt. 3_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>28 Wandering - The City, Pt. 3.mp3</original>
+    <mtime>1608679605</mtime>
+    <size>273635</size>
+    <md5>9274e9c2b239a01756e63dc360e26eeb</md5>
+    <crc32>872d1aa7</crc32>
+    <sha1>241374e55d86146dc5556edf5fe174e482ba0ecf</sha1>
+  </file>
+  <file name="29 Regrouped, Reloaded.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>29 Regrouped, Reloaded.mp3</original>
+    <mtime>1608679892</mtime>
+    <size>18128</size>
+    <md5>32703f170c01563d700a8a157914760b</md5>
+    <crc32>fe4f73ab</crc32>
+    <sha1>2a5a91783a3f48341545be3b8ac9a38ec922c340</sha1>
+  </file>
+  <file name="29 Regrouped, Reloaded.mp3" source="original">
+    <mtime>1608678327</mtime>
+    <size>5272587</size>
+    <md5>502ca0555ee45f38a0adc9070831b43f</md5>
+    <crc32>0fcc9d02</crc32>
+    <sha1>ea2e664e4010b768c08e3220b7185789666fb999</sha1>
+    <format>VBR MP3</format>
+    <length>126.59</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Regrouped, Reloaded</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>29/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="29 Regrouped, Reloaded.png" source="derivative">
+    <format>PNG</format>
+    <original>29 Regrouped, Reloaded.mp3</original>
+    <mtime>1608679156</mtime>
+    <size>34402</size>
+    <md5>d69f859ff0058124ad0d5d56c19a2722</md5>
+    <crc32>0b96843c</crc32>
+    <sha1>92789658015a6ccee02bc71c5827013858233784</sha1>
+  </file>
+  <file name="29 Regrouped, Reloaded_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>29 Regrouped, Reloaded.mp3</original>
+    <mtime>1608679599</mtime>
+    <size>325004</size>
+    <md5>ba1a3c4a9538b78272be8ba5c6124a67</md5>
+    <crc32>4d216c87</crc32>
+    <sha1>285178ca9f858e7e16eec8260a36b564a6a2b7c0</sha1>
+  </file>
+  <file name="30 V.A.T.S. or Die.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>30 V.A.T.S. or Die.mp3</original>
+    <mtime>1608679883</mtime>
+    <size>24320</size>
+    <md5>1ec806864cb334772b5105403f67ebdf</md5>
+    <crc32>90469a65</crc32>
+    <sha1>8a9f7bec2569c29559b6b1f4876d36affff60bde</sha1>
+  </file>
+  <file name="30 V.A.T.S. or Die.mp3" source="original">
+    <mtime>1608678346</mtime>
+    <size>5790852</size>
+    <md5>9abe2bf15427ab6fff6950c84daaac19</md5>
+    <crc32>c6b95e1e</crc32>
+    <sha1>769c70c693cf3e490d753959338629c949353a58</sha1>
+    <format>VBR MP3</format>
+    <length>139.55</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>V.A.T.S. or Die</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>30/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="30 V.A.T.S. or Die.png" source="derivative">
+    <format>PNG</format>
+    <original>30 V.A.T.S. or Die.mp3</original>
+    <mtime>1608679247</mtime>
+    <size>35060</size>
+    <md5>d193c75095644b7695c746affceca5b9</md5>
+    <crc32>5881e569</crc32>
+    <sha1>c0db68523ff91c2e1e69d8ab54a094db8d13009d</sha1>
+  </file>
+  <file name="30 V.A.T.S. or Die_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>30 V.A.T.S. or Die.mp3</original>
+    <mtime>1608679591</mtime>
+    <size>318064</size>
+    <md5>c136462e7e5faa56c988f3d9a5fed779</md5>
+    <crc32>c7d52f00</crc32>
+    <sha1>7e022b52058c09b934d585ed331e70dab003525a</sha1>
+  </file>
+  <file name="31 Wandering - The Foothills, Pt. 1.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>31 Wandering - The Foothills, Pt. 1.mp3</original>
+    <mtime>1608679873</mtime>
+    <size>53712</size>
+    <md5>aeccaeab3945461abb2e92c1bb1ed9eb</md5>
+    <crc32>363195d4</crc32>
+    <sha1>4eaa4639a2c1cc9be70347c281f894cde84734ca</sha1>
+  </file>
+  <file name="31 Wandering - The Foothills, Pt. 1.mp3" source="original">
+    <mtime>1608678363</mtime>
+    <size>9518020</size>
+    <md5>2a231bf81e84c64a7d7ebc44560c3114</md5>
+    <crc32>08c0c297</crc32>
+    <sha1>3763d2926432787d319601a9a284c2586c9991dd</sha1>
+    <format>VBR MP3</format>
+    <length>232.72</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Foothills, Pt. 1</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>31/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="31 Wandering - The Foothills, Pt. 1.png" source="derivative">
+    <format>PNG</format>
+    <original>31 Wandering - The Foothills, Pt. 1.mp3</original>
+    <mtime>1608679166</mtime>
+    <size>26745</size>
+    <md5>2cef56be1d34298dda5601d356dccb26</md5>
+    <crc32>2c758c00</crc32>
+    <sha1>62b14fdbedf130be6a53c3d3422079283d46d394</sha1>
+  </file>
+  <file name="31 Wandering - The Foothills, Pt. 1_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>31 Wandering - The Foothills, Pt. 1.mp3</original>
+    <mtime>1608679581</mtime>
+    <size>265117</size>
+    <md5>ec9d72c9488be20ad6c39174bad7ffec</md5>
+    <crc32>6e6c183d</crc32>
+    <sha1>d783c9aa87e47ac5c2f1adcda7282713b11f2377</sha1>
+  </file>
+  <file name="32 Darkness Falls.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>32 Darkness Falls.mp3</original>
+    <mtime>1608679905</mtime>
+    <size>54280</size>
+    <md5>cb3c2dcd70318a354ed41d5b8ea8636a</md5>
+    <crc32>d22e8bea</crc32>
+    <sha1>4c7b458407f790956893c1b3a38f9829b63f1e9e</sha1>
+  </file>
+  <file name="32 Darkness Falls.mp3" source="original">
+    <mtime>1608678386</mtime>
+    <size>10625594</size>
+    <md5>80cc5a33c017566555cfdf2cb34395dd</md5>
+    <crc32>aecf487a</crc32>
+    <sha1>f9bb0abdb2ca853fad7997aa0cae0366534366d4</sha1>
+    <format>VBR MP3</format>
+    <length>260.41</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Darkness Falls</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>32/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="32 Darkness Falls.png" source="derivative">
+    <format>PNG</format>
+    <original>32 Darkness Falls.mp3</original>
+    <mtime>1608679227</mtime>
+    <size>26372</size>
+    <md5>fe6d2d7fd74c0ac375cf211759de1388</md5>
+    <crc32>ede87c4f</crc32>
+    <sha1>978a12ce1dc69d46c50afcec8dde4c0385f4a52d</sha1>
+  </file>
+  <file name="32 Darkness Falls_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>32 Darkness Falls.mp3</original>
+    <mtime>1608679576</mtime>
+    <size>251515</size>
+    <md5>5ef208a5abb6ba34e3f8d5e5955c9cad</md5>
+    <crc32>a7851390</crc32>
+    <sha1>996306b42795621e36d3155771fac964fa9c9b67</sha1>
+  </file>
+  <file name="33 War of Wills.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>33 War of Wills.mp3</original>
+    <mtime>1608679664</mtime>
+    <size>32056</size>
+    <md5>15cc2c052e9d59f8f681d509289e76a3</md5>
+    <crc32>9f77ad8b</crc32>
+    <sha1>2597ef6488416c1a33e339cbe68b838c0690766a</sha1>
+  </file>
+  <file name="33 War of Wills.mp3" source="original">
+    <mtime>1608678403</mtime>
+    <size>8244270</size>
+    <md5>265b8848f231d6c6c7b82851cdcb0f30</md5>
+    <crc32>a8dabe31</crc32>
+    <sha1>7091abaa4cb4dcc6181f61a74516166936fc4c86</sha1>
+    <format>VBR MP3</format>
+    <length>200.88</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>War of Wills</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>33/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="33 War of Wills.png" source="derivative">
+    <format>PNG</format>
+    <original>33 War of Wills.mp3</original>
+    <mtime>1608678855</mtime>
+    <size>31061</size>
+    <md5>e58b90176504b99d1ba9142a00a17f90</md5>
+    <crc32>ee32512a</crc32>
+    <sha1>1606908385b337d750777194fc4cc26e3e4506b1</sha1>
+  </file>
+  <file name="33 War of Wills_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>33 War of Wills.mp3</original>
+    <mtime>1608679499</mtime>
+    <size>303054</size>
+    <md5>db0cbcd003f8f40e73c3e7d198e5a53b</md5>
+    <crc32>c664b5ce</crc32>
+    <sha1>bee2a26965cc0020acff8841a6fa55e60cfe5249</sha1>
+  </file>
+  <file name="34 Wandering - The Foothills, Pt. 2.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>34 Wandering - The Foothills, Pt. 2.mp3</original>
+    <mtime>1608679833</mtime>
+    <size>27656</size>
+    <md5>2cbf10b083f28ef6cf523be281288dc6</md5>
+    <crc32>0a5edcda</crc32>
+    <sha1>6d85de5b740705c8d8c0a39c0472c6ebf741f408</sha1>
+  </file>
+  <file name="34 Wandering - The Foothills, Pt. 2.mp3" source="original">
+    <mtime>1608678410</mtime>
+    <size>5880730</size>
+    <md5>db23e4497c829aa86f30276a46381d4b</md5>
+    <crc32>0ab924ff</crc32>
+    <sha1>2b92c6f55bb66b024a675b79520b24edcc88f93f</sha1>
+    <format>VBR MP3</format>
+    <length>141.79</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Foothills, Pt. 2</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>34/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="34 Wandering - The Foothills, Pt. 2.png" source="derivative">
+    <format>PNG</format>
+    <original>34 Wandering - The Foothills, Pt. 2.mp3</original>
+    <mtime>1608679206</mtime>
+    <size>28287</size>
+    <md5>5d8b02c246f17642611b37f6c9c5950e</md5>
+    <crc32>572ce28f</crc32>
+    <sha1>7fba95f1bc168400bb009de3c93061c09fe82dce</sha1>
+  </file>
+  <file name="34 Wandering - The Foothills, Pt. 2_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>34 Wandering - The Foothills, Pt. 2.mp3</original>
+    <mtime>1608679555</mtime>
+    <size>252074</size>
+    <md5>3a098bbaa3e1d14701d1d93d61d680c6</md5>
+    <crc32>09e93b09</crc32>
+    <sha1>0741c7f2cf8fe3475c2e2bc8e5b40c347a73b4a8</sha1>
+  </file>
+  <file name="35 Only One Survives.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>35 Only One Survives.mp3</original>
+    <mtime>1608679823</mtime>
+    <size>19432</size>
+    <md5>ce225441bab34aa77ff38f0ab571c544</md5>
+    <crc32>f5722257</crc32>
+    <sha1>3e6f9fa9ef3dac8c365b1fccad9cd7ae90d2ef98</sha1>
+  </file>
+  <file name="35 Only One Survives.mp3" source="original">
+    <mtime>1608678418</mtime>
+    <size>5257956</size>
+    <md5>c1da61388f33a40ef2f8b3e2180b1bf1</md5>
+    <crc32>e749d794</crc32>
+    <sha1>f9dd9636b9bc95e9f0ebfc05bb8df62c30bfec5b</sha1>
+    <format>VBR MP3</format>
+    <length>126.22</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Only One Survives</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>35/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="35 Only One Survives.png" source="derivative">
+    <format>PNG</format>
+    <original>35 Only One Survives.mp3</original>
+    <mtime>1608679186</mtime>
+    <size>34379</size>
+    <md5>f7706b3566cf970dd1d828cc436b48e5</md5>
+    <crc32>dfd46904</crc32>
+    <sha1>47ada3280e911c7f0afb0fd79f0ab15580a75d90</sha1>
+  </file>
+  <file name="35 Only One Survives_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>35 Only One Survives.mp3</original>
+    <mtime>1608679545</mtime>
+    <size>292852</size>
+    <md5>575da1d0991440395592946ad086dd34</md5>
+    <crc32>43932043</crc32>
+    <sha1>b3133476c7d3f30af9a1f817cb6b60e83a24c3bf</sha1>
+  </file>
+  <file name="36 A Critical Chance.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>36 A Critical Chance.mp3</original>
+    <mtime>1608679812</mtime>
+    <size>27104</size>
+    <md5>1a2bbe8cd0027dc9d86409a5e07953e8</md5>
+    <crc32>23dc4f45</crc32>
+    <sha1>89a87911eb4f18e84129528fb0029e0f2a8df483</sha1>
+  </file>
+  <file name="36 A Critical Chance.mp3" source="original">
+    <mtime>1608678425</mtime>
+    <size>4916275</size>
+    <md5>913f9157c5a21d989331e1a50d3073b4</md5>
+    <crc32>44571610</crc32>
+    <sha1>5fedf8a6a5a48978e7342846e89f7367c0bc0fd6</sha1>
+    <format>VBR MP3</format>
+    <length>117.68</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>A Critical Chance</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>36/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="36 A Critical Chance.png" source="derivative">
+    <format>PNG</format>
+    <original>36 A Critical Chance.mp3</original>
+    <mtime>1608679176</mtime>
+    <size>33347</size>
+    <md5>6f3d548dd08cf33c1cbb9140a04f180b</md5>
+    <crc32>c83519ec</crc32>
+    <sha1>25c8635c0805f23b42710361da5477ed4653c6f2</sha1>
+  </file>
+  <file name="36 A Critical Chance_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>36 A Critical Chance.mp3</original>
+    <mtime>1608679509</mtime>
+    <size>289469</size>
+    <md5>9ba2bef4c7b7e2de8a98651f9601aa94</md5>
+    <crc32>c2a4ecea</crc32>
+    <sha1>692393fd324c5c1927316955768ab9928a61959d</sha1>
+  </file>
+  <file name="37 Dust &amp; Danger.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>37 Dust &amp; Danger.mp3</original>
+    <mtime>1608679849</mtime>
+    <size>42600</size>
+    <md5>18b4060aa5ef6ee557861df9d1d5e24b</md5>
+    <crc32>d32714fd</crc32>
+    <sha1>c15831f2b945493cd81cfc9ec111edec62385c3d</sha1>
+  </file>
+  <file name="37 Dust &amp; Danger.mp3" source="original">
+    <mtime>1608678434</mtime>
+    <size>8253675</size>
+    <md5>fda6e943aa9b99a28d6b558104bebcaf</md5>
+    <crc32>651e6976</crc32>
+    <sha1>e89eda20aff523d39a117fca58596ce4a13a0431</sha1>
+    <format>VBR MP3</format>
+    <length>201.12</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Dust &amp; Danger</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>37/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="37 Dust &amp; Danger.png" source="derivative">
+    <format>PNG</format>
+    <original>37 Dust &amp; Danger.mp3</original>
+    <mtime>1608679146</mtime>
+    <size>30191</size>
+    <md5>f55f9916fe953dc174c3c3ff6e4326f5</md5>
+    <crc32>af01c0de</crc32>
+    <sha1>95da210dbe2761ff130c4d16151cfb5982c57509</sha1>
+  </file>
+  <file name="37 Dust &amp; Danger_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>37 Dust &amp; Danger.mp3</original>
+    <mtime>1608679504</mtime>
+    <size>284400</size>
+    <md5>919a4ca7f67f27aa693ca5074b5fcd92</md5>
+    <crc32>dfa7df22</crc32>
+    <sha1>b6e6ab3f6c84e1a658635d246e44b6a2c4be98f4</sha1>
+  </file>
+  <file name="38 Liberty Lives.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>38 Liberty Lives.mp3</original>
+    <mtime>1608679980</mtime>
+    <size>47376</size>
+    <md5>abbc039b159c0437008039d30b3c2df0</md5>
+    <crc32>042b9729</crc32>
+    <sha1>84214a4eeb5a6cef6c19036fa1f25197f4fa5a8e</sha1>
+  </file>
+  <file name="38 Liberty Lives.mp3" source="original">
+    <mtime>1608678451</mtime>
+    <size>8149185</size>
+    <md5>8426a0d05d83fcfce018161b9e416bfc</md5>
+    <crc32>77346257</crc32>
+    <sha1>b67ba77aa93aafc86d5815b63bdacfd2f85a2352</sha1>
+    <format>VBR MP3</format>
+    <length>198.5</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Liberty Lives</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>38/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="38 Liberty Lives.png" source="derivative">
+    <format>PNG</format>
+    <original>38 Liberty Lives.mp3</original>
+    <mtime>1608679108</mtime>
+    <size>27795</size>
+    <md5>77e90e08e39650b78a74ad39ab3a3ac5</md5>
+    <crc32>55776f5f</crc32>
+    <sha1>83b641d2f3b68763001367123d50537c854abcd5</sha1>
+  </file>
+  <file name="38 Liberty Lives_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>38 Liberty Lives.mp3</original>
+    <mtime>1608679565</mtime>
+    <size>278469</size>
+    <md5>f52ea4c396823962fe9322754bff1fbe</md5>
+    <crc32>761d4f86</crc32>
+    <sha1>5eb115a723feb565c87cb99c659d6392ae9914ec</sha1>
+  </file>
+  <file name="39 Lost Boston.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>39 Lost Boston.mp3</original>
+    <mtime>1608680015</mtime>
+    <size>43240</size>
+    <md5>c0063d17b2f9bf6baac2e027e5dedc80</md5>
+    <crc32>8c381b40</crc32>
+    <sha1>76d3f2083cd47e53fa68bd864e4c566ac843b7ee</sha1>
+  </file>
+  <file name="39 Lost Boston.mp3" source="original">
+    <mtime>1608678464</mtime>
+    <size>9736383</size>
+    <md5>d76e3deee37efd8fa30cd88485b92d4e</md5>
+    <crc32>49e1032b</crc32>
+    <sha1>8b396472e72a82b6bac0ab705bb7bb5d07370b0e</sha1>
+    <format>VBR MP3</format>
+    <length>238.18</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Lost Boston</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>39/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="39 Lost Boston.png" source="derivative">
+    <format>PNG</format>
+    <original>39 Lost Boston.mp3</original>
+    <mtime>1608678999</mtime>
+    <size>26272</size>
+    <md5>3cf28058fe4e33c1b7e4009750036cb7</md5>
+    <crc32>62934890</crc32>
+    <sha1>bc77b551263bf93a7e505bab6abffedec98b4b28</sha1>
+  </file>
+  <file name="39 Lost Boston_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>39 Lost Boston.mp3</original>
+    <mtime>1608679429</mtime>
+    <size>305849</size>
+    <md5>72e16168e44e82530db368dbefe2bd14</md5>
+    <crc32>5451cebc</crc32>
+    <sha1>2a7b4d5c501cc6ed8b0c2fe141b840f93ab448c0</sha1>
+  </file>
+  <file name="40 Wandering- The Foothills, Pt. 3.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>40 Wandering- The Foothills, Pt. 3.mp3</original>
+    <mtime>1608680003</mtime>
+    <size>32392</size>
+    <md5>9999c9deb719761bf2380bc8f8730954</md5>
+    <crc32>45d77d2c</crc32>
+    <sha1>bdff8e406d31142ba7770d5aca79587f1be64ddb</sha1>
+  </file>
+  <file name="40 Wandering- The Foothills, Pt. 3.mp3" source="original">
+    <mtime>1608678472</mtime>
+    <size>6099113</size>
+    <md5>67946d2afcb7a4173464d593601965c0</md5>
+    <crc32>6f514476</crc32>
+    <sha1>1a582609dff331a6a1ae114c814d0af62380b05c</sha1>
+    <format>VBR MP3</format>
+    <length>147.25</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering- The Foothills, Pt. 3</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>40/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="40 Wandering- The Foothills, Pt. 3.png" source="derivative">
+    <format>PNG</format>
+    <original>40 Wandering- The Foothills, Pt. 3.mp3</original>
+    <mtime>1608679021</mtime>
+    <size>24963</size>
+    <md5>bf883f6a5ea48940085d65d45bee3196</md5>
+    <crc32>14996256</crc32>
+    <sha1>18141d26aec5a46321ae9413e492478d14bb530e</sha1>
+  </file>
+  <file name="40 Wandering- The Foothills, Pt. 3_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>40 Wandering- The Foothills, Pt. 3.mp3</original>
+    <mtime>1608679474</mtime>
+    <size>273996</size>
+    <md5>b631d917ec0aa0392936f7d916ea6795</md5>
+    <crc32>77459b35</crc32>
+    <sha1>4981f725099c3a276151749423249baf204bc7be</sha1>
+  </file>
+  <file name="41 Honor &amp; Steel.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>41 Honor &amp; Steel.mp3</original>
+    <mtime>1608679993</mtime>
+    <size>58840</size>
+    <md5>e3b15328acf103bdeda19eb76576dee4</md5>
+    <crc32>35c32deb</crc32>
+    <sha1>8fd5de9ff449bfd62a610cc108b0d638708ef7d2</sha1>
+  </file>
+  <file name="41 Honor &amp; Steel.mp3" source="original">
+    <mtime>1608678484</mtime>
+    <size>10438556</size>
+    <md5>ca660d8886ffdbb313392d5ca97becbb</md5>
+    <crc32>b546d66a</crc32>
+    <sha1>a8fe356470bc406c7d8cfc300599533bf3252b85</sha1>
+    <format>VBR MP3</format>
+    <length>255.74</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Honor &amp; Steel</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>41/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="41 Honor &amp; Steel.png" source="derivative">
+    <format>PNG</format>
+    <original>41 Honor &amp; Steel.mp3</original>
+    <mtime>1608679034</mtime>
+    <size>31458</size>
+    <md5>b82da7584fd4ea382c51f241c23c28bb</md5>
+    <crc32>47ee1c51</crc32>
+    <sha1>d85103d558d53bb9927085ed1751fb5e1a66f2ca</sha1>
+  </file>
+  <file name="41 Honor &amp; Steel_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>41 Honor &amp; Steel.mp3</original>
+    <mtime>1608679464</mtime>
+    <size>294689</size>
+    <md5>5dfdf106f06dd749cf6b562e8e2d825d</md5>
+    <crc32>dac77f59</crc32>
+    <sha1>f5c3a99c8412630f15946ddcc27700b01328f1f3</sha1>
+  </file>
+  <file name="42 We Are Unstoppable.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>42 We Are Unstoppable.mp3</original>
+    <mtime>1608680062</mtime>
+    <size>26744</size>
+    <md5>adb9957f573c47c3f86a8d0e4326848c</md5>
+    <crc32>69c8b88a</crc32>
+    <sha1>fd47b4571b4b85c44aa79c683d85ee1385becff1</sha1>
+  </file>
+  <file name="42 We Are Unstoppable.mp3" source="original">
+    <mtime>1608678491</mtime>
+    <size>5248553</size>
+    <md5>bffe6955ce5174bea5bed88b13419f19</md5>
+    <crc32>50af879f</crc32>
+    <sha1>b366d7e2a286c587158182f9ab3183753994dac3</sha1>
+    <format>VBR MP3</format>
+    <length>125.99</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>We Are Unstoppable</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>42/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="42 We Are Unstoppable.png" source="derivative">
+    <format>PNG</format>
+    <original>42 We Are Unstoppable.mp3</original>
+    <mtime>1608679043</mtime>
+    <size>33279</size>
+    <md5>9db36950d62f88188eaefa72d7dd704b</md5>
+    <crc32>0ddd76d1</crc32>
+    <sha1>b4094f1c2416b5bc573bc5999ee0723f388862f2</sha1>
+  </file>
+  <file name="42 We Are Unstoppable_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>42 We Are Unstoppable.mp3</original>
+    <mtime>1608679454</mtime>
+    <size>296285</size>
+    <md5>c9ffc56dab169147683a1a54e71ba6d6</md5>
+    <crc32>197fa1e6</crc32>
+    <sha1>e270e4408adda52c3b7f1ec08247e9480a827f08</sha1>
+  </file>
+  <file name="43 Dominant Species.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>43 Dominant Species.mp3</original>
+    <mtime>1608679967</mtime>
+    <size>28424</size>
+    <md5>6587e230e14e5c9e1ae44079e393da50</md5>
+    <crc32>1c44ea49</crc32>
+    <sha1>42be547918303248b65d5a9eb5bd4529935a1b70</sha1>
+  </file>
+  <file name="43 Dominant Species.mp3" source="original">
+    <mtime>1608677585</mtime>
+    <size>5089727</size>
+    <md5>19563af7b6fe8e207426ae1758b58f45</md5>
+    <crc32>7e77f404</crc32>
+    <sha1>1210f043c49966ad1cb4a79ec09df4aa67b71800</sha1>
+    <format>VBR MP3</format>
+    <length>122.02</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Dominant Species</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>43/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="43 Dominant Species.png" source="derivative">
+    <format>PNG</format>
+    <original>43 Dominant Species.mp3</original>
+    <mtime>1608679054</mtime>
+    <size>35209</size>
+    <md5>849c1493c45202ae0f03a1570fd71f1d</md5>
+    <crc32>62278200</crc32>
+    <sha1>a596f66ecf78fe18066288079ed881a775ea6582</sha1>
+  </file>
+  <file name="43 Dominant Species_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>43 Dominant Species.mp3</original>
+    <mtime>1608679449</mtime>
+    <size>298423</size>
+    <md5>86ee8d9b163a26b5e9524fde88310ac0</md5>
+    <crc32>08922113</crc32>
+    <sha1>d707f9f2281fbe4652848aa9ca70fbd2739c22c3</sha1>
+  </file>
+  <file name="44 Explore and Discover.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>44 Explore and Discover.mp3</original>
+    <mtime>1608679957</mtime>
+    <size>52448</size>
+    <md5>d3b092b771b6dc51179b4c959f43004c</md5>
+    <crc32>302cb24e</crc32>
+    <sha1>04664d512c289bf080f3d57dc7dd56bfc25c69b3</sha1>
+  </file>
+  <file name="44 Explore and Discover.mp3" source="original">
+    <mtime>1608677629</mtime>
+    <size>10971461</size>
+    <md5>082dce5fd93f71c5d88b70c465b83481</md5>
+    <crc32>d37d9bb0</crc32>
+    <sha1>27b6a6d0ec606376484c2d16d0826231d2561b6a</sha1>
+    <format>VBR MP3</format>
+    <length>269.06</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Explore and Discover</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>44/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="44 Explore and Discover.png" source="derivative">
+    <format>PNG</format>
+    <original>44 Explore and Discover.mp3</original>
+    <mtime>1608679075</mtime>
+    <size>21719</size>
+    <md5>926ca12da3d582b008495ce8a71a199a</md5>
+    <crc32>925ce852</crc32>
+    <sha1>0a886be237a533933f513416b4983f2881694ad5</sha1>
+  </file>
+  <file name="44 Explore and Discover_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>44 Explore and Discover.mp3</original>
+    <mtime>1608679440</mtime>
+    <size>292371</size>
+    <md5>577103265e4b5509d0e83f2627a8f808</md5>
+    <crc32>3f41c500</crc32>
+    <sha1>604ff4e8a7adab691005ac772267fc2258a8b676</sha1>
+  </file>
+  <file name="45 Wandering - The Glowing Sea, Pt..afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>45 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608679943</mtime>
+    <size>54776</size>
+    <md5>8f26b29a3174b91678894482ba705a47</md5>
+    <crc32>b8a22260</crc32>
+    <sha1>02123447a1fdfbe3f4853cc9b85c890660f35f18</sha1>
+  </file>
+  <file name="45 Wandering - The Glowing Sea, Pt..mp3" source="original">
+    <mtime>1608677647</mtime>
+    <size>8548357</size>
+    <md5>b267340a17e67b5cb27f0aa28fa16dc3</md5>
+    <crc32>46408466</crc32>
+    <sha1>8b7d4889b0e60ccf901c0115178f0f53ba6a7200</sha1>
+    <format>VBR MP3</format>
+    <length>208.48</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Glowing Sea, Pt. 1</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>45/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="45 Wandering - The Glowing Sea, Pt..png" source="derivative">
+    <format>PNG</format>
+    <original>45 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608679096</mtime>
+    <size>23122</size>
+    <md5>cd931e7de9cde6e45016abfbfa02bf64</md5>
+    <crc32>4de2e952</crc32>
+    <sha1>3e70e487dcf74d02186033b67fa206fc8d6b296b</sha1>
+  </file>
+  <file name="45 Wandering - The Glowing Sea, Pt._spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>45 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608679480</mtime>
+    <size>285268</size>
+    <md5>c98c86769e8952e0c9b350d4a6c71ac6</md5>
+    <crc32>1b6dcc3d</crc32>
+    <sha1>5a551a0b3afacfe4cc74014a09fc4f9a488dc78d</sha1>
+  </file>
+  <file name="46 The Stars My Solace.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>46 The Stars My Solace.mp3</original>
+    <mtime>1608679931</mtime>
+    <size>48576</size>
+    <md5>d38ecc522d1f97529b2b7e4fb0698095</md5>
+    <crc32>679d0d37</crc32>
+    <sha1>4c1cae8a8679afcbed3c2441687c9a57f2b7b17a</sha1>
+  </file>
+  <file name="46 The Stars My Solace.mp3" source="original">
+    <mtime>1608677666</mtime>
+    <size>10460505</size>
+    <md5>053f43a3e7a90b5443486ebbc56def95</md5>
+    <crc32>37a714e3</crc32>
+    <sha1>40ba13447b9a375c62aa7f7f5e46728397f5b3aa</sha1>
+    <format>VBR MP3</format>
+    <length>256.29</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Stars My Solace</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>46/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="46 The Stars My Solace.png" source="derivative">
+    <format>PNG</format>
+    <original>46 The Stars My Solace.mp3</original>
+    <mtime>1608679120</mtime>
+    <size>26132</size>
+    <md5>49d63cf4cdd2833676340368b52b7065</md5>
+    <crc32>cb5d0722</crc32>
+    <sha1>c53ecdd2b19eb28ddf0392d40bcfaf88b747be37</sha1>
+  </file>
+  <file name="46 The Stars My Solace_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>46 The Stars My Solace.mp3</original>
+    <mtime>1608679425</mtime>
+    <size>283923</size>
+    <md5>f8347bd369dcaeb11b02f5142c01911e</md5>
+    <crc32>304c0797</crc32>
+    <sha1>d15419d20fff6b1d08a036fef92781adab97ce8b</sha1>
+  </file>
+  <file name="47 Imagine Utopia.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>47 Imagine Utopia.mp3</original>
+    <mtime>1608679917</mtime>
+    <size>32352</size>
+    <md5>0d440ae3d77ffe03911d9ace72dc6374</md5>
+    <crc32>f4e8e955</crc32>
+    <sha1>6dd7b83ec02cdb2f840df8de2c40e68dd045b50f</sha1>
+  </file>
+  <file name="47 Imagine Utopia.mp3" source="original">
+    <mtime>1608677675</mtime>
+    <size>7121006</size>
+    <md5>5e6c4d13cbee01d317223bde81e7525a</md5>
+    <crc32>fe62014f</crc32>
+    <sha1>b8adedd82c382f56ceebb731a7c99fb1d560bc6b</sha1>
+    <format>VBR MP3</format>
+    <length>172.8</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Imagine Utopia</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>47/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="47 Imagine Utopia.png" source="derivative">
+    <format>PNG</format>
+    <original>47 Imagine Utopia.mp3</original>
+    <mtime>1608678977</mtime>
+    <size>30455</size>
+    <md5>f08f6d6f58483512f5e5faa537909141</md5>
+    <crc32>e3affdc4</crc32>
+    <sha1>c2c16428d064b1e033e6fe89aa3ada055db9580a</sha1>
+  </file>
+  <file name="47 Imagine Utopia_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>47 Imagine Utopia.mp3</original>
+    <mtime>1608679413</mtime>
+    <size>284065</size>
+    <md5>f59efae6f047419725da19b2bbcc9341</md5>
+    <crc32>2137b251</crc32>
+    <sha1>3c4bd616800d226345a8ef33fc3a7c19101f1f9c</sha1>
+  </file>
+  <file name="48 Lone Wandering.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>48 Lone Wandering.mp3</original>
+    <mtime>1608679678</mtime>
+    <size>46480</size>
+    <md5>962f0f56ba8cb8f4500970da62cf45a0</md5>
+    <crc32>fd31cf39</crc32>
+    <sha1>7c2c2687272145e43beaef0d05112c8e194ffc8b</sha1>
+  </file>
+  <file name="48 Lone Wandering.mp3" source="original">
+    <mtime>1608677688</mtime>
+    <size>10769790</size>
+    <md5>c5167dd038a06232920525656493a514</md5>
+    <crc32>e0dd18f5</crc32>
+    <sha1>deab306dca25162b3eb915c068a5109b6ae35c46</sha1>
+    <format>VBR MP3</format>
+    <length>264.02</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Lone Wandering</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>48/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="48 Lone Wandering.png" source="derivative">
+    <format>PNG</format>
+    <original>48 Lone Wandering.mp3</original>
+    <mtime>1608678667</mtime>
+    <size>25850</size>
+    <md5>8a6d28e52cbd8ce9ef2fc9b93414b215</md5>
+    <crc32>1adc6b2f</crc32>
+    <sha1>b8c9116b0aaa06b3a6707ef953978a443d048e4d</sha1>
+  </file>
+  <file name="48 Lone Wandering_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>48 Lone Wandering.mp3</original>
+    <mtime>1608679404</mtime>
+    <size>291732</size>
+    <md5>133516736e8a1e313798d88a280ad194</md5>
+    <crc32>f8f22811</crc32>
+    <sha1>c05d0b445db830b67a2d15d27c529fd37c134574</sha1>
+  </file>
+  <file name="49 Wandering - The Glowing Sea, Pt..afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>49 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608679859</mtime>
+    <size>36488</size>
+    <md5>f964aa1c977c953b6ee91c468767e84d</md5>
+    <crc32>34eb5d07</crc32>
+    <sha1>0b637b168da517fef029730e2c1db8fe91669ad8</sha1>
+  </file>
+  <file name="49 Wandering - The Glowing Sea, Pt..mp3" source="original">
+    <mtime>1608677701</mtime>
+    <size>5227671</size>
+    <md5>2d802d8ba6748e404a0b07473c92bc68</md5>
+    <crc32>35e0b35c</crc32>
+    <sha1>5a5ad250ed3cfa0e66a463515757b219605f543f</sha1>
+    <format>VBR MP3</format>
+    <length>125.47</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Glowing Sea, Pt. 2</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>49/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="49 Wandering - The Glowing Sea, Pt..png" source="derivative">
+    <format>PNG</format>
+    <original>49 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608678760</mtime>
+    <size>26172</size>
+    <md5>9eee389bcedd00a29a4f806877b1cd95</md5>
+    <crc32>c7c30203</crc32>
+    <sha1>166111ad30f592e7a7ac3385e9395d9ef4f3eb9a</sha1>
+  </file>
+  <file name="49 Wandering - The Glowing Sea, Pt._spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>49 Wandering - The Glowing Sea, Pt..mp3</original>
+    <mtime>1608679396</mtime>
+    <size>256142</size>
+    <md5>4ec6402f65dade125c572cdfbd6d6ed2</md5>
+    <crc32>93ed4a93</crc32>
+    <sha1>015a568258c0da0f051e07ea4f4e3a9ff033e806</sha1>
+  </file>
+  <file name="50 The Last Mariner.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>50 The Last Mariner.mp3</original>
+    <mtime>1608680042</mtime>
+    <size>76512</size>
+    <md5>93d7d57ddfc72f0ce37a62ec8459d5b9</md5>
+    <crc32>d210bbc8</crc32>
+    <sha1>4663f0396f9c6aa8a02782baf9409fa17b6c655a</sha1>
+  </file>
+  <file name="50 The Last Mariner.mp3" source="original">
+    <mtime>1608677715</mtime>
+    <size>13201269</size>
+    <md5>ce333598939b19b68b20b48093c807de</md5>
+    <crc32>b3fa32ae</crc32>
+    <sha1>9ab87164c30f4f3f6de6b27d3e1c577864ec8a95</sha1>
+    <format>VBR MP3</format>
+    <length>324.81</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>The Last Mariner</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>50/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="50 The Last Mariner.png" source="derivative">
+    <format>PNG</format>
+    <original>50 The Last Mariner.mp3</original>
+    <mtime>1608678945</mtime>
+    <size>25410</size>
+    <md5>88d1ec6694b60c8cbfa1b74a8a10f9c3</md5>
+    <crc32>f155a0b7</crc32>
+    <sha1>fcf1030ed95fa972c64cd93569e63ef67c768964</sha1>
+  </file>
+  <file name="50 The Last Mariner_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>50 The Last Mariner.mp3</original>
+    <mtime>1608679387</mtime>
+    <size>290693</size>
+    <md5>2cb770a60f1aa20989f60fb97237f433</md5>
+    <crc32>4cf96586</crc32>
+    <sha1>21de578203c17a0760dfeb1fcd33d5bb58f6363a</sha1>
+  </file>
+  <file name="51 Echoes of the Dead.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>51 Echoes of the Dead.mp3</original>
+    <mtime>1608680242</mtime>
+    <size>19808</size>
+    <md5>d449cdc8c5487f26cb2d163c558e629e</md5>
+    <crc32>2196ad77</crc32>
+    <sha1>962e9d14fa198e23604aced076a85df0b4e92316</sha1>
+  </file>
+  <file name="51 Echoes of the Dead.mp3" source="original">
+    <mtime>1608677730</mtime>
+    <size>5310202</size>
+    <md5>2439058213947fa2c93700aeff1d7857</md5>
+    <crc32>63031141</crc32>
+    <sha1>09a4a50119bb9a2fb0243b16d3ab931b7d670f49</sha1>
+    <format>VBR MP3</format>
+    <length>127.53</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Echoes of the Dead</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>51/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="51 Echoes of the Dead.png" source="derivative">
+    <format>PNG</format>
+    <original>51 Echoes of the Dead.mp3</original>
+    <mtime>1608678935</mtime>
+    <size>31849</size>
+    <md5>9cd99be53e642da736e6aeda55eb55a1</md5>
+    <crc32>1100107c</crc32>
+    <sha1>e2c63c967e18141399a780aaa15e6d066b92e003</sha1>
+  </file>
+  <file name="51 Echoes of the Dead_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>51 Echoes of the Dead.mp3</original>
+    <mtime>1608679491</mtime>
+    <size>309950</size>
+    <md5>24bd8b1631a9ce53444b185cfe5c8374</md5>
+    <crc32>0f71aac1</crc32>
+    <sha1>2962e09f3602cadccc52f169fc7b07b682db8dff</sha1>
+  </file>
+  <file name="52 Enough Is Enough.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>52 Enough Is Enough.mp3</original>
+    <mtime>1608680026</mtime>
+    <size>27776</size>
+    <md5>08f321632b9519876130e4407e2d3ec4</md5>
+    <crc32>910bc167</crc32>
+    <sha1>4177472641d6ff2498fa6113194896135468af94</sha1>
+  </file>
+  <file name="52 Enough Is Enough.mp3" source="original">
+    <mtime>1608677737</mtime>
+    <size>5719800</size>
+    <md5>630fc38dfdcd5286bee73edeae6430e6</md5>
+    <crc32>29e84d6b</crc32>
+    <sha1>24992fddfe3ba6759f526e1bcd6bdc70b392e7db</sha1>
+    <format>VBR MP3</format>
+    <length>137.77</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Enough Is Enough</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>52/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="52 Enough Is Enough.png" source="derivative">
+    <format>PNG</format>
+    <original>52 Enough Is Enough.mp3</original>
+    <mtime>1608678925</mtime>
+    <size>34564</size>
+    <md5>e3d0592ca06b882af14fc7f6c0cecdff</md5>
+    <crc32>f7281eea</crc32>
+    <sha1>5551910effe12d56b9d9b5e0a94886045082191e</sha1>
+  </file>
+  <file name="52 Enough Is Enough_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>52 Enough Is Enough.mp3</original>
+    <mtime>1608679494</mtime>
+    <size>290729</size>
+    <md5>ecf844ba0197148ee1d8a200410542bc</md5>
+    <crc32>23c2e0b4</crc32>
+    <sha1>b2aea71b8d73b0183fc6ee70e64a94b3758eedad</sha1>
+  </file>
+  <file name="53 Wandering - The Coast, Pt. 1.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>53 Wandering - The Coast, Pt. 1.mp3</original>
+    <mtime>1608680419</mtime>
+    <size>21744</size>
+    <md5>91d82eaa87cdb3b9aad36a11a2d44b78</md5>
+    <crc32>f1ece799</crc32>
+    <sha1>37382b8d78acafebf3cd3507e669f3a36ebeaa02</sha1>
+  </file>
+  <file name="53 Wandering - The Coast, Pt. 1.mp3" source="original">
+    <mtime>1608677750</mtime>
+    <size>4799257</size>
+    <md5>82ce15f088be3eba6c43c8ee42095679</md5>
+    <crc32>b39a6811</crc32>
+    <sha1>d6a3da6002b57bffa6b49a5bf2bec42307a0da8e</sha1>
+    <format>VBR MP3</format>
+    <length>114.76</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Coast, Pt. 1</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>53/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="53 Wandering - The Coast, Pt. 1.png" source="derivative">
+    <format>PNG</format>
+    <original>53 Wandering - The Coast, Pt. 1.mp3</original>
+    <mtime>1608678905</mtime>
+    <size>26736</size>
+    <md5>cf7e8fe5685892d40a0311f381e40925</md5>
+    <crc32>e0d080e1</crc32>
+    <sha1>27eebed4f9e20c93200c63707a5ea7a30615a8c7</sha1>
+  </file>
+  <file name="53 Wandering - The Coast, Pt. 1_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>53 Wandering - The Coast, Pt. 1.mp3</original>
+    <mtime>1608679328</mtime>
+    <size>278721</size>
+    <md5>0268387d5cae3485114489331e427c58</md5>
+    <crc32>dc55c39a</crc32>
+    <sha1>9a27facfdaa7481c9199d0b1cf3d9477b3b84f45</sha1>
+  </file>
+  <file name="54 Humanity's Hope.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>54 Humanity's Hope.mp3</original>
+    <mtime>1608680409</mtime>
+    <size>32192</size>
+    <md5>4a70d5dd6464235ef2b362371e2a49d2</md5>
+    <crc32>38b9de57</crc32>
+    <sha1>a15770dfd67f6e26b988dc8fc20c47cabe619615</sha1>
+  </file>
+  <file name="54 Humanity's Hope.mp3" source="original">
+    <mtime>1608677759</mtime>
+    <size>7648681</size>
+    <md5>eec93a5809ba83c2e26c8af1f1e77743</md5>
+    <crc32>ac936e8a</crc32>
+    <sha1>35dee287fa5da428e049be94a6695a3eba2fbd2b</sha1>
+    <format>VBR MP3</format>
+    <length>185.99</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Humanity's Hope</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>54/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="54 Humanity's Hope.png" source="derivative">
+    <format>PNG</format>
+    <original>54 Humanity's Hope.mp3</original>
+    <mtime>1608678885</mtime>
+    <size>31579</size>
+    <md5>2378e1eab44708a40ca2b57918d74681</md5>
+    <crc32>feb1d61f</crc32>
+    <sha1>b66e46cffbdc3668d348a4d043a7c7c8dbbae87a</sha1>
+  </file>
+  <file name="54 Humanity's Hope_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>54 Humanity's Hope.mp3</original>
+    <mtime>1608679295</mtime>
+    <size>288506</size>
+    <md5>05eb81581309712a6800be7d5808c56f</md5>
+    <crc32>6dc2956f</crc32>
+    <sha1>33ef48aefa39aebab8bfa276a404c8bf127444a7</sha1>
+  </file>
+  <file name="55 Endless Ocean, Endless Dreams.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>55 Endless Ocean, Endless Dreams.mp3</original>
+    <mtime>1608680397</mtime>
+    <size>72680</size>
+    <md5>472c19fec0cd68d0fc59d9e8d0de45fd</md5>
+    <crc32>197072ed</crc32>
+    <sha1>1cae6ec4287f7925f79f6aa3ffe2adec3f2bb3ee</sha1>
+  </file>
+  <file name="55 Endless Ocean, Endless Dreams.mp3" source="original">
+    <mtime>1608677779</mtime>
+    <size>13536695</size>
+    <md5>1cc51d0c3c9eb78f7027a01813d2fed8</md5>
+    <crc32>77b291bc</crc32>
+    <sha1>60a67f4bd992a42222d0ca5d90b739749283d9e1</sha1>
+    <format>VBR MP3</format>
+    <length>333.19</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Endless Ocean, Endless Dreams</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>55/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="55 Endless Ocean, Endless Dreams.png" source="derivative">
+    <format>PNG</format>
+    <original>55 Endless Ocean, Endless Dreams.mp3</original>
+    <mtime>1608678780</mtime>
+    <size>28537</size>
+    <md5>92163cb95222cf1168607e8a981b59e6</md5>
+    <crc32>ec595a73</crc32>
+    <sha1>964908b809e4a5c41952162180697857d71d4a77</sha1>
+  </file>
+  <file name="55 Endless Ocean, Endless Dreams_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>55 Endless Ocean, Endless Dreams.mp3</original>
+    <mtime>1608679359</mtime>
+    <size>289412</size>
+    <md5>05767a809b3f11700ca4638884a961e7</md5>
+    <crc32>411297d6</crc32>
+    <sha1>6c4c84cd26464ae2492eb81ab89ce07772097040</sha1>
+  </file>
+  <file name="56 No Voices, No Cries.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>56 No Voices, No Cries.mp3</original>
+    <mtime>1608680381</mtime>
+    <size>24496</size>
+    <md5>e1e144e14007cadb2e993edf5b88c85c</md5>
+    <crc32>9685c6ea</crc32>
+    <sha1>6411f48c5ee37ab577e9399ecca56614b7a82f92</sha1>
+  </file>
+  <file name="56 No Voices, No Cries.mp3" source="original">
+    <mtime>1608677793</mtime>
+    <size>5508734</size>
+    <md5>203c769fa452f0b46647772533382f25</md5>
+    <crc32>6f40d9bc</crc32>
+    <sha1>868a6fc055b4fb39580920667563317e7d7aadb9</sha1>
+    <format>VBR MP3</format>
+    <length>132.49</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>No Voices, No Cries</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>56/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="56 No Voices, No Cries.png" source="derivative">
+    <format>PNG</format>
+    <original>56 No Voices, No Cries.mp3</original>
+    <mtime>1608678915</mtime>
+    <size>33449</size>
+    <md5>4fb62de49e358b9484a8e4087222093a</md5>
+    <crc32>5dd5728a</crc32>
+    <sha1>91c0c90cedfd57e01cf03320bcdb7d6d550fce57</sha1>
+  </file>
+  <file name="56 No Voices, No Cries_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>56 No Voices, No Cries.mp3</original>
+    <mtime>1608679290</mtime>
+    <size>299680</size>
+    <md5>b51e6760f659bb82a7a98c9c96032478</md5>
+    <crc32>aac4a557</crc32>
+    <sha1>bd7de9df6fd7546a3470848fc993da2bdd9507f6</sha1>
+  </file>
+  <file name="57 Wandering - The Coast, Pt. 2.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>57 Wandering - The Coast, Pt. 2.mp3</original>
+    <mtime>1608679692</mtime>
+    <size>63896</size>
+    <md5>c234dccc3059496262e2c86118eb00cb</md5>
+    <crc32>9bf5904a</crc32>
+    <sha1>efdd1a73400fa1289916757f8a19f3d9de5f9ffe</sha1>
+  </file>
+  <file name="57 Wandering - The Coast, Pt. 2.mp3" source="original">
+    <mtime>1608677812</mtime>
+    <size>9688335</size>
+    <md5>786bbea884f9b7ac4d54d914b62e2071</md5>
+    <crc32>e2a3204c</crc32>
+    <sha1>2e88c32c22b1aa703a493794f69fe13f00053eff</sha1>
+    <format>VBR MP3</format>
+    <length>236.98</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Coast, Pt. 2</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>57/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="57 Wandering - The Coast, Pt. 2.png" source="derivative">
+    <format>PNG</format>
+    <original>57 Wandering - The Coast, Pt. 2.mp3</original>
+    <mtime>1608678657</mtime>
+    <size>28182</size>
+    <md5>2f2d117656f88773003da05546bd4d71</md5>
+    <crc32>51f1d39f</crc32>
+    <sha1>0b7783946686fd9b0f0bf69b20f2a9de9e0104f4</sha1>
+  </file>
+  <file name="57 Wandering - The Coast, Pt. 2_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>57 Wandering - The Coast, Pt. 2.mp3</original>
+    <mtime>1608679333</mtime>
+    <size>266670</size>
+    <md5>a41f15149ec479602a0212a73fcb8f17</md5>
+    <crc32>f46015d1</crc32>
+    <sha1>57276e15d9cd49295217220c4df1eb3364d89dfa</sha1>
+  </file>
+  <file name="58 Covert Action.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>58 Covert Action.mp3</original>
+    <mtime>1608679705</mtime>
+    <size>38176</size>
+    <md5>f2fd7ddc98ef34cfd4b4576868b2dcc0</md5>
+    <crc32>d3863c68</crc32>
+    <sha1>10973f63fbe6ca47c8ff538121c7ac70406c0497</sha1>
+  </file>
+  <file name="58 Covert Action.mp3" source="original">
+    <mtime>1608677821</mtime>
+    <size>8742687</size>
+    <md5>3d8a93c3c9c2500dc21db3632f753317</md5>
+    <crc32>ec193355</crc32>
+    <sha1>cc71d3821835ee9f402076918d6713ce125f40c8</sha1>
+    <format>VBR MP3</format>
+    <length>213.34</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Covert Action</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>58/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="58 Covert Action.png" source="derivative">
+    <format>PNG</format>
+    <original>58 Covert Action.mp3</original>
+    <mtime>1608678739</mtime>
+    <size>27543</size>
+    <md5>4d5add529c666fc73dcf09726de3fc03</md5>
+    <crc32>491f47c5</crc32>
+    <sha1>06d6c0972ecc53314593de3d40c33ecadcf7e858</sha1>
+  </file>
+  <file name="58 Covert Action_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>58 Covert Action.mp3</original>
+    <mtime>1608679342</mtime>
+    <size>285607</size>
+    <md5>e23d7ea00ae61305231711d6014756de</md5>
+    <crc32>e97ba649</crc32>
+    <sha1>7170b4141c4a4c49f50baa962c04b93ae2b80d85</sha1>
+  </file>
+  <file name="59 Rise and Prevail.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>59 Rise and Prevail.mp3</original>
+    <mtime>1608679801</mtime>
+    <size>28608</size>
+    <md5>1ee501771d6d8a7dd90673854511c769</md5>
+    <crc32>a7a4171c</crc32>
+    <sha1>583c06fb722a79b59a0e032f8c2a95ad33face8b</sha1>
+  </file>
+  <file name="59 Rise and Prevail.mp3" source="original">
+    <mtime>1608677839</mtime>
+    <size>5598592</size>
+    <md5>4a7a069bafd5c2fa9955553a9626f454</md5>
+    <crc32>60015ef4</crc32>
+    <sha1>9c53ad10de83fe516fd04e98b54bbae2c90d3ab7</sha1>
+    <format>VBR MP3</format>
+    <length>134.74</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Rise and Prevail</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>59/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="59 Rise and Prevail.png" source="derivative">
+    <format>PNG</format>
+    <original>59 Rise and Prevail.mp3</original>
+    <mtime>1608678966</mtime>
+    <size>31600</size>
+    <md5>513a3f8431a2e0d9a0954726157e837e</md5>
+    <crc32>44ee9845</crc32>
+    <sha1>e70f4e08012831ec27b88aece740c3b308c77f21</sha1>
+  </file>
+  <file name="59 Rise and Prevail_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>59 Rise and Prevail.mp3</original>
+    <mtime>1608679363</mtime>
+    <size>284038</size>
+    <md5>d7cfacbc7ece03d0eb50383238379116</md5>
+    <crc32>e920fd81</crc32>
+    <sha1>a360045809dc07ded140c121832ee85d33fe992a</sha1>
+  </file>
+  <file name="60 No More Sails.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>60 No More Sails.mp3</original>
+    <mtime>1608679790</mtime>
+    <size>61992</size>
+    <md5>4acb2b401251e115e1a97a3655e98229</md5>
+    <crc32>6c617a0d</crc32>
+    <sha1>2f61a5c6f9ed912bf1d764b992ded67abe4950e0</sha1>
+  </file>
+  <file name="60 No More Sails.mp3" source="original">
+    <mtime>1608677856</mtime>
+    <size>10609920</size>
+    <md5>7672c5b8f30f1ba65502d884ce4158b8</md5>
+    <crc32>d6787618</crc32>
+    <sha1>783277d194de06f7ef2e7b31e33d9cb6c254e319</sha1>
+    <format>VBR MP3</format>
+    <length>260.02</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>No More Sails</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>60/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="60 No More Sails.png" source="derivative">
+    <format>PNG</format>
+    <original>60 No More Sails.mp3</original>
+    <mtime>1608678700</mtime>
+    <size>25018</size>
+    <md5>a0fd35ac0c05cf0398576dc7548b1c21</md5>
+    <crc32>49e5cd3f</crc32>
+    <sha1>fb4783e4457e486989648b75cc74ed99053fa1a9</sha1>
+  </file>
+  <file name="60 No More Sails_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>60 No More Sails.mp3</original>
+    <mtime>1608679347</mtime>
+    <size>283627</size>
+    <md5>87ce418ace88460571739c4c93d82cb5</md5>
+    <crc32>76b2bf3f</crc32>
+    <sha1>b5a7d1510da70403454281075abd980db5fe86c1</sha1>
+  </file>
+  <file name="61 Wandering - The Coast, Pt. 3.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>61 Wandering - The Coast, Pt. 3.mp3</original>
+    <mtime>1608679776</mtime>
+    <size>62376</size>
+    <md5>9e066527761e90297d1d13a613ebb730</md5>
+    <crc32>8dfd6edc</crc32>
+    <sha1>285a41d102b5c59f4f5a201cc76144a990f91c78</sha1>
+  </file>
+  <file name="61 Wandering - The Coast, Pt. 3.mp3" source="original">
+    <mtime>1608677865</mtime>
+    <size>8769869</size>
+    <md5>210b3f01e1344b4957c19947ba78602f</md5>
+    <crc32>ade9780e</crc32>
+    <sha1>d1d15a372d2e1b633fd2d21a7d4a5a6e3dfc5e7b</sha1>
+    <format>VBR MP3</format>
+    <length>214.02</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Wandering - The Coast, Pt. 3</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>61/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="61 Wandering - The Coast, Pt. 3.png" source="derivative">
+    <format>PNG</format>
+    <original>61 Wandering - The Coast, Pt. 3.mp3</original>
+    <mtime>1608678956</mtime>
+    <size>22827</size>
+    <md5>d58c4e61ba19b3cbaa91634f1f87bc97</md5>
+    <crc32>c942b294</crc32>
+    <sha1>2d09671c44ba8b9db6df2b8e309e1ed2a3f5c5b1</sha1>
+  </file>
+  <file name="61 Wandering - The Coast, Pt. 3_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>61 Wandering - The Coast, Pt. 3.mp3</original>
+    <mtime>1608679286</mtime>
+    <size>273074</size>
+    <md5>3e7f75d31a3b111dc57f77a8b7bc0887</md5>
+    <crc32>fa099757</crc32>
+    <sha1>3f7dceb51f7222f61a0c3bf6754a60b88f6de702</sha1>
+  </file>
+  <file name="62 In This Together.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>62 In This Together.mp3</original>
+    <mtime>1608679762</mtime>
+    <size>53544</size>
+    <md5>0ac668ac822b64c7d5eee8e643bf4a20</md5>
+    <crc32>8b9d5c2a</crc32>
+    <sha1>452272d6f8c28549c6cffe23d5dc408984582d3b</sha1>
+  </file>
+  <file name="62 In This Together.mp3" source="original">
+    <mtime>1608677885</mtime>
+    <size>11681988</size>
+    <md5>117beaeef5184295d275a3672ece7512</md5>
+    <crc32>7bb37f4f</crc32>
+    <sha1>fc40494b06f1a07cb17781b992ddc260802e7819</sha1>
+    <format>VBR MP3</format>
+    <length>286.82</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>In This Together</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>62/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="62 In This Together.png" source="derivative">
+    <format>PNG</format>
+    <original>62 In This Together.mp3</original>
+    <mtime>1608678577</mtime>
+    <size>26939</size>
+    <md5>e0f20ab25f0f985820f5b12e89f1373d</md5>
+    <crc32>dbab3224</crc32>
+    <sha1>41902b552d05e9522a81d17b841ee6f2662f0bf7</sha1>
+  </file>
+  <file name="62 In This Together_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>62 In This Together.mp3</original>
+    <mtime>1608679617</mtime>
+    <size>292163</size>
+    <md5>874ec8dbcc442b7b9e66ba73ed1fadc5</md5>
+    <crc32>13b2aea6</crc32>
+    <sha1>e70c1e30e342977d49c6e669896fe53d5e45ea87</sha1>
+  </file>
+  <file name="63 Still Standing.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>63 Still Standing.mp3</original>
+    <mtime>1608679746</mtime>
+    <size>61408</size>
+    <md5>78e42a544bd6b9c209b389b63e31564b</md5>
+    <crc32>666c5b45</crc32>
+    <sha1>49333b6428587eae4f6e3b3574c8a699e7b05993</sha1>
+  </file>
+  <file name="63 Still Standing.mp3" source="original">
+    <mtime>1608677895</mtime>
+    <size>9920288</size>
+    <md5>0a1d7921032a34879d7bfb92c71fbb9c</md5>
+    <crc32>a716c022</crc32>
+    <sha1>0620563431db79ae5fa47308c7d0ce74770320b9</sha1>
+    <format>VBR MP3</format>
+    <length>242.78</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Still Standing</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>63/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="63 Still Standing.png" source="derivative">
+    <format>PNG</format>
+    <original>63 Still Standing.mp3</original>
+    <mtime>1608678646</mtime>
+    <size>28583</size>
+    <md5>631cc97c3f025b54186defa1c60b8d04</md5>
+    <crc32>bdc0964b</crc32>
+    <sha1>7d9254c780024bbbfe2518688186c2960ba0aa54</sha1>
+  </file>
+  <file name="63 Still Standing_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>63 Still Standing.mp3</original>
+    <mtime>1608679315</mtime>
+    <size>292241</size>
+    <md5>a8b5e7f266f711feefe109572ed7317c</md5>
+    <crc32>2b03c948</crc32>
+    <sha1>ea6a6d7fc7996779d7c1171c2e945f4e1742296c</sha1>
+  </file>
+  <file name="64 Science &amp; Secrecy.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>64 Science &amp; Secrecy.mp3</original>
+    <mtime>1608679731</mtime>
+    <size>36392</size>
+    <md5>9d31e42e036e2820eaa381eb22d9ab54</md5>
+    <crc32>068b26e1</crc32>
+    <sha1>84566cd1bd59a768ae22e13d6366d33c25de7ca4</sha1>
+  </file>
+  <file name="64 Science &amp; Secrecy.mp3" source="original">
+    <mtime>1608677906</mtime>
+    <size>9720715</size>
+    <md5>17fab8435095275d039fc06fd21dbf4f</md5>
+    <crc32>691b306d</crc32>
+    <sha1>c875c13fc7941663908c315db8d35035851ffbca</sha1>
+    <format>VBR MP3</format>
+    <length>237.79</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Science &amp; Secrecy</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>64/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="64 Science &amp; Secrecy.png" source="derivative">
+    <format>PNG</format>
+    <original>64 Science &amp; Secrecy.mp3</original>
+    <mtime>1608678623</mtime>
+    <size>25418</size>
+    <md5>abd87fd32b3897a68eb4e06da5e08ab9</md5>
+    <crc32>03a34fd0</crc32>
+    <sha1>371344d96d572e61e2485afa00ad8c20acaa7b17</sha1>
+  </file>
+  <file name="64 Science &amp; Secrecy_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>64 Science &amp; Secrecy.mp3</original>
+    <mtime>1608679304</mtime>
+    <size>264511</size>
+    <md5>504dcb28767f0d9f8d29b99128510505</md5>
+    <crc32>af0ada21</crc32>
+    <sha1>271cb43ebc9d64752de71572b199f5346ce20db0</sha1>
+  </file>
+  <file name="65 Fallout 4 Main Theme ('Spinner' M.afpk" source="derivative">
+    <format>Columbia Peaks</format>
+    <original>65 Fallout 4 Main Theme ('Spinner' M.mp3</original>
+    <mtime>1608679717</mtime>
+    <size>38368</size>
+    <md5>0e2905e10f20cd3e5098c53579bef302</md5>
+    <crc32>75a2a0c6</crc32>
+    <sha1>8cf910db174fcf3660d1931940be5b8e0d8fa233</sha1>
+  </file>
+  <file name="65 Fallout 4 Main Theme ('Spinner' M.mp3" source="original">
+    <mtime>1608677914</mtime>
+    <size>6990416</size>
+    <md5>2f1f825b423d7faef80e7a63149c9514</md5>
+    <crc32>bc2172d5</crc32>
+    <sha1>a386ab20ebb1f6166ab1f7f5904e2f1ba1cced04</sha1>
+    <format>VBR MP3</format>
+    <length>169.53</length>
+    <height>1400</height>
+    <width>1400</width>
+    <title>Fallout 4 Main Theme ('Spinner' Mix)</title>
+    <creator>Inon Zur</creator>
+    <album>Fallout 4 (Original Game Soundtrack)</album>
+    <track>65/65</track>
+    <artist>Inon Zur</artist>
+    <genre>Soundtrack</genre>
+  </file>
+  <file name="65 Fallout 4 Main Theme ('Spinner' M.png" source="derivative">
+    <format>PNG</format>
+    <original>65 Fallout 4 Main Theme ('Spinner' M.mp3</original>
+    <mtime>1608678599</mtime>
+    <size>29906</size>
+    <md5>04d79b1eefc14328da63b391760bc1af</md5>
+    <crc32>1f4df9b7</crc32>
+    <sha1>e49a6b7eef70a37ea5393d21e43222e5ac2b2bc8</sha1>
+  </file>
+  <file name="65 Fallout 4 Main Theme ('Spinner' M_spectrogram.png" source="derivative">
+    <format>Spectrogram</format>
+    <original>65 Fallout 4 Main Theme ('Spinner' M.mp3</original>
+    <mtime>1608679324</mtime>
+    <size>294490</size>
+    <md5>d3529be42e5329bf86b3a9bda6cdeb62</md5>
+    <crc32>bc1b3998</crc32>
+    <sha1>274c83c2ee76b5e460dfd794f4bec33686f32206</sha1>
+  </file>
+  <file name="Cover.jpg" source="original">
+    <mtime>1608677917</mtime>
+    <size>155174</size>
+    <md5>6aeb0d9baeec49347226a90eae0557e5</md5>
+    <crc32>910be0b8</crc32>
+    <sha1>25d0f1ee1481488bf57e9179d147692fee3f3fac</sha1>
+    <format>JPEG</format>
+    <rotation>0</rotation>
+  </file>
+  <file name="Cover_thumb.jpg" source="derivative">
+    <format>JPEG Thumb</format>
+    <original>Cover.jpg</original>
+    <mtime>1608678565</mtime>
+    <size>7139</size>
+    <md5>2196d1c78810b079d51dc96f5c98ff24</md5>
+    <crc32>18511741</crc32>
+    <sha1>8df8ffd981f2765ce93c5108f0c18dac74603e11</sha1>
+  </file>
+  <file name="__ia_thumb.jpg" source="original">
+    <mtime>1628408854</mtime>
+    <size>16551</size>
+    <md5>c5ebab42266e7c7acde6041bd69de32b</md5>
+    <crc32>efc20892</crc32>
+    <sha1>84a1ad8b1e3df1f0e08b652b253f13402c5f85ba</sha1>
+    <format>Item Tile</format>
+    <rotation>0</rotation>
+  </file>
+  <file name="fallout_4_soundtrack_score_archive.torrent" source="metadata">
+    <btih>5bd9cc51a33bc0afb46f02e6513c0c935fa8f433</btih>
+    <mtime>1608677809</mtime>
+    <size>8490</size>
+    <md5>c54d6fa952181c4095d2650a55e638c7</md5>
+    <crc32>e93ddd77</crc32>
+    <sha1>1f28b7fa102110ca72c2e667e901fa8cadbf40e2</sha1>
+    <format>Archive BitTorrent</format>
+  </file>
+  <file name="fallout_4_soundtrack_score_files.xml" source="original">
+    <format>Metadata</format>
+    <md5>e709f8feebb9fc5275d4576d3f608769</md5>
+    <summation>md5</summation>
+  </file>
+  <file name="fallout_4_soundtrack_score_meta.sqlite" source="original">
+    <mtime>1608678495</mtime>
+    <size>290816</size>
+    <md5>11528ac10d4a49c65113757cd229d205</md5>
+    <crc32>3b2b28c3</crc32>
+    <sha1>af57397392331d7c3df602ae0c82e6fdc5bdda22</sha1>
+    <format>Metadata</format>
+  </file>
+  <file name="fallout_4_soundtrack_score_meta.xml" source="original">
+    <mtime>1682360012</mtime>
+    <size>4196</size>
+    <md5>22df7715eeca820b6ac344ee2935d965</md5>
+    <crc32>902673e6</crc32>
+    <sha1>9f73a0969cb5d85f6ad30f8fbbd212d6244b98c6</sha1>
+    <format>Metadata</format>
+  </file>
+</files>
