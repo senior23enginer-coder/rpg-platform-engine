@@ -1,0 +1,43 @@
+{
+  "gameId": "newvegas",
+  "basePath": "/games/newvegas/assets",
+  "cover": "/games/newvegas/assets/cover/newvegas.svg",
+  "hero": {
+    "generated": "/games/newvegas/assets/hero/generated.png",
+    "internet": "/games/newvegas/assets/hero/internet.jpg"
+  },
+  "contentThumbs": {
+    "dlc": [
+      "/games/newvegas/assets/content-thumbs/dlc/courier_s_stash.png",
+      "/games/newvegas/assets/content-thumbs/dlc/dead_money.png",
+      "/games/newvegas/assets/content-thumbs/dlc/gun_runners_arsenal.png",
+      "/games/newvegas/assets/content-thumbs/dlc/honest_hearts.png",
+      "/games/newvegas/assets/content-thumbs/dlc/lonesome_road.png",
+      "/games/newvegas/assets/content-thumbs/dlc/old_world_blues.png"
+    ],
+    "features": [
+      "/games/newvegas/assets/content-thumbs/features/casinos.png",
+      "/games/newvegas/assets/content-thumbs/features/compa_eros.png",
+      "/games/newvegas/assets/content-thumbs/features/disfraces_de_faccion.png",
+      "/games/newvegas/assets/content-thumbs/features/facciones.png",
+      "/games/newvegas/assets/content-thumbs/features/hardcore_mode.png",
+      "/games/newvegas/assets/content-thumbs/features/municion_especial.png",
+      "/games/newvegas/assets/content-thumbs/features/reputacion.png"
+    ],
+    "extras": [
+      "/games/newvegas/assets/content-thumbs/extras/encuentros_del_mojave.png",
+      "/games/newvegas/assets/content-thumbs/extras/ruta_legion.png",
+      "/games/newvegas/assets/content-thumbs/extras/ruta_mr_house.png",
+      "/games/newvegas/assets/content-thumbs/extras/ruta_ncr.png",
+      "/games/newvegas/assets/content-thumbs/extras/ruta_yes_man.png"
+    ]
+  },
+  "sourceCovers": [
+    "/games/newvegas/assets/source-covers/dlc/courier_s_stash.jpg",
+    "/games/newvegas/assets/source-covers/dlc/dead_money.jpg",
+    "/games/newvegas/assets/source-covers/dlc/gun_runners_arsenal.jpg",
+    "/games/newvegas/assets/source-covers/dlc/honest_hearts.jpg",
+    "/games/newvegas/assets/source-covers/dlc/lonesome_road.jpg",
+    "/games/newvegas/assets/source-covers/dlc/old_world_blues.jpg"
+  ]
+}

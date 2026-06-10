@@ -1,4 +1,4 @@
-import { ArrowLeft, Eye, Palette, RotateCcw, Save, Speaker, Swords, Target, Volume2, Zap } from "lucide-react";
+import { ArrowLeft, Check, Eye, Monitor, Palette, RotateCcw, Save, Speaker, Swords, Target, Volume2, Zap } from "lucide-react";
 import { playTrack, stopAudio, type TrackCategory } from "../lib/audioEngine";
 import type { AudioManifest } from "../types/game";
 import type { HudColor, ThemeMode, UserSettings } from "../types/profile";
@@ -10,13 +10,9 @@ type Props = {
   onBack: () => void;
 };
 
-const categories: Array<{ id: TrackCategory; label: string; icon: typeof Speaker }> = [
-  { id: "background", label: "Pista principal", icon: Speaker },
-  { id: "combat", label: "Pista de combate", icon: Swords },
-  { id: "exploration", label: "Pista de exploracion", icon: Eye },
-  { id: "vault", label: "Pista de Vault / interior", icon: Speaker },
-  { id: "day", label: "Pista de dia", icon: Zap },
-  { id: "night", label: "Pista de noche", icon: Volume2 },
+const primaryTracks: Array<{ id: TrackCategory; label: string; help: string; icon: typeof Speaker }> = [
+  { id: "background", label: "Pista principal", help: "Musica ambiental en exploracion y menus.", icon: Speaker },
+  { id: "combat", label: "Pista de combate", help: "Musica intensa durante combates.", icon: Swords },
 ];
 
 const hudOptions: Array<{ value: HudColor; label: string }> = [
@@ -59,37 +55,43 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
   }
 
   return (
-    <section className="settings-layout">
-      <div className="settings-heading">
+    <section className="settings-ref">
+      <header className="settings-ref-head">
         <div>
           <h2>Configuracion visual y audio</h2>
           <p>Personaliza fondo, color del HUD, musica, combate, clicks y animaciones.</p>
         </div>
         <button onClick={onBack}><ArrowLeft size={18} /> Volver</button>
-      </div>
+      </header>
 
-      <div className="settings-grid">
-        <article className="settings-card theme-card">
-          <h3><Palette size={20} /> Tema de fondo</h3>
-          <div className="theme-options">
+      <div className="settings-ref-grid">
+        <article className="settings-ref-card settings-ref-theme">
+          <h3><Monitor size={18} /> Tema de fondo</h3>
+          <div className="settings-ref-themes">
             {(["dark", "light"] as ThemeMode[]).map((theme) => (
               <button
                 key={theme}
-                className={`theme-preview ${settings.theme === theme ? "selected" : ""}`}
+                className={`settings-ref-theme-option ${settings.theme === theme ? "selected" : ""}`}
                 onClick={() => patch({ theme })}
               >
-                <span className={theme === "dark" ? "dark-preview" : "light-preview"} />
+                <span className={`settings-ref-theme-art ${theme}`} />
                 <strong>{theme === "dark" ? "Fondo negro" : "Fondo blanco"}</strong>
+                <span className="settings-ref-check">{settings.theme === theme ? <Check size={18} /> : null}</span>
                 <small>{theme === "dark" ? "Yermo / terminal." : "Lectura clara."}</small>
               </button>
             ))}
           </div>
         </article>
 
-        <article className="settings-card hud-card">
-          <h3><Palette size={20} /> Color HUD principal</h3>
-          <div className="hud-preview">
-            <span>HP</span><i /><strong>NE</strong>
+        <article className="settings-ref-card settings-ref-hud">
+          <h3><Palette size={18} /> Color HUD principal</h3>
+          <div className="settings-ref-hud-preview">
+            <span className="vault-boy-line" />
+            <div>
+              <span>HP</span>
+              <i />
+              <strong>NE</strong>
+            </div>
           </div>
           <select
             value={settings.hudColor}
@@ -102,12 +104,12 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           <p>Color caracteristico del terminal Pip-Boy.</p>
         </article>
 
-        <aside className="settings-preview">
-          <h3><Eye size={20} /> Vista previa actual</h3>
-          <div className="preview-image" />
+        <aside className="settings-ref-preview">
+          <h3><Eye size={18} /> Vista previa actual</h3>
+          <div className="settings-ref-preview-image" />
           <p>Asi se vera el HUD y fondo con tu configuracion actual durante el juego.</p>
-          <div className="settings-tip">
-            <Zap size={36} />
+          <div className="settings-ref-tip">
+            <Zap size={32} />
             <div>
               <strong>Consejo</strong>
               <p>Un fondo animado con intensidad media ofrece un equilibrio ideal entre inmersion y rendimiento.</p>
@@ -115,12 +117,12 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           </div>
         </aside>
 
-        <article className="settings-card">
-          <h3>Fondo animado</h3>
-          <div className="config-row">
+        <article className="settings-ref-card settings-ref-row-card settings-ref-animated">
+          <h3><Zap size={18} /> Fondo animado</h3>
+          <div className="settings-ref-control">
             <span>Movimiento ambiental del menu y pantallas.</span>
             <button
-              className={`fake-toggle label-toggle ${settings.animatedBackground ? "on" : ""}`}
+              className={`settings-ref-toggle ${settings.animatedBackground ? "on" : ""}`}
               onClick={() => patch({ animatedBackground: !settings.animatedBackground })}
             >
               {settings.animatedBackground ? "Activado" : "Desactivado"}
@@ -128,9 +130,9 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           </div>
         </article>
 
-        <article className="settings-card">
-          <h3>Intensidad visual</h3>
-          <div className="config-row">
+        <article className="settings-ref-card settings-ref-row-card settings-ref-intensity">
+          <h3><Eye size={18} /> Intensidad visual</h3>
+          <div className="settings-ref-control">
             <span>Ajusta la intensidad de efectos y brillo general.</span>
             <select defaultValue="media">
               <option value="baja">Baja</option>
@@ -140,13 +142,13 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           </div>
         </article>
 
-        {categories.slice(0, 2).map((category) => {
+        {primaryTracks.map((category) => {
           const Icon = category.icon;
           return (
-            <article className="settings-card track-card" key={category.id}>
-              <h3><Icon size={20} /> {category.label}</h3>
-              <div className="config-row">
-                <span>{category.id === "background" ? "Musica ambiental en exploracion y menus." : "Musica intensa durante combates."}</span>
+            <article className={`settings-ref-card settings-ref-track settings-ref-track-${category.id}`} key={category.id}>
+              <h3><Icon size={18} /> {category.label}</h3>
+              <div className="settings-ref-control">
+                <span>{category.help}</span>
                 <select
                   value={settings.tracks[category.id] ?? ""}
                   onChange={(event) => setTrack(category.id, event.target.value)}
@@ -160,60 +162,45 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           );
         })}
 
-        <article className="settings-card">
-          <h3><Volume2 size={20} /> Sonidos</h3>
-          <div className="config-row">
+        <article className="settings-ref-card settings-ref-row-card settings-ref-sounds">
+          <h3><Volume2 size={18} /> Sonidos</h3>
+          <div className="settings-ref-control">
             <span>Clicks de interfaz y sonido ambiental de fondo.</span>
-            <button className={`fake-toggle label-toggle ${settings.audioEnabled ? "on" : ""}`} onClick={toggleAudio}>
+            <button className={`settings-ref-toggle ${settings.audioEnabled ? "on" : ""}`} onClick={toggleAudio}>
               {settings.audioEnabled ? "Activado" : "Desactivado"}
             </button>
           </div>
         </article>
 
-        <article className="settings-card">
-          <h3>Accesibilidad</h3>
-          <div className="config-row">
+        <article className="settings-ref-card settings-ref-row-card settings-ref-accessibility">
+          <h3><Zap size={18} /> Accesibilidad</h3>
+          <div className="settings-ref-control">
             <span>Reducir animaciones para moviles o comodidad visual.</span>
-            <button className="fake-toggle label-toggle">Desactivado</button>
+            <button className="settings-ref-toggle">Desactivado</button>
           </div>
         </article>
 
-        <div className="settings-extra-tracks">
-          {categories.slice(2).map((category) => {
-            const Icon = category.icon;
-            return (
-              <article className="settings-card track-card" key={category.id}>
-                <h3><Icon size={20} /> {category.label}</h3>
-                <select
-                  value={settings.tracks[category.id] ?? ""}
-                  onChange={(event) => setTrack(category.id, event.target.value)}
-                >
-                  {(manifest.tracks[category.id] ?? []).map((track) => (
-                    <option key={track.id} value={track.id}>{track.name}</option>
-                  ))}
-                </select>
-              </article>
-            );
-          })}
-        </div>
       </div>
 
-      <div className="settings-actions">
+      <footer className="settings-ref-actions">
         <button
           onClick={() => {
             const track = manifest.tracks.combat?.find((item) => item.id === settings.tracks.combat);
             playTrack(track?.path, "combat");
           }}
         >
-          <Target size={22} /> Probar combate
+          <Target size={22} />
+          <span><strong>Probar combate</strong><small>Vista previa en combate</small></span>
         </button>
         <button onClick={() => patch({ theme: "dark", hudColor: "green", animatedBackground: true })}>
-          <RotateCcw size={22} /> Restaurar apariencia
+          <RotateCcw size={22} />
+          <span><strong>Restaurar apariencia</strong><small>Volver a valores predeterminados</small></span>
         </button>
         <button className="green-button" onClick={() => onChange(settings)}>
-          <Save size={22} /> Guardar personalizacion
+          <Save size={22} />
+          <span><strong>Guardar personalizacion</strong><small>Aplicar y guardar cambios</small></span>
         </button>
-      </div>
+      </footer>
     </section>
   );
 }

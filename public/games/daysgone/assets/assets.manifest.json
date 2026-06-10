@@ -1,0 +1,28 @@
+{
+  "gameId": "daysgone",
+  "basePath": "/games/daysgone/assets",
+  "cover": "/games/daysgone/assets/cover/daysgone.svg",
+  "hero": {
+    "generated": "/games/daysgone/assets/hero/generated.png",
+    "internet": "/games/daysgone/assets/hero/internet.jpg"
+  },
+  "contentThumbs": {
+    "dlc": [
+      "/games/daysgone/assets/content-thumbs/dlc/bike_skins_pack.png",
+      "/games/daysgone/assets/content-thumbs/dlc/challenge_mode.png",
+      "/games/daysgone/assets/content-thumbs/dlc/horde_challenges.png",
+      "/games/daysgone/assets/content-thumbs/dlc/survival_mode.png"
+    ],
+    "features": [
+      "/games/daysgone/assets/content-thumbs/features/confianza_de_campamentos.png",
+      "/games/daysgone/assets/content-thumbs/features/gasolina.png",
+      "/games/daysgone/assets/content-thumbs/features/hordas.png",
+      "/games/daysgone/assets/content-thumbs/features/infestaciones.png",
+      "/games/daysgone/assets/content-thumbs/features/moto.png",
+      "/games/daysgone/assets/content-thumbs/features/reparacion.png",
+      "/games/daysgone/assets/content-thumbs/features/ruido_y_persecucion.png"
+    ],
+    "extras": []
+  },
+  "sourceCovers": []
+}

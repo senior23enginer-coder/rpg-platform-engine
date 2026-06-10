@@ -14,7 +14,7 @@ import { ProfileScreen } from "./screens/ProfileScreen";
 import { RulesScreen } from "./screens/RulesScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import type { Screen } from "./screens/types";
-import type { GameConfig } from "./types/game";
+import type { AudioManifest, GameConfig } from "./types/game";
 import type { PlayerProfile, UserSettings } from "./types/profile";
 import { seedCharacters, seedGames } from "./lib/seedLibrary";
 import { soundLibrary } from "./lib/soundLibrary";
@@ -27,6 +27,21 @@ import {
 } from "./lib/playerProfile";
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
+function manifestForGame(gameId: string, manifest: AudioManifest): AudioManifest {
+  return {
+    tracks: Object.fromEntries(
+      Object.entries(manifest.tracks).map(([category, tracks]) => [
+        category,
+        tracks.map((track) => ({
+          ...track,
+          mode: "file" as const,
+          path: track.path?.replace(/^\/sounds\//, `/games/${gameId}/audio/sounds/`),
+        })),
+      ])
+    ),
+  };
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [games, setGames] = useState<GameConfig[]>(seedGames);
@@ -36,6 +51,10 @@ export default function App() {
   const activeGameSaves = getGameSaves(profile, activeGame.id);
   const activeSave = getActiveSave(profile, activeGame.id);
   const activeCampaign = getActiveCampaign(activeGame, profile);
+  const activeAudioManifest = useMemo(
+    () => manifestForGame(activeGame.id, soundLibrary),
+    [activeGame.id]
+  );
 
   const recommendedGames = useMemo(() => {
     const pool = games.filter((game) => game.id !== activeGame.id);
@@ -55,11 +74,11 @@ export default function App() {
       return;
     }
 
-    const track = soundLibrary.tracks.background?.find(
+    const track = activeAudioManifest.tracks.background?.find(
       (item) => item.id === profile.settings.tracks.background
     );
     playTrack(track?.path, "background");
-  }, [profile.settings.audioEnabled, profile.settings.tracks.background]);
+  }, [activeAudioManifest, profile.settings.audioEnabled, profile.settings.tracks.background]);
 
   function updateContent(category: "dlc" | "features" | "extras", itemId: string) {
     setGames((currentGames) =>
@@ -239,7 +258,41 @@ export default function App() {
               onContent={() => setScreen("content")}
               onBack={() => setScreen("home")}
               onStart={(characterName, attributes) => {
-                console.log("Starting game", { characterName, attributes });
+                const campaignId = activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
+                const now = new Date().toISOString();
+                const saveId = `${activeGame.id}_${Date.now()}`;
+                const attributeLevel = Math.max(
+                  1,
+                  Math.round(Object.values(attributes).reduce((sum, value) => sum + Number(value || 0), 0) / 8)
+                );
+                setProfile((current) => ({
+                  ...current,
+                  activeGameId: activeGame.id,
+                  saves: [
+                    {
+                      saveId,
+                      gameId: activeGame.id,
+                      campaignId,
+                      name: `${characterName} - ${activeGame.name}`,
+                      currentMission: activeCampaign?.title ?? "Explorando Yermo",
+                      currentZone: activeGame.name,
+                      level: attributeLevel,
+                      updatedAt: now,
+                    },
+                    ...current.saves,
+                  ],
+                  history: current.history.map((entry) =>
+                    entry.gameId === activeGame.id
+                      ? {
+                          ...entry,
+                          activeCampaignId: campaignId,
+                          activeSaveId: saveId,
+                          lastPlayedAt: now,
+                          sessions: entry.sessions + 1,
+                        }
+                      : entry
+                  ),
+                }));
                 setScreen("home");
               }}
             />
@@ -257,7 +310,7 @@ export default function App() {
           {screen === "dice" && <DiceScreen />}
           {screen === "settings" && (
             <SettingsScreen
-              manifest={soundLibrary}
+              manifest={activeAudioManifest}
               settings={profile.settings}
               onChange={updateSettings}
               onBack={() => setScreen("home")}

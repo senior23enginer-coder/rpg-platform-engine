@@ -1,0 +1,64 @@
+{
+  "gameId": "fallout76",
+  "basePath": "/games/fallout76/assets",
+  "cover": "/games/fallout76/assets/cover/fallout76.svg",
+  "hero": {
+    "generated": "/games/fallout76/assets/hero/generated.png",
+    "internet": "/games/fallout76/assets/hero/internet.jpg"
+  },
+  "contentThumbs": {
+    "dlc": [
+      "/games/fallout76/assets/content-thumbs/dlc/atlantic_city_america_s_playground.png",
+      "/games/fallout76/assets/content-thumbs/dlc/atlantic_city_boardwalk_paradise.png",
+      "/games/fallout76/assets/content-thumbs/dlc/fallout_worlds.png",
+      "/games/fallout76/assets/content-thumbs/dlc/invaders_from_beyond.png",
+      "/games/fallout76/assets/content-thumbs/dlc/locked_and_loaded.png",
+      "/games/fallout76/assets/content-thumbs/dlc/mutation_invasion.png",
+      "/games/fallout76/assets/content-thumbs/dlc/night_of_the_moth.png",
+      "/games/fallout76/assets/content-thumbs/dlc/nuclear_winter.png",
+      "/games/fallout76/assets/content-thumbs/dlc/nuka_world_on_tour.png",
+      "/games/fallout76/assets/content-thumbs/dlc/once_in_a_blue_moon.png",
+      "/games/fallout76/assets/content-thumbs/dlc/one_wasteland_for_all.png",
+      "/games/fallout76/assets/content-thumbs/dlc/skyline_valley.png",
+      "/games/fallout76/assets/content-thumbs/dlc/steel_dawn.png",
+      "/games/fallout76/assets/content-thumbs/dlc/steel_reign.png",
+      "/games/fallout76/assets/content-thumbs/dlc/test_your_metal.png",
+      "/games/fallout76/assets/content-thumbs/dlc/the_legendary_run.png",
+      "/games/fallout76/assets/content-thumbs/dlc/the_pitt.png",
+      "/games/fallout76/assets/content-thumbs/dlc/wastelanders.png",
+      "/games/fallout76/assets/content-thumbs/dlc/wild_appalachia.png"
+    ],
+    "features": [
+      "/games/fallout76/assets/content-thumbs/features/c_a_m_p.png",
+      "/games/fallout76/assets/content-thumbs/features/cartas_perk.png",
+      "/games/fallout76/assets/content-thumbs/features/daily_ops.png",
+      "/games/fallout76/assets/content-thumbs/features/equipos_publicos.png",
+      "/games/fallout76/assets/content-thumbs/features/eventos_publicos.png",
+      "/games/fallout76/assets/content-thumbs/features/expediciones.png",
+      "/games/fallout76/assets/content-thumbs/features/legendarios.png",
+      "/games/fallout76/assets/content-thumbs/features/mutaciones.png"
+    ],
+    "extras": []
+  },
+  "sourceCovers": [
+    "/games/fallout76/assets/source-covers/dlc/atlantic_city_america_s_playground.webp",
+    "/games/fallout76/assets/source-covers/dlc/atlantic_city_boardwalk_paradise.png",
+    "/games/fallout76/assets/source-covers/dlc/fallout_worlds.png",
+    "/games/fallout76/assets/source-covers/dlc/invaders_from_beyond.webp",
+    "/games/fallout76/assets/source-covers/dlc/locked_and_loaded.png",
+    "/games/fallout76/assets/source-covers/dlc/mutation_invasion.png",
+    "/games/fallout76/assets/source-covers/dlc/night_of_the_moth.webp",
+    "/games/fallout76/assets/source-covers/dlc/nuclear_winter.png",
+    "/games/fallout76/assets/source-covers/dlc/nuka_world_on_tour.jpg",
+    "/games/fallout76/assets/source-covers/dlc/once_in_a_blue_moon.webp",
+    "/games/fallout76/assets/source-covers/dlc/one_wasteland_for_all.jpg",
+    "/games/fallout76/assets/source-covers/dlc/skyline_valley.webp",
+    "/games/fallout76/assets/source-covers/dlc/steel_dawn.png",
+    "/games/fallout76/assets/source-covers/dlc/steel_reign.jpg",
+    "/games/fallout76/assets/source-covers/dlc/test_your_metal.jpg",
+    "/games/fallout76/assets/source-covers/dlc/the_legendary_run.png",
+    "/games/fallout76/assets/source-covers/dlc/the_pitt.png",
+    "/games/fallout76/assets/source-covers/dlc/wastelanders.png",
+    "/games/fallout76/assets/source-covers/dlc/wild_appalachia.png"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "gameId": "stalker",
+  "basePath": "/games/stalker/assets",
+  "cover": "/games/stalker/assets/cover/stalker.svg",
+  "hero": {
+    "generated": "/games/stalker/assets/hero/generated.png",
+    "internet": "/games/stalker/assets/hero/internet.jpg"
+  },
+  "contentThumbs": {
+    "dlc": [
+      "/games/stalker/assets/content-thumbs/dlc/anomaly_module.png",
+      "/games/stalker/assets/content-thumbs/dlc/call_of_pripyat_rules.png",
+      "/games/stalker/assets/content-thumbs/dlc/clear_sky_rules.png",
+      "/games/stalker/assets/content-thumbs/dlc/faction_war_pack.png",
+      "/games/stalker/assets/content-thumbs/dlc/gamma_style_survival.png"
+    ],
+    "features": [
+      "/games/stalker/assets/content-thumbs/features/anomalias.png",
+      "/games/stalker/assets/content-thumbs/features/artefactos.png",
+      "/games/stalker/assets/content-thumbs/features/condicion_de_armas.png",
+      "/games/stalker/assets/content-thumbs/features/detectores.png",
+      "/games/stalker/assets/content-thumbs/features/economia_de_supervivencia.png",
+      "/games/stalker/assets/content-thumbs/features/emisiones.png",
+      "/games/stalker/assets/content-thumbs/features/facciones.png",
+      "/games/stalker/assets/content-thumbs/features/mutantes.png",
+      "/games/stalker/assets/content-thumbs/features/radiacion.png"
+    ],
+    "extras": []
+  },
+  "sourceCovers": [
+    "/games/stalker/assets/source-covers/dlc/call_of_pripyat_rules.jpg",
+    "/games/stalker/assets/source-covers/dlc/clear_sky_rules.jpg"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "gameId": "fallout4",
+  "basePath": "/games/fallout4/assets",
+  "cover": "/games/fallout4/assets/cover/fallout4.svg",
+  "hero": {
+    "generated": "/games/fallout4/assets/hero/generated.png",
+    "internet": "/games/fallout4/assets/hero/internet.jpg"
+  },
+  "contentThumbs": {
+    "dlc": [
+      "/games/fallout4/assets/content-thumbs/dlc/automatron.png",
+      "/games/fallout4/assets/content-thumbs/dlc/contraptions_workshop.png",
+      "/games/fallout4/assets/content-thumbs/dlc/far_harbor.png",
+      "/games/fallout4/assets/content-thumbs/dlc/high_resolution_texture_pack.png",
+      "/games/fallout4/assets/content-thumbs/dlc/nuka_world.png",
+      "/games/fallout4/assets/content-thumbs/dlc/vault_tec_workshop.png",
+      "/games/fallout4/assets/content-thumbs/dlc/wasteland_workshop.png"
+    ],
+    "features": [
+      "/games/fallout4/assets/content-thumbs/features/asentamientos.png",
+      "/games/fallout4/assets/content-thumbs/features/compa_eros.png",
+      "/games/fallout4/assets/content-thumbs/features/crafting_avanzado.png",
+      "/games/fallout4/assets/content-thumbs/features/mods_de_armas_y_armaduras.png",
+      "/games/fallout4/assets/content-thumbs/features/radiacion_avanzada.png",
+      "/games/fallout4/assets/content-thumbs/features/servoarmadura.png",
+      "/games/fallout4/assets/content-thumbs/features/vats_tactico.png"
+    ],
+    "extras": [
+      "/games/fallout4/assets/content-thumbs/extras/ataques_a_asentamientos.png",
+      "/games/fallout4/assets/content-thumbs/extras/clima_radiactivo.png",
+      "/games/fallout4/assets/content-thumbs/extras/enemigos_legendarios.png",
+      "/games/fallout4/assets/content-thumbs/extras/misiones_radiantes.png",
+      "/games/fallout4/assets/content-thumbs/extras/modo_supervivencia.png"
+    ]
+  },
+  "sourceCovers": [
+    "/games/fallout4/assets/source-covers/dlc/automatron.jpg",
+    "/games/fallout4/assets/source-covers/dlc/contraptions_workshop.jpg",
+    "/games/fallout4/assets/source-covers/dlc/far_harbor.jpg",
+    "/games/fallout4/assets/source-covers/dlc/high_resolution_texture_pack.jpg",
+    "/games/fallout4/assets/source-covers/dlc/nuka_world.jpg",
+    "/games/fallout4/assets/source-covers/dlc/vault_tec_workshop.jpg",
+    "/games/fallout4/assets/source-covers/dlc/wasteland_workshop.jpg"
+  ]
+}

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import { ArrowLeft, CheckCircle, Filter, Plus, Search, Settings, Star } from "lucide-react";
 import type { GameConfig } from "../types/game";
 
@@ -44,6 +45,14 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
       return a.name.localeCompare(b.name);
     });
   }, [activeId, games, installedOnly, query, sortMode]);
+  const artFor = (gameId: string): CSSProperties => ({
+    backgroundImage: `
+      linear-gradient(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.28)),
+      url("/games/${gameId}/assets/hero/internet.jpg"),
+      url("/games/${gameId}/assets/hero/generated.png"),
+      url("/games/${gameId}/assets/cover/${gameId}.svg")
+    `,
+  });
 
   return (
     <section className="screen-panel library-screen-ref">
@@ -103,7 +112,7 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
 
           return (
             <article key={game.id} className={`library-ref-card game-${game.id} ${active ? "active" : ""}`}>
-              <div className="library-card-art" />
+              <div className="library-card-art" style={artFor(game.id)} />
               <span className={`library-install-badge ${installed ? "installed" : ""}`}>
                 {installed ? "Instalado" : "No instalado"}
               </span>

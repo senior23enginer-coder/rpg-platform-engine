@@ -1,4 +1,5 @@
 import { ArrowLeft, Box, Compass, Crosshair, HeartPulse, Plus, Settings, User, Users, Zap } from "lucide-react";
+import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 import type { CharacterSheetConfig, GameConfig } from "../types/game";
 
@@ -15,6 +16,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   const [players, setPlayers] = useState(1);
   const [survival, setSurvival] = useState(false);
   const [mode, setMode] = useState<"guided" | "free">("guided");
+  const [sheetReview, setSheetReview] = useState(false);
   const [attributes, setAttributes] = useState<Record<string, number>>(() =>
     Object.fromEntries(characters.attributes.map((attr) => [attr.id, attr.default]))
   );
@@ -24,13 +26,27 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   }, [game]);
 
   const campaign = game.campaigns[0];
+  const gameArtStyle = {
+    "--active-game-art": `url("/games/${game.id}/assets/hero/generated.png")`,
+    "--active-game-net-art": `url("/games/${game.id}/assets/hero/internet.jpg")`,
+  } as CSSProperties;
+  const attributeTotal = Object.values(attributes).reduce((sum, value) => sum + Number(value || 0), 0);
+
+  function handleStart() {
+    if (!sheetReview) {
+      setSheetReview(true);
+      return;
+    }
+
+    onStart(characterName.trim() || "Superviviente", attributes);
+  }
 
   return (
-    <section className="new-game-layout">
+    <section className="new-game-layout" style={gameArtStyle}>
       <div className="new-game-heading">
         <div>
           <h2>Nueva partida</h2>
-          <p>Comienza una nueva aventura en el Yermo Capital.</p>
+          <p>Comienza una nueva aventura en {game.name}.</p>
         </div>
         <button onClick={onBack}><ArrowLeft size={18} /> Volver</button>
       </div>
@@ -72,7 +88,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
           <div className="campaign-choice">
             <div className="campaign-choice-art" />
             <div>
-              <strong>{campaign?.title ?? "Explorando Yermo"}</strong>
+              <strong>{campaign?.title ?? `Explorando ${game.name}`}</strong>
               <small>{campaign?.implemented ? "Campana jugable" : "Plantilla futura"} - {campaign?.id ?? "sin_mision"}</small>
               <p>{campaign?.description ?? "Exploracion libre hasta definir misiones."}</p>
             </div>
@@ -129,6 +145,30 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
           </div>
         </section>
 
+        {sheetReview && (
+          <section className="setup-block character-sheet-confirm">
+            <h3><User size={20} /> Hoja de personaje</h3>
+            <div className="character-sheet-card">
+              <div>
+                <small>Personaje principal</small>
+                <strong>{characterName.trim() || "Superviviente"}</strong>
+                <span>{players} jugador{players > 1 ? "es" : ""} - {mode === "guided" ? "Campana guiada" : "Modo libre"}</span>
+              </div>
+              <div className="character-attribute-list">
+                {characters.attributes.slice(0, 8).map((attr) => (
+                  <p key={attr.id}>
+                    <span>{attr.id}</span>
+                    <strong>{attributes[attr.id] ?? attr.default}</strong>
+                  </p>
+                ))}
+              </div>
+              <p>
+                Total de atributos: <strong>{attributeTotal}</strong>. Esta ficha se usara para crear el registro inicial de la partida.
+              </p>
+            </div>
+          </section>
+        )}
+
         <section className="setup-block survival-block">
           <h3><HeartPulse size={20} /> 5. Supervivencia</h3>
           <p>Hambre, sed, cansancio, clima y recursos.</p>
@@ -147,9 +187,9 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         </section>
       </div>
 
-      <button className="start-button" onClick={() => onStart(characterName, attributes)}>
-        <Zap size={36} /> Iniciar partida
-        <small>Comenzar tu aventura en el Yermo Capital</small>
+      <button className="start-button" onClick={handleStart}>
+        <Zap size={36} /> {sheetReview ? "Confirmar e iniciar partida" : "Crear hoja de personaje"}
+        <small>{sheetReview ? `Comenzar tu aventura en ${game.name}` : "Revisar personaje antes de comenzar"}</small>
       </button>
     </section>
   );
