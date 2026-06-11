@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./styles/app.css";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from "./components/TopBar";
+import { AuthScreen } from "./screens/AuthScreen";
 import { ContentScreen } from "./screens/ContentScreen";
 import { DiceScreen } from "./screens/DiceScreen";
 import { FilesScreen } from "./screens/FilesScreen";
@@ -18,6 +19,7 @@ import type { AudioManifest, GameConfig } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, UserSettings } from "./types/profile";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
+import { createSaveGameDocument, getSaveGamePath } from "./lib/saveGameStorage";
 import {
   getActiveCampaign,
   getActiveSave,
@@ -140,13 +142,7 @@ export default function App() {
   }
 
   function continueGame() {
-    if (activeGameSaves.length > 1) {
-      setScreen("load");
-      return;
-    }
-
     if (activeSave) loadSave(activeSave.saveId);
-    else setScreen("newGame");
   }
 
   function createNewGame() {
@@ -191,6 +187,15 @@ export default function App() {
     setScreen("jsonEditor");
   }
 
+  if (!profile.signedIn) {
+    return (
+      <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
+        <div className="animated-bg" />
+        <AuthScreen profile={profile} onAccess={setProfile} />
+      </div>
+    );
+  }
+
   return (
     <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
       <div className="animated-bg" />
@@ -214,6 +219,7 @@ export default function App() {
               recommended={recommendedGames}
               onContinue={continueGame}
               onDice={() => setScreen("dice")}
+              onDetails={() => setScreen("content")}
               onSelectRecommended={(gameId) => selectGame(gameId, "content")}
             />
           )}
@@ -232,7 +238,7 @@ export default function App() {
           {screen === "content" && (
             <ContentScreen
               game={activeGame}
-              onBack={() => setScreen("library")}
+              onBack={() => setScreen("home")}
               onToggle={updateContent}
               onSetAll={(enabled) => {
                 setGames((currentGames) =>
@@ -260,38 +266,46 @@ export default function App() {
               characters={seedCharacters}
               onContent={() => setScreen("content")}
               onBack={() => setScreen("home")}
-              onStart={(characterName) => {
+              onStart={(characterName, attributes) => {
                 const campaignId = activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
                 const now = new Date().toISOString();
                 const saveId = `${activeGame.id}_${Date.now()}`;
-                setProfile((current) => ({
-                  ...current,
-                  activeGameId: activeGame.id,
-                  saves: [
-                    {
-                      saveId,
-                      gameId: activeGame.id,
-                      campaignId,
-                      playerName: characterName,
-                      name: `${characterName} - ${activeGame.name}`,
-                      currentMission: activeCampaign?.title ?? "Explorando Yermo",
-                      currentZone: activeGame.name,
-                      level: 1,
-                      sessions: 0,
-                      updatedAt: now,
-                    },
-                    ...current.saves,
-                  ],
-                  history: upsertHistoryEntry(current.history, {
+                const storagePath = getSaveGamePath(activeGame.id, profile.id, saveId);
+                setProfile((current) => {
+                  const newSave = {
+                    saveId,
                     gameId: activeGame.id,
+                    campaignId,
+                    userId: current.id,
+                    storagePath,
+                    playerName: characterName,
+                    name: `${characterName} - ${activeGame.name}`,
+                    currentMission: activeCampaign?.title ?? "Explorando Yermo",
+                    currentZone: activeGame.name,
+                    level: 1,
                     sessions: 0,
-                    activeCampaignId: campaignId,
-                    activeSaveId: saveId,
-                    lastPlayedAt: now,
-                  }),
-                  lastActivityAt: now,
-                  gameProfilesStarted: current.saves.length + 1,
-                }));
+                    playTimeHours: 0,
+                    daysElapsed: 0,
+                    createdAt: now,
+                    updatedAt: now,
+                  };
+                  createSaveGameDocument({ game: activeGame, profile: current, save: newSave, attributes });
+
+                  return {
+                    ...current,
+                    activeGameId: activeGame.id,
+                    saves: [newSave, ...current.saves],
+                    history: upsertHistoryEntry(current.history, {
+                      gameId: activeGame.id,
+                      sessions: 0,
+                      activeCampaignId: campaignId,
+                      activeSaveId: saveId,
+                      lastPlayedAt: now,
+                    }),
+                    lastActivityAt: now,
+                    gameProfilesStarted: current.saves.length + 1,
+                  };
+                });
                 setScreen("home");
               }}
             />

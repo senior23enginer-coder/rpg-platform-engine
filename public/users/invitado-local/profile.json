@@ -1,14 +1,22 @@
 {
   "id": "invitado-local",
   "name": "Invitado local",
+  "username": "invitado-local",
+  "password": "",
   "level": 1,
   "basePath": "/users/invitado-local",
   "profilePath": "/users/invitado-local/profile.json",
   "openSessions": 0,
   "gameProfilesStarted": 0,
   "completedCampaigns": 0,
+  "lastLoginAt": "",
   "email": "",
   "avatar": "avatar.svg",
+  "avatarFit": {
+    "x": 50,
+    "y": 50,
+    "scale": 1
+  },
   "signedIn": false,
   "activeGameId": "daysgone",
   "history": [],

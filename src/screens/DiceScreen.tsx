@@ -5,6 +5,12 @@ import type { GameConfig } from "../types/game";
 import { diceCatalog } from "../lib/gameLibrary";
 
 function parseRoll(expression: string) {
+  const cleanExpression = expression.trim().toLowerCase();
+  if (cleanExpression === "moneda" || cleanExpression === "coin") {
+    const face = Math.random() > 0.5 ? 1 : 2;
+    return { rolls: [face], sides: 2, modifier: 0, total: face };
+  }
+
   const match = expression.replace(/\s+/g, "").match(/^(\d*)d(\d+|%)([+-]\d+)?$/i);
   if (!match) return null;
 
@@ -148,11 +154,13 @@ function loadDieBodyTexture(catalogPath: string | undefined, sides: number, game
 }
 
 function formatDieValue(sides: number, value: number) {
+  if (sides === 2) return value === 1 ? "C" : "S";
   if (sides === 100 && value === 100) return "00";
   return String(value);
 }
 
 function labelValueFor(sides: number, index: number, result: number) {
+  if (sides === 2) return index % 2 === 0 ? 2 : 1;
   if (index === 0) return result;
   if (sides === 100) return ((index * 10) % 100) || 100;
   return ((index - 1) % sides) + 1;
@@ -594,7 +602,7 @@ export function DiceScreen({ game }: { game: GameConfig }) {
         </div>
 
         <div className="dice-buttons">
-          {[2, 3, 4, 6, 8, 10, 12, 20, 100].map((option) => (
+          {[4, 6, 8, 10, 12, 20].map((option) => (
             <button
               key={option}
               className={sides === option ? "selected" : ""}
@@ -606,6 +614,15 @@ export function DiceScreen({ game }: { game: GameConfig }) {
               d{option}
             </button>
           ))}
+          <button
+            className={sides === 2 ? "selected" : ""}
+            onClick={() => {
+              setExpression("moneda");
+              roll("moneda");
+            }}
+          >
+            Moneda
+          </button>
         </div>
 
         <div className="dice-expression">
@@ -618,6 +635,12 @@ export function DiceScreen({ game }: { game: GameConfig }) {
 
       <article className="dice-history-card">
         <h3>Resultado / historial</h3>
+        <div className="dice-engine-note">
+          <strong>Motor 3D actual</strong>
+          <p>Render: Three.js. Fisica simulada manual para rebotes, rotacion y asentamiento.</p>
+          <strong>Evaluacion recomendada</strong>
+          <p>React Three Fiber + @react-three/rapier para dados d4, d6, d8, d10, d12, d20 y moneda con cuerpos rigidos, colliders y gravedad real.</p>
+        </div>
         <div className="history-list">
           {history.length === 0 && <p>Aun no has tirado dados.</p>}
           {history.map((entry, index) => (

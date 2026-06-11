@@ -2,8 +2,8 @@
   "id": "daysgone",
   "name": "Days Gone",
   "short": "DG",
-  "description": "Days Gone es un juego de rol, aventura y mundo abierto en tierras salvajes dos anos despues de una pandemia mundial.",
-  "loadedDescription": "Days Gone es un juego de rol, aventura y mundo abierto que transcurre en tierras salvajes y hostiles dos anos despues de una devastadora pandemia mundial. Conviertete en Deacon St. John, un cazarrecompensas que recorre los caminos destrozados y lucha brutalmente para sobrevivir y encontrar la razon de su existencia.\n\nUn mundo abierto hostil: con la potencia de PlayStation 4 y Unreal Engine 4, Days Gone ofrece una experiencia increiblemente realista y detallada de mundo abierto. Sumergete en gigantescos y hostiles entornos y explora sus secretos. Hurga en vehiculos, casas, paradas de camiones y pueblos abandonados en busca de recursos. Pero ten cuidado: los ciclos de dia y noche, junto con los sistemas climaticos dinamicos, afectan el gameplay y el comportamiento de los enemigos.\n\nUn brutal sistema sandbox de rol: perfecciona tu supervivencia con una combinacion amplia de estrategias y resuelve cada situacion desde la interpretacion, la exploracion, el sigilo, el combate, el saqueo y la gestion de recursos. Crea elementos personalizados con las piezas y partes que encuentras en el campo, desde brutales armas de pelea hasta trampas y mas. Actua con inteligencia, porque cada decision marca la diferencia entre la vida y la muerte.",
+  "description": "Days Gone es un juego de rol, aventura y mundo abierto en tierras salvajes dos años después de una pandemia mundial.",
+  "loadedDescription": "Days Gone es un juego de rol, aventura y mundo abierto que transcurre en tierras salvajes y hostiles dos años después de una devastadora pandemia mundial. Conviértete en Deacon St. John, un cazarrecompensas que recorre los caminos destrozados y lucha brutalmente para sobrevivir y encontrar la razón de su existencia.\n\nUn mundo abierto hostil: con la potencia de PlayStation 4 y Unreal Engine 4, Days Gone ofrece una experiencia increíblemente realista y detallada de mundo abierto. Sumérgete en gigantescos y hostiles entornos y explora sus secretos. Hurga en vehículos, casas, paradas de camiones y pueblos abandonados en busca de recursos. Pero ten cuidado: los ciclos de día y noche, junto con los sistemas climáticos dinámicos, afectan el gameplay y el comportamiento de los enemigos.\n\nUn brutal sistema sandbox de rol: perfecciona tu supervivencia con una combinación amplia de estrategias y resuelve cada situación desde la interpretación, la exploración, el sigilo, el combate, el saqueo y la gestión de recursos. Crea elementos personalizados con las piezas y partes que encuentras en el campo, desde brutales armas de pelea hasta trampas y más. Actúa con inteligencia, porque cada decisión marca la diferencia entre la vida y la muerte.",
   "maxPlayers": 2,
   "playerOptions": [
     {
@@ -27,81 +27,78 @@
   "templateFuture": true,
   "campaigns": [
     {
-      "id": "farewell_wilderness",
-      "title": "Farewell Wilderness",
-      "implemented": false,
+      "id": "daysgone_main_story",
+      "title": "Historia principal de Days Gone",
+      "implemented": true,
       "image": "assets/hero/campaign.webp",
-      "description": "Plantilla futura para campamentos, rutas y hordas."
+      "description": "La civilización murió en Farewell. Ahora solo quedan caminos rotos, campamentos aislados y hordas hambrientas.",
+      "freeModeSheetImage": "assets/characters/free-character-sheet.png",
+      "characters": [
+        {
+          "id": "deacon_st_john",
+          "name": "Deacon St. John",
+          "role": "Errante, cazarrecompensas y motociclista",
+          "sheetImage": "assets/characters/campaign-character-sheet.png",
+          "attributes": {
+            "STR": 6,
+            "PER": 7,
+            "END": 7,
+            "CHA": 4,
+            "INT": 5,
+            "AGI": 7,
+            "LCK": 5
+          }
+        },
+        {
+          "id": "boozer",
+          "name": "Boozer",
+          "role": "Compañero de ruta y hermano de confianza",
+          "sheetImage": "assets/characters/campaign-character-sheet.png",
+          "attributes": {
+            "STR": 7,
+            "PER": 5,
+            "END": 8,
+            "CHA": 5,
+            "INT": 4,
+            "AGI": 5,
+            "LCK": 4
+          }
+        }
+      ]
     }
   ],
   "content": {
     "dlc": [
       {
-        "id": "challenge_mode",
-        "name": "Challenge Mode",
-        "description": "Modulo estructurado listo para completar.",
+        "id": "broken_brother",
+        "name": "BROKEN BROTHER",
+        "description": "Boozer intenta sobrevivir sin Deacon, reconstruyendo su propósito entre campamentos, deudas viejas y una guerra contra los Rippers.",
         "enabled": false
       },
       {
-        "id": "survival_mode",
-        "name": "Survival Mode",
-        "description": "Modulo estructurado listo para completar.",
-        "enabled": false
-      },
-      {
-        "id": "bike_skins_pack",
-        "name": "Bike Skins Pack",
-        "description": "Modulo estructurado listo para completar.",
-        "enabled": false
-      },
-      {
-        "id": "horde_challenges",
-        "name": "Horde Challenges",
-        "description": "Modulo estructurado listo para completar.",
+        "id": "sarah_the_cure",
+        "name": "SARAH: THE CURE",
+        "description": "Sarah busca una cura entre laboratorios perdidos, secretos de NERO y decisiones que pueden salvar o condenar a los sobrevivientes.",
         "enabled": false
       }
     ],
     "features": [
       {
-        "id": "moto",
-        "name": "Moto",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "gasolina",
-        "name": "Gasolina",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "reparacion",
-        "name": "Reparacion",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "hordas",
-        "name": "Hordas",
-        "description": "Regla o sistema disponible para este juego.",
+        "id": "modo_supervivencia",
+        "name": "Modo supervivencia",
+        "description": "Hambre, cansancio, recursos escasos, clima hostil y decisiones duras para sobrevivir en Oregon.",
         "enabled": true
       },
       {
         "id": "infestaciones",
         "name": "Infestaciones",
-        "description": "Regla o sistema disponible para este juego.",
+        "description": "Zonas tomadas por nidos que alteran rutas, descanso, saqueo y seguridad de los campamentos.",
         "enabled": true
       },
       {
-        "id": "confianza_de_campamentos",
-        "name": "Confianza de campamentos",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "ruido_y_persecucion",
-        "name": "Ruido y persecucion",
-        "description": "Regla o sistema disponible para este juego.",
+        "id": "hordas",
+        "name": "Hordas",
+        "description": "Enjambres masivos de freakers con patrones, territorios y presion constante sobre los jugadores.",
         "enabled": true
       }
     ],
@@ -126,5 +123,10 @@
     "audio": "audio/audio.manifest.json"
   },
   "characterSheet": "characters/characters.json",
-  "rules": "rules/rules.json"
+  "rules": "rules/rules.json",
+  "category": "Rol de supervivencia",
+  "modes": {
+    "free": true,
+    "survival": true
+  }
 }

@@ -157,6 +157,30 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
         </article>
       )}
 
+      <div className="content-section campaign-content-section">
+        <h3>Campañas</h3>
+        <div className="content-grid">
+          {game.campaigns.map((campaign) => (
+            <article className="content-card content-campaign" key={campaign.id}>
+              <div
+                className="content-icon content-image"
+                style={{
+                  "--content-card-thumb": `url("${resolveGameAsset(game, campaign.image ?? game.assets?.campaignImage ?? game.assets?.hero ?? "assets/hero/internet.jpg")}")`,
+                  "--content-card-art": `url("${resolveGameAsset(game, game.assets?.generatedHero ?? "assets/hero/generated.png")}")`,
+                  "--content-card-net-art": `url("${resolveGameAsset(game, game.assets?.hero ?? "assets/hero/internet.jpg")}")`,
+                } as CSSProperties}
+              />
+              <div>
+                <h3>{campaign.title}</h3>
+                <p>{campaign.description}</p>
+                <small>ID: {campaign.id}</small>
+                <strong>{campaign.implemented ? "Jugable" : "Plantilla futura"}</strong>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+
       {(["dlc", "features", "extras"] as const).map((category) => (
         <div className="content-section" key={category}>
           <h3>{category === "dlc" ? "DLC / expansiones" : category === "features" ? "Features / reglas del juego" : "Extras"}</h3>

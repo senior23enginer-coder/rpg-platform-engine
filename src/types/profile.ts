@@ -27,12 +27,17 @@ export type PlayerSave = {
   saveId: string;
   gameId: string;
   campaignId: string;
+  userId?: string;
+  storagePath?: string;
   playerName: string;
   name: string;
   currentMission?: string;
   currentZone: string;
   level: number;
   sessions: number;
+  playTimeHours?: number;
+  daysElapsed?: number;
+  createdAt?: string;
   updatedAt: string;
 };
 
@@ -47,6 +52,8 @@ export type GameHistoryEntry = {
 export type PlayerProfile = {
   id: string;
   name: string;
+  username?: string;
+  password?: string;
   level: number;
   basePath?: string;
   profilePath?: string;
@@ -54,8 +61,17 @@ export type PlayerProfile = {
   gameProfilesStarted: number;
   completedCampaigns: number;
   lastActivityAt?: string;
+  lastLoginAt?: string;
+  previousLastLoginAt?: string;
+  passwordResetCode?: string;
+  lastPasswordResetRequestAt?: string;
   email?: string;
   avatar?: string;
+  avatarFit?: {
+    x: number;
+    y: number;
+    scale: number;
+  };
   signedIn: boolean;
   activeGameId: string;
   history: GameHistoryEntry[];

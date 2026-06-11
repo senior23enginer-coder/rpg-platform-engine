@@ -12,6 +12,7 @@ type Props = {
   recommended: GameConfig[];
   onContinue: () => void;
   onDice: () => void;
+  onDetails: () => void;
   onSelectRecommended: (gameId: string) => void;
 };
 
@@ -23,6 +24,7 @@ export function HomeScreen({
   recommended,
   onContinue,
   onDice,
+  onDetails,
   onSelectRecommended,
 }: Props) {
   const activeCount = Object.values(game.content)
@@ -31,6 +33,9 @@ export function HomeScreen({
   const artFor = (target: GameConfig): CSSProperties => ({ backgroundImage: gameArt(target) });
   const activeHeroStyle = gameHeroVars(game) as CSSProperties;
   const savedGame = (gameId: string) => recommended.find((item) => item.id === gameId) ?? game;
+  const maxPlayers = game.maxPlayers ?? game.playerOptions?.[game.playerOptions.length - 1]?.value ?? 1;
+  const freeMode = game.modes?.free !== false;
+  const survivalMode = Boolean(game.modes?.survival || game.content.features.some((item) => item.id.includes("supervivencia") && item.enabled));
 
   return (
     <section className="home-layout">
@@ -41,9 +46,11 @@ export function HomeScreen({
           <p>{game.description}</p>
 
           <div className="hero-tags">
-            <span className="status-pill installed">Instalado</span>
-            <span className="status-pill">{activeCount} contenidos activos</span>
-            <span className="status-pill warning">Ver detalles</span>
+            <span className="status-pill installed">{game.category ?? "Rol"}</span>
+            <span className="status-pill">{maxPlayers} jugador{maxPlayers > 1 ? "es" : ""}</span>
+            <span className="status-pill">{freeMode ? "Modo libre disponible" : "Modo campana"}</span>
+            <span className="status-pill">{survivalMode ? "Supervivencia disponible" : `${activeCount} contenidos activos`}</span>
+            <button className="status-pill warning" onClick={onDetails}>Ver detalles</button>
           </div>
 
           <div className="hero-meta">
@@ -53,30 +60,31 @@ export function HomeScreen({
           </div>
         </div>
 
-        <button className="continue-button" onClick={onContinue}>
+        <button className="continue-button" onClick={onContinue} disabled={!save}>
           ▶ Continuar
           <small>{save ? `Ultima sesion: ${new Date(save.updatedAt).toLocaleString()}` : "Sin partidas guardadas"}</small>
         </button>
       </div>
 
       <aside className="home-side">
-        <article className="list-panel save-access">
-          <div className="panel-title"><Save size={18} /><strong>Acceso rapido: guardados</strong></div>
+        {saves.length > 0 && (
+          <article className="list-panel save-access">
+            <div className="panel-title"><Save size={18} /><strong>Acceso rapido: guardados</strong></div>
 
-          {saves.map((entry) => (
-            <button key={entry.saveId} className="save-mini">
-              <span className={`save-thumb game-${entry.gameId}`} style={artFor(savedGame(entry.gameId))} />
-              <span className="save-copy">
-                <strong>{entry.name}</strong>
-                <small>Nivel {entry.level}</small>
-              </span>
-              <small>{new Date(entry.updatedAt).toLocaleDateString()}</small>
-            </button>
-          ))}
+            {saves.map((entry) => (
+              <button key={entry.saveId} className="save-mini">
+                <span className={`save-thumb game-${entry.gameId}`} style={artFor(savedGame(entry.gameId))} />
+                <span className="save-copy">
+                  <strong>{entry.name}</strong>
+                  <small>Nivel {entry.level}</small>
+                </span>
+                <small>{new Date(entry.updatedAt).toLocaleDateString()}</small>
+              </button>
+            ))}
 
-          {!saves.length && <p><span>Sin partidas de {game.name}</span><small>Nuevo juego</small></p>}
-          <button>Ver todos los guardados →</button>
-        </article>
+            <button>Ver todos los guardados →</button>
+          </article>
+        )}
 
         <article className="quick-panel">
           <div className="panel-title">
@@ -105,12 +113,18 @@ export function HomeScreen({
               <div className="progress"><i style={{ width: "68%" }} /></div>
             </div>
             <div className="level-box">
-              <small>Nivel actual</small>
+              <small>Nivel del personaje</small>
               <strong>{save?.level ?? 1}</strong>
             </div>
-            <div className="level-box">
-              <small>Tiempo de juego</small>
-              <strong>42h 18m</strong>
+            <div className="campaign-time-row">
+              <div className="level-box">
+                <small>Tiempo de juego</small>
+                <strong>{save?.playTimeHours ?? 0}h</strong>
+              </div>
+              <div className="level-box">
+                <small>Dias transcurridos</small>
+                <strong>{save?.daysElapsed ?? 0}</strong>
+              </div>
             </div>
           </div>
         </article>

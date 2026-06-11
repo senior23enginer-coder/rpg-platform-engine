@@ -37,7 +37,17 @@ export function TopBar({ profile, onProfile, onSettings }: Props) {
         </div>
 
         <button className="status-card profile-card" onClick={onProfile}>
-          {avatarPath ? <img className="topbar-profile-avatar" src={avatarPath} alt="" /> : <Box size={24} />}
+          {avatarPath ? (
+            <img
+              className="topbar-profile-avatar"
+              src={avatarPath}
+              alt=""
+              style={{
+                objectPosition: `${profile.avatarFit?.x ?? 50}% ${profile.avatarFit?.y ?? 50}%`,
+                transform: `scale(${profile.avatarFit?.scale ?? 1})`,
+              }}
+            />
+          ) : <Box size={24} />}
           <span>
             <small>{profile.name}</small>
             <strong>Nivel {profile.level}</strong>

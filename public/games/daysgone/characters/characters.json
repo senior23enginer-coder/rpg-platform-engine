@@ -1,5 +1,5 @@
 {
-  "creationMode": "template_future",
+  "creationMode": "daysgone_survival_rpg",
   "attributes": [
     {
       "id": "STR",
@@ -51,21 +51,83 @@
       "max": 10
     }
   ],
-  "skills": [],
-  "origins": [],
+  "skills": [
+    {
+      "id": "riding",
+      "name": "Conduccion"
+    },
+    {
+      "id": "survival",
+      "name": "Supervivencia"
+    },
+    {
+      "id": "tracking",
+      "name": "Rastreo"
+    },
+    {
+      "id": "melee",
+      "name": "Combate cuerpo a cuerpo"
+    },
+    {
+      "id": "firearms",
+      "name": "Armas de fuego"
+    },
+    {
+      "id": "crafting",
+      "name": "Improvisacion"
+    },
+    {
+      "id": "stealth",
+      "name": "Sigilo"
+    },
+    {
+      "id": "camp_trust",
+      "name": "Confianza de campamentos"
+    }
+  ],
+  "origins": [
+    {
+      "id": "drifter",
+      "name": "Errante de Oregon",
+      "description": "Conoces las rutas, los campamentos y el precio de cada favor."
+    },
+    {
+      "id": "biker",
+      "name": "Motociclista superviviente",
+      "description": "Tu moto es refugio, herramienta y promesa de escape."
+    },
+    {
+      "id": "nero_shadow",
+      "name": "Sombra de NERO",
+      "description": "Has visto demasiados secretos como para confiar rapido."
+    }
+  ],
   "archetypes": [],
   "seeds": [
     {
-      "id": "daysgone_seed",
-      "name": "Days Gone - personaje base",
+      "id": "deacon_st_john",
+      "name": "Deacon St. John",
       "attributes": {
-        "STR": 5,
-        "PER": 5,
-        "END": 5,
-        "CHA": 5,
+        "STR": 6,
+        "PER": 7,
+        "END": 7,
+        "CHA": 4,
         "INT": 5,
-        "AGI": 5,
+        "AGI": 7,
         "LCK": 5
+      }
+    },
+    {
+      "id": "boozer",
+      "name": "Boozer",
+      "attributes": {
+        "STR": 7,
+        "PER": 5,
+        "END": 8,
+        "CHA": 5,
+        "INT": 4,
+        "AGI": 5,
+        "LCK": 4
       }
     }
   ]

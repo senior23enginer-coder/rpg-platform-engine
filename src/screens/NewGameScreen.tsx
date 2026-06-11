@@ -1,8 +1,8 @@
-import { ArrowLeft, Box, ClipboardList, Compass, Crosshair, HeartPulse, Plus, Settings, User, Users, Zap } from "lucide-react";
+import { ArrowLeft, Box, ClipboardList, Compass, Crosshair, Eye, HeartPulse, Plus, Settings, User, Users, Zap } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
-import type { CharacterSheetConfig, GameConfig } from "../types/game";
-import { gameHeroVars, loadGameCharacterSheet } from "../lib/gameLibrary";
+import type { CampaignCharacter, CharacterSheetConfig, GameConfig } from "../types/game";
+import { gameHeroVars, loadGameCharacterSheet, resolveGameAsset } from "../lib/gameLibrary";
 
 type Props = {
   game: GameConfig;
@@ -27,7 +27,8 @@ type RuntimeCharacterSheetConfig = CharacterSheetConfig & {
 const fallbackPlayerOptions = [
   { value: 1, label: "1 jugador", mode: "Solitario" },
   { value: 2, label: "2 jugadores", mode: "Cooperativo" },
-  { value: 4, label: "3-4 jugadores", mode: "Grupo" },
+  { value: 3, label: "3 jugadores", mode: "Grupo" },
+  { value: 4, label: "4 jugadores", mode: "Grupo" },
 ];
 
 const gameSheetLabels: Record<string, { species: string; quote: string; system: string }> = {
@@ -62,7 +63,7 @@ const fallbackOrigins: SheetOption[] = [
 ];
 
 export function NewGameScreen({ game, characters, onStart, onContent, onBack }: Props) {
-  const [stage, setStage] = useState<"setup" | "character">("setup");
+  const [stage, setStage] = useState<"setup" | "character" | "campaignSheet">("setup");
   const [sheetConfig, setSheetConfig] = useState<RuntimeCharacterSheetConfig>(characters);
   const [characterName, setCharacterName] = useState("Superviviente");
   const [gender, setGender] = useState("");
@@ -72,6 +73,8 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   const [players, setPlayers] = useState(1);
   const [survival, setSurvival] = useState(false);
   const [mode, setMode] = useState<"guided" | "free">("guided");
+  const [selectedCampaignCharacterIds, setSelectedCampaignCharacterIds] = useState<string[]>([]);
+  const [sheetCharacterId, setSheetCharacterId] = useState("");
   const [attributes, setAttributes] = useState<Record<string, number>>(() =>
     Object.fromEntries(characters.attributes.map((attr) => [attr.id, attr.default]))
   );
@@ -81,9 +84,34 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   }, [game]);
 
   const campaign = game.campaigns[0];
+  const isFallout4 = game.id === "fallout4";
+  const campaignCharacters = campaign?.characters ?? [];
+  const guidedUsesPrebuiltCharacters = isFallout4 && mode === "guided" && campaignCharacters.length > 0;
+  const selectedCampaignCharacters = Array.from({ length: players }, (_, index) => {
+    const fallback = campaignCharacters[index] ?? campaignCharacters[0];
+    return campaignCharacters.find((character) => character.id === selectedCampaignCharacterIds[index]) ?? fallback;
+  }).filter((character): character is CampaignCharacter => Boolean(character));
+  const visibleCampaignCharacters = mode === "guided"
+    ? guidedUsesPrebuiltCharacters
+      ? selectedCampaignCharacters
+      : campaignCharacters.slice(0, players)
+    : [];
+  const freeModeSheet = campaign?.freeModeSheetImage;
+  const isDaysGone = game.id === "daysgone";
+  const isDaysGoneFreeMode = isDaysGone && mode === "free";
+  const daysGoneSheetImage = isDaysGoneFreeMode
+    ? freeModeSheet
+    : visibleCampaignCharacters[0]?.sheetImage;
   const gameArtStyle = gameHeroVars(game) as CSSProperties;
-  const playerOptions = (game.playerOptions?.length ? game.playerOptions : fallbackPlayerOptions)
-    .filter((option) => option.value <= (game.maxPlayers ?? 4));
+  const configuredValues = new Set(game.playerOptions?.map((option) => option.value) ?? []);
+  const configuredOptions = fallbackPlayerOptions.map((fallback) => {
+    const custom = game.playerOptions?.find((option) => option.value === fallback.value);
+    return custom ?? fallback;
+  });
+  const playerOptions = configuredOptions
+    .filter((option) => option.value <= (game.maxPlayers ?? 4))
+    .filter((option) => !configuredValues.size || configuredValues.has(option.value))
+    .filter((option) => !(isFallout4 && mode === "guided" && option.value > 2));
   const sheetLabels = gameSheetLabels[game.id] ?? {
     species: `${game.name} - personaje`,
     quote: "Tu universo. Tu historia. Tu aventura.",
@@ -95,6 +123,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   const attributeTotal = Object.values(attributes).reduce((sum, value) => sum + Number(value || 0), 0);
   const health = Math.max(8, (attributes.END ?? attributes.RES ?? 5) + 5);
   const actionPoints = Math.max(4, Math.ceil(((attributes.AGI ?? 5) + (attributes.PER ?? 5)) / 2));
+  const sheetCharacter = campaignCharacters.find((character) => character.id === sheetCharacterId);
 
   useEffect(() => {
     let active = true;
@@ -118,12 +147,44 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     setCharacterName(sheetConfig.seeds?.[0]?.name ?? "Superviviente");
     setOriginId((sheetConfig.origins?.[0] ?? fallbackOrigins[0]).id);
     setPlayers((current) => Math.min(current, game.maxPlayers ?? 4));
+    setSelectedCampaignCharacterIds(campaignCharacters.slice(0, 2).map((character) => character.id));
+    setSheetCharacterId("");
     setGender("");
     setAge("");
     setNotes("");
-  }, [game.maxPlayers, sheetConfig]);
+  }, [game.maxPlayers, sheetConfig, campaignCharacters]);
+
+  useEffect(() => {
+    if (isFallout4 && mode === "guided") {
+      setPlayers((current) => Math.min(current, 2));
+      setSelectedCampaignCharacterIds((current) => {
+        const defaults = campaignCharacters.slice(0, 2).map((character) => character.id);
+        return defaults.map((id, index) => current[index] || id);
+      });
+    }
+  }, [campaignCharacters, isFallout4, mode]);
+
+  function setCampaignCharacter(playerIndex: number, characterId: string) {
+    setSelectedCampaignCharacterIds((current) => {
+      const next = [...current];
+      next[playerIndex] = characterId;
+      if (players === 2 && next[0] === next[1]) {
+        const alternate = campaignCharacters.find((character) => character.id !== characterId)?.id;
+        if (alternate) next[playerIndex === 0 ? 1 : 0] = alternate;
+      }
+      return next;
+    });
+  }
 
   function handleStart() {
+    if (guidedUsesPrebuiltCharacters) {
+      const selectedCharacters = selectedCampaignCharacters.slice(0, players);
+      const name = selectedCharacters.map((character) => character.name).join(" / ") || "Superviviente";
+      const characterAttributes = selectedCharacters[0]?.attributes ?? attributes;
+      onStart(name, characterAttributes);
+      return;
+    }
+
     if (stage === "setup") {
       setStage("character");
       return;
@@ -139,6 +200,45 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     if (seed.attributes) {
       setAttributes((current) => ({ ...current, ...seed.attributes }));
     }
+  }
+
+  if (stage === "campaignSheet" && sheetCharacter) {
+    return (
+      <section className="campaign-character-sheet-screen" style={gameArtStyle}>
+        <header className="character-sheet-top">
+          <button onClick={() => setStage("setup")}><ArrowLeft size={18} /> Volver</button>
+          <div>
+            <strong>{game.name} - campaña guiada</strong>
+            <h2>{sheetCharacter.name}</h2>
+            <p>{sheetCharacter.role}</p>
+          </div>
+          <div className="vault-card">
+            <span>{game.short}</span>
+            <strong>Personaje precreado</strong>
+          </div>
+        </header>
+
+        <div className="fallout4-sheet-layout">
+          <article className="fallout4-sheet-image">
+            {sheetCharacter.sheetImage && <img src={resolveGameAsset(game, sheetCharacter.sheetImage)} alt="" />}
+          </article>
+
+          <aside className="fallout4-sheet-data">
+            <h3>S.P.E.C.I.A.L.</h3>
+            <div className="fallout4-character-stats">
+              {Object.entries(sheetCharacter.attributes ?? {}).map(([key, value]) => (
+                <span key={key}><strong>{key}</strong><b>{value}</b></span>
+              ))}
+            </div>
+            <div className="fallout4-sheet-note">
+              <strong>{sheetCharacter.name}</strong>
+              <p>Esta ficha pertenece a la campaña. No se crea una hoja nueva en modo campaña; se elige un personaje precreado y se inicia la partida con sus datos.</p>
+            </div>
+            <button className="green-button" onClick={() => setStage("setup")}><ArrowLeft size={18} /> Volver a selección</button>
+          </aside>
+        </div>
+      </section>
+    );
   }
 
   if (stage === "character") {
@@ -158,6 +258,14 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         </div>
 
         <div className="paper-character-sheet">
+          {isDaysGone && daysGoneSheetImage && (
+            <section className="paper-panel daysgone-visual-sheet">
+              <h3>Hoja visual Days Gone</h3>
+              <img src={resolveGameAsset(game, daysGoneSheetImage)} alt="" />
+              <p>{isDaysGoneFreeMode ? "Creacion inicial para modo libre." : "Hoja de campaña para personaje creado."}</p>
+            </section>
+          )}
+
           <section className="paper-panel personal-data">
             <h3>Datos personales</h3>
             <label>
@@ -227,13 +335,24 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
             ))}
           </section>
 
-          <section className="paper-panel health-paper">
-            <h3>Salud y condiciones</h3>
-            <p><span>Puntos de salud</span><strong>{health}</strong></p>
-            <p><span>Puntos de accion</span><strong>{actionPoints}</strong></p>
-            <p><span>Jugadores</span><strong>{players}</strong></p>
-            <p><span>Supervivencia</span><strong>{survival ? "Activa" : "Normal"}</strong></p>
-          </section>
+          {!isDaysGoneFreeMode && (
+            <section className="paper-panel health-paper">
+              <h3>Salud y condiciones</h3>
+              <p><span>Puntos de salud</span><strong>{health}</strong></p>
+              <p><span>Puntos de accion</span><strong>{actionPoints}</strong></p>
+              <p><span>Jugadores</span><strong>{players}</strong></p>
+              <p><span>Supervivencia</span><strong>{survival ? "Activa" : "Normal"}</strong></p>
+            </section>
+          )}
+
+          {isDaysGoneFreeMode && (
+            <section className="paper-panel health-paper">
+              <h3>Estilo de superviviente</h3>
+              <p><span>Ruta</span><strong>{origins.find((origin) => origin.id === originId)?.name ?? "Errante"}</strong></p>
+              <p><span>Equipo inicial</span><strong>Moto, combustible, arma corta</strong></p>
+              <p><span>Enfoque</span><strong>Carretera, campamentos y NERO</strong></p>
+            </section>
+          )}
 
           <section className="paper-panel skills-paper">
             <h3>Habilidades</h3>
@@ -254,10 +373,12 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
             <p>Objeto personal</p>
           </section>
 
-          <section className="paper-panel notes-paper">
-            <h3>Notas del personaje</h3>
-            <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Rasgos, motivaciones, cicatrices, deudas o juramentos." />
-          </section>
+          {!isDaysGoneFreeMode && (
+            <section className="paper-panel notes-paper">
+              <h3>Notas del personaje</h3>
+              <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Rasgos, motivaciones, cicatrices, deudas o juramentos." />
+            </section>
+          )}
         </div>
 
         <div className="character-sheet-actions">
@@ -323,6 +444,24 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
               <p>{campaign?.description ?? "Exploracion libre hasta definir misiones."}</p>
             </div>
           </div>
+          {(visibleCampaignCharacters.length > 0 || freeModeSheet) && (
+            <div className="campaign-character-sheets">
+              {mode === "guided" && visibleCampaignCharacters.map((character) => (
+                <article key={character.id}>
+                  {character.sheetImage && <img src={resolveGameAsset(game, character.sheetImage)} alt="" />}
+                  <strong>{character.name}</strong>
+                  <small>{character.role}</small>
+                </article>
+              ))}
+              {mode === "free" && freeModeSheet && (
+                <article>
+                  <img src={resolveGameAsset(game, freeModeSheet)} alt="" />
+                  <strong>Personaje libre</strong>
+                  <small>Hoja editable para modo libre.</small>
+                </article>
+              )}
+            </div>
+          )}
         </section>
 
         <section className="setup-block mode-block">
@@ -348,31 +487,43 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
               </button>
             ))}
           </div>
-          <input
-            className="text-input"
-            value={characterName}
-            onChange={(event) => setCharacterName(event.target.value)}
-            aria-label="Nombre del personaje"
-          />
-          <div className="attribute-grid">
-            {sheetConfig.attributes.slice(0, 6).map((attr) => (
-              <label key={attr.id}>
-                <span>{attr.id}</span>
-                <input
-                  type="number"
-                  min={attr.min ?? 1}
-                  max={attr.max ?? 10}
-                  value={attributes[attr.id] ?? attr.default}
-                  onChange={(event) =>
-                    setAttributes((prev) => ({
-                      ...prev,
-                      [attr.id]: Number(event.target.value),
-                    }))
-                  }
-                />
-              </label>
-            ))}
-          </div>
+          {guidedUsesPrebuiltCharacters ? (
+            <div className="campaign-prebuilt-selector">
+              <strong>Fallout 4 - personaje base</strong>
+              {Array.from({ length: players }, (_, index) => {
+                const selectedId = selectedCampaignCharacterIds[index] ?? campaignCharacters[index]?.id ?? campaignCharacters[0]?.id ?? "";
+                const selectedCharacter = campaignCharacters.find((character) => character.id === selectedId) ?? campaignCharacters[0];
+                return (
+                  <label key={index}>
+                    <span>Jugador {index + 1}</span>
+                    <div>
+                      <select value={selectedId} onChange={(event) => setCampaignCharacter(index, event.target.value)}>
+                        {campaignCharacters.slice(0, 2).map((character) => (
+                          <option key={character.id} value={character.id}>{character.name}</option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSheetCharacterId(selectedCharacter?.id ?? "");
+                          setStage("campaignSheet");
+                        }}
+                      >
+                        <Eye size={18} /> Ver ficha
+                      </button>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+          ) : (
+            <input
+              className="text-input"
+              value={characterName}
+              onChange={(event) => setCharacterName(event.target.value)}
+              aria-label="Nombre del personaje"
+            />
+          )}
         </section>
 
         <section className="setup-block survival-block">
@@ -394,9 +545,10 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
       </div>
 
       <button className="start-button" onClick={handleStart}>
-        <Zap size={36} /> Crear hoja de personaje
-        <small>Revisar personaje antes de comenzar</small>
+        <Zap size={36} /> {guidedUsesPrebuiltCharacters ? "Empezar campaña" : "Crear hoja de personaje"}
+        <small>{guidedUsesPrebuiltCharacters ? "Usar personaje precreado de Fallout 4" : "Revisar personaje antes de comenzar"}</small>
       </button>
+
     </section>
   );
 }

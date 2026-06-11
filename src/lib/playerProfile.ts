@@ -2,7 +2,7 @@ import type { GameConfig } from "../types/game";
 import type { PlayerProfile, PlayerSave, UserSettings } from "../types/profile";
 import { loadBundledUserProfiles } from "./userLibrary";
 
-const PROFILE_KEY = "rpg-platform.player-profile.v4";
+const PROFILE_KEY = "rpg-platform.player-profile.v5";
 
 export const defaultSettings: UserSettings = {
   theme: "dark",
@@ -72,6 +72,8 @@ function createBlankDefaultProfile(games: GameConfig[]): PlayerProfile {
   return {
     id: "invitado-local",
     name: "Invitado local",
+    username: "invitado-local",
+    password: "",
     email: "",
     avatar: "avatar.svg",
     basePath: "/users/invitado-local",
@@ -81,7 +83,12 @@ function createBlankDefaultProfile(games: GameConfig[]): PlayerProfile {
     gameProfilesStarted: 0,
     completedCampaigns: 0,
     lastActivityAt: undefined,
+    lastLoginAt: undefined,
+    previousLastLoginAt: undefined,
+    passwordResetCode: undefined,
+    lastPasswordResetRequestAt: undefined,
     signedIn: false,
+    avatarFit: { x: 50, y: 50, scale: 1 },
     activeGameId: games[0]?.id ?? "fallout3",
     saves: [],
     history: [],
@@ -109,6 +116,8 @@ function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fallback 
     ...fallback,
     ...profile,
     name: profile.name || fallback.name,
+    username: profile.username ?? fallback.username,
+    password: profile.password ?? fallback.password,
     level: profile.level ?? 1,
     avatar: profile.avatar === "local" ? fallback.avatar : profile.avatar ?? fallback.avatar,
     basePath: profile.avatar === "local" ? fallback.basePath : profile.basePath ?? fallback.basePath,
@@ -117,6 +126,11 @@ function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fallback 
     gameProfilesStarted: profile.gameProfilesStarted ?? saves.length,
     completedCampaigns: profile.completedCampaigns ?? 0,
     lastActivityAt: latestActivity?.toISOString(),
+    lastLoginAt: profile.lastLoginAt ?? fallback.lastLoginAt,
+    previousLastLoginAt: profile.previousLastLoginAt ?? fallback.previousLastLoginAt,
+    passwordResetCode: profile.passwordResetCode ?? fallback.passwordResetCode,
+    lastPasswordResetRequestAt: profile.lastPasswordResetRequestAt ?? fallback.lastPasswordResetRequestAt,
+    avatarFit: profile.avatarFit ?? fallback.avatarFit,
     saves,
     history: profile.history ?? [],
     settings: {

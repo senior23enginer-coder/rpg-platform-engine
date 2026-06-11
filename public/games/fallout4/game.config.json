@@ -16,7 +16,39 @@
       "id": "sanctuary_commonwealth",
       "title": "Sanctuary -> Commonwealth",
       "implemented": true,
-      "description": "Campa?a base para salir del Vault 111 y reconstruir Sanctuary."
+      "description": "Campaña base para salir del Vault 111 y reconstruir Sanctuary.",
+      "characters": [
+        {
+          "id": "nate",
+          "name": "Nate",
+          "role": "Superviviente masculino del Refugio 111",
+          "sheetImage": "assets/characters/campaign-character-sheet.png",
+          "attributes": {
+            "STR": 6,
+            "PER": 5,
+            "END": 6,
+            "CHA": 4,
+            "INT": 5,
+            "AGI": 5,
+            "LCK": 4
+          }
+        },
+        {
+          "id": "nora",
+          "name": "Nora",
+          "role": "Superviviente femenina del Refugio 111",
+          "sheetImage": "assets/characters/campaign-character-sheet.png",
+          "attributes": {
+            "STR": 4,
+            "PER": 6,
+            "END": 5,
+            "CHA": 6,
+            "INT": 6,
+            "AGI": 5,
+            "LCK": 4
+          }
+        }
+      ]
     }
   ],
   "content": {
@@ -157,5 +189,28 @@
     "audio": "audio/audio.manifest.json"
   },
   "characterSheet": "characters/characters.json",
-  "rules": "rules/rules.json"
+  "rules": "rules/rules.json",
+  "maxPlayers": 4,
+  "playerOptions": [
+    {
+      "value": 1,
+      "label": "1 jugador",
+      "mode": "Solitario"
+    },
+    {
+      "value": 2,
+      "label": "2 jugadores",
+      "mode": "Cooperativo"
+    },
+    {
+      "value": 3,
+      "label": "3 jugadores",
+      "mode": "Grupo"
+    },
+    {
+      "value": 4,
+      "label": "4 jugadores",
+      "mode": "Grupo"
+    }
+  ]
 }

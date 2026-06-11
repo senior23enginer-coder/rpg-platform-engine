@@ -114,5 +114,28 @@
     "audio": "audio/audio.manifest.json"
   },
   "characterSheet": "characters/characters.json",
-  "rules": "rules/rules.json"
+  "rules": "rules/rules.json",
+  "maxPlayers": 4,
+  "playerOptions": [
+    {
+      "value": 1,
+      "label": "1 jugador",
+      "mode": "Solitario"
+    },
+    {
+      "value": 2,
+      "label": "2 jugadores",
+      "mode": "Cooperativo"
+    },
+    {
+      "value": 3,
+      "label": "3 jugadores",
+      "mode": "Grupo"
+    },
+    {
+      "value": 4,
+      "label": "4 jugadores",
+      "mode": "Grupo"
+    }
+  ]
 }

@@ -6,12 +6,22 @@ export type ContentItem = {
   thumbnail?: string;
 };
 
+export type CampaignCharacter = {
+  id: string;
+  name: string;
+  role?: string;
+  sheetImage?: string;
+  attributes?: Record<string, number>;
+};
+
 export type Campaign = {
   id: string;
   title: string;
   implemented: boolean;
   description?: string;
   image?: string;
+  characters?: CampaignCharacter[];
+  freeModeSheetImage?: string;
 };
 
 export type PlayerOption = {
@@ -26,6 +36,11 @@ export type GameConfig = {
   short: string;
   description: string;
   loadedDescription?: string;
+  category?: string;
+  modes?: {
+    free?: boolean;
+    survival?: boolean;
+  };
   cover?: string;
   configPath?: string;
   tags?: string[];
