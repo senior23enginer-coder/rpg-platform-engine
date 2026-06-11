@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "./styles/app.css";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from "./components/TopBar";
@@ -17,16 +17,25 @@ import { SettingsScreen } from "./screens/SettingsScreen";
 import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, UserSettings } from "./types/profile";
-import { createActivity, loadAppMetadata, saveAppMetadata } from "./lib/appMetadataStorage";
+import { createActivity, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { createSaveGameDocument, getSaveGamePath } from "./lib/saveGameStorage";
 import {
+  loadNativeMetadata,
+  loadNativeProfile,
+  loadPersistentUsers,
+  savePersistentGameDocument,
+  savePersistentMetadata,
+  savePersistentProfile,
+} from "./lib/storageAdapter";
+import {
   getActiveCampaign,
   getActiveSave,
   getGameSaves,
+  createDefaultProfile,
   loadProfile,
-  saveProfile,
+  normalizeProfile,
 } from "./lib/playerProfile";
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
@@ -42,8 +51,11 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [games, setGames] = useState<GameConfig[]>(bundledGames);
   const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(bundledGames));
+  const [users, setUsers] = useState<PlayerProfile[]>([]);
   const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
+  const [storageReady, setStorageReady] = useState(false);
+  const hasHydratedStorage = useRef(false);
 
   const activeGame = games.find((game) => game.id === profile.activeGameId) ?? games[0];
   const activeGameSaves = getGameSaves(profile, activeGame.id);
@@ -56,15 +68,45 @@ export default function App() {
   }, [activeGame.id, games]);
 
   useEffect(() => {
-    saveProfile(profile);
     document.documentElement.dataset.theme = profile.settings.theme;
     document.documentElement.dataset.hud = profile.settings.hudColor;
     setMusicVolume(profile.settings.volumes.music * profile.settings.volumes.master);
   }, [profile]);
 
   useEffect(() => {
-    saveAppMetadata(appMetadata);
-  }, [appMetadata]);
+    if (hasHydratedStorage.current) return;
+    hasHydratedStorage.current = true;
+
+    Promise.all([loadNativeProfile(), loadNativeMetadata(), loadPersistentUsers()])
+      .then(([nativeProfile, nativeMetadata, persistedUsers]) => {
+        const normalizedUsers = persistedUsers.map((user) => normalizeProfile(user, bundledGames));
+        const normalizedProfile = nativeProfile ? normalizeProfile(nativeProfile, bundledGames) : undefined;
+        if (normalizedUsers.length > 0) {
+          setUsers(normalizedUsers);
+        } else if (normalizedProfile) {
+          setUsers([normalizedProfile]);
+        }
+        if (normalizedProfile) setProfile(normalizedProfile);
+        if (nativeMetadata) setAppMetadata(normalizeMetadata(nativeMetadata));
+      })
+      .finally(() => setStorageReady(true));
+  }, []);
+
+  useEffect(() => {
+    if (!storageReady) return;
+    void savePersistentProfile(profile);
+    setUsers((currentUsers) => {
+      const normalizedProfile = normalizeProfile(profile, bundledGames);
+      const existingIndex = currentUsers.findIndex((user) => user.id === normalizedProfile.id);
+      if (existingIndex < 0) return [normalizedProfile, ...currentUsers];
+      return currentUsers.map((user, index) => (index === existingIndex ? normalizedProfile : user));
+    });
+  }, [profile, storageReady]);
+
+  useEffect(() => {
+    if (!storageReady) return;
+    void savePersistentMetadata(appMetadata);
+  }, [appMetadata, storageReady]);
 
   useEffect(() => {
     let active = true;
@@ -132,18 +174,47 @@ export default function App() {
     }));
   }
 
+  function registerUser(account: { email: string; username: string; password: string }) {
+    const now = new Date().toISOString();
+    const id = `user_${account.username.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")}_${Date.now()}`;
+    const newProfile = normalizeProfile(
+      {
+        ...createDefaultProfile(bundledGames),
+        id,
+        name: account.username,
+        username: account.username,
+        email: account.email,
+        password: account.password,
+        basePath: `/users/${id}`,
+        profilePath: `/users/${id}/profile.json`,
+        signedIn: true,
+        lastLoginAt: now,
+        lastActivityAt: now,
+      },
+      bundledGames
+    );
+
+    setUsers((currentUsers) => [newProfile, ...currentUsers]);
+    setProfile(newProfile);
+  }
+
   function loadSave(saveId: string) {
     const save = profile.saves.find((item) => item.saveId === saveId);
     if (!save) return;
     const now = new Date().toISOString();
+    const saveGame = games.find((game) => game.id === save.gameId) ?? activeGame;
+    let pendingSaveDocument: ReturnType<typeof createSaveGameDocument> | undefined;
 
     setProfile((current) => ({
       ...current,
       lastActivityAt: now,
       activeGameId: save.gameId,
-      saves: current.saves.map((item) =>
-        item.saveId === saveId ? { ...item, updatedAt: now } : item
-      ),
+      saves: current.saves.map((item) => {
+        if (item.saveId !== saveId) return item;
+        const updatedSave = { ...item, updatedAt: now };
+        pendingSaveDocument = createSaveGameDocument({ game: saveGame, profile: current, save: updatedSave });
+        return updatedSave;
+      }),
       history: upsertHistoryEntry(current.history, {
         gameId: save.gameId,
         sessions: 0,
@@ -152,6 +223,7 @@ export default function App() {
         lastPlayedAt: now,
       }),
     }));
+    if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
     trackActivity(`Partida cargada: ${save.name}`);
     setScreen("home");
   }
@@ -207,7 +279,7 @@ export default function App() {
     return (
       <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
         <div className="animated-bg" />
-        <AuthScreen profile={profile} onAccess={setProfile} />
+        <AuthScreen profile={profile} users={users} onAccess={setProfile} onRegister={registerUser} />
       </div>
     );
   }
@@ -289,6 +361,7 @@ export default function App() {
                 const now = new Date().toISOString();
                 const saveId = `${activeGame.id}_${Date.now()}`;
                 const storagePath = getSaveGamePath(activeGame.id, profile.id, saveId);
+                let pendingSaveDocument: ReturnType<typeof createSaveGameDocument> | undefined;
                 setProfile((current) => {
                   const newSave = {
                     saveId,
@@ -307,7 +380,7 @@ export default function App() {
                     createdAt: now,
                     updatedAt: now,
                   };
-                  createSaveGameDocument({ game: activeGame, profile: current, save: newSave, attributes });
+                  pendingSaveDocument = createSaveGameDocument({ game: activeGame, profile: current, save: newSave, attributes });
 
                   return {
                     ...current,
@@ -324,6 +397,7 @@ export default function App() {
                     gameProfilesStarted: current.saves.length + 1,
                   };
                 });
+                if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
                 trackActivity(`Partida creada: ${characterName} - ${activeGame.name}`);
                 setScreen("home");
               }}

@@ -24,7 +24,7 @@ const defaultMetadata: AppMetadata = {
   news: [],
 };
 
-function normalizeMetadata(metadata: Partial<AppMetadata>): AppMetadata {
+export function normalizeMetadata(metadata: Partial<AppMetadata>): AppMetadata {
   return {
     version: metadata.version || defaultMetadata.version,
     recentActivity: Array.isArray(metadata.recentActivity) ? metadata.recentActivity : [],

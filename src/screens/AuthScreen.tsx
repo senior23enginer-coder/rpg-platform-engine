@@ -21,12 +21,22 @@ import type { PlayerProfile } from "../types/profile";
 
 type Props = {
   profile: PlayerProfile;
+  users: PlayerProfile[];
   onAccess: (profile: PlayerProfile) => void;
+  onRegister: (account: { email: string; username: string; password: string }) => void;
 };
 
 type AuthMode = "login" | "register";
 
-export function AuthScreen({ profile, onAccess }: Props) {
+function matchesAccount(profile: PlayerProfile, value: string) {
+  const normalizedValue = value.trim().toLowerCase();
+  return (
+    String(profile.email ?? "").toLowerCase() === normalizedValue ||
+    String(profile.username ?? "").toLowerCase() === normalizedValue
+  );
+}
+
+export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
   const [mode, setMode] = useState<AuthMode>("login");
   const [emailOrUser, setEmailOrUser] = useState(profile.email || profile.username || "");
   const [email, setEmail] = useState(profile.email ?? "");
@@ -39,43 +49,36 @@ export function AuthScreen({ profile, onAccess }: Props) {
   const [remember, setRemember] = useState(true);
   const [news, setNews] = useState(true);
 
-  const loginMatchesProfile =
-    !profile.password ||
-    password === profile.password;
+  const loginAccount = users.find((user) => matchesAccount(user, emailOrUser));
+  const loginMatchesProfile = Boolean(loginAccount && password === loginAccount.password);
   const loginReady = emailOrUser.trim().length > 0 && password.trim().length > 0 && loginMatchesProfile;
+  const accountAlreadyExists = users.some((user) => matchesAccount(user, email) || matchesAccount(user, username));
   const registerReady =
     email.trim().length > 0 &&
     username.trim().length > 0 &&
     password.trim().length >= 4 &&
-    password === confirmPassword;
+    password === confirmPassword &&
+    !accountAlreadyExists;
   const canEnter = mode === "login" ? loginReady : registerReady;
 
   function submit() {
     if (!canEnter) return;
     const now = new Date().toISOString();
-    const nextName = mode === "register"
-      ? username.trim()
-      : profile.name || emailOrUser.trim() || "Invitado local";
-    const nextUsername = mode === "register"
-      ? username.trim()
-      : profile.username || emailOrUser.trim();
-    const nextEmail = mode === "register" ? email.trim() : profile.email || emailOrUser.trim();
+    if (mode === "register") {
+      onRegister({ email: email.trim(), username: username.trim(), password });
+      return;
+    }
 
-    onAccess({
-      ...profile,
-      name: nextName,
-      username: nextUsername,
-      email: nextEmail,
-      password,
-      signedIn: true,
-      previousLastLoginAt: profile.lastLoginAt,
-      lastLoginAt: now,
-      lastActivityAt: now,
-      settings: {
-        ...profile.settings,
-        audioEnabled: profile.settings.audioEnabled || false,
-      },
-    });
+    if (loginAccount) {
+      onAccess({
+        ...loginAccount,
+        signedIn: true,
+        previousLastLoginAt: loginAccount.lastLoginAt,
+        lastLoginAt: now,
+        lastActivityAt: now,
+      });
+      return;
+    }
   }
 
   function recoverPassword() {
@@ -86,8 +89,7 @@ export function AuthScreen({ profile, onAccess }: Props) {
     }
 
     const matchesProfile =
-      target.toLowerCase() === String(profile.email ?? "").toLowerCase() ||
-      target.toLowerCase() === String(profile.username ?? "").toLowerCase();
+      users.find((user) => matchesAccount(user, target));
     if (!matchesProfile) {
       setRecoveryMessage("No hay una cuenta local registrada con ese correo o usuario.");
       return;
@@ -100,12 +102,12 @@ export function AuthScreen({ profile, onAccess }: Props) {
       `Usa este codigo para restablecer tu contrasena: ${resetCode}\n\nEnlace local: ${resetLink}\n\nPor seguridad no enviamos tu contrasena actual.`
     );
     onAccess({
-      ...profile,
+      ...matchesProfile,
       signedIn: false,
       passwordResetCode: resetCode,
       lastPasswordResetRequestAt: new Date().toISOString(),
     });
-    window.location.href = `mailto:${profile.email || target}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${matchesProfile.email || target}?subject=${subject}&body=${body}`;
     setRecoveryMessage(`Codigo de restablecimiento generado: ${resetCode}. Correo preparado en tu cliente de correo.`);
   }
 

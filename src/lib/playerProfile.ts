@@ -96,7 +96,7 @@ function createBlankDefaultProfile(games: GameConfig[]): PlayerProfile {
   };
 }
 
-function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fallback = createBlankDefaultProfile(games)): PlayerProfile {
+export function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fallback = createBlankDefaultProfile(games)): PlayerProfile {
   const saves = (profile.saves ?? []).map((save) => ({
     ...save,
     playerName: save.playerName ?? save.name?.split(" - ")[0] ?? profile.name ?? "Invitado local",

@@ -1,5 +1,19 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
+import {
+  ArrowRight,
+  Box,
+  Crosshair,
+  Dices,
+  Plus,
+  RefreshCw,
+  Shuffle,
+  Sparkles,
+  Swords,
+  Target,
+  Trash2,
+  Trophy,
+} from "lucide-react";
 import * as THREE from "three";
 import type { GameConfig } from "../types/game";
 import { diceCatalog } from "../lib/gameLibrary";
@@ -253,6 +267,14 @@ function buildLabelGroup(sides: number, result: number) {
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
+
+type RollResult = NonNullable<ReturnType<typeof parseRoll>>;
+
+type RollEntry = RollResult & {
+  id: string;
+  expression: string;
+  createdAt: string;
+};
 
 type ThreeDieProps = {
   face: number;
@@ -553,18 +575,48 @@ function ThreeDie({ face, sides, rolling, gameId, catalogPath }: ThreeDieProps) 
 }
 
 export function DiceScreen({ game }: { game: GameConfig }) {
-  const [expression, setExpression] = useState("2d20+3");
+  const [expression, setExpression] = useState("2d20 + 5");
   const [face, setFace] = useState(20);
   const [sides, setSides] = useState(20);
   const [rolling, setRolling] = useState(false);
-  const [history, setHistory] = useState<string[]>([]);
+  const [autoRotate, setAutoRotate] = useState(true);
+  const [history, setHistory] = useState<RollEntry[]>([]);
   const timeoutRef = useRef<number>();
   const catalogPath = diceCatalog(game);
+  const lastResult = history[0];
+  const totals = history.map((entry) => entry.total);
+  const highest = totals.length ? Math.max(...totals) : 0;
+  const lowest = totals.length ? Math.min(...totals) : 0;
+  const average = totals.length ? totals.reduce((sum, value) => sum + value, 0) / totals.length : 0;
+  const diceOptions = [2, 3, 4, 6, 8, 10, 12, 20, 100];
+  const presets = [
+    { label: "Ataque", expression: "1d20 + 5", icon: <Swords size={24} /> },
+    { label: "Percepcion", expression: "1d20 + 3", icon: <Target size={24} /> },
+    { label: "Dano", expression: "2d6 + 2", icon: <Sparkles size={24} /> },
+    { label: "Sigilo", expression: "1d20 + 7", icon: <Crosshair size={24} /> },
+  ];
+  const modifiers = [
+    { label: "+1", hint: "Ventaja menor" },
+    { label: "+3", hint: "Competencia" },
+    { label: "+5", hint: "Experto" },
+    { label: "-2", hint: "Desventaja" },
+  ];
 
   function roll(expr = expression) {
     const result = parseRoll(expr);
     if (!result) {
-      setHistory((prev) => ["Expresion invalida", ...prev]);
+      setHistory((prev) => [
+        {
+          id: `roll_invalid_${Date.now()}`,
+          expression: "Expresion invalida",
+          rolls: [],
+          sides: 0,
+          modifier: 0,
+          total: 0,
+          createdAt: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
       return;
     }
 
@@ -578,7 +630,42 @@ export function DiceScreen({ game }: { game: GameConfig }) {
       setRolling(false);
     }, 2240);
 
-    setHistory((prev) => [`${expr}: [${result.rolls.join(", ")}] = ${result.total}`, ...prev]);
+    setHistory((prev) => [
+      {
+        ...result,
+        id: `roll_${Date.now()}`,
+        expression: expr,
+        createdAt: new Date().toISOString(),
+      },
+      ...prev,
+    ].slice(0, 12));
+  }
+
+  function setDie(option: number) {
+    const nextExpression = `1d${option}`;
+    setExpression(nextExpression);
+    setSides(option);
+  }
+
+  function randomRoll() {
+    const nextExpression = presets[Math.floor(Math.random() * presets.length)].expression;
+    setExpression(nextExpression);
+    roll(nextExpression);
+  }
+
+  function applyModifier(modifier: string) {
+    const compact = expression.replace(/\s+/g, "");
+    const base = compact.replace(/[+-]\d+$/, "");
+    const nextExpression = `${base} ${modifier.startsWith("-") ? "-" : "+"} ${modifier.replace(/[+-]/, "")}`;
+    setExpression(nextExpression);
+  }
+
+  function rollStatus(entry: RollEntry) {
+    if (entry.total === 0) return "Invalida";
+    if (entry.sides === 20 && entry.rolls.includes(20)) return "Exito critico";
+    if (entry.sides === 20 && entry.rolls.includes(1)) return "Fallo";
+    if (entry.total >= Math.max(12, entry.sides)) return "Exito";
+    return "";
   }
 
   useEffect(() => {
@@ -589,65 +676,151 @@ export function DiceScreen({ game }: { game: GameConfig }) {
 
   return (
     <section className="dice-layout-screen">
-      <article className="dice-main-card">
-        <h2>Herramienta de dados 3D</h2>
-        <p>Dado poligonal real con skin del juego seleccionado.</p>
-
-        <div className="dice-stage">
-          <div
-            className="dice-catalog-preview"
-            style={{ "--dice-catalog": `url("${catalogPath}")` } as CSSProperties}
-          />
-          <ThreeDie face={face} sides={sides} rolling={rolling} gameId={game.id} catalogPath={catalogPath} />
+      <header className="dice-ref-header">
+        <div>
+          <span className="dice-ref-mark"><Box size={38} /></span>
+          <div>
+            <h2>Herramienta de dados 3D</h2>
+            <p>Simula tiradas con dados poligonales en 3D con iluminacion y rotacion realista.</p>
+          </div>
         </div>
+        <aside>
+          <Dices size={36} />
+          <strong>Vault-Tec Terminal</strong>
+          <small>Ver. 0.1.0</small>
+        </aside>
+      </header>
 
-        <div className="dice-buttons">
-          {[4, 6, 8, 10, 12, 20].map((option) => (
-            <button
-              key={option}
-              className={sides === option ? "selected" : ""}
-              onClick={() => {
-                setExpression(`1d${option}`);
-                roll(`1d${option}`);
-              }}
-            >
-              d{option}
+      <div className="dice-ref-grid">
+        <article className="dice-main-card">
+          <div className="dice-panel-title">
+            <Box size={20} />
+            <strong>Visor 3D</strong>
+            <button className={`dice-toggle ${autoRotate ? "on" : ""}`} onClick={() => setAutoRotate((value) => !value)}>
+              Rotacion automatica <i />
             </button>
-          ))}
-          <button
-            className={sides === 2 ? "selected" : ""}
-            onClick={() => {
-              setExpression("moneda");
-              roll("moneda");
-            }}
-          >
-            Moneda
-          </button>
-        </div>
+            <button className="dice-icon-button" aria-label="Pantalla completa"><ArrowRight size={18} /></button>
+          </div>
 
-        <div className="dice-expression">
-          <input value={expression} onChange={(event) => setExpression(event.target.value)} />
-          <button className="green-button" onClick={() => roll()}>
-            Tirar
-          </button>
-        </div>
-      </article>
+          <div className="dice-stage">
+            <div
+              className="dice-catalog-preview"
+              style={{ "--dice-catalog": `url("${catalogPath}")` } as CSSProperties}
+            />
+            <div className="dice-hud-ring" />
+            <ThreeDie face={face} sides={sides} rolling={rolling} gameId={game.id} catalogPath={catalogPath} />
+            <aside className="dice-last-result">
+              <span>Ultimo resultado</span>
+              <strong>{lastResult?.total ?? face}</strong>
+              <small>{lastResult ? rollStatus(lastResult) || "Tirada lista" : "Natural 20"}</small>
+              <em>{lastResult ? new Date(lastResult.createdAt).toLocaleString() : "Sin historial"}</em>
+            </aside>
+          </div>
 
-      <article className="dice-history-card">
-        <h3>Resultado / historial</h3>
-        <div className="dice-engine-note">
-          <strong>Motor 3D actual</strong>
-          <p>Render: Three.js. Fisica simulada manual para rebotes, rotacion y asentamiento.</p>
-          <strong>Evaluacion recomendada</strong>
-          <p>React Three Fiber + @react-three/rapier para dados d4, d6, d8, d10, d12, d20 y moneda con cuerpos rigidos, colliders y gravedad real.</p>
-        </div>
-        <div className="history-list">
-          {history.length === 0 && <p>Aun no has tirado dados.</p>}
-          {history.map((entry, index) => (
-            <div key={index}>{entry}</div>
-          ))}
-        </div>
-      </article>
+          <div className="dice-type-row">
+            <strong>Tipo de dado</strong>
+            <div className="dice-buttons">
+              {diceOptions.map((option) => (
+                <button
+                  key={option}
+                  className={sides === option ? "selected" : ""}
+                  onClick={() => setDie(option)}
+                >
+                  D{option}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="dice-expression-block">
+            <strong>Formula de tirada</strong>
+            <div className="dice-expression">
+              <input value={expression} onChange={(event) => setExpression(event.target.value)} />
+              <div>
+                <button onClick={() => setExpression("")}><Trash2 size={16} /> Borrar</button>
+                <button onClick={randomRoll}><Shuffle size={16} /> Aleatorio</button>
+              </div>
+              <button className="green-button dice-roll-button" onClick={() => roll()}>
+                <Dices size={30} />
+                <span>Tirar</span>
+                <small>Ejecutar tirada</small>
+              </button>
+            </div>
+          </div>
+
+          <section className="dice-preset-panel">
+            <h3>Preajustes rapidos</h3>
+            <p>Accesos directos a tiradas comunes.</p>
+            <div className="dice-preset-grid">
+              {presets.map((preset) => (
+                <button key={preset.label} onClick={() => {
+                  setExpression(preset.expression);
+                  roll(preset.expression);
+                }}>
+                  {preset.icon}
+                  <strong>{preset.label}</strong>
+                  <small>{preset.expression}</small>
+                </button>
+              ))}
+              <button className="dice-new-preset">
+                <Plus size={28} />
+                <strong>Nuevo preset</strong>
+              </button>
+            </div>
+          </section>
+        </article>
+
+        <aside className="dice-side-stack">
+          <article className="dice-history-card">
+            <div className="dice-panel-title">
+              <strong>Historial de tiradas</strong>
+              <button className="dice-icon-button" onClick={() => setHistory([])} aria-label="Limpiar historial"><RefreshCw size={18} /></button>
+            </div>
+            <div className="history-list">
+              {history.length === 0 && <p>Aun no has tirado dados.</p>}
+              {history.slice(0, 5).map((entry) => (
+                <div key={entry.id} className={rollStatus(entry) === "Fallo" ? "failed" : ""}>
+                  <Dices size={20} />
+                  <span>
+                    <strong>{entry.expression}</strong>
+                    <small>({entry.rolls.join(", ")}) {entry.modifier ? `${entry.modifier > 0 ? "+" : ""}${entry.modifier}` : ""}</small>
+                  </span>
+                  <b>{entry.total}</b>
+                  <em>{new Date(entry.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}<small>{rollStatus(entry)}</small></em>
+                </div>
+              ))}
+            </div>
+            <button className="dice-view-all">Ver historial completo <ArrowRight size={18} /></button>
+          </article>
+
+          <article className="dice-summary-card">
+            <h3>Resumen actual</h3>
+            <p>Estadisticas de tus tiradas en esta sesion.</p>
+            <div className="dice-stat-grid">
+              <span><Trophy size={18} /><small>Tiradas</small><strong>{history.length}</strong><em>Total de tiradas</em></span>
+              <span><Sparkles size={18} /><small>Mas alto</small><strong>{highest || "-"}</strong><em>Mejor resultado</em></span>
+              <span><Target size={18} /><small>Promedio</small><strong>{average ? average.toFixed(1) : "-"}</strong><em>Media general</em></span>
+              <span><Plus size={18} /><small>Mas bajo</small><strong>{lowest || "-"}</strong><em>Peor resultado</em></span>
+            </div>
+          </article>
+
+          <article className="dice-mod-card">
+            <div className="dice-panel-title">
+              <strong>Modificadores guardados</strong>
+              <button>Gestionar</button>
+            </div>
+            <p>Gestiona modificadores frecuentes.</p>
+            <div className="dice-mod-grid">
+              {modifiers.map((modifier) => (
+                <button key={modifier.label} className={modifier.label.startsWith("-") ? "negative" : ""} onClick={() => applyModifier(modifier.label)}>
+                  <strong>{modifier.label}</strong>
+                  <small>{modifier.hint}</small>
+                </button>
+              ))}
+            </div>
+          </article>
+        </aside>
+      </div>
     </section>
   );
 }
