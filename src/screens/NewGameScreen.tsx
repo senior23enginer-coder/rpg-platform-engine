@@ -543,12 +543,13 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
           <button onClick={onContent}>Gestionar contenido <Plus size={16} /></button>
         </section>
       </div>
-
-      <button className="start-button" onClick={handleStart}>
-        <Zap size={36} /> {guidedUsesPrebuiltCharacters ? "Empezar campaña" : "Crear hoja de personaje"}
-        <small>{guidedUsesPrebuiltCharacters ? "Usar personaje precreado de Fallout 4" : "Revisar personaje antes de comenzar"}</small>
-      </button>
-
-    </section>
+      <footer className="new-game-footer">
+        <p><ClipboardList size={18} /> Puedes cambiar estos ajustes en cualquier momento desde el menu de pausa.</p>
+        <button className="start-button" onClick={handleStart}>
+          <Zap size={36} /> {guidedUsesPrebuiltCharacters ? "Empezar campaña" : "Crear hoja de personaje"}
+          <small>{guidedUsesPrebuiltCharacters ? "Usar personaje precreado de Fallout 4" : "Revisar personaje antes de comenzar"}</small>
+        </button>
+      </footer>
+</section>
   );
 }

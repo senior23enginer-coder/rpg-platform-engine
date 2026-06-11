@@ -17,6 +17,7 @@ import { SettingsScreen } from "./screens/SettingsScreen";
 import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, UserSettings } from "./types/profile";
+import { createActivity, loadAppMetadata, saveAppMetadata } from "./lib/appMetadataStorage";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { createSaveGameDocument, getSaveGamePath } from "./lib/saveGameStorage";
@@ -41,6 +42,7 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [games, setGames] = useState<GameConfig[]>(bundledGames);
   const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(bundledGames));
+  const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
 
   const activeGame = games.find((game) => game.id === profile.activeGameId) ?? games[0];
@@ -59,6 +61,10 @@ export default function App() {
     document.documentElement.dataset.hud = profile.settings.hudColor;
     setMusicVolume(profile.settings.volumes.music * profile.settings.volumes.master);
   }, [profile]);
+
+  useEffect(() => {
+    saveAppMetadata(appMetadata);
+  }, [appMetadata]);
 
   useEffect(() => {
     let active = true;
@@ -111,11 +117,19 @@ export default function App() {
         sessions: 0,
       }),
     }));
+    trackActivity(`Juego activo: ${games.find((game) => game.id === gameId)?.name ?? gameId}`);
     setScreen(nextScreen);
   }
 
   function updateSettings(settings: UserSettings) {
     setProfile((current) => ({ ...current, settings }));
+  }
+
+  function trackActivity(label: string) {
+    setAppMetadata((current) => ({
+      ...current,
+      recentActivity: [createActivity(label), ...current.recentActivity].slice(0, 20),
+    }));
   }
 
   function loadSave(saveId: string) {
@@ -138,6 +152,7 @@ export default function App() {
         lastPlayedAt: now,
       }),
     }));
+    trackActivity(`Partida cargada: ${save.name}`);
     setScreen("home");
   }
 
@@ -184,6 +199,7 @@ export default function App() {
         ...current.history,
       ],
     }));
+    trackActivity("Nuevo juego creado: Nuevo juego");
     setScreen("jsonEditor");
   }
 
@@ -207,7 +223,7 @@ export default function App() {
           />
 
         <div className="app-body">
-          <Sidebar active={screen} onChange={setScreen} />
+          <Sidebar active={screen} appVersion={appMetadata.version} onChange={setScreen} />
 
           <main className="app-main">
           {screen === "home" && (
@@ -216,6 +232,8 @@ export default function App() {
               campaign={activeCampaign}
               save={activeSave}
               saves={activeGameSaves}
+              recentActivity={appMetadata.recentActivity}
+              news={appMetadata.news}
               recommended={recommendedGames}
               onContinue={continueGame}
               onDice={() => setScreen("dice")}
@@ -306,6 +324,7 @@ export default function App() {
                     gameProfilesStarted: current.saves.length + 1,
                   };
                 });
+                trackActivity(`Partida creada: ${characterName} - ${activeGame.name}`);
                 setScreen("home");
               }}
             />

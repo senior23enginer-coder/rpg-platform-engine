@@ -13,6 +13,7 @@ import type { Screen } from "../screens/types";
 
 type Props = {
   active: Screen;
+  appVersion: string;
   onChange: (screen: Screen) => void;
 };
 
@@ -22,7 +23,7 @@ const items: Array<{ id: Screen; label: string; hint: string; icon: JSX.Element 
   { id: "newGame", label: "Nueva partida", hint: "Crear aventura", icon: <Plus /> },
   { id: "load", label: "Cargar partida", hint: "Continuar progreso", icon: <Archive /> },
   { id: "dice", label: "Dados 3D", hint: "Herramienta 3D", icon: <Dice5 /> },
-  { id: "settings", label: "Configuración", hint: "Visual y audio", icon: <Settings /> },
+  { id: "settings", label: "Configuracion", hint: "Visual y audio", icon: <Settings /> },
   { id: "rules", label: "Reglas globales", hint: "Reglas del motor", icon: <Box /> },
   { id: "files", label: "Archivos", hint: "Estructura y backups", icon: <Folder /> },
 ];
@@ -39,7 +40,7 @@ const uiuxIconByScreen: Partial<Record<Screen | "exit", string>> = {
   exit: "/platform/uiux-icons/exit.png",
 };
 
-export function Sidebar({ active, onChange }: Props) {
+export function Sidebar({ active, appVersion, onChange }: Props) {
   const useUiuxRail = active === "settings";
 
   return (
@@ -83,8 +84,8 @@ export function Sidebar({ active, onChange }: Props) {
       </nav>
 
       <div className="version-row">
-        <span>Versión 0.1.0</span>
-        <span className="stable-dot">● Estable</span>
+        <span>Version {appVersion}</span>
+        <span className="stable-dot">Estable</span>
       </div>
     </aside>
   );

@@ -3144,6 +3144,12 @@ button:hover {
   white-space: nowrap;
 }
 
+.save-access > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  filter: grayscale(0.35);
+}
+
 .save-copy {
   min-width: 0;
 }
@@ -3180,7 +3186,7 @@ button:hover {
 }
 
 .campaign-body {
-  grid-template-columns: 210px minmax(0, 1fr) 100px 100px 120px;
+  grid-template-columns: 210px minmax(0, 1fr) 120px minmax(230px, 0.65fr);
   gap: 18px;
 }
 
@@ -4149,6 +4155,586 @@ button:hover {
 .fallout4-sheet-note p {
   margin: 8px 0 0;
   color: #dfffd7;
+}
+
+/* New game reference layout */
+.app-frame.screen-newGame .new-game-layout {
+  min-height: 100%;
+  height: auto;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: clamp(18px, 1.8vw, 28px);
+  border: 1px solid rgba(190, 145, 48, 0.42);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(4, 10, 5, 0.9), rgba(1, 4, 2, 0.96)),
+    var(--terminal-grid);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 211, 107, 0.08),
+    inset 0 0 44px rgba(0, 0, 0, 0.72);
+}
+
+.app-frame.screen-newGame .new-game-heading {
+  min-height: 68px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding: 0 6px 10px;
+  border: 0;
+  border-bottom: 1px solid rgba(190, 145, 48, 0.26);
+  border-radius: 0;
+  background: transparent;
+}
+
+.app-frame.screen-newGame .new-game-heading > div {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  min-width: 0;
+}
+
+.app-frame.screen-newGame .new-game-heading h2 {
+  margin: 0;
+  color: #8fdc72;
+  font-size: clamp(34px, 3vw, 52px);
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-frame.screen-newGame .new-game-heading p {
+  margin: 0;
+  color: #b8d5a5;
+  font-size: clamp(13px, 0.9vw, 16px);
+}
+
+.app-frame.screen-newGame .new-game-heading button {
+  min-height: 48px;
+  min-width: 150px;
+  border: 1px solid rgba(233, 184, 74, 0.58);
+  border-radius: 8px;
+  color: #d9efc9;
+  background: rgba(12, 12, 5, 0.78);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.app-frame.screen-newGame .new-game-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(330px, 0.48fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "world loaded campaign"
+    "world mode players"
+    "world survival content";
+  gap: 12px;
+}
+
+.app-frame.screen-newGame .world-preview-panel { grid-area: world; }
+.app-frame.screen-newGame .setup-game-loaded { grid-area: loaded; }
+.app-frame.screen-newGame .campaign-card { grid-area: campaign; }
+.app-frame.screen-newGame .mode-block { grid-area: mode; }
+.app-frame.screen-newGame .players-block { grid-area: players; }
+.app-frame.screen-newGame .survival-block { grid-area: survival; }
+.app-frame.screen-newGame .content-summary { grid-area: content; }
+
+.app-frame.screen-newGame .world-preview-panel,
+.app-frame.screen-newGame .setup-block {
+  min-height: 0;
+  padding: clamp(14px, 1vw, 18px);
+  border: 1px solid rgba(190, 145, 48, 0.35);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(8, 17, 7, 0.8), rgba(2, 7, 3, 0.9)),
+    var(--terminal-grid);
+  box-shadow: inset 0 0 22px rgba(126, 255, 87, 0.035);
+}
+
+.app-frame.screen-newGame .world-preview-panel {
+  display: grid;
+  grid-template-rows: auto minmax(220px, 0.9fr) auto auto;
+  gap: 12px;
+}
+
+.app-frame.screen-newGame .world-preview-panel > h3,
+.app-frame.screen-newGame .session-summary h3,
+.app-frame.screen-newGame .setup-block h3 {
+  margin: 0 0 10px;
+  color: #92d779;
+  font-size: clamp(17px, 1.15vw, 22px);
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-frame.screen-newGame .world-preview {
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  border-radius: 8px;
+  background-size: cover;
+  background-position: center;
+}
+
+.app-frame.screen-newGame .session-summary,
+.app-frame.screen-newGame .recommend-experience {
+  padding: 14px;
+  border: 1px solid rgba(126, 255, 87, 0.15);
+  border-radius: 8px;
+  background: rgba(1, 8, 2, 0.56);
+}
+
+.app-frame.screen-newGame .session-summary p {
+  min-height: 28px;
+  align-items: center;
+}
+
+.app-frame.screen-newGame .large-select {
+  min-height: 74px;
+  border-radius: 8px;
+  background: rgba(7, 18, 7, 0.7);
+}
+
+.app-frame.screen-newGame .large-select strong {
+  font-size: clamp(24px, 1.7vw, 34px);
+}
+
+.app-frame.screen-newGame .campaign-choice {
+  min-height: 140px;
+  grid-template-columns: clamp(130px, 11vw, 190px) minmax(0, 1fr);
+  border-color: rgba(255, 191, 71, 0.72);
+  box-shadow: inset 0 0 18px rgba(255, 191, 71, 0.08);
+}
+
+.app-frame.screen-newGame .mode-card {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 10px;
+  border-radius: 8px;
+}
+
+.app-frame.screen-newGame .mode-card.selected,
+.app-frame.screen-newGame .player-options button.selected {
+  border-color: rgba(255, 191, 71, 0.9);
+  color: #ffbf47;
+  box-shadow: inset 0 0 20px rgba(255, 191, 71, 0.12);
+}
+
+.app-frame.screen-newGame .player-options {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.app-frame.screen-newGame .player-options button {
+  min-height: 132px;
+  border-radius: 10px;
+}
+
+.app-frame.screen-newGame .campaign-prebuilt-selector {
+  margin-top: 12px;
+}
+
+.app-frame.screen-newGame .content-summary .mini-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-frame.screen-newGame .content-summary .mini-tags span {
+  border-color: rgba(126, 255, 87, 0.24);
+  border-radius: 999px;
+}
+
+.app-frame.screen-newGame .new-game-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.46fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.app-frame.screen-newGame .new-game-footer p,
+.app-frame.screen-newGame .new-game-footer .start-button {
+  min-height: 76px;
+  margin: 0;
+  border: 1px solid rgba(190, 145, 48, 0.38);
+  border-radius: 8px;
+  background: rgba(6, 13, 5, 0.76);
+}
+
+.app-frame.screen-newGame .new-game-footer p {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  color: #b8d5a5;
+}
+
+.app-frame.screen-newGame .new-game-footer .start-button {
+  width: 100%;
+  justify-self: stretch;
+  justify-content: center;
+  border-color: rgba(255, 191, 71, 0.86);
+  color: #ffbf47;
+  background:
+    linear-gradient(180deg, rgba(91, 63, 12, 0.66), rgba(19, 12, 3, 0.9));
+  box-shadow: inset 0 0 24px rgba(255, 191, 71, 0.14), 0 0 16px rgba(255, 191, 71, 0.1);
+}
+
+@media (max-width: 1280px) {
+  .app-frame.screen-newGame .new-game-grid {
+    grid-template-columns: minmax(280px, 0.44fr) minmax(0, 1fr);
+    grid-template-areas:
+      "world loaded"
+      "world campaign"
+      "mode players"
+      "survival content";
+  }
+
+  .app-frame.screen-newGame .new-game-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Home dashboard fit pass for 100% browser zoom */
+.crt-shell:has(.app-frame.screen-home) {
+  padding: 6px;
+  overflow: hidden;
+}
+
+.app-frame.screen-home {
+  width: min(1920px, 100%);
+  min-height: calc(100vh - 12px);
+  max-height: calc(100vh - 12px);
+  padding: 9px;
+  gap: 8px;
+  grid-template-rows: 66px minmax(0, 1fr);
+}
+
+.app-frame.screen-home .topbar {
+  min-height: 66px;
+  padding: 7px 12px;
+}
+
+.app-frame.screen-home .topbar-logo {
+  min-width: 0;
+  gap: 12px;
+}
+
+.app-frame.screen-home .topbar-logo::before {
+  width: 50px;
+  height: 50px;
+}
+
+.app-frame.screen-home .topbar-gear {
+  display: none;
+}
+
+.app-frame.screen-home .topbar-logo strong {
+  max-width: 310px;
+  font-size: clamp(27px, 2.55vw, 40px);
+  line-height: 0.9;
+}
+
+.app-frame.screen-home .topbar-logo span {
+  max-width: 240px;
+  font-size: 12px;
+}
+
+.app-frame.screen-home .status-cluster {
+  grid-template-columns: minmax(190px, 240px) minmax(190px, 240px) minmax(170px, 210px) 66px;
+  gap: 8px;
+}
+
+.app-frame.screen-home .status-card,
+.app-frame.screen-home .square-button {
+  min-height: 48px;
+  padding: 7px 10px;
+}
+
+.app-frame.screen-home .status-card svg {
+  width: 22px;
+  height: 22px;
+}
+
+.app-frame.screen-home .status-card small {
+  font-size: 10px;
+}
+
+.app-frame.screen-home .status-card strong {
+  font-size: 12px;
+}
+
+.app-frame.screen-home .app-body {
+  min-height: 0;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: 8px;
+}
+
+.app-frame.screen-home .sidebar {
+  min-height: 0;
+  height: 100%;
+  padding: 9px;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.app-frame.screen-home .brand-block {
+  min-height: 58px;
+  padding: 0 4px 8px;
+}
+
+.app-frame.screen-home .brand-block .gear-mark {
+  width: 52px;
+  height: 52px;
+}
+
+.app-frame.screen-home .nav-list {
+  gap: 7px;
+}
+
+.app-frame.screen-home .nav-item {
+  min-height: 57px;
+  grid-template-columns: 48px minmax(0, 1fr);
+  padding: 6px 8px;
+}
+
+.app-frame.screen-home .nav-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.app-frame.screen-home .nav-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.app-frame.screen-home .nav-item strong {
+  font-size: 14px;
+}
+
+.app-frame.screen-home .nav-item small {
+  font-size: 10px;
+}
+
+.app-frame.screen-home .version-row {
+  min-height: 32px;
+  margin-top: auto;
+  padding: 0 8px;
+  font-size: 10px;
+}
+
+.app-frame.screen-home .app-main {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-frame.screen-home .home-layout {
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr) clamp(292px, 21vw, 320px);
+  grid-template-rows: minmax(300px, 1.12fr) minmax(128px, 0.42fr) minmax(145px, 0.52fr);
+  gap: 8px;
+}
+
+.app-frame.screen-home .hero-panel {
+  min-height: 0;
+  height: 100%;
+  padding: clamp(18px, 1.8vw, 28px) clamp(22px, 2.2vw, 36px);
+  background-position: center 43% !important;
+}
+
+.app-frame.screen-home .hero-copy {
+  gap: 10px;
+}
+
+.app-frame.screen-home .eyebrow {
+  font-size: 11px;
+}
+
+.app-frame.screen-home .hero-copy h2 {
+  max-width: 590px;
+  font-size: clamp(48px, 4.85vw, 76px);
+  line-height: 0.92;
+}
+
+.app-frame.screen-home .hero-copy p {
+  max-width: 560px;
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.45;
+}
+
+.app-frame.screen-home .hero-tags {
+  gap: 8px;
+  max-width: 650px;
+}
+
+.app-frame.screen-home .status-pill {
+  min-height: 34px;
+  padding: 0 13px;
+  font-size: 11px;
+}
+
+.app-frame.screen-home .continue-button {
+  min-width: clamp(190px, 15vw, 238px);
+  min-height: 58px;
+  margin: 0 0 clamp(10px, 1.3vw, 18px) auto;
+  font-size: 22px;
+}
+
+.app-frame.screen-home .continue-button small {
+  font-size: 10px;
+}
+
+.app-frame.screen-home .home-side {
+  min-height: 0;
+  height: auto;
+  gap: 8px;
+  grid-template-rows: auto auto;
+  align-content: start;
+}
+
+.app-frame.screen-home .list-panel,
+.app-frame.screen-home .quick-panel,
+.app-frame.screen-home .campaign-panel {
+  min-height: 0;
+  padding: 14px;
+}
+
+.app-frame.screen-home .campaign-panel {
+  grid-area: campaign;
+}
+
+.app-frame.screen-home .panel-title {
+  margin-bottom: 10px;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.app-frame.screen-home .save-access > button:last-child {
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+.app-frame.screen-home .save-mini {
+  min-height: 48px;
+  grid-template-columns: 58px minmax(0, 1fr) auto;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.app-frame.screen-home .save-thumb {
+  width: 58px;
+  height: 34px;
+}
+
+.app-frame.screen-home .quick-panel {
+  display: grid;
+  grid-template-rows: auto 118px 40px;
+}
+
+.app-frame.screen-home .dice-preview {
+  min-height: 0;
+  height: 100%;
+  background-size: min(88%, 250px) auto;
+}
+
+.app-frame.screen-home .green-button {
+  min-height: 40px;
+  font-size: 13px;
+}
+
+.app-frame.screen-home .dashboard-row {
+  min-height: 0;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.app-frame.screen-home .campaign-body {
+  min-height: 0;
+  grid-template-columns: clamp(150px, 14vw, 195px) minmax(170px, 1fr) minmax(82px, 0.26fr) minmax(155px, 0.5fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.app-frame.screen-home .campaign-preview {
+  min-height: 74px;
+  height: 88px;
+}
+
+.app-frame.screen-home .campaign-body h3 {
+  margin: 0 0 4px;
+  font-size: clamp(18px, 1.35vw, 22px);
+  line-height: 1.05;
+}
+
+.app-frame.screen-home .campaign-body p {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.app-frame.screen-home .campaign-body small,
+.app-frame.screen-home .level-box small {
+  font-size: 10px;
+}
+
+.app-frame.screen-home .level-box strong {
+  font-size: clamp(30px, 3vw, 48px);
+  line-height: 0.95;
+}
+
+.app-frame.screen-home .recommend-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.app-frame.screen-home .recommend-card {
+  min-height: 82px;
+  padding: 8px;
+  font-size: 12px;
+}
+
+.app-frame.screen-home .bottom-grid {
+  min-height: 0;
+  grid-template-columns: minmax(210px, 0.85fr) minmax(285px, 1.15fr) minmax(310px, 1.15fr);
+  gap: 8px;
+}
+
+.app-frame.screen-home .bottom-grid .list-panel {
+  overflow: hidden;
+  align-content: start;
+}
+
+.app-frame.screen-home .list-panel p {
+  margin: 0;
+  padding: 8px 0;
+  font-size: 12px;
+}
+
+.app-frame.screen-home .list-panel p span {
+  float: right;
+}
+
+@media (max-width: 1360px) {
+  .app-frame.screen-home .topbar-logo span {
+    display: none;
+  }
+
+  .app-frame.screen-home .status-cluster {
+    grid-template-columns: repeat(3, minmax(160px, 1fr)) 58px;
+  }
+
+  .app-frame.screen-home .app-body {
+    grid-template-columns: 236px minmax(0, 1fr);
+  }
+
+  .app-frame.screen-home .nav-item {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
 }
 
 .daysgone-visual-sheet {
@@ -5228,7 +5814,7 @@ button:hover {
 }
 
 .home-layout .campaign-body {
-  grid-template-columns: clamp(180px, 16vw, 235px) minmax(240px, 1fr) minmax(92px, 0.32fr) minmax(220px, 0.7fr);
+  grid-template-columns: clamp(180px, 16vw, 235px) minmax(220px, 1fr) minmax(104px, 0.32fr) minmax(250px, 0.7fr);
   gap: clamp(14px, 1.2vw, 22px);
   align-items: center;
 }
@@ -6898,5 +7484,78 @@ button:hover {
     border-left: 0;
     border-top: 1px solid rgba(190, 145, 48, 0.24);
     padding-left: 8px;
+  }
+}
+
+/* Final new game reference override */
+.app-frame.screen-newGame .new-game-layout {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: clamp(18px, 1.8vw, 28px);
+}
+
+.app-frame.screen-newGame .new-game-grid {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.48fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "world loaded campaign"
+    "world mode players"
+    "world survival content";
+  gap: 12px;
+}
+
+.app-frame.screen-newGame .world-preview-panel { grid-area: world; }
+.app-frame.screen-newGame .setup-game-loaded { grid-area: loaded; }
+.app-frame.screen-newGame .campaign-card { grid-area: campaign; }
+.app-frame.screen-newGame .mode-block { grid-area: mode; }
+.app-frame.screen-newGame .players-block { grid-area: players; }
+.app-frame.screen-newGame .survival-block { grid-area: survival; }
+.app-frame.screen-newGame .content-summary { grid-area: content; }
+
+.app-frame.screen-newGame .new-game-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.46fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.app-frame.screen-newGame .new-game-footer p,
+.app-frame.screen-newGame .new-game-footer .start-button {
+  min-height: 76px;
+  margin: 0;
+  border: 1px solid rgba(190, 145, 48, 0.38);
+  border-radius: 8px;
+  background: rgba(6, 13, 5, 0.76);
+}
+
+.app-frame.screen-newGame .new-game-footer p {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  color: #b8d5a5;
+}
+
+.app-frame.screen-newGame .new-game-footer .start-button {
+  width: 100%;
+  justify-self: stretch;
+  justify-content: center;
+  border-color: rgba(255, 191, 71, 0.86);
+  color: #ffbf47;
+  background: linear-gradient(180deg, rgba(91, 63, 12, 0.66), rgba(19, 12, 3, 0.9));
+}
+
+@media (max-width: 1280px) {
+  .app-frame.screen-newGame .new-game-grid {
+    grid-template-columns: minmax(280px, 0.44fr) minmax(0, 1fr);
+    grid-template-areas:
+      "world loaded"
+      "world campaign"
+      "mode players"
+      "survival content";
+  }
+
+  .app-frame.screen-newGame .new-game-footer {
+    grid-template-columns: 1fr;
   }
 }
