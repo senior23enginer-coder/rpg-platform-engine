@@ -1,0 +1,12 @@
+{
+  "id": "vault_tec_workshop",
+  "name": "Vault-Tec Workshop",
+  "description": "Expansion jugable para construir refugios, administrar salas y aplicar experimentos controlados.",
+  "enabled": false,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "assets": {
+    "thumbnail": "assets/content-thumbs/dlc/vault_tec_workshop.png",
+    "sourceCover": "assets/source-covers/dlc/vault_tec_workshop.jpg"
+  }
+}

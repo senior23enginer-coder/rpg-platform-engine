@@ -1,13 +1,13 @@
 import { ArrowLeft, Box, ClipboardList, Compass, Crosshair, Eye, HeartPulse, Plus, Settings, User, Users, Zap } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
-import type { CampaignCharacter, CharacterSheetConfig, GameConfig } from "../types/game";
+import type { CampaignCharacter, CharacterSheetConfig, GameConfig, NewGameSetupConfig } from "../types/game";
 import { gameHeroVars, loadGameCharacterSheet, resolveGameAsset } from "../lib/gameLibrary";
 
 type Props = {
   game: GameConfig;
   characters: CharacterSheetConfig;
-  onStart: (characterName: string, attributes: Record<string, number>) => void;
+  onStart: (characterName: string, attributes: Record<string, number>, options?: { mode: "guided" | "free" }) => void;
   onContent: () => void;
   onBack: () => void;
 };
@@ -65,6 +65,7 @@ const fallbackOrigins: SheetOption[] = [
 export function NewGameScreen({ game, characters, onStart, onContent, onBack }: Props) {
   const [stage, setStage] = useState<"setup" | "character" | "campaignSheet">("setup");
   const [sheetConfig, setSheetConfig] = useState<RuntimeCharacterSheetConfig>(characters);
+  const [setupConfig, setSetupConfig] = useState<NewGameSetupConfig | undefined>(game.newGameSetup);
   const [characterName, setCharacterName] = useState("Superviviente");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
@@ -112,13 +113,17 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     .filter((option) => option.value <= (game.maxPlayers ?? 4))
     .filter((option) => !configuredValues.size || configuredValues.has(option.value))
     .filter((option) => !(isFallout4 && mode === "guided" && option.value > 2));
-  const sheetLabels = gameSheetLabels[game.id] ?? {
-    species: `${game.name} - personaje`,
-    quote: "Tu universo. Tu historia. Tu aventura.",
-    system: "RPG Platform Engine",
+  const setupText = setupConfig ?? game.newGameSetup;
+  const sheetLabels = {
+    ...(gameSheetLabels[game.id] ?? {
+      species: `${game.name} - personaje`,
+      quote: "Tu universo. Tu historia. Tu aventura.",
+      system: "RPG Platform Engine",
+    }),
+    ...(setupText?.labels ?? {}),
   };
-  const origins = sheetConfig.origins?.length ? sheetConfig.origins : fallbackOrigins;
-  const skills = sheetConfig.skills?.length ? sheetConfig.skills : fallbackSkills;
+  const origins = sheetConfig.origins?.length ? sheetConfig.origins : setupText?.fallbackOrigins ?? fallbackOrigins;
+  const skills = sheetConfig.skills?.length ? sheetConfig.skills : setupText?.fallbackSkills ?? fallbackSkills;
   const seeds = sheetConfig.seeds ?? [];
   const attributeTotal = Object.values(attributes).reduce((sum, value) => sum + Number(value || 0), 0);
   const health = Math.max(8, (attributes.END ?? attributes.RES ?? 5) + 5);
@@ -128,7 +133,19 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   useEffect(() => {
     let active = true;
     setStage("setup");
+    setSetupConfig(game.newGameSetup);
     setSheetConfig(characters);
+    const newGameConfigPath = resolveGameAsset(game, game.newGame);
+    if (newGameConfigPath) {
+      fetch(newGameConfigPath)
+        .then((response) => (response.ok ? response.json() : undefined))
+        .then((config: NewGameSetupConfig | undefined) => {
+          if (active && config) setSetupConfig(config);
+        })
+        .catch(() => {
+          if (active) setSetupConfig(game.newGameSetup);
+        });
+    }
     loadGameCharacterSheet(game)
       .then((config: RuntimeCharacterSheetConfig) => {
         if (active) setSheetConfig(config);
@@ -140,19 +157,19 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     return () => {
       active = false;
     };
-  }, [characters, game.id]);
+  }, [characters, game]);
 
   useEffect(() => {
     setAttributes(Object.fromEntries(sheetConfig.attributes.map((attr) => [attr.id, attr.default])));
-    setCharacterName(sheetConfig.seeds?.[0]?.name ?? "Superviviente");
-    setOriginId((sheetConfig.origins?.[0] ?? fallbackOrigins[0]).id);
+    setCharacterName(sheetConfig.seeds?.[0]?.name ?? setupText?.labels?.defaultCharacterName ?? "Superviviente");
+    setOriginId((sheetConfig.origins?.[0] ?? setupText?.fallbackOrigins?.[0] ?? fallbackOrigins[0]).id);
     setPlayers((current) => Math.min(current, game.maxPlayers ?? 4));
     setSelectedCampaignCharacterIds(campaignCharacters.slice(0, 2).map((character) => character.id));
     setSheetCharacterId("");
     setGender("");
     setAge("");
     setNotes("");
-  }, [game.maxPlayers, sheetConfig, campaignCharacters]);
+  }, [game.maxPlayers, sheetConfig, campaignCharacters, setupText]);
 
   useEffect(() => {
     if (isFallout4 && mode === "guided") {
@@ -181,7 +198,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
       const selectedCharacters = selectedCampaignCharacters.slice(0, players);
       const name = selectedCharacters.map((character) => character.name).join(" / ") || "Superviviente";
       const characterAttributes = selectedCharacters[0]?.attributes ?? attributes;
-      onStart(name, characterAttributes);
+      onStart(name, characterAttributes, { mode });
       return;
     }
 
@@ -190,7 +207,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
       return;
     }
 
-    onStart(characterName.trim() || "Superviviente", attributes);
+    onStart(characterName.trim() || "Superviviente", attributes, { mode });
   }
 
   function applySeed(seedId: string) {
@@ -396,8 +413,8 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
     <section className="new-game-layout" style={gameArtStyle}>
       <div className="new-game-heading">
         <div>
-          <h2>Nueva partida</h2>
-          <p>Comienza una nueva aventura en {game.name}.</p>
+          <h2>{setupText?.title ?? "Nueva partida"}</h2>
+          <p>{setupText?.subtitle ?? `Comienza una nueva aventura en ${game.name}.`}</p>
         </div>
         <button onClick={onBack}><ArrowLeft size={18} /> Volver</button>
       </div>
@@ -419,27 +436,27 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
           <div className="recommend-experience">
             <Zap size={48} />
             <div>
-              <strong>Experiencia recomendada</strong>
-              <p>Perfecto para quienes juegan {game.name} por primera vez o buscan la historia clasica.</p>
+              <strong>{setupText?.recommended?.title ?? "Experiencia recomendada"}</strong>
+              <p>{setupText?.recommended?.description ?? `Perfecto para quienes juegan ${game.name} por primera vez o buscan la historia clasica.`}</p>
             </div>
           </div>
         </aside>
 
         <section className="setup-block setup-game-loaded">
-          <h3><Settings size={20} /> 1. Juego cargado</h3>
+          <h3><Settings size={20} /> {setupText?.blocks?.gameLoaded ?? "1. Juego cargado"}</h3>
           <div className="large-select">
             <span className="gear-small"><Settings size={34} /></span>
             <strong>{game.name}</strong>
           </div>
-          <p>{game.loadedDescription ?? game.description}</p>
+          <p>{setupText?.loadedDescription ?? game.loadedDescription ?? game.description}</p>
         </section>
 
         <section className="setup-block campaign-card">
-          <h3><Crosshair size={20} /> 2. Campana</h3>
+          <h3><Crosshair size={20} /> {setupText?.blocks?.campaign ?? "2. Campana"}</h3>
           <div className="campaign-choice">
             <div className="campaign-choice-art" />
             <div>
-              <strong>{campaign?.title ?? `Explorando ${game.name}`}</strong>
+              <strong>{campaign?.title ?? setupText?.labels?.fallbackCampaignTitle ?? `Explorando ${game.name}`}</strong>
               <small>{campaign?.implemented ? "Campana jugable" : "Plantilla futura"} - {campaign?.id ?? "sin_mision"}</small>
               <p>{campaign?.description ?? "Exploracion libre hasta definir misiones."}</p>
             </div>
@@ -465,19 +482,19 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         </section>
 
         <section className="setup-block mode-block">
-          <h3><Compass size={20} /> 3. Modo de juego</h3>
+          <h3><Compass size={20} /> {setupText?.blocks?.mode ?? "3. Modo de juego"}</h3>
           <button className={`mode-card ${mode === "guided" ? "selected" : ""}`} onClick={() => setMode("guided")}>
             <Crosshair size={34} />
-            <span>Campana guiada <small>Objetivos y escenas para vivir la historia.</small></span>
+            <span>{setupText?.modes?.guided?.label ?? "Campana guiada"} <small>{setupText?.modes?.guided?.description ?? "Objetivos y escenas para vivir la historia."}</small></span>
           </button>
           <button className={`mode-card ${mode === "free" ? "selected" : ""}`} onClick={() => setMode("free")}>
             <Compass size={34} />
-            <span>Modo libre <small>Exploracion emergente sin guia principal.</small></span>
+            <span>{setupText?.modes?.free?.label ?? "Modo libre"} <small>{setupText?.modes?.free?.description ?? "Exploracion emergente sin guia principal."}</small></span>
           </button>
         </section>
 
         <section className="setup-block players-block">
-          <h3><Users size={20} /> 4. Jugadores</h3>
+          <h3><Users size={20} /> {setupText?.blocks?.players ?? "4. Jugadores"}</h3>
           <div className="player-options">
             {playerOptions.map((option) => (
               <button key={option.value} className={players === option.value ? "selected" : ""} onClick={() => setPlayers(option.value)}>
@@ -527,16 +544,16 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         </section>
 
         <section className="setup-block survival-block">
-          <h3><HeartPulse size={20} /> 5. Supervivencia</h3>
-          <p>Hambre, sed, cansancio, clima y recursos.</p>
+          <h3><HeartPulse size={20} /> {setupText?.blocks?.survival ?? "5. Supervivencia"}</h3>
+          <p>{setupText?.survival?.description ?? "Hambre, sed, cansancio, clima y recursos."}</p>
           <button className={`fake-toggle label-toggle ${survival ? "on" : ""}`} onClick={() => setSurvival((value) => !value)}>
             {survival ? "Activada" : "Desactivada"}
           </button>
         </section>
 
         <section className="setup-block content-summary">
-          <h3><Box size={20} /> 6. DLC / Contenido</h3>
-          <p>Contenido adicional disponible para esta partida.</p>
+          <h3><Box size={20} /> {setupText?.blocks?.content ?? "6. DLC / Contenido"}</h3>
+          <p>{setupText?.content?.description ?? "Contenido adicional disponible para esta partida."}</p>
           <div className="mini-tags">
             {activeContent.slice(0, 8).map((item) => <span key={item.id}>{item.name}</span>)}
           </div>
@@ -544,10 +561,10 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
         </section>
       </div>
       <footer className="new-game-footer">
-        <p><ClipboardList size={18} /> Puedes cambiar estos ajustes en cualquier momento desde el menu de pausa.</p>
+        <p><ClipboardList size={18} /> {setupText?.footer?.note ?? "Puedes cambiar estos ajustes en cualquier momento desde el menu de pausa."}</p>
         <button className="start-button" onClick={handleStart}>
-          <Zap size={36} /> {guidedUsesPrebuiltCharacters ? "Empezar campaña" : "Crear hoja de personaje"}
-          <small>{guidedUsesPrebuiltCharacters ? "Usar personaje precreado de Fallout 4" : "Revisar personaje antes de comenzar"}</small>
+          <Zap size={36} /> {guidedUsesPrebuiltCharacters ? setupText?.footer?.guidedStart ?? "Empezar campana" : setupText?.footer?.freeStart ?? "Crear hoja de personaje"}
+          <small>{guidedUsesPrebuiltCharacters ? setupText?.footer?.guidedHint ?? "Usar personaje precreado" : setupText?.footer?.freeHint ?? "Revisar personaje antes de comenzar"}</small>
         </button>
       </footer>
 </section>

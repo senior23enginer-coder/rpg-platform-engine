@@ -4,6 +4,21 @@ import { useEffect, useMemo, useState } from "react";
 import type { ContentItem, GameConfig } from "../types/game";
 import { contentThumbnail, gameHeroVars, resolveGameAsset } from "../lib/gameLibrary";
 
+type TemplateManifest = {
+  scope?: string;
+  counts?: Record<string, number>;
+  tomeRoles?: Array<{ id: string; name: string; role: string; playableStatus?: string }>;
+  gameplayTemplates?: Array<{ id: string; name: string; rule: string; sourceTomes?: string[] }>;
+  contentTemplates?: Record<"dlc" | "features" | "extras", Array<{
+    id: string;
+    name: string;
+    status?: string;
+    sourceTomes?: string[];
+    adds?: string[];
+    rule?: string;
+  }>>;
+};
+
 type Props = {
   game: GameConfig;
   onBack: () => void;
@@ -58,6 +73,7 @@ function ContentCard({
 }
 
 export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: Props) {
+  const [templates, setTemplates] = useState<TemplateManifest | undefined>();
   const allItems = useMemo(
     () =>
       (["dlc", "features", "extras"] as const).flatMap((category) =>
@@ -67,10 +83,35 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
   );
   const [selectedKey, setSelectedKey] = useState(() => allItems[0] ? `${allItems[0].category}:${allItems[0].item.id}` : "");
   const selected = allItems.find((entry) => `${entry.category}:${entry.item.id}` === selectedKey) ?? allItems[0];
+  const selectedTemplate = selected
+    ? templates?.contentTemplates?.[selected.category]?.find((item) => item.id === selected.item.id)
+    : undefined;
 
   useEffect(() => {
     setSelectedKey(allItems[0] ? `${allItems[0].category}:${allItems[0].item.id}` : "");
   }, [game.id]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const templatePath = resolveGameAsset(game, game.templates);
+    if (!templatePath) {
+      setTemplates(undefined);
+      return;
+    }
+
+    fetch(templatePath)
+      .then((response) => response.ok ? response.json() : undefined)
+      .then((data) => {
+        if (!cancelled) setTemplates(data);
+      })
+      .catch(() => {
+        if (!cancelled) setTemplates(undefined);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [game]);
 
   function exportConfig() {
     const blob = new Blob([JSON.stringify(game, null, 2)], { type: "application/json" });
@@ -136,17 +177,21 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
               <span>ID: {selected.item.id}</span>
               <span>{selected.item.enabled ? "Activado" : "Desactivado"}</span>
               <span>Asset: {contentThumbnail(game, selected.category, selected.item.id, selected.item.thumbnail)}</span>
+              {selectedTemplate?.sourceTomes?.length ? <span>Tomos: {selectedTemplate.sourceTomes.join(", ")}</span> : null}
             </div>
           </div>
           <div className="content-detail-adds">
             <strong>Agrega a la partida</strong>
             <p>
-              {selected.category === "dlc"
+              {selectedTemplate?.adds?.length
+                ? selectedTemplate.adds.join(", ")
+                : selected.category === "dlc"
                 ? "Nueva zona, escenas, enemigos, recompensas y reglas opcionales asociadas al contenido."
                 : selected.category === "features"
                   ? "Mecanica activa para modificar tiradas, progresion, exploracion o combate."
                   : "Encuentros, eventos o variantes de ambientacion para enriquecer la campana."}
             </p>
+            {selectedTemplate?.rule && <small>{selectedTemplate.rule}</small>}
             <button
               className={`fake-toggle label-toggle ${selected.item.enabled ? "on" : ""}`}
               onClick={() => onToggle(selected.category, selected.item.id)}
@@ -156,6 +201,47 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
           </div>
         </article>
       )}
+
+      {templates && (
+        <article className="template-coverage-panel">
+          <div>
+            <small>Plantillas jugables</small>
+            <h3>Mapa core-book</h3>
+            <p>{templates.scope}</p>
+          </div>
+          <div className="template-count-grid">
+            {Object.entries(templates.counts ?? {}).map(([key, value]) => (
+              <span key={key}>
+                <strong>{value}</strong>
+                <small>{key}</small>
+              </span>
+            ))}
+          </div>
+          <div className="template-source-grid">
+            {(templates.tomeRoles ?? []).map((tome) => (
+              <span key={tome.id}>
+                <strong>{tome.id}</strong>
+                <small>{tome.name}</small>
+              </span>
+            ))}
+          </div>
+        </article>
+      )}
+
+      {templates?.gameplayTemplates?.length ? (
+        <div className="content-section template-content-section">
+          <h3>Plantillas de juego base</h3>
+          <div className="template-card-grid">
+            {templates.gameplayTemplates.map((template) => (
+              <article key={template.id}>
+                <small>{template.sourceTomes?.join(" + ")}</small>
+                <strong>{template.name}</strong>
+                <p>{template.rule}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ) : null}
 
       <div className="content-section campaign-content-section">
         <h3>Campañas</h3>

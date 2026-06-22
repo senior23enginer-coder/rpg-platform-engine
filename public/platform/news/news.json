@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-06-22T00:00:00.000Z",
+  "items": [
+    {
+      "id": "fallout4-corebook-refresh",
+      "title": "Fallout 4: Tomo 1 actualizado",
+      "summary": "Reglas core, AP, Momentum, campaña, modo libre y compañeros fueron remapeados en plantillas.",
+      "body": "La plataforma actualizo las plantillas de Fallout 4 con el Tomo 1 revisado: AP maximos, 2d20, Momentum, habilidades core, personajes iniciales y limites de campaña.",
+      "gameId": "fallout4",
+      "image": "/games/fallout4/assets/content-thumbs/dlc/automatron.png",
+      "publishedAt": "2026-06-22T11:08:00.000Z"
+    },
+    {
+      "id": "save-system",
+      "title": "Guardados separados de configuracion",
+      "summary": "Cada partida genera un solo archivo de guardado con progreso y snapshot de configuracion.",
+      "body": "Los saves ahora guardan campaña, ruta, zonas visitadas, nivel, sesiones, horas jugadas, dias transcurridos y contenido activo sin mezclarlo con los archivos de configuracion del juego.",
+      "gameId": "fallout4",
+      "image": "/platform/wasteland-hero.png",
+      "publishedAt": "2026-06-21T19:00:00.000Z"
+    },
+    {
+      "id": "folder-modules",
+      "title": "Modulos por carpetas",
+      "summary": "DLC, features, extras y campañas pueden leerse desde carpetas con config.json.",
+      "body": "Cada juego puede declarar modulos en carpetas: dlc, features, extras y campaigns. La biblioteca solo carga juegos con game.config.json.",
+      "gameId": "fallout4",
+      "image": "/games/fallout4/assets/hero/generated.png",
+      "publishedAt": "2026-06-20T16:00:00.000Z"
+    },
+    {
+      "id": "android-responsive-pass",
+      "title": "UI responsive en revision",
+      "summary": "Login, noticias, registro y carga se adaptan mejor a resoluciones pequeñas.",
+      "body": "Se ajustaron grillas, cards y formularios para pantallas de escritorio, tablets y Android.",
+      "gameId": "platform",
+      "image": "/platform/uiux-copied/rec-newvegas.png",
+      "publishedAt": "2026-06-18T09:30:00.000Z"
+    }
+  ]
+}

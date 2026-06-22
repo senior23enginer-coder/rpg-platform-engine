@@ -1,0 +1,12 @@
+{
+  "id": "asentamientos",
+  "name": "Asentamientos",
+  "description": "Reglas de construccion, defensa, recursos, poblacion, ataques y gestion territorial.",
+  "enabled": true,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "sourceTomes": ["TOMO 01", "TOMO 07"],
+  "assets": {
+    "thumbnail": "assets/content-thumbs/features/asentamientos.png"
+  }
+}

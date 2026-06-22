@@ -1,0 +1,40 @@
+{
+  "id": "operador-local",
+  "name": "Operador Local",
+  "username": "operador",
+  "password": "operador123",
+  "role": "user",
+  "gender": "",
+  "email": "operador@rpg.local",
+  "avatar": "avatar.svg",
+  "basePath": "/users/invitado-local",
+  "profilePath": "/users/operador-local/profile.json",
+  "level": 1,
+  "openSessions": 0,
+  "gameProfilesStarted": 0,
+  "completedCampaigns": 0,
+  "signedIn": false,
+  "activeGameId": "fallout4",
+  "history": [],
+  "saves": [],
+  "settings": {
+    "theme": "dark",
+    "hudColor": "green",
+    "animatedBackground": true,
+    "audioEnabled": false,
+    "assetOverrides": {},
+    "tracks": {
+      "background": "01_fallout_4_main_theme",
+      "combat": "06_combat_ready",
+      "exploration": "44_explore_and_discover",
+      "vault": "07_deeper_and_darker",
+      "day": "09_brightness_calling",
+      "night": "32_darkness_falls"
+    },
+    "volumes": {
+      "music": 0.7,
+      "sfx": 0.8,
+      "master": 1
+    }
+  }
+}

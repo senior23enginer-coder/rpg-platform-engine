@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { CSSProperties } from "react";
 import {
   Activity,
   AlertCircle,
@@ -7,6 +8,7 @@ import {
   Cloud,
   Eye,
   Gamepad2,
+  Github,
   Lock,
   LogIn,
   Mail,
@@ -14,19 +16,35 @@ import {
   Settings,
   User,
   UserPlus,
-  Volume2,
   X,
 } from "lucide-react";
+import { gameHeroVars } from "../lib/gameLibrary";
+import type { GameConfig } from "../types/game";
 import type { PlayerProfile } from "../types/profile";
 
 type Props = {
   profile: PlayerProfile;
   users: PlayerProfile[];
+  games: GameConfig[];
   onAccess: (profile: PlayerProfile) => void;
-  onRegister: (account: { email: string; username: string; password: string }) => void;
+  onRegister: (account: { email: string; username: string; password: string; role?: "user" | "admin" }) => void;
 };
 
 type AuthMode = "login" | "register";
+
+type NewsItem = {
+  id: string;
+  title: string;
+  summary: string;
+  date?: string;
+  publishedAt?: string;
+  gameId?: string;
+  image?: string;
+  body?: string;
+};
+
+const rememberedLoginKey = "rpg-platform.remembered-login";
+const lastGameKey = "rpg-platform.last-game-id";
 
 function matchesAccount(profile: PlayerProfile, value: string) {
   const normalizedValue = value.trim().toLowerCase();
@@ -36,9 +54,52 @@ function matchesAccount(profile: PlayerProfile, value: string) {
   );
 }
 
-export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
+function readLocalStorage(key: string) {
+  try {
+    return window.localStorage.getItem(key) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function writeLocalStorage(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Local storage may be unavailable in restricted webviews.
+  }
+}
+
+function removeLocalStorage(key: string) {
+  try {
+    window.localStorage.removeItem(key);
+  } catch {
+    // Local storage may be unavailable in restricted webviews.
+  }
+}
+
+function newsImage(item: NewsItem, games: GameConfig[]) {
+  if (item.image) return item.image;
+  const relatedGame = games.find((game) => game.id === item.gameId) ?? games[0];
+  return relatedGame?.assets?.cover
+    ? `${relatedGame.basePath ?? `/games/${relatedGame.id}`}/${relatedGame.assets.cover}`
+    : "/platform/uiux-copied/rec-fallout4.png";
+}
+
+function newsDate(item: NewsItem) {
+  const rawDate = item.date ?? item.publishedAt;
+  if (!rawDate) return "";
+  try {
+    return new Intl.DateTimeFormat("es", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(rawDate));
+  } catch {
+    return rawDate;
+  }
+}
+
+export function AuthScreen({ profile, users, games, onAccess, onRegister }: Props) {
+  const rememberedLogin = readLocalStorage(rememberedLoginKey);
   const [mode, setMode] = useState<AuthMode>("login");
-  const [emailOrUser, setEmailOrUser] = useState(profile.email || profile.username || "");
+  const [emailOrUser, setEmailOrUser] = useState(rememberedLogin || "");
   const [email, setEmail] = useState(profile.email ?? "");
   const [username, setUsername] = useState(profile.username ?? "");
   const [password, setPassword] = useState("");
@@ -46,13 +107,54 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryMessage, setRecoveryMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
-  const [remember, setRemember] = useState(true);
-  const [news, setNews] = useState(true);
+  const [showAllNews, setShowAllNews] = useState(false);
+  const [remember, setRemember] = useState(Boolean(rememberedLogin));
+  const [newsOptIn, setNewsOptIn] = useState(true);
+  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
 
-  const loginAccount = users.find((user) => matchesAccount(user, emailOrUser));
-  const loginMatchesProfile = Boolean(loginAccount && password === loginAccount.password);
-  const loginReady = emailOrUser.trim().length > 0 && password.trim().length > 0 && loginMatchesProfile;
-  const accountAlreadyExists = users.some((user) => matchesAccount(user, email) || matchesAccount(user, username));
+  useEffect(() => {
+    let active = true;
+    fetch("/platform/news/news.json")
+      .then((response) => (response.ok ? response.json() : undefined))
+      .then((payload) => {
+        if (!active) return;
+        setNewsItems(Array.isArray(payload?.items) ? payload.items : []);
+      })
+      .catch(() => {
+        if (active) setNewsItems([]);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const availableUsers = users.length ? users : [profile];
+  const selectedGame = useMemo(() => {
+    const storedGameId = readLocalStorage(lastGameKey);
+    return (
+      games.find((game) => game.id === storedGameId) ??
+      games.find((game) => game.id === profile.activeGameId) ??
+      games[0]
+    );
+  }, [games, profile.activeGameId]);
+  const heroStyle = selectedGame ? (gameHeroVars(selectedGame) as CSSProperties) : undefined;
+  const fallbackNews = newsItems.length
+    ? newsItems
+    : [
+        {
+          id: "fallback-news",
+          title: "RPG Platform Engine listo",
+          summary: "Noticias cargadas desde archivo cuando exista /platform/news/news.json.",
+          date: "2026-06-22",
+          gameId: selectedGame?.id,
+        },
+      ];
+
+  const loginAccount = availableUsers.find((user) => matchesAccount(user, emailOrUser));
+  const passwordRequired = Boolean(loginAccount?.password);
+  const loginMatchesProfile = Boolean(loginAccount && (!passwordRequired || password === loginAccount.password));
+  const loginReady = emailOrUser.trim().length > 0 && (!passwordRequired || password.trim().length > 0) && loginMatchesProfile;
+  const accountAlreadyExists = availableUsers.some((user) => matchesAccount(user, email) || matchesAccount(user, username));
   const registerReady =
     email.trim().length > 0 &&
     username.trim().length > 0 &&
@@ -61,24 +163,48 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
     !accountAlreadyExists;
   const canEnter = mode === "login" ? loginReady : registerReady;
 
+  function accessProfile(account: PlayerProfile) {
+    const now = new Date().toISOString();
+    if (remember) writeLocalStorage(rememberedLoginKey, account.username || account.email || emailOrUser.trim());
+    else removeLocalStorage(rememberedLoginKey);
+    onAccess({
+      ...account,
+      signedIn: true,
+      previousLastLoginAt: account.lastLoginAt,
+      lastLoginAt: now,
+      lastActivityAt: now,
+    });
+  }
+
   function submit() {
     if (!canEnter) return;
-    const now = new Date().toISOString();
     if (mode === "register") {
+      if (remember) writeLocalStorage(rememberedLoginKey, username.trim() || email.trim());
       onRegister({ email: email.trim(), username: username.trim(), password });
       return;
     }
 
-    if (loginAccount) {
-      onAccess({
-        ...loginAccount,
-        signedIn: true,
-        previousLastLoginAt: loginAccount.lastLoginAt,
-        lastLoginAt: now,
-        lastActivityAt: now,
-      });
+    if (loginAccount) accessProfile(loginAccount);
+  }
+
+  function socialAccess(provider: "google" | "facebook" | "github") {
+    const usernameByProvider = {
+      google: "google_demo",
+      facebook: "facebook_demo",
+      github: "github_demo",
+    };
+    const usernameFromProvider = usernameByProvider[provider];
+    const existing = availableUsers.find((user) => user.username === usernameFromProvider);
+    if (existing) {
+      accessProfile(existing);
       return;
     }
+    if (remember) writeLocalStorage(rememberedLoginKey, usernameFromProvider);
+    onRegister({
+      email: `${usernameFromProvider}@rpg.local`,
+      username: usernameFromProvider,
+      password: `${provider}123`,
+    });
   }
 
   function recoverPassword() {
@@ -88,9 +214,8 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
       return;
     }
 
-    const matchesProfile =
-      users.find((user) => matchesAccount(user, target));
-    if (!matchesProfile) {
+    const matchedProfile = availableUsers.find((user) => matchesAccount(user, target));
+    if (!matchedProfile) {
       setRecoveryMessage("No hay una cuenta local registrada con ese correo o usuario.");
       return;
     }
@@ -102,13 +227,13 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
       `Usa este codigo para restablecer tu contrasena: ${resetCode}\n\nEnlace local: ${resetLink}\n\nPor seguridad no enviamos tu contrasena actual.`
     );
     onAccess({
-      ...matchesProfile,
+      ...matchedProfile,
       signedIn: false,
       passwordResetCode: resetCode,
       lastPasswordResetRequestAt: new Date().toISOString(),
     });
-    window.location.href = `mailto:${matchesProfile.email || target}?subject=${subject}&body=${body}`;
-    setRecoveryMessage(`Codigo de restablecimiento generado: ${resetCode}. Correo preparado en tu cliente de correo.`);
+    window.location.href = `mailto:${matchedProfile.email || target}?subject=${subject}&body=${body}`;
+    setRecoveryMessage(`Codigo generado: ${resetCode}. Se preparo el correo de restablecimiento.`);
   }
 
   return (
@@ -119,46 +244,39 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
           <strong>RPG Platform Engine</strong>
           <span>Tu universo. Tu historia. Tu aventura.</span>
         </div>
-        <div className="auth-status">
+        <div className="auth-status auth-status-public">
           <span><Monitor size={24} /><small>Estado del sistema</small><strong>Todo en orden</strong></span>
           <span><Activity size={24} /><small>Audio ambiental</small><strong>Activado</strong></span>
-          <span><Box size={24} /><small>{profile.name}</small><strong>Nivel {profile.level}</strong></span>
-          <button><Settings size={22} /></button>
+          <button type="button" aria-label="Configuracion"><Settings size={22} /></button>
         </div>
       </header>
 
       <main className="auth-main">
         <section className="auth-showcase">
-          <div className="auth-hero-art" />
+          <div className="auth-hero-art" style={heroStyle}>
+            <span>{selectedGame?.name ?? "RPG Platform Engine"}</span>
+          </div>
           <article className="auth-news">
             <header>
               <strong>Noticias</strong>
-              <button>Ver todas →</button>
+              <button type="button" onClick={() => setShowAllNews(true)}>Ver todas</button>
             </header>
-            <div>
-              <img src="/platform/uiux-copied/rec-fallout4.png" alt="" />
-              <span><strong>Actualizacion 1.6.0 disponible</strong><small>Nuevas misiones, mejoras y mas contenido.</small></span>
-              <small>24 mayo, 2025</small>
-            </div>
-            <div>
-              <img src="/platform/uiux-copied/rec-skyrim.png" alt="" />
-              <span><strong>Evento: Ecos del Portal</strong><small>Enfrenta nuevos desafios y obten recompensas unicas.</small></span>
-              <small>20 mayo, 2025</small>
-            </div>
-            <div>
-              <img src="/platform/uiux-copied/rec-newvegas.png" alt="" />
-              <span><strong>Notas del parche</strong><small>Consulta los cambios y correcciones mas recientes.</small></span>
-              <small>18 mayo, 2025</small>
-            </div>
+            {fallbackNews.slice(0, 3).map((item) => (
+              <div key={item.id}>
+                <img src={newsImage(item, games)} alt="" />
+                <span><strong>{item.title}</strong><small>{item.summary}</small></span>
+                <small>{newsDate(item)}</small>
+              </div>
+            ))}
           </article>
         </section>
 
         <section className="auth-panel">
           <div className="auth-tabs">
-            <button className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>
+            <button type="button" className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>
               <User size={22} /> Iniciar sesion
             </button>
-            <button className={mode === "register" ? "active" : ""} onClick={() => setMode("register")}>
+            <button type="button" className={mode === "register" ? "active" : ""} onClick={() => setMode("register")}>
               <UserPlus size={22} /> Registrarse
             </button>
           </div>
@@ -209,7 +327,7 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
                     <div><Lock size={18} /><input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Confirma tu contrasena" /><Eye size={18} /></div>
                   </label>
                   <button type="button" className="auth-check checked"><CheckSquare size={18} /> Acepto terminos y condiciones</button>
-                  <button type="button" className={`auth-check ${news ? "checked" : ""}`} onClick={() => setNews((value) => !value)}>
+                  <button type="button" className={`auth-check ${newsOptIn ? "checked" : ""}`} onClick={() => setNewsOptIn((value) => !value)}>
                     <CheckSquare size={18} /> Recibir noticias y actualizaciones
                   </button>
                   <button className="auth-submit" type="submit" disabled={!canEnter}><LogIn size={22} /> Crear cuenta</button>
@@ -218,14 +336,13 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
 
               <div className="auth-social">
                 <span /> <small>{mode === "login" ? "o continua con" : "o registrate con"}</small> <span />
-                <button type="button"><Box size={24} /></button>
-                <button type="button"><Mail size={24} /></button>
-                <button type="button"><Gamepad2 size={24} /></button>
-                <button type="button"><Volume2 size={24} /></button>
+                <button type="button" title="Google" aria-label="Google" onClick={() => socialAccess("google")}><Mail size={24} /></button>
+                <button type="button" title="Facebook" aria-label="Facebook" onClick={() => socialAccess("facebook")}><Box size={24} /></button>
+                <button type="button" title="GitHub" aria-label="GitHub" onClick={() => socialAccess("github")}><Github size={24} /></button>
               </div>
 
               <p className="auth-switch">
-                {mode === "login" ? "¿No tienes cuenta?" : "¿Ya tienes cuenta?"}
+                {mode === "login" ? "No tienes cuenta?" : "Ya tienes cuenta?"}
                 <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}>
                   {mode === "login" ? "Registrate ahora" : "Inicia sesion"}
                 </button>
@@ -233,7 +350,7 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
             </form>
 
             <aside className="auth-benefits">
-              <p>{mode === "login" ? "Crea tu cuenta para guardar progreso, sincronizar campanas y activar modulos." : "Al registrarte podras:"}</p>
+              <p>{mode === "login" ? "Entra para continuar tus campanas y partidas guardadas." : "Al registrarte podras:"}</p>
               <span><Cloud size={28} /><strong>Guardar tu progreso</strong><small>Tu aventura se guarda de forma segura.</small></span>
               <span><Activity size={28} /><strong>Sincronizar tus campanas</strong><small>Accede a tus partidas en cualquier dispositivo.</small></span>
               <span><Box size={28} /><strong>Activar modulos y DLC</strong><small>Desbloquea contenido adicional y funcionalidades.</small></span>
@@ -248,25 +365,45 @@ export function AuthScreen({ profile, users, onAccess, onRegister }: Props) {
         <span><i /> Estable</span>
         <span><Monitor size={20} /> Launcher actualizado</span>
         <span><Activity size={20} /> Servicios en linea</span>
-        <button onClick={submit} disabled={!canEnter}><Settings size={30} /> Entrar</button>
+        <button type="button" onClick={submit} disabled={!canEnter}><Settings size={30} /> Entrar</button>
       </footer>
 
       {showRecovery && (
         <div className="modal-backdrop">
           <article className="app-modal auth-recovery-modal">
-            <button className="modal-close" onClick={() => setShowRecovery(false)}><X size={18} /></button>
+            <button className="modal-close" type="button" onClick={() => setShowRecovery(false)}><X size={18} /></button>
             <h3><AlertCircle size={22} /> Recuperar contrasena</h3>
-            <p>Escribe el correo o usuario registrado para enviar un codigo de restablecimiento.</p>
+            <p>Escribe el correo o usuario registrado para generar un codigo local de restablecimiento.</p>
             <label>
               <span>Correo o usuario</span>
               <input value={recoveryEmail} onChange={(event) => setRecoveryEmail(event.target.value)} />
             </label>
             {recoveryMessage && <strong>{recoveryMessage}</strong>}
-            <button className="green-button" onClick={recoverPassword}>Enviar correo</button>
+            <button className="green-button" type="button" onClick={recoverPassword}>Enviar correo</button>
+          </article>
+        </div>
+      )}
+
+      {showAllNews && (
+        <div className="modal-backdrop">
+          <article className="app-modal auth-news-modal">
+            <button className="modal-close" type="button" onClick={() => setShowAllNews(false)}><X size={18} /></button>
+            <h3><Activity size={22} /> Todas las noticias</h3>
+            <div className="auth-news-list">
+              {fallbackNews.map((item) => (
+                <section key={item.id}>
+                  <img src={newsImage(item, games)} alt="" />
+                  <div>
+                    <strong>{item.title}</strong>
+                    <small>{newsDate(item)}</small>
+                    <p>{item.body || item.summary}</p>
+                  </div>
+                </section>
+              ))}
+            </div>
           </article>
         </div>
       )}
     </div>
   );
 }
-

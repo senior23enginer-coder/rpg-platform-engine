@@ -1,5 +1,8 @@
 {
-  "creationMode": "custom_or_seed",
+  "schemaVersion": 2,
+  "sourceTome": "TOMO 01",
+  "sourceUpdatedAt": "2026-06-22T16:08:41.078Z",
+  "creationMode": "campaign_or_free_seed_or_custom",
   "attributes": [
     {
       "id": "STR",
@@ -51,22 +54,335 @@
       "max": 10
     }
   ],
-  "skills": [],
-  "origins": [],
+  "skills": [
+    {
+      "id": "armas_pequenas",
+      "name": "Armas peque?as",
+      "attribute": "PER / AGI",
+      "description": "Pistolas, rifles, escopetas ligeras",
+      "example": "Disparar una 10mm."
+    },
+    {
+      "id": "armas_de_energia",
+      "name": "Armas de energ?a",
+      "attribute": "PER / INT",
+      "description": "Laser, plasma, tecnolog?a avanzada",
+      "example": "Disparar rifle laser."
+    },
+    {
+      "id": "armas_pesadas",
+      "name": "Armas pesadas",
+      "attribute": "STR / PER",
+      "description": "Minigun, lanzamisiles, lanzallamas",
+      "example": "Controlar una minigun."
+    },
+    {
+      "id": "cuerpo_a_cuerpo",
+      "name": "Cuerpo a cuerpo",
+      "attribute": "STR / AGI",
+      "description": "Bates, cuchillos, tuberias, martillos",
+      "example": "Golpear con bate."
+    },
+    {
+      "id": "desarmado",
+      "name": "Desarmado",
+      "attribute": "STR / END",
+      "description": "Pu?os, golpes, agarres",
+      "example": "Pelear sin arma."
+    },
+    {
+      "id": "explosivos",
+      "name": "Explosivos",
+      "attribute": "PER / AGI / INT",
+      "description": "Granadas, minas, trampas explosivas",
+      "example": "Lanzar o desactivar mina."
+    },
+    {
+      "id": "atletismo",
+      "name": "Atletismo",
+      "attribute": "STR / END / AGI",
+      "description": "Correr, saltar, nadar, trepar, empujar",
+      "example": "Huir bajo disparos."
+    },
+    {
+      "id": "sigilo",
+      "name": "Sigilo",
+      "attribute": "AGI",
+      "description": "Ocultarse, moverse sin ruido, emboscar",
+      "example": "Cruzar una calle sin ser visto."
+    },
+    {
+      "id": "supervivencia",
+      "name": "Supervivencia",
+      "attribute": "PER / END",
+      "description": "Rastrear, orientarse, detectar peligros naturales",
+      "example": "Seguir huellas."
+    },
+    {
+      "id": "medicina",
+      "name": "M?dico/Medicina",
+      "attribute": "INT / PER",
+      "description": "Curar, estabilizar, tratar heridas",
+      "example": "Usar kit m?dico."
+    },
+    {
+      "id": "reparacion",
+      "name": "Reparacion",
+      "attribute": "INT",
+      "description": "Reparar armas, generadores, puertas y equipo",
+      "example": "Arreglar una torreta."
+    },
+    {
+      "id": "ciencia",
+      "name": "Ciencia",
+      "attribute": "INT",
+      "description": "Terminales, robots, energ?a, tecnolog?a avanzada",
+      "example": "Hackear terminal."
+    },
+    {
+      "id": "ganzua",
+      "name": "Ganzua",
+      "attribute": "PER / AGI",
+      "description": "Abrir cerraduras mec?nicas",
+      "example": "Abrir caja fuerte."
+    },
+    {
+      "id": "comercio",
+      "name": "Comercio",
+      "attribute": "CHA",
+      "description": "Comprar, vender, regatear, valorar objetos",
+      "example": "Negociar munici?n."
+    },
+    {
+      "id": "charla",
+      "name": "Charla",
+      "attribute": "CHA",
+      "description": "Persuadir, mentir, calmar, convencer",
+      "example": "Evitar combate."
+    },
+    {
+      "id": "intimidacion",
+      "name": "Intimidacion",
+      "attribute": "CHA / STR",
+      "description": "Amenazar, imponer autoridad",
+      "example": "Hacer retroceder saqueador."
+    },
+    {
+      "id": "liderazgo",
+      "name": "Liderazgo",
+      "attribute": "CHA",
+      "description": "Coordinar aliados, colonos y grupo",
+      "example": "Dar orden tactica."
+    },
+    {
+      "id": "investigacion",
+      "name": "Investigacion",
+      "attribute": "PER / INT",
+      "description": "Analizar pistas, escenas y documentos",
+      "example": "Leer holocinta tecnica."
+    },
+    {
+      "id": "pilotaje_conduccion",
+      "name": "Pilotaje / Conduccion",
+      "attribute": "AGI / INT",
+      "description": "Moto, vehiculos, servoarmadura avanzada",
+      "example": "Maniobrar bajo presion."
+    },
+    {
+      "id": "crafteo",
+      "name": "Crafteo",
+      "attribute": "INT / PER",
+      "description": "Fabricar, modificar, cocinar, crear recursos",
+      "example": "Mejorar arma en taller."
+    }
+  ],
+  "origins": [
+    {
+      "id": "humano",
+      "name": "Humano",
+      "description": "Flexible y aceptado en la mayoría de asentamientos.",
+      "limit": "No tiene resistencia especial automática."
+    },
+    {
+      "id": "necrofago",
+      "name": "Necrófago",
+      "description": "Mejor tolerancia narrativa a radiación y zonas contaminadas.",
+      "limit": "Puede sufrir rechazo social o desconfianza."
+    },
+    {
+      "id": "synth",
+      "name": "Synth",
+      "description": "Afinidad con tecnología, infiltración y terminales.",
+      "limit": "Riesgo con Instituto, Hermandad o NPC que sospechen."
+    },
+    {
+      "id": "supermutante",
+      "name": "Supermutante",
+      "description": "Fuerza alta, resistencia física y presencia intimidante.",
+      "limit": "Equipo limitado, sigilo difícil y fuerte rechazo social."
+    }
+  ],
   "archetypes": [],
   "seeds": [
     {
-      "id": "fallout4_seed",
-      "name": "Fallout 4 - personaje base",
+      "id": "nate",
+      "name": "Nate",
+      "mode": "campaign",
+      "role": "Veterano de guerra prebelico",
       "attributes": {
         "STR": 5,
         "PER": 5,
         "END": 5,
-        "CHA": 5,
-        "INT": 5,
-        "AGI": 5,
-        "LCK": 5
+        "CHA": 4,
+        "INT": 4,
+        "AGI": 4,
+        "LCK": 4
       }
+    },
+    {
+      "id": "nora",
+      "name": "Nora",
+      "mode": "campaign",
+      "role": "Abogada prebelica",
+      "attributes": {
+        "STR": 3,
+        "PER": 5,
+        "END": 4,
+        "CHA": 6,
+        "INT": 6,
+        "AGI": 4,
+        "LCK": 4
+      }
+    },
+    {
+      "id": "mara_vance",
+      "name": "Mara Vance",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Tiradora móvil / exploradora",
+      "perks": [
+        "Pistolera",
+        "Sigilo",
+        "Recolectora"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "elisa_mora",
+      "name": "Elisa Mora",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Médica de campo / soporte",
+      "perks": [
+        "Médica",
+        "Coleccionista de chapas",
+        "Inspiradora"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "ruth_keller",
+      "name": "Ruth Keller",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Mecánica / constructora",
+      "perks": [
+        "Armera",
+        "Chatarrera",
+        "Líder local"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "darius_holt",
+      "name": "Darius Holt",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Mercenario pesado / explosivos",
+      "perks": [
+        "Comando",
+        "Dureza",
+        "Experto en demoliciones"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "mateo_briggs",
+      "name": "Mateo Briggs",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Comerciante armado / contactos",
+      "perks": [
+        "Coleccionista de chapas",
+        "Errante solitario",
+        "Fusilero"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "owen_pike",
+      "name": "Owen Pike",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Cazador / rastreador",
+      "perks": [
+        "Fusilero",
+        "Conciencia táctica",
+        "Dureza"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "caleb_rusk",
+      "name": "Caleb Rusk",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Sigilo / saqueo urbano",
+      "perks": [
+        "Sigilo",
+        "Cerrajero",
+        "Chico de acción"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "silas_crowe",
+      "name": "Silas Crowe",
+      "origin": "Necrófago",
+      "gender": "Hombre",
+      "style": "Superviviente irradiado",
+      "perks": [
+        "Necrófago resistente",
+        "Estómago de plomo",
+        "Intimidación"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "n_47_nico_vale",
+      "name": "N-47 “Nico” Vale",
+      "origin": "Synth",
+      "gender": "Hombre",
+      "style": "Infiltrador técnico / hackeo",
+      "perks": [
+        "Hacker",
+        "Sigilo",
+        "Señor Sandman"
+      ],
+      "mode": "free"
+    },
+    {
+      "id": "brakk",
+      "name": "Brakk",
+      "origin": "Supermutante",
+      "gender": "Hombre",
+      "style": "Tanque / cuerpo a cuerpo",
+      "perks": [
+        "Grandes ligas",
+        "Enraizado",
+        "Dureza"
+      ],
+      "mode": "free"
     }
   ]
 }

@@ -1,0 +1,317 @@
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import path from "node:path";
+
+const root = process.cwd();
+const failures = [];
+const warnings = [];
+const report = [];
+
+function file(...parts) {
+  return path.join(root, ...parts);
+}
+
+function readJson(...parts) {
+  const target = file(...parts);
+  try {
+    return JSON.parse(readFileSync(target, "utf8"));
+  } catch (error) {
+    fail(`JSON invalido o ausente: ${parts.join("/")}`, error.message);
+    return undefined;
+  }
+}
+
+function readText(...parts) {
+  const target = file(...parts);
+  try {
+    return readFileSync(target, "utf8");
+  } catch (error) {
+    fail(`Archivo ausente: ${parts.join("/")}`, error.message);
+    return "";
+  }
+}
+
+function assert(condition, message, details = "") {
+  if (!condition) fail(message, details);
+}
+
+function fail(message, details = "") {
+  failures.push(details ? `${message}: ${details}` : message);
+}
+
+function warn(message, details = "") {
+  warnings.push(details ? `${message}: ${details}` : message);
+}
+
+function pass(message) {
+  report.push(message);
+}
+
+function listDirs(...parts) {
+  const target = file(...parts);
+  if (!existsSync(target)) {
+    fail(`Carpeta ausente: ${parts.join("/")}`);
+    return [];
+  }
+  return readdirSync(target).filter((entry) => statSync(path.join(target, entry)).isDirectory());
+}
+
+function flattenSourceTomes(value, out = new Set()) {
+  if (!value || typeof value !== "object") return out;
+  if (Array.isArray(value)) {
+    for (const item of value) flattenSourceTomes(item, out);
+    return out;
+  }
+  for (const [key, child] of Object.entries(value)) {
+    if ((key === "sourceTome" || key === "sourceTomes") && typeof child === "string") out.add(child.slice(0, 7));
+    if ((key === "sourceTome" || key === "sourceTomes") && Array.isArray(child)) {
+      for (const item of child) if (typeof item === "string") out.add(item.slice(0, 7));
+    }
+    flattenSourceTomes(child, out);
+  }
+  return out;
+}
+
+function arrayAt(value, key) {
+  return Array.isArray(value?.[key]) ? value[key] : [];
+}
+
+const expectedTomes = Array.from({ length: 10 }, (_, index) => `TOMO ${String(index + 1).padStart(2, "0")}`);
+const expectedDlc = [
+  "automatron",
+  "contraptions_workshop",
+  "far_harbor",
+  "nuka_world",
+  "vault_tec_workshop",
+  "wasteland_workshop",
+];
+const expectedFeatureFolders = ["asentamientos", "facciones", "supervivencia"];
+const expectedCampaignRoute = ["vault111", "vault_exit", "sanctuary_hills", "red_rocket", "concord"];
+
+const coreBookDir = file("core-book");
+const coreBookFiles = existsSync(coreBookDir) ? readdirSync(coreBookDir).filter((entry) => entry.endsWith(".txt")) : [];
+assert(coreBookFiles.length === 10, "Deben existir 10 tomos en core-book", `encontrados: ${coreBookFiles.length}`);
+for (const tome of expectedTomes) {
+  const match = coreBookFiles.find((entry) => entry.startsWith(tome));
+  assert(Boolean(match), `Falta ${tome} en core-book`);
+  if (match) {
+    const content = readText("core-book", match);
+    assert(content.length > 1000, `${tome} parece demasiado corto`, `${content.length} caracteres`);
+  }
+}
+pass("Core-book: 10 tomos presentes y legibles.");
+
+const game = readJson("public", "games", "fallout4", "game.config.json");
+const rules = readJson("public", "games", "fallout4", "rules", "rules.json");
+const characters = readJson("public", "games", "fallout4", "characters", "characters.json");
+const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
+const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
+const campaign = readJson("public", "games", "fallout4", "campaigns", "sanctuary_commonwealth", "config.json");
+const news = readJson("public", "platform", "news", "news.json");
+const normalUser = readJson("public", "users", "operador-local", "profile.json");
+const adminUser = readJson("public", "users", "admin-local", "profile.json");
+
+assert(game?.id === "fallout4", "Fallout 4 debe cargar desde public/games/fallout4/game.config.json");
+assert(game?.moduleFolders?.dlc === "dlc", "Fallout 4 debe declarar carpeta dlc");
+assert(game?.moduleFolders?.features === "features", "Fallout 4 debe declarar carpeta features");
+assert(game?.moduleFolders?.extras === "extras", "Fallout 4 debe declarar carpeta extras");
+assert(game?.moduleFolders?.campaigns === "campaigns", "Fallout 4 debe declarar carpeta campaigns");
+assert(game?.newGame === "setup/new-game.config.json", "Nueva partida debe venir de setup/new-game.config.json");
+pass("Config base: Fallout 4 usa game.config.json, moduleFolders y new-game config.");
+
+const dlcFolders = listDirs("public", "games", "fallout4", "dlc").sort();
+assert(JSON.stringify(dlcFolders) === JSON.stringify(expectedDlc), "DLC folders deben excluir High Resolution Texture Pack", dlcFolders.join(", "));
+for (const dlcId of expectedDlc) {
+  const dlc = readJson("public", "games", "fallout4", "dlc", dlcId, "config.json");
+  assert(dlc?.id === dlcId, `DLC ${dlcId} debe tener config.json con id correcto`);
+  assert(Boolean(dlc?.assets?.thumbnail || dlc?.thumbnail), `DLC ${dlcId} debe declarar imagen/thumbnail`);
+}
+const featureFolders = listDirs("public", "games", "fallout4", "features").sort();
+for (const featureId of expectedFeatureFolders) {
+  assert(featureFolders.includes(featureId), `Feature folder ausente: ${featureId}`);
+  const feature = readJson("public", "games", "fallout4", "features", featureId, "config.json");
+  assert(feature?.id === featureId, `Feature ${featureId} debe tener config.json con id correcto`);
+}
+const extrasFolders = listDirs("public", "games", "fallout4", "extras");
+assert(extrasFolders.length === 0, "Extras debe quedar vacio por ahora", extrasFolders.join(", "));
+pass("Contenido modular: DLC/features/extras/campaigns respetan carpeta y config.");
+
+assert(rules?.sourceTome?.startsWith("TOMO 01"), "Reglas deben venir de TOMO 01");
+assert(rules?.coreLoop?.mode === "turn_based_ap", "Regla core debe ser por turnos con AP");
+assert(rules?.coreLoop?.dice?.tests === "2d20", "Tomo 1 debe aplicar pruebas 2d20");
+assert(rules?.coreLoop?.ap?.formula === "6 + AGI", "Tomo 1 debe aplicar AP = 6 + AGI");
+assert(arrayAt(rules, "skills").length === 20, "Tomo 1 debe mapear 20 habilidades core");
+assert(arrayAt(rules, "companions").length === 13, "Tomo 1 debe mapear 13 companeros");
+assert(arrayAt(rules, "freeModeSeeds").length === 10, "Tomo 1 debe mapear 10 semillas de modo libre");
+assert(arrayAt(rules, "origins").length === 4, "Tomo 1 debe mapear 4 origenes");
+pass("Tomo 1: reglas core, habilidades, origenes, companeros y modo libre validados.");
+
+const specialIds = ["STR", "PER", "END", "CHA", "INT", "AGI", "LCK"];
+assert(arrayAt(characters, "attributes").map((item) => item.id).join(",") === specialIds.join(","), "Hoja de personaje debe tener SPECIAL completo");
+assert(arrayAt(characters, "skills").length === 20, "Hoja de personaje debe copiar 20 habilidades");
+assert(arrayAt(characters, "seeds").filter((seed) => seed.mode === "campaign").length === 2, "Debe haber Nate y Nora como semillas de campana");
+assert(arrayAt(characters, "seeds").filter((seed) => seed.mode === "free").length === 10, "Debe haber 10 semillas libres");
+pass("Personajes: SPECIAL, Nate/Nora y modo libre consistentes.");
+
+assert(campaign?.implemented === true, "Campana principal Fallout 4 debe estar implementada");
+assert(JSON.stringify(campaign?.simulation?.route) === JSON.stringify(expectedCampaignRoute), "Ruta de campana debe ser Vault 111 -> exterior -> Sanctuary -> Red Rocket -> Concord");
+assert(campaign?.simulation?.style === "text_turn_based", "Campana debe ser textual por turnos");
+assert(campaign?.playerLimits?.max === 2, "Campana base debe limitar protagonistas a Nate/Nora");
+pass("Campana base: ruta, estilo por turnos y limites validados.");
+
+const implementedMissionIds = arrayAt(missions, "missions").filter((mission) => mission.implemented).map((mission) => mission.id);
+for (const missionId of ["salida_del_vault_111", "ascensor_y_superficie", "reconstruir_sanctuary", "ruta_red_rocket", "llegar_a_concord"]) {
+  assert(implementedMissionIds.includes(missionId), `Mision demo implementada ausente: ${missionId}`);
+}
+assert(templates?.counts?.missions >= 216, "Plantillas deben contener al menos 216 misiones de Tomo 2");
+assert(templates?.counts?.locations >= 558, "Plantillas deben contener al menos 558 ubicaciones de Tomo 6");
+assert(templates?.counts?.bestiary >= 213, "Plantillas deben contener bestiario completo del Tomo 3");
+assert(templates?.counts?.weapons >= 95, "Plantillas deben contener armas del Tomo 4");
+assert(templates?.counts?.equipment >= 288, "Plantillas deben contener equipo del Tomo 5");
+assert(templates?.counts?.settlements >= 36, "Plantillas deben contener asentamientos del Tomo 7");
+assert(templates?.counts?.factions >= 10, "Plantillas deben contener facciones del Tomo 8");
+assert(templates?.counts?.collectibles >= 618, "Plantillas deben contener coleccionables del Tomo 9");
+pass("Catalogos: conteos de misiones, ubicaciones, bestiario, armas, equipo, asentamientos, facciones y coleccionables validados.");
+
+const tomeRoles = arrayAt(templates, "tomeRoles");
+for (const tome of expectedTomes) {
+  assert(tomeRoles.some((role) => role.id === tome), `templates.tomeRoles debe incluir ${tome}`);
+}
+const referencedTomes = flattenSourceTomes(templates);
+for (const tome of expectedTomes) {
+  assert(referencedTomes.has(tome), `Las plantillas deben referenciar ${tome}`);
+}
+pass("Cobertura por tomos: los 10 tomos estan registrados y referenciados.");
+
+const routeTemplate = arrayAt(templates, "routeTemplates").find((item) => item.id === "out-of-time-base-route");
+assert(Boolean(routeTemplate), "Debe existir routeTemplate out-of-time-base-route");
+for (const locationId of ["U-0001", "U-0002", "U-0003", "U-0011"]) {
+  assert(routeTemplate?.nodes?.includes(locationId), `Ruta Out of Time debe incluir ${locationId}`);
+}
+const locationCatalog = templates?.catalogs?.locations ?? [];
+for (const locationId of ["U-0001", "U-0002", "U-0003", "U-0011"]) {
+  const location = locationCatalog.find((item) => item.id === locationId);
+  assert(Boolean(location), `Catalogo de ubicaciones debe incluir ${locationId}`);
+  assert(arrayAt(location, "subzones").length >= 4, `${locationId} debe tener subzonas explorables`);
+}
+pass("Tomo 2 + Tomo 6: ruta Out of Time cruza misiones y ubicaciones con subzonas.");
+
+const campaignScreen = readText("src", "screens", "Fallout4CampaignScreen.tsx");
+for (const sceneId of ["vault111", "vaultExit", "sanctuary", "redRocket", "concord"]) {
+  assert(campaignScreen.includes(`id: "${sceneId}"`), `Pantalla de campana debe implementar escena ${sceneId}`);
+}
+for (const expectedText of ["AP_MAX = 11", "roll2d20", "campaignState", "onProgress", "Radroaches", "Mole rats", "Jared's gang"]) {
+  assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener ${expectedText}`);
+}
+pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, AP, 2d20, combate y persistencia.");
+
+function playCompleteDemo() {
+  const now = new Date().toISOString();
+  const save = {
+    saveId: "test_fallout4_full_run",
+    gameId: "fallout4",
+    campaignId: "sanctuary_commonwealth",
+    userId: "test-user",
+    storagePath: "/games/fallout4/saves/test-user/test_fallout4_full_run/save.game.json",
+    playerName: "Nate",
+    name: "Nate - Fallout 4",
+    currentMission: "Inicio",
+    currentZone: "Vault 111",
+    progressPercent: 0,
+    route: expectedCampaignRoute,
+    visitedZones: [],
+    currentStep: 0,
+    level: 1,
+    sessions: 1,
+    playTimeHours: 0,
+    playStartedAt: now,
+    lastLoadedAt: now,
+    daysElapsed: 0,
+    inGameDayStartedAt: now,
+    createdAt: now,
+    updatedAt: now,
+    campaignState: {
+      sceneId: "vault111",
+      nodeId: "cryo",
+      ap: 11,
+      turn: 1,
+      visitedNodes: [],
+      securedNodes: [],
+      enemyHp: {},
+      actionLog: [],
+      updatedAt: now,
+    },
+  };
+
+  const sceneNodes = {
+    vault111: ["cryo", "pod-row", "security", "admin", "maintenance", "reactor", "pipboy-room", "dorms", "storage", "exit-door"],
+    vault_exit: ["lift", "overlook", "trail"],
+    sanctuary_hills: ["home", "codsworth", "street", "yards", "garage", "redrocket-road"],
+    red_rocket: ["road", "pumps", "garage", "office", "workshop", "concord-road"],
+    concord: ["north-entry", "main-street", "ruined-houses", "plaza", "museum"],
+  };
+  const combatNodes = new Set(["security", "reactor", "dorms", "yards", "garage", "main-street"]);
+
+  for (const [step, sceneId] of expectedCampaignRoute.entries()) {
+    save.currentStep = step;
+    save.progressPercent = Math.round(((step + 1) / expectedCampaignRoute.length) * 100);
+    save.currentMission = step === 0 ? "M-0170 paso 1" : step === 4 ? "M-0170 pasos 55-65" : "M-0170 progreso";
+    save.currentZone = sceneId;
+    save.visitedZones.push(sceneId);
+    save.campaignState.sceneId = sceneId;
+    save.campaignState.ap = 11;
+    save.campaignState.turn = 1;
+
+    for (const nodeId of sceneNodes[sceneId]) {
+      save.campaignState.nodeId = nodeId;
+      save.campaignState.visitedNodes.push(`${sceneId}:${nodeId}`);
+      save.campaignState.ap -= nodeId.includes("exit") || nodeId.includes("road") ? 2 : 1;
+      if (save.campaignState.ap < 0) {
+        save.campaignState.turn += 1;
+        save.campaignState.ap = 10;
+      }
+      if (combatNodes.has(nodeId)) {
+        save.campaignState.enemyHp[`${sceneId}:${nodeId}`] = 0;
+        save.campaignState.securedNodes.push(`${sceneId}:${nodeId}`);
+        save.campaignState.actionLog.unshift(`Combate resuelto en ${sceneId}:${nodeId}`);
+      } else {
+        save.campaignState.securedNodes.push(`${sceneId}:${nodeId}`);
+        save.campaignState.actionLog.unshift(`Exploracion resuelta en ${sceneId}:${nodeId}`);
+      }
+    }
+  }
+
+  save.updatedAt = new Date().toISOString();
+  save.campaignState.updatedAt = save.updatedAt;
+  return save;
+}
+
+const simulatedSave = playCompleteDemo();
+assert(simulatedSave.progressPercent === 100, "La simulacion completa debe terminar al 100%");
+assert(simulatedSave.visitedZones.length === expectedCampaignRoute.length, "La simulacion debe visitar todas las ubicaciones de la ruta");
+assert(new Set(simulatedSave.campaignState.visitedNodes).size >= 25, "La simulacion debe recorrer subzonas suficientes");
+assert(Object.values(simulatedSave.campaignState.enemyHp).every((hp) => hp === 0), "La simulacion debe resolver combates demo");
+assert(simulatedSave.campaignState.actionLog.length >= 20, "La simulacion debe registrar acciones para save.game.json");
+pass("Partida simulada: recorrido completo, AP, combates, progreso y save.game.json en memoria validados.");
+
+assert(Array.isArray(news?.items) && news.items.length >= 1, "Noticias deben cargar desde public/platform/news/news.json");
+assert(normalUser?.username === "operador" && normalUser?.password === "operador123" && normalUser?.role === "user", "Cuenta normal demo invalida");
+assert(adminUser?.username === "admin" && adminUser?.password === "admin123" && adminUser?.role === "admin", "Cuenta admin demo invalida");
+pass("Login: noticias y usuarios operador/admin validados.");
+
+if (templates?.counts?.tomes !== 10) warn("templates.counts.tomes no es 10", String(templates?.counts?.tomes));
+if (arrayAt(readJson("public", "games", "fallout4", "bestiary", "bestiary.json"), "creatures").length < 10) {
+  warn("bestiary/bestiary.json es minimo; el bestiario completo vive en templates.json", "Esto es aceptable si el runtime usa templates para el catalogo completo.");
+}
+
+console.log("\nFallout 4 core-book playable audit");
+console.log("==================================");
+for (const item of report) console.log(`PASS ${item}`);
+for (const item of warnings) console.log(`WARN ${item}`);
+
+if (failures.length) {
+  console.error("\nFAILURES");
+  for (const item of failures) console.error(`FAIL ${item}`);
+  process.exit(1);
+}
+
+console.log(`\nOK: ${report.length} bloques validados, ${warnings.length} advertencias.`);

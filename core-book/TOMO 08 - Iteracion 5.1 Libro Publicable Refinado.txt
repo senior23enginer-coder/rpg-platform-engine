@@ -1,0 +1,992 @@
+TOMO 08 — FACCIONES
+
+Política, reputación, territorios, hostilidad, contratos y consecuencias.
+
+Edición 5.1 — Versión refinada para lectura de libro
+
+Nota editorial: esta versión conserva la información útil de las iteraciones anteriores, unifica fichas heredadas bajo IDs maestros y retira del cuerpo principal títulos técnicos repetidos, separadores visuales y marcas internas de trabajo. Las fuentes, alias y notas de trazabilidad no se pierden: se conservan en apéndice cuando corresponde.
+## Cierre político para publicación
+
+Cada facción debe poder usarse en campaña y modo libre. Si una misión no pertenece a campaña principal, puede convertirse en contrato, patrulla, defensa, sabotaje, búsqueda, rescate o consecuencia territorial.
+
+### Matriz mínima por facción
+Toda facción publicada debe indicar: aliados, enemigos, territorios, misiones, contratos libres, recompensa típica, castigo típico y reacción ante ruido o reputación baja.
+
+TOMO 08 — FACCIONES: CONTRATOS, REPUTACION Y MODO LIBRE
+
+1. USO DE FACCIONES EN MODO LIBRE
+Una faccion puede generar contratos aunque la campana principal este desactivada. Estos contratos no deben romper misiones centrales salvo que el grupo active una rama de campana.
+
+2. CONSECUENCIA MINIMA POR MISION
+Toda mision de faccion debe indicar:
+- reputacion que sube,
+- reputacion que baja,
+- territorio afectado,
+- enemigo o aliado afectado,
+- recompensa politica o material,
+- si bloquea una ruta, tienda, NPC o contrato.
+
+3. REACCION DE FACCION POR RUIDO / ALARMA
+Si una ubicacion pertenece a una faccion y el nivel de ruido llega a 4 o 5, la faccion puede:
+1) enviar patrulla,
+2) cerrar acceso,
+3) pedir tributo,
+4) marcar al grupo,
+5) ofrecer trato,
+6) declarar hostilidad temporal.
+
+
+Regla de cruce político:
+- Cuando una facción controla una ubicación U, puede bloquear, alterar, borrar, custodiar o falsificar terminales, notas, holocintas y llaves de esa ubicación.
+- Tomo 08 no duplica fichas de coleccionables; remite a Tomo 09 I4.7 para el punto físico exacto.
+- Si una misión de facción cambia la propiedad de una base, los COL locales de esa U pueden cambiar de acceso: libre, bloqueado, vigilado, destruido, protegido o cifrado.
+- Información eliminada: 0.
+
+- Tomos 03/04/05 contienen la simulación matemática profunda I4.6.
+- Tomo 09 contiene la tabla exacta operativa I4.6 de revistas, minijuegos y libro SPECIAL cruzada con Tomo 06.
+- Esta capa no elimina información previa; cuando una ficha anterior diga `PENDIENTE_DE_MAPEO_INDIVIDUAL`, debe consultarse primero el bloque I4.6 del Tomo 09.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 permanecen intactos y no se incluyen en esta entrega.
+- No se elimina información importante ni relevante.
+- Lo heredado se conserva como alias, soporte, índice no operativo, material fusionado o revisión manual.
+- Las correcciones se aplican como capa técnica: control de cruce, tabla de balance, ficha individual mínima o regla de uso.
+- Si un dato exacto no existe en el tomo fuente, no se inventa: se marca como pendiente de validación fina.
+- AP se conserva siempre como Puntos de Acción. No se introduce PA como término de acciones.
+
+## Cierre I4.5 del Tomo 08 — Consecuencias políticas operativas
+
+Ajuste no destructivo aplicado:
+- No se eliminan facciones, grupos menores ni relaciones heredadas.
+- Se agrega una regla de consecuencia mínima para que las misiones de facción impacten reputación y territorio.
+
+### Matriz mínima de consecuencia por misión
+| Resultado de misión | Reputación | Territorio | Enemigos | Estado político |
+|---|---|---|---|---|
+| Ayuda menor | +1 con facción beneficiada | Sin cambio o acceso puntual | Hostilidad local posible | Favor menor. |
+| Misión de facción completada | +1/+2 | Acceso, apoyo o bloqueo rival | Rival aumenta alerta | Compromiso visible. |
+| Traición o ataque directo | -2 o hostil | Territorio bloqueado | Patrullas hostiles | Ruptura política. |
+| Final de ruta | Alianza o guerra abierta | Cambio permanente | Facción rival como enemiga | Consecuencia de campaña. |
+
+### Regla de cruce
+Toda facción principal debe cruzar con:
+- Misiones del Tomo 02.
+- Territorios y bases del Tomo 06.
+- Enemigos/NPC del Tomo 03.
+- Recompensas de Tomo 04, Tomo 05 o Tomo 09 cuando aplique.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 permanecen intactos; se usan solo como referencia de canon y supervivencia avanzada.
+- No se elimina información importante ni relevante.
+- Las correcciones se aplican como capas de normalización: ID maestro, alias heredado, apéndice operativo, matriz de cruce o marca de revisión.
+- Si un dato no puede validarse con seguridad, se conserva como referencia y no se borra.
+- Los textos heredados que contradicen un ID maestro dejan de ser operativos, pero se mantienen como alias histórico o material fusionado.
+
+## Cierre I4.4 del Tomo 08 — Matriz política jugable
+
+Matriz mínima de facciones para mesa:
+| Facción / grupo | Rol | Territorio base Tomo 06 | Cruce misión Tomo 02 | Enemigos/NPC Tomo 03 | Consecuencia de reputación |
+|---|---|---|---|---|---|
+| Minutemen | Reconstrucción / asentamientos | `U-0247 The Castle`, `U-0002 Sanctuary Hills` | Campaña y asentamientos | Milicianos, Preston, colonos | Artillería, ayuda, defensa |
+| Brotherhood of Steel | Militar / tecnología | `U-0109 Boston Airport`, Prydwen/Fort Strong por Atlas | Ruta Hermandad | Caballeros, escribas, vertibirds | Apoyo militar u hostilidad tecnológica |
+| Railroad | Espionaje / synths libres | `U-0216 Old North Church`, `U-0487 Railroad HQ Escape Tunnel Exit` | Ruta Ferrocarril | Agentes, Desdemona, PAM | Casas seguras, sigilo, enemigos Instituto |
+| Institute | Ciencia / control synth | `U-0185 The Institute`, `U-0139 C.I.T. ruins` | Ruta Instituto | Synths, coursers, científicos | Teletransporte, hostilidad externa |
+| Raiders | Hostiles regionales | Atlas por ubicación | Encuentros y misiones locales | Raiders, jefes, perros | Ataques, saqueo, control local |
+| Gunners | Mercenarios | `U-0161 Gunners plaza` y campamentos Atlas | Misiones/encuentros | Gunners, comandantes, torretas | Contratos, emboscadas, zonas fortificadas |
+| Supermutantes | Amenaza mutante | Trinity, Fens, zonas urbanas Atlas | Encuentros y rescates | Supermutantes, suiciders, mutantes élite | Bloqueo de rutas y riesgo alto |
+| Children of Atom | Culto/radiación | Crater House, Far Harbor/DLC si aplica | Base o apéndice según origen | Fanáticos, predicadores | Radiación, culto, hostilidad variable |
+
+Regla de cierre:
+- Si una misión cambia reputación, Tomo 02 registra el evento y Tomo 08 registra la consecuencia política.
+- Si una facción ocupa una ubicación, Tomo 06 registra territorio y enemigos normales.
+- Si un enemigo tiene estadísticas, Tomo 03 manda.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 NO se modifican ni se incluyen en esta entrega.
+- No se elimina información importante: los IDs, textos y fichas heredadas se conservan como alias, apoyo o revisión manual.
+- Los ajustes nuevos se aplican como capa técnica para que el contenido heredado no compita con IDs maestros.
+- Si un dato no puede validarse contra Tomo 06, queda marcado como REQUIERE_VALIDACION_MANUAL o REQUIERE_MAPEO_U.
+
+## Ajuste Tomo 08 — Uso de matriz de facción en prueba de mesa
+
+La matriz facción ↔ misión ↔ territorio ↔ enemigo ↔ consecuencia se mantiene como capa operativa. En esta iteración no se eliminan facciones ni relaciones: cualquier territorio o misión sin cruce directo debe marcarse como `REQUIERE_CRUCE_MISION` o `REQUIERE_CRUCE_U`, no borrarse.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 NO se modifican.
+- No se elimina información importante ni relevante.
+- Las correcciones se agregan como capa de normalización, alias, cruce o apéndice operativo.
+- Si un dato no puede validarse con seguridad, se conserva y se marca como REQUIERE REVISIÓN MANUAL.
+- Los IDs heredados se conservan como alias para no romper búsquedas ni referencias anteriores.
+- AP se mantiene como Puntos de Acción. No se introduce PA como término de acciones.
+
+## Ajuste específico Tomo 08 — Facciones
+
+Objetivo 4.1:
+- Reforzar matriz de cruce facción ↔ misión ↔ territorio ↔ enemigo ↔ reputación.
+- No mover ni eliminar facciones: cada una conserva su ficha y recibe criterio de auditoría.
+
+### Matriz operativa mínima 4.1
+| ID | Facción | Misiones Tomo 02 | Territorios Tomo 06 | Enemigos/NPC Tomo 03 | Consecuencia |
+|---|---|---|---|---|---|
+| F-001 | Minutemen | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-002 | Hermandad del Acero | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-003 | El Ferrocarril | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-004 | El Instituto | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-005 | Artilleros / Gunners | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-006 | Saqueadores / Raiders | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-007 | Forjados / Forged | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-008 | Triggermen | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-009 | Gatos del Átomo / Atom Cats | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+| F-010 | Hijos del Átomo / Children of Atom | Revisar misiones Tomo 02 | Revisar territorios U-xxxx Tomo 06 | Revisar enemigos/NPC Tomo 03 | Reputación/consecuencia pendiente de validación |
+
+Regla: si una misión de facción no cambia reputación, debe decir explícitamente `Sin cambio de reputación` para evitar ambigüedad.
+
+
+Criterio V3:
+- No se elimina contenido del Tomo 01, Tomo 02 ni Tomo 10.
+- Tomo 01 conserva reglas core; se ajusta por notas de alineación, no por recorte.
+- Tomo 02 conserva todas las misiones, entradas locales, referencias reconstruidas y contenido pendiente de reclasificación; nada se borra sin validación manual.
+- Tomo 10 conserva reglas de supervivencia y referencias recuperadas; los contenidos fuera del juego base se tratan como referencia/apéndice, no como pérdida de reglas.
+- Los demás tomos quedan alineados al canon global de cruce: Tomo 03 estadísticas, Tomo 04 armas, Tomo 05 equipo, Tomo 06 ubicaciones/mapas, Tomo 07 asentamientos, Tomo 08 facciones y Tomo 09 coleccionables.
+- Cualquier contenido dudoso debe marcarse como “requiere revisión” antes de moverse o separarse en tomo/apéndice de expansión.
+
+ROL V3 DEL TOMO 08: facciones, reputación, hostilidad, territorios, aliados, enemigos y consecuencias políticas.
+
+CANON GLOBAL DE CRUCE ENTRE TOMOS — EDICIÓN AJUSTADA
+Alcance V3 de esta colección: Fallout 4 juego base como núcleo principal. Si este tomo conserva contenido DLC, Creation Club o referencias no base, debe marcarse para apéndice o tomo de expansión, no mezclarse con la regla base.
+
+Reglas compartidas entre tomos:
+- AP significa siempre Puntos de Acción. No usar PA para acciones.
+- Zona significa ubicación, punto de interés, interior, exterior, edificio, cueva, vault, tramo de ruta o área jugable completa.
+- Ruta significa cadena de zonas conectadas.
+- Ubicación significa lugar físico consultable en el Tomo 06.
+- Subzona significa elemento interno explorable: sala, calle, casa, puente, pasillo, azotea, patio, túnel, garaje, muelle, escalera, zona de cobertura o sector de combate.
+- Enemigo propio de misión: se define en Tomo 02 y sus estadísticas se consultan en Tomo 03.
+- Enemigo normal de ubicación: se define en Tomo 06 y sus estadísticas se consultan en Tomo 03.
+- Asentamiento: Tomo 06 lo describe como mapa/ubicación explorable; Tomo 07 lo desarrolla como sistema construible, población, defensa, recursos y economía.
+- Bioma, clima y hora: Tomo 06 los explica como lectura básica del entorno; Tomo 10 contiene las reglas avanzadas de supervivencia.
+- Coleccionable: Tomo 09 es la fuente principal; Tomo 06 indica su punto físico exacto si forma parte del mapa; Tomo 02 solo lo menciona si es requerido por una misión.
+- Facción: Tomo 08 es la fuente política y de reputación; Tomo 02 usa facciones en misiones; Tomo 06 en territorios; Tomo 03 en enemigos/NPC.
+
+Lista canónica básica de climas del juego base para Tomo 01, 06 y 10:
+Soleado; Despejado templado; Nublado; Viento fuerte; Polvo / ceniza; Lluvia ligera; Lluvia fuerte; Niebla ligera; Niebla densa; Calor extremo; Frío extremo; Tormenta de nieve; Tormenta eléctrica; Tormenta radiactiva.
+
+ROL DE ESTE TOMO EN EL CRUCE GLOBAL:
+Este tomo es la fuente única de facciones, reputación, hostilidad, aliados, enemigos y consecuencias políticas.
+
+Biomas oficiales de supervivencia usados como etiqueta de lectura de entorno:
+Desierto / yermo seco; Bosque templado; Bosque boreal; Tundra / zona fría; Bioma acuático; Pantano; Mar Resplandeciente; Urbano; Costa; Rural; Subterráneo.
+
+
+Criterio aplicado en esta iteración:
+- Tomo 01 y Tomo 10 quedan intactos. No se modifica su texto, reglas ni orden interno.
+- Este tomo se ajusta para alinearse con Tomo 01 como regla core y Tomo 10 como supervivencia avanzada, sin duplicarlos.
+- No se elimina información: lo dudoso se conserva como referencia, alias o apéndice de revisión.
+- Se refuerzan IDs, cruces, separación base/DLC/Creation Club/cortado/local y uso correcto de AP como Puntos de Acción.
+- Las fichas principales conservan su contenido; los ajustes nuevos son capas de normalización editorial y jugable.
+
+## Ajuste específico del Tomo 08 — Facciones
+
+Estado después del ajuste: el Tomo 08 se mantiene como fuente política y de reputación. No debe convertirse en guía de misiones ni bestiario; debe cruzar con esos tomos mediante IDs.
+
+### Matriz obligatoria por facción
+Cada facción principal, secundaria u hostil debe tener:
+| Campo | Cruce correcto |
+|---|---|
+| ID facción | `F-xxx`. |
+| Tipo | Principal, secundaria, hostil, neutral, comercio, criatura organizada o requiere revisión. |
+| Bases y territorios | Referenciar ubicaciones `U-xxxx` del Tomo 06. |
+| Misiones asociadas | Referenciar `M-xxxx` del Tomo 02. |
+| Enemigos/NPC | Referenciar fichas del Tomo 03. |
+| Equipo típico | Referenciar Tomo 04 y Tomo 05. |
+| Reputación | Usar escala del Tomo 08; consecuencias en Tomo 02. |
+| Hostilidad | Condición de ataque, tregua, alianza o bloqueo. |
+| Recompensas | Armas, armaduras, asentamientos o coleccionables según tomos fuente. |
+
+### Regla de consecuencia política
+Toda misión de facción en Tomo 02 debe indicar si produce:
+- reputación positiva,
+- reputación negativa,
+- bloqueo de ruta,
+- hostilidad permanente,
+- acceso a base,
+- acceso a comerciante,
+- acceso a equipo,
+- cambio de estado de asentamiento,
+- consecuencia final de campaña.
+
+### Nota editorial
+No borrar facciones menores, grupos hostiles ni referencias conservadas. Si no son parte del juego base, mover a apéndice de expansión o marcar como requiere revisión.
+
+
+Fuente base: `main/ATLAS_DEL_YERMO_EDICION_MISIONES_WIKI.txt`
+Fecha de extracción: 2026-06-11
+Fichas únicas consolidadas: 18
+
+Nota editorial:
+- Este tomo sale de la sección `PARTE II - FACCIONES, ORGANIZACIONES Y PODERES DEL YERMO` del Atlas del Yermo.
+- Se prioriza uso en mesa: ideología, líderes, territorio, comportamiento, aliados, enemigos, recompensas, consecuencias y cruces con misiones/asentamientos.
+- No reemplaza los tomos de misiones, ubicaciones, bestiario, armas o asentamientos: sirve como índice político y de reputación para conectarlos.
+
+
+## ÍNDICE OPERATIVO
+
+Por categoría:
+| Categoría | Facciones |
+| --- | ---: |
+| Principales del juego base | 4 |
+| Militares, mercenarias y criminales del Commonwealth | 4 |
+| Comunidades urbanas/asentadas | 1 |
+| Históricas / prebélicas | 1 |
+
+Por postura inicial:
+| Postura | Facciones |
+| --- | ---: |
+| Aliable como ruta principal | 4 |
+| Aliable o negociable regionalmente | 3 |
+| Hostil recurrente | 7 |
+| Histórica / ambiental | 1 |
+| Variable por decisión | 3 |
+
+Lista rápida:
+| ID | Facción | Categoría | Rol de campaña |
+| --- | --- | --- | --- |
+| F-001 | Minutemen | Principal | Reconstrucción civil y asentamientos |
+| F-002 | Hermandad del Acero | Principal | Poder militar tecnológico |
+| F-003 | El Ferrocarril | Principal | Liberación synth y espionaje |
+| F-004 | El Instituto | Principal | Ciencia, synths y control subterráneo |
+| F-005 | Artilleros / Gunners | Mercenaria | Antagonistas militares profesionales |
+| F-006 | Saqueadores / Raiders | Criminal | Amenaza común del yermo |
+| F-007 | Forjados / Forged | Criminal | Culto raider industrial del fuego |
+| F-008 | Triggermen | Criminal | Mafia urbana de Boston |
+| F-009 | Gatos del Átomo / Atom Cats | Comunidad | Taller de servoarmadura y estilo |
+| F-018 | Guardia Nacional | Histórica | Ruinas militares y botín prebélico |
+
+
+## REGLAS DE REPUTACIÓN Y HOSTILIDAD
+
+Usa esta escala cuando una misión, diálogo, asentamiento o acción pública cambie la relación de los PJ con una facción.
+
+| Rango | Estado | Lectura en mesa |
+| --- | --- | --- |
+| 0 | Hostil | Atacan, cazan, bloquean acceso o envían patrullas. |
+| 1 | Cauteloso | No confían; exigen prueba, pago, escolta o desarme. |
+| 2 | Neutral | Tratan con los PJ si conviene y no hay ofensa previa. |
+| 3 | Amistoso | Ofrecen información, descuentos, apoyo menor o misiones. |
+| 4 | Confiado | Abren bases, recursos importantes, escoltas o decisiones internas. |
+| 5 | Aliado | Comprometen tropas, rutas, tecnología, refugios o finales de campaña. |
+
+Cambios sugeridos:
+| Acción | Cambio |
+| --- | --- |
+| Completar misión clave de facción | +1 |
+| Resolver misión sin bajas civiles ni traición | +1 |
+| Donar equipo, medicinas, tecnología o alimentos relevantes | +1 si cambia la situación |
+| Atacar patrulla, robar base o sabotear operación menor | -1 |
+| Matar líder, destruir base o apoyar enemigo principal | -2 o hostilidad inmediata |
+| Elegir punto de no retorno contra una facción | Fijar en 0 |
+
+Tipos de presión de facción:
+| d6 | Presión | Uso |
+| --- | --- | --- |
+| 1 | Requisición | Piden comida, armas, tecnología, datos o refugio. |
+| 2 | Patrulla | Una fuerza armada llega y exige explicación. |
+| 3 | Propaganda | Rumores cambian la reputación de los PJ o un asentamiento. |
+| 4 | Infiltración | Espía, synth, informante, traidor o agente encubierto. |
+| 5 | Bloqueo | Cortan rutas, comercio, agua, radio o apoyo militar. |
+| 6 | Ultimátum | Exigen tomar partido antes de una batalla o final de ruta. |
+
+
+## RELACIONES Y RECOMPENSAS
+
+Relaciones principales:
+| Facción | Aliados posibles | Enemigos principales | Relación variable |
+| --- | --- | --- | --- |
+| Minutemen | Colonos | Raiders, Gunners, supermutantes | Brotherhood, Railroad, Institute según ruta |
+| Brotherhood | Sus tropas | Institute, Railroad, supermutantes, ferals | Minutemen |
+| Railroad | Synths liberados | Institute, Brotherhood | Minutemen |
+| Institute | Synths, coursers | Railroad, Brotherhood | Minutemen |
+
+Recompensas principales:
+| Facción | Recompensas importantes |
+| --- | --- |
+| Railroad | Deliverer, Ballistic Weave |
+| Brotherhood | T-60, acceso Prydwen, apoyo Vertibird, equipo láser |
+| Institute | X6-88, acceso Institute, armas Institute |
+| Minutemen | The Castle, artillería, ruta final flexible |
+| Pack | Pack Alpha |
+
+Puntos de no retorno:
+| Decisión | Impacto |
+| --- | --- |
+| Mass Fusion / Spoils of War | Define conflicto Institute/Brotherhood. |
+| Tactical Thinking | Pone en riesgo al Railroad. |
+| End of the Line | Cierra ruta contra Railroad. |
+| The Nuclear Option | Final destructivo contra Institute. |
+
+
+## FICHAS CONSOLIDADAS DE FACCIÓN
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-001
+Nombre: Minutemen
+Identidad: Milicia civil de reconstrucción de la Commonwealth
+Categoría: Principal / asentamientos
+Postura inicial: Aliable
+
+Líderes y figuras:
+  - Preston Garvey.
+  - General del jugador si se acepta la ruta.
+  - Ronnie Shaw en etapa avanzada.
+
+Territorio y bases:
+  - Sanctuary Hills.
+  - The Castle.
+  - Asentamientos aliados.
+  - Rutas de artillería si Old Guns está completada.
+
+Ideología:
+  - Protección local.
+  - Autonomía de asentamientos.
+  - Respuesta comunitaria contra saqueadores, mutantes y amenazas regionales.
+
+Comportamiento:
+  - Defienden colonos y responden a crisis de asentamientos.
+  - Usan armas simples, mosquetes láser y artillería cuando se restaura The Castle.
+  - Crecen mediante asentamientos, radio beacons y líneas de suministro.
+
+Aliados y enemigos:
+  - Aliados naturales: colonos y asentamientos.
+  - Enemigos frecuentes: raiders, supermutantes, Gunners hostiles.
+  - Ruta flexible: puede coexistir con algunas facciones si se evita hostilidad directa.
+
+Misiones clave:
+  - When Freedom Calls.
+  - The First Step.
+  - Taking Independence.
+  - Old Guns.
+  - Defend the Castle.
+  - The Nuclear Option - Minutemen.
+
+Equipo y botín:
+  - Minutemen outfit.
+  - Laser musket.
+  - Artillery smoke grenade.
+  - Equipo de colonos y armas ligeras.
+
+Consecuencias de apoyar:
+  - Más asentamientos.
+  - Artillería.
+  - Ruta de final flexible.
+  - Mejor control territorial.
+
+Consecuencias de atacar:
+  - Pérdida de coherencia con Preston.
+  - Dificulta la ruta de reconstrucción y defensa civil.
+
+Compañeros compatibles:
+  - Preston Garvey.
+  - Piper.
+  - Nick Valentine.
+  - Codsworth.
+  - Curie.
+
+Uso en mesa:
+  - Ideal para campañas de reconstrucción, defensa, liderazgo local y economía de asentamientos.
+
+Lectura narrativa:
+  - Los Minutemen son la idea de que el yermo puede volver a organizarse desde abajo, sin imperio ni laboratorio secreto.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-002
+Nombre: Hermandad del Acero
+Identidad: Orden militar tecnológica
+Categoría: Principal / militar
+Postura inicial: Aliable con tensión ideológica
+
+Líderes y figuras:
+  - Elder Arthur Maxson.
+  - Paladin Danse.
+  - Proctor Ingram.
+  - Proctor Teagan.
+  - Proctor Quinlan.
+
+Territorio y bases:
+  - The Prydwen.
+  - Boston Airport.
+  - Cambridge Police Station.
+  - Fort Strong durante operaciones.
+
+Ideología:
+  - Control tecnológico.
+  - Jerarquía militar.
+  - Eliminación de amenazas consideradas peligrosas: synths, supermutantes, ferals y tecnología fuera de control.
+
+Comportamiento:
+  - Operan con Vertibirds, servoarmaduras T-60, armas láser y disciplina de escuadra.
+  - Priorizan objetivos militares y tecnológicos.
+
+Aliados y enemigos:
+  - Enemigos principales: Institute y Railroad según avance.
+  - Tensión con synths y facciones que los protegen.
+  - Puede colaborar temporalmente con el jugador.
+
+Misiones clave:
+  - Call to Arms.
+  - Shadow of Steel.
+  - Tour of Duty.
+  - Show No Mercy.
+  - Liberty Reprimed.
+  - Blind Betrayal.
+  - Spoils of War.
+  - The Nuclear Option - Brotherhood.
+
+Equipo y botín:
+  - T-60 Power Armor.
+  - Laser Rifle.
+  - Gatling Laser.
+  - Brotherhood fatigues.
+  - Vertibird signal grenades según progreso.
+
+Consecuencias de apoyar:
+  - Acceso a equipo militar avanzado.
+  - Ruta directa contra Institute.
+  - Poder aéreo y apoyo Brotherhood.
+
+Consecuencias de atacar:
+  - The Prydwen y fuerzas Brotherhood se vuelven hostiles.
+  - Combates de alta dificultad contra servoarmadura, láseres y Vertibirds.
+
+Compañeros compatibles:
+  - Danse.
+  - Codsworth.
+  - Curie.
+  - MacCready según decisiones.
+
+Uso en mesa:
+  - Sirve para campañas de guerra abierta, dilemas de obediencia, tecnología peligrosa y autoridad militar.
+
+Lectura narrativa:
+  - La Hermandad ofrece orden, pero su orden exige obediencia y define quién merece existir.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-003
+Nombre: El Ferrocarril
+Identidad: Red clandestina de liberación synth
+Categoría: Principal / espionaje
+Postura inicial: Aliable por confianza
+
+Líderes y figuras:
+  - Desdemona.
+  - Deacon.
+  - Tinker Tom.
+  - Doctor Carrington.
+  - PAM.
+  - Glory.
+
+Territorio y bases:
+  - Railroad HQ bajo Old North Church.
+  - Safehouses.
+  - Ticonderoga según estado.
+  - Rutas clandestinas.
+
+Ideología:
+  - Liberación de synths.
+  - Operaciones encubiertas.
+  - Sabotaje contra Institute y enemigos de synths.
+
+Comportamiento:
+  - Sigilo, claves, rutas ocultas e identidades falsas.
+  - Dependen más de inteligencia y redes que de fuerza frontal.
+
+Aliados y enemigos:
+  - Enemigo principal: Institute.
+  - Conflicto fuerte con Brotherhood.
+  - Puede coexistir parcialmente con Minutemen.
+
+Misiones clave:
+  - Road to Freedom.
+  - Tradecraft.
+  - Boston After Dark.
+  - Mercer Safehouse.
+  - Underground Undercover.
+  - Rockets' Red Glare.
+  - The Nuclear Option - Railroad.
+
+Equipo y botín:
+  - Deliverer.
+  - Ballistic Weave.
+  - Railway Rifle en contexto general.
+  - Equipo de sigilo y armas modificadas.
+
+Consecuencias de apoyar:
+  - Ballistic Weave.
+  - Ruta synth-liberation.
+  - Misiones de espionaje e infiltración.
+
+Consecuencias de atacar:
+  - Pérdida de Ballistic Weave si no se desbloqueó.
+  - Hostilidad de HQ y pérdida de ruta Railroad.
+
+Compañeros compatibles:
+  - Deacon.
+  - Nick Valentine.
+  - Piper.
+
+Uso en mesa:
+  - Ideal para campañas de infiltración, casas seguras, extracción de objetivos y dilemas sobre identidad.
+
+Lectura narrativa:
+  - El Ferrocarril no intenta gobernar el yermo; intenta salvar personas que muchos ni siquiera reconocen como personas.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-004
+Nombre: El Instituto
+Identidad: Facción científica subterránea
+Categoría: Principal / ciencia y control
+Postura inicial: Aliable tarde, hostilidad por ruta
+
+Líderes y figuras:
+  - Father/Shaun.
+  - Directores de divisiones.
+  - X6-88.
+  - Doctores e investigadores del Institute.
+
+Territorio y bases:
+  - The Institute.
+  - C.I.T. ruins como cobertura exterior.
+  - Laboratorios y divisiones internas.
+
+Ideología:
+  - Continuidad científica.
+  - Control desde las sombras.
+  - Uso de synths como herramienta, población y proyecto.
+
+Comportamiento:
+  - Teletransporte.
+  - Synths.
+  - Operaciones encubiertas.
+  - Reemplazos y vigilancia.
+
+Aliados y enemigos:
+  - Enemigos principales: Brotherhood y Railroad.
+  - Conflicto moral con Minutemen según ruta.
+  - Puede usar al jugador como agente.
+
+Misiones clave:
+  - Institutionalized.
+  - Synth Retention.
+  - The Battle of Bunker Hill.
+  - Mankind-Redefined.
+  - Mass Fusion.
+  - Pinned.
+  - Powering Up.
+  - Nuclear Family.
+
+Equipo y botín:
+  - Institute Rifle.
+  - Institute Pistol.
+  - Synth components.
+  - Institute lab coat/outfits.
+  - Acceso a servicios internos.
+
+Consecuencias de apoyar:
+  - Ruta Institute.
+  - Acceso interno y X6-88.
+  - Final de control tecnológico.
+
+Consecuencias de atacar:
+  - Institute se vuelve hostil.
+  - Se pierden servicios y ruta Institute.
+
+Compañeros compatibles:
+  - X6-88.
+  - Curie según rol científico.
+  - Nick como contraste narrativo.
+
+Uso en mesa:
+  - Útil para campañas de infiltración, ciencia inmoral, paranoia synth y decisiones de final.
+
+Lectura narrativa:
+  - El Institute representa el futuro sin consentimiento: limpio, brillante y profundamente inquietante.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-005
+Nombre: Artilleros / Gunners
+Identidad: Compañía mercenaria militarizada
+Categoría: Mercenaria / militar hostil
+Postura inicial: Hostil recurrente
+
+Líderes y figuras:
+  - Clint.
+  - Tessa.
+  - Baker.
+  - Comandantes y oficiales por zona.
+
+Territorio y bases:
+  - Gunners Plaza.
+  - Quincy Ruins.
+  - Mass Pike Interchange.
+  - Varios puestos militares y urbanos.
+
+Ideología:
+  - Mercenarismo.
+  - Control por fuerza.
+  - Contratos, armas y jerarquía paramilitar.
+
+Comportamiento:
+  - Usan combat armor, rifles, armas automáticas y posiciones fortificadas.
+  - Son más disciplinados que raiders.
+
+Aliados y enemigos:
+  - Hostiles para el jugador casi siempre.
+  - Enemigos de Minutemen por historia de Quincy.
+  - Rivales territoriales de raiders y mutantes.
+
+Misiones clave:
+  - Quincy y contexto Minutemen.
+  - Radiantes de limpieza.
+  - Encuentros en Gunners Plaza y bases.
+
+Equipo y botín:
+  - Combat armor.
+  - Armas balísticas.
+  - Munición variada.
+  - Armas pesadas ocasionales.
+  - Botín militar.
+
+Consecuencias de apoyar:
+  - No existe ruta de facción formal.
+  - Pueden usarse narrativamente como antagonistas militares o fuerza contratada por terceros.
+
+Consecuencias de atacar:
+  - Acceso a buen botín militar.
+  - Combate más difícil que contra raiders comunes.
+
+Compañeros compatibles:
+  - Preston por venganza/justicia.
+  - Danse por combate militar.
+  - MacCready por tirador.
+
+Uso en mesa:
+  - Funcionan como amenaza profesional para asentamientos, caravanas, bases militares y rutas urbanas.
+
+Lectura narrativa:
+  - Los Gunners son el profesionalismo militar sin patria ni moral: soldados que venden orden al mejor postor.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-006
+Nombre: Saqueadores / Raiders
+Identidad: Bandas criminales de la Commonwealth
+Categoría: Criminal / amenaza común
+Postura inicial: Hostil recurrente
+
+Líderes y figuras:
+  - Jefes locales por campamento.
+  - Ack-Ack.
+  - Jared.
+  - Tower Tom.
+  - Varios líderes de zonas.
+
+Territorio y bases:
+  - Corvega.
+  - Beantown Brewery.
+  - Lexington.
+  - Campamentos urbanos.
+  - Rutas de carretera y fábricas.
+
+Ideología:
+  - Supervivencia violenta.
+  - Saqueo.
+  - Control territorial menor.
+  - Poder por miedo.
+
+Comportamiento:
+  - Armas pipe, leather/raider armor, minas, trampas y emboscadas.
+  - Poca disciplina, pero peligrosos en grupo.
+
+Aliados y enemigos:
+  - Enemigos de colonos y Minutemen.
+  - Rivales de Gunners, supermutantes y otras bandas.
+
+Misiones clave:
+  - Radiantes de limpieza.
+  - The First Step.
+  - Muchos objetivos Minutemen.
+
+Equipo y botín:
+  - Pipe weapons.
+  - Raider armor.
+  - Munición .38.
+  - Chems.
+  - Chapas y chatarra.
+
+Consecuencias de atacar:
+  - Botín temprano.
+  - Seguridad para rutas y asentamientos.
+
+Compañeros compatibles:
+  - Preston aprueba ayudar asentamientos.
+  - Cait puede tolerar violencia.
+  - Strong aprecia fuerza.
+
+Uso en mesa:
+  - Son la amenaza flexible para tutoriales, rescates, emboscadas, rutas cortadas y asaltos de asentamiento.
+
+Lectura narrativa:
+  - Los raiders son el yermo sin ley convertido en costumbre.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-007
+Nombre: Forjados / Forged
+Identidad: Culto raider del fuego
+Categoría: Criminal / industrial
+Postura inicial: Hostil
+
+Líderes y figuras:
+  - Slag.
+  - Miembros Forged.
+
+Territorio y bases:
+  - Saugus Ironworks.
+  - Rutas industriales cercanas.
+
+Ideología:
+  - Fuerza por fuego.
+  - Prueba brutal de pertenencia.
+  - Violencia ritualizada.
+
+Comportamiento:
+  - Usan armas de fuego, melee, lanzallamas y entorno industrial.
+  - Más temáticos y peligrosos que raiders comunes.
+
+Aliados y enemigos:
+  - Hostiles para colonos y jugador.
+  - Conflicto con Finch Farm por Out of the Fire.
+
+Misiones clave:
+  - Out of the Fire.
+
+Equipo y botín:
+  - Shishkebab.
+  - Armas Forged.
+  - Munición.
+  - Chatarra industrial y aceite.
+
+Consecuencias de atacar:
+  - Libera presión sobre zona Finch.
+  - Otorga arma única y botín industrial.
+
+Compañeros compatibles:
+  - Danse por resistencia.
+  - Cait por combate cercano.
+  - Preston por defensa de colonos.
+
+Uso en mesa:
+  - Útiles para escenas industriales, ritos violentos, rescates entre hornos y control territorial por terror.
+
+Lectura narrativa:
+  - Los Forjados no solo sobreviven al fuego: lo convierten en doctrina.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-008
+Nombre: Triggermen
+Identidad: Crimen organizado de Boston
+Categoría: Criminal / urbano
+Postura inicial: Hostil por misión
+
+Líderes y figuras:
+  - Skinny Malone.
+  - Darla según misión.
+  - Jefes menores.
+
+Territorio y bases:
+  - Vault 114.
+  - Park Street Station.
+  - Zonas urbanas de crimen.
+
+Ideología:
+  - Estética mafiosa.
+  - Control criminal.
+  - Secuestro, extorsión y armas automáticas.
+
+Comportamiento:
+  - Usan submachine guns, trajes y emboscadas en interiores.
+  - Menos salvajes que raiders, más organizados en tono.
+
+Aliados y enemigos:
+  - Hostiles durante Unlikely Valentine.
+  - Rivales criminales de otras bandas.
+
+Misiones clave:
+  - Unlikely Valentine.
+
+Equipo y botín:
+  - Submachine Gun.
+  - Munición .45.
+  - Triggerman outfit.
+
+Consecuencias de atacar:
+  - Rescatas a Nick.
+  - Acceso a botín urbano temprano/medio.
+
+Compañeros compatibles:
+  - Piper.
+  - Nick después del rescate.
+  - Cait.
+  - MacCready.
+
+Uso en mesa:
+  - Buenos para secuestros, extorsiones, deuda urbana, clubes, túneles y escenas noir.
+
+Lectura narrativa:
+  - Los Triggermen son el eco del crimen antiguo sobreviviendo en túneles modernos.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-009
+Nombre: Gatos del Átomo / Atom Cats
+Identidad: Pandilla de mecánicos de servoarmadura
+Categoría: Comunidad / taller
+Postura inicial: Neutral amistosa
+
+Líderes y figuras:
+  - Zeke.
+  - Rowdy.
+  - Miembros Atom Cats.
+
+Territorio y bases:
+  - Atom Cats Garage.
+
+Ideología:
+  - Estilo, mecánica, orgullo de servoarmadura.
+  - Más cultura de taller que facción militar.
+
+Comportamiento:
+  - No son hostiles por defecto.
+  - Especialistas en Power Armor.
+  - Tono ligero y comunitario.
+
+Aliados y enemigos:
+  - Enemigos ocasionales: Gunners/ataques.
+  - Neutrales o amistosos con jugador.
+
+Misiones clave:
+  - Atom Cats misc/defensa del garaje.
+
+Equipo y botín:
+  - Power Armor parts.
+  - Atom Cats paint job.
+  - Piezas y mods de servoarmadura.
+
+Consecuencias de apoyar:
+  - Acceso a comercio, estilo Atom Cats y taller narrativo.
+
+Compañeros compatibles:
+  - Codsworth.
+  - Danse por contraste de servoarmadura.
+  - Piper por tono social.
+
+Uso en mesa:
+  - Útiles como refugio de taller, contacto de servoarmadura, misión de defensa o respiro tonal.
+
+Lectura narrativa:
+  - Los Atom Cats demuestran que incluso en el yermo hay lugar para estilo, motores y orgullo de taller.
+---
+--------------------------------------------------------------------------------
+---
+### [FICHA DE FACCIÓN]
+ID: F-010
+Nombre: Hijos del Átomo / Children of Atom
+Identidad: Culto religioso de radiación
+Postura inicial: Variable
+
+Líderes y figuras:
+  - High Confessor Tektus.
+  - Richter.
+
+Territorio y bases:
+  - Crater of Atom.
+  - Santuarios radiactivos.
+
+Ideología:
+  - La radiación como fe.
+  - Atom como fuerza divina.
+  - Aceptación de mutación y división.
+
+Comportamiento:
+  - Pueden ser pacíficos, fanáticos u hostiles según lugar.
+
+Aliados y enemigos:
+  - Hostilidad variable por decisiones.
+
+Misiones clave:
+  - Visions in the Fog.
+  - What Atom Requires.
+  - Cleansing the Land.
+  - The Heretic.
+
+Equipo y botín:
+  - Gamma gun.
+  - Robes/vestimenta de Atom.
+  - Munición radiactiva.
+
+Consecuencias de apoyar:
+  - Acceso a misiones y final específico.
+
+Consecuencias de atacar:
+
+Compañeros compatibles:
+  - Nick por dilema moral.
+  - Curie por contraste científico.
+
+Uso en mesa:
+
+Lectura narrativa:
+  - Los Hijos del Átomo miran la radiación y ven revelación donde otros ven muerte.
+---
+--------------------------------------------------------------------------------
+---
+
+
+## COMPLEMENTO OFICIAL PRIMA - JUEGO BASE
+
+Fuente base: bases rpg/Fallout 4 Vault Dweller's Survival Guide - Prima Official Game Guide_djvu.txt
+Alcance: grupos, gangs, facciones y cadenas de faccion del juego base. No aplica a facciones exclusivas de DLC.
+
+### Facciones y grupos base a validar
+
+| Grupo/Faccion | Lectura oficial | Uso en el tomo |
+| --- | --- | --- |
+| Minutemen | Red de defensa civil, settlements y respuesta comunitaria. | Vincular reputacion a ayuda, defensa, reclutamiento y control territorial. |
+| Brotherhood of Steel | Fuerza militar tecnologica con rangos, doctrina y superioridad aerea. | Registrar jerarquia, acceso a equipo pesado y conflictos ideologicos. |
+| Railroad | Red clandestina enfocada en synths y operaciones encubiertas. | Usar claves, refugios, contactos, sigilo y misiones de rescate. |
+| Institute | Poder tecnologico subterraneo con synths, relay y control cientifico. | Marcar secreto, recursos avanzados, agentes y consecuencias finales. |
+| Raiders | Bandas locales, violencia oportunista y control de ruinas. | Diferenciar por territorio, lider, trampas, drogas y saqueo. |
+| Gunners | Mercenarios militarizados con mejor disciplina y armamento. | Usar tacticas, posiciones fortificadas y contratos como motivacion. |
+| Super Mutants | Amenaza territorial brutal con fuerza, numeros y cautivos. | Resolver como presion frontal, fortificaciones improvisadas y botin tosco. |
+| Children of Atom / cultos locales base | Grupos religiosos o ideologicos presentes en el Commonwealth base. | Usar creencias, radiacion y conflicto social donde aplique. |
+
+### Reglas de integracion
+
+- Toda faccion debe enlazar con sus misiones en `TOMO_02`, enemigos en `TOMO_03`, equipo en `TOMO_04/05` y bases en `TOMO_06`.
+- Separar faccion jugable, grupo hostil, proveedor, comunidad neutral y subgrupo local.
+- Registrar cambios de estado: aliado, neutral, hostil, destruido, infiltrado o dependiente de decision de final.
+- Las facciones DLC deben permanecer en sus tomos DLC, incluso si tienen relacion tematica con grupos del juego base.

@@ -1,0 +1,12 @@
+{
+  "id": "supervivencia",
+  "name": "Supervivencia",
+  "description": "Reglas de hambre, sed, descanso, enfermedades, peso, curacion limitada y viaje exigente.",
+  "enabled": true,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "sourceTomes": ["TOMO 01", "TOMO 10"],
+  "assets": {
+    "thumbnail": "assets/content-thumbs/extras/modo_supervivencia.png"
+  }
+}

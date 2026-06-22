@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "test:fallout4": "node scripts/test-fallout4-corebooks.mjs",
     "preview": "vite preview",
     "android:init": "cap add android",
     "android:sync": "npm run build && cap sync android",

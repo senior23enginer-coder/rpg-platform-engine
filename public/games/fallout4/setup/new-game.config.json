@@ -1,0 +1,80 @@
+{
+  "title": "Nueva partida",
+  "subtitle": "Comienza una nueva aventura en Fallout 4.",
+  "loadedDescription": "Commonwealth base con ruta inicial Vault 111, exterior del refugio, Sanctuary Hills, Red Rocket y Concord.",
+  "recommended": {
+    "title": "Experiencia recomendada",
+    "description": "Perfecto para jugar la campana base de Fallout 4 con reglas por turnos, AP, exploracion y eventos de los tomos."
+  },
+  "labels": {
+    "species": "Superviviente del Refugio 111",
+    "quote": "Reconstruye, resiste, sobrevive.",
+    "system": "Commonwealth 2d20",
+    "defaultCharacterName": "Superviviente",
+    "fallbackCampaignTitle": "Explorando Commonwealth",
+    "fallbackMission": "Explorando Yermo"
+  },
+  "blocks": {
+    "gameLoaded": "1. Juego cargado",
+    "campaign": "2. Campana",
+    "mode": "3. Modo de juego",
+    "players": "4. Jugadores",
+    "survival": "5. Supervivencia",
+    "content": "6. DLC / Contenido"
+  },
+  "modes": {
+    "guided": {
+      "label": "Campana guiada",
+      "description": "Objetivos y escenas para vivir la historia principal."
+    },
+    "free": {
+      "label": "Modo libre",
+      "description": "Exploracion emergente sin guia principal."
+    }
+  },
+  "survival": {
+    "description": "Hambre, sed, cansancio, clima, recursos, descanso y riesgos del yermo."
+  },
+  "content": {
+    "description": "DLC, features y extras cargados desde carpetas de configuracion."
+  },
+  "fallbackOrigins": [
+    {
+      "id": "vault111",
+      "name": "Refugio 111",
+      "description": "Sales de criogenia y buscas respuestas."
+    },
+    {
+      "id": "commonwealth",
+      "name": "Superviviente del Commonwealth",
+      "description": "Conoces la superficie, sus riesgos y sus rutas."
+    },
+    {
+      "id": "settler",
+      "name": "Colono",
+      "description": "Tu prioridad es reconstruir un lugar seguro."
+    },
+    {
+      "id": "faction_contact",
+      "name": "Contacto de faccion",
+      "description": "Empiezas con una relacion, una deuda o una sospecha."
+    }
+  ],
+  "fallbackSkills": [
+    { "id": "athletics", "name": "Atletismo" },
+    { "id": "survival", "name": "Supervivencia" },
+    { "id": "stealth", "name": "Sigilo" },
+    { "id": "speech", "name": "Persuasion" },
+    { "id": "repair", "name": "Reparar" },
+    { "id": "medicine", "name": "Medicina" },
+    { "id": "science", "name": "Ciencia" },
+    { "id": "combat", "name": "Combate" }
+  ],
+  "footer": {
+    "note": "La partida usara la configuracion activa del juego, sus carpetas de modulos y la campana seleccionada.",
+    "guidedStart": "Empezar campana",
+    "freeStart": "Crear hoja de personaje",
+    "guidedHint": "Usar personaje precreado de Fallout 4",
+    "freeHint": "Revisar personaje antes de comenzar"
+  }
+}

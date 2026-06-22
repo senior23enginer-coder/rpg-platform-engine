@@ -1,6 +1,5 @@
 import type { GameConfig } from "../types/game";
 import { normalizeGameConfig } from "./gameLibrary";
-import { seedGame } from "./seedLibrary";
 
 export async function pickGamesFolder(): Promise<string | null> {
   try {
@@ -57,9 +56,9 @@ export async function loadLibraryFromFolder(folderPath: string): Promise<GameCon
       }
     }
 
-    return games.length ? games : [seedGame];
+    return games.sort((a, b) => a.name.localeCompare(b.name));
   } catch (error) {
-    console.warn("Using seed library fallback.", error);
-    return [seedGame];
+    console.warn("Cannot load games folder.", error);
+    return [];
   }
 }

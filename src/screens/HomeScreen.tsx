@@ -45,6 +45,7 @@ export function HomeScreen({
       game.content.features.some((item) => item.id.includes("supervivencia") && item.enabled)
   );
   const quickSaves = saves.slice(0, 3);
+  const progressPercent = Math.max(0, Math.min(100, save?.progressPercent ?? 0));
 
   return (
     <section className="home-layout">
@@ -109,8 +110,8 @@ export function HomeScreen({
           <div>
             <h3>{campaign?.title ?? "Campana guiada"}</h3>
             <p>{save?.currentMission ?? "Explorando Yermo"}</p>
-            <small>Progreso general</small>
-            <div className="progress"><i style={{ width: "68%" }} /></div>
+            <small>{save ? `${save.currentZone} · ${progressPercent}% completado` : "Sin progreso activo"}</small>
+            <div className="progress"><i style={{ width: `${progressPercent}%` }} /></div>
           </div>
           <div className="level-box">
             <small>Nivel del personaje</small>

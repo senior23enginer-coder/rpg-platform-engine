@@ -9,6 +9,7 @@ export const defaultSettings: UserSettings = {
   hudColor: "green",
   animatedBackground: true,
   audioEnabled: false,
+  assetOverrides: {},
   tracks: {
     background: "01_fallout_4_main_theme",
     combat: "06_combat_ready",
@@ -73,6 +74,7 @@ function createBlankDefaultProfile(games: GameConfig[]): PlayerProfile {
     id: "invitado-local",
     name: "Invitado local",
     username: "invitado-local",
+    gender: "",
     password: "",
     email: "",
     avatar: "avatar.svg",
@@ -117,6 +119,7 @@ export function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fa
     ...profile,
     name: profile.name || fallback.name,
     username: profile.username ?? fallback.username,
+    gender: profile.gender ?? fallback.gender,
     password: profile.password ?? fallback.password,
     level: profile.level ?? 1,
     avatar: profile.avatar === "local" ? fallback.avatar : profile.avatar ?? fallback.avatar,

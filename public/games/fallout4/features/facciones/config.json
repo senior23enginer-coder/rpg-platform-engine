@@ -1,0 +1,12 @@
+{
+  "id": "facciones",
+  "name": "Facciones",
+  "description": "Reglas de reputacion, alianzas, hostilidad, rangos y consecuencias por decisiones de campaña.",
+  "enabled": true,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "sourceTomes": ["TOMO 02", "TOMO 08"],
+  "assets": {
+    "thumbnail": "assets/content-thumbs/features/compa_eros.png"
+  }
+}

@@ -2,6 +2,7 @@ export type Screen =
   | "home"
   | "library"
   | "newGame"
+  | "fallout4Campaign"
   | "load"
   | "dice"
   | "settings"

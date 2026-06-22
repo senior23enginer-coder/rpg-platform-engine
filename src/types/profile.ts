@@ -15,6 +15,7 @@ export type UserSettings = {
   hudColor: HudColor;
   animatedBackground: boolean;
   audioEnabled: boolean;
+  assetOverrides?: Record<string, string>;
   tracks: TrackSelection;
   volumes: {
     music: number;
@@ -33,10 +34,29 @@ export type PlayerSave = {
   name: string;
   currentMission?: string;
   currentZone: string;
+  progressPercent?: number;
+  route?: string[];
+  visitedZones?: string[];
+  currentStep?: number;
   level: number;
   sessions: number;
   playTimeHours?: number;
+  playStartedAt?: string;
+  lastLoadedAt?: string;
   daysElapsed?: number;
+  inGameDayStartedAt?: string;
+  campaignState?: {
+    sceneId?: string;
+    nodeId?: string;
+    ap?: number;
+    turn?: number;
+    visitedNodes?: string[];
+    securedNodes?: string[];
+    enemyHp?: Record<string, number>;
+    actionLog?: string[];
+    lastAction?: string;
+    updatedAt?: string;
+  };
   createdAt?: string;
   updatedAt: string;
 };
@@ -53,6 +73,8 @@ export type PlayerProfile = {
   id: string;
   name: string;
   username?: string;
+  role?: "user" | "admin";
+  gender?: string;
   password?: string;
   level: number;
   basePath?: string;

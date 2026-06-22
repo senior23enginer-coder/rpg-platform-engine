@@ -1,0 +1,12 @@
+{
+  "id": "nuka_world",
+  "name": "Nuka-World",
+  "description": "Expansion jugable de parque tematico, bandas saqueadoras, zonas controladas y conquista territorial.",
+  "enabled": false,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "assets": {
+    "thumbnail": "assets/content-thumbs/dlc/nuka_world.png",
+    "sourceCover": "assets/source-covers/dlc/nuka_world.jpg"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "contraptions_workshop",
+  "name": "Contraptions Workshop",
+  "description": "Expansion jugable para maquinaria, fabricacion, elevadores, cintas y automatizacion de taller.",
+  "enabled": false,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "assets": {
+    "thumbnail": "assets/content-thumbs/dlc/contraptions_workshop.png",
+    "sourceCover": "assets/source-covers/dlc/contraptions_workshop.jpg"
+  }
+}

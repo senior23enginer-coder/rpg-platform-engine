@@ -1,0 +1,12 @@
+{
+  "id": "wasteland_workshop",
+  "name": "Wasteland Workshop",
+  "description": "Expansion jugable para jaulas, arenas, criaturas capturadas y piezas de asentamiento.",
+  "enabled": false,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "assets": {
+    "thumbnail": "assets/content-thumbs/dlc/wasteland_workshop.png",
+    "sourceCover": "assets/source-covers/dlc/wasteland_workshop.jpg"
+  }
+}

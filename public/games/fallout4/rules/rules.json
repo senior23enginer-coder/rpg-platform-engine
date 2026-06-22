@@ -1,4 +1,8 @@
 {
+  "schemaVersion": 2,
+  "sourceTome": "TOMO 01 - Iteracion 5.1 Libro Publicable Refinado.txt",
+  "sourceUpdatedAt": "2026-06-22T16:08:41.078Z",
+  "generatedAt": "2026-06-22T17:10:59.051Z",
   "rules": {
     "turnEvents": true,
     "weather": true,
@@ -13,5 +17,603 @@
     "hardcoreDamage": false,
     "worldEvents": true
   },
+  "coreLoop": {
+    "mode": "turn_based_ap",
+    "dice": {
+      "tests": "2d20",
+      "damage": "d6",
+      "defaultDifficulty": 1,
+      "tacticalDifficulty": 2,
+      "highDifficultyRequires": [
+        "ayuda",
+        "preparacion",
+        "perk",
+        "equipo",
+        "Momentum",
+        "critico"
+      ]
+    },
+    "ap": {
+      "formula": "6 + AGI",
+      "term": "Puntos de Accion",
+      "neverUse": "PA"
+    },
+    "health": {
+      "formula": "10 + END x 2",
+      "note": "PV maximos segun Tomo 01, ajustar por perks/equipo."
+    },
+    "carry": {
+      "formula": "50 + STR x 10",
+      "unit": "carga abstracta"
+    },
+    "defense": [
+      "fisica",
+      "energia",
+      "radiacion",
+      "ambiental"
+    ],
+    "momentum": {
+      "generatedBy": "exitos sobrantes",
+      "use": [
+        "comprar dados extra",
+        "mejorar dano",
+        "reducir tiempo",
+        "crear ventaja narrativa"
+      ]
+    }
+  },
+  "gameModes": {
+    "campaign": {
+      "id": "fallout4_campaign",
+      "players": [
+        1,
+        2
+      ],
+      "protagonists": [
+        "Nate",
+        "Nora"
+      ],
+      "start": "Vault 111",
+      "companionLimit": 1,
+      "initialEquipment": [
+        "Traje de Vault 111"
+      ],
+      "pipBoy": "Se obtiene al final de Vault 111, antes de abrir la puerta principal."
+    },
+    "free": {
+      "id": "free_mode",
+      "maxSquadSize": 4,
+      "startingSettlements": [
+        "Red Rocket Truck Stop",
+        "Taffington Boathouse",
+        "Coastal Cottage",
+        "Nordhagen Beach",
+        "Hangman?s Alley",
+        "Warwick Homestead"
+      ],
+      "contracts": [
+        "limpieza de zona",
+        "rescate",
+        "recuperacion",
+        "escolta",
+        "defensa",
+        "caza",
+        "reparacion",
+        "investigacion",
+        "comercio",
+        "contrato de faccion",
+        "patrulla",
+        "sabotaje"
+      ]
+    },
+    "survival": {
+      "optional": true,
+      "sourceTome": "TOMO 10"
+    }
+  },
+  "campaignCharacters": {
+    "nate": {
+      "STR": 5,
+      "PER": 5,
+      "END": 5,
+      "CHA": 4,
+      "INT": 4,
+      "AGI": 4,
+      "LCK": 4
+    },
+    "nora": {
+      "STR": 3,
+      "PER": 5,
+      "END": 4,
+      "CHA": 6,
+      "INT": 6,
+      "AGI": 4,
+      "LCK": 4
+    }
+  },
+  "companions": [
+    {
+      "name": "Codsworth",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Rutinas de otro siglo: reparar su módulo de servicio y resolver un recuerdo de Sanctuary.",
+      "returnPoint": "Sanctuary Hills o asentamiento aliado.",
+      "conditions": "No atacar colonos inocentes durante su misión."
+    },
+    {
+      "name": "Dogmeat",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Rastro fiel: seguir huellas, protegerlo de criaturas y ganarse su confianza.",
+      "returnPoint": "Red Rocket Truck Stop.",
+      "conditions": "Tener espacio en escuadra; no abandonarlo herido."
+    },
+    {
+      "name": "Preston Garvey",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Otra oportunidad para los Minutemen: defender colonos y completar una ayuda local.",
+      "returnPoint": "Asentamiento Minutemen o Campo de Entrenamiento.",
+      "conditions": "No ser enemigo de Minutemen; reputación local neutral o mejor."
+    },
+    {
+      "name": "Piper Wright",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "La verdad tiene precio: conseguir una prueba, nota o testimonio contra un abuso local.",
+      "returnPoint": "Diamond City o ciudad aliada.",
+      "conditions": "No silenciar testigos inocentes."
+    },
+    {
+      "name": "Nick Valentine",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Caso abierto: resolver una desaparición o recuperar una pista de detective.",
+      "returnPoint": "Agencia de Valentine o ciudad aliada.",
+      "conditions": "Completar investigación sin destruir evidencia clave."
+    },
+    {
+      "name": "Cait",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Deuda de sangre: ayudarla a cerrar una deuda, pelea o amenaza personal.",
+      "returnPoint": "Combat Zone o asentamiento aliado.",
+      "conditions": "Pagar deuda, ganar combate o resolver su problema."
+    },
+    {
+      "name": "Curie",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Protocolo de cuidado: recuperar datos médicos o proteger pacientes.",
+      "returnPoint": "Vault, clínica o asentamiento con puesto médico.",
+      "conditions": "No vender datos médicos a facciónes hostiles."
+    },
+    {
+      "name": "MacCready",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Contrato pendiente: completar una cacería o recuperar pago robado.",
+      "returnPoint": "Goodneighbor o puesto mercenario.",
+      "conditions": "Pagar acuerdo o cumplir contrato."
+    },
+    {
+      "name": "Hancock",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Buen vecino, mala noche: resolver conflicto urbano sin traicionar a sus aliados.",
+      "returnPoint": "Goodneighbor.",
+      "conditions": "No actuar como enemigo de Goodneighbor."
+    },
+    {
+      "name": "Strong",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Fuerza y palabra: demostrar fuerza, liberar prisioneros o derrotar un rival brutal.",
+      "returnPoint": "Zona supermutante pacificada o asentamiento que lo acepte.",
+      "conditions": "El grupo debe tolerar su presencia y evitar traicionarlo."
+    },
+    {
+      "name": "Deacon",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Mentira útil: completar infiltración y demostrar discreción.",
+      "returnPoint": "Refugio del Ferrocarril o contacto secreto.",
+      "conditions": "No delatar al Ferrocarril."
+    },
+    {
+      "name": "Paladín Danse",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Orden de acero: asegurar tecnología o eliminar amenaza militar.",
+      "returnPoint": "Puesto de la Hermandad o base aliada.",
+      "conditions": "No ser enemigo de la Hermandad."
+    },
+    {
+      "name": "X6-88",
+      "campaign": true,
+      "freeMode": true,
+      "recruitmentMission": "Activo recuperado: misión de rastreo, captura o decisión sobre libertad synth.",
+      "returnPoint": "Punto del Instituto, contacto oculto o refugio synth.",
+      "conditions": "Requiere Instituto activo, contacto synth o evento especial."
+    }
+  ],
+  "skills": [
+    {
+      "id": "armas_pequenas",
+      "name": "Armas peque?as",
+      "attribute": "PER / AGI",
+      "description": "Pistolas, rifles, escopetas ligeras",
+      "example": "Disparar una 10mm."
+    },
+    {
+      "id": "armas_de_energia",
+      "name": "Armas de energ?a",
+      "attribute": "PER / INT",
+      "description": "Laser, plasma, tecnolog?a avanzada",
+      "example": "Disparar rifle laser."
+    },
+    {
+      "id": "armas_pesadas",
+      "name": "Armas pesadas",
+      "attribute": "STR / PER",
+      "description": "Minigun, lanzamisiles, lanzallamas",
+      "example": "Controlar una minigun."
+    },
+    {
+      "id": "cuerpo_a_cuerpo",
+      "name": "Cuerpo a cuerpo",
+      "attribute": "STR / AGI",
+      "description": "Bates, cuchillos, tuberias, martillos",
+      "example": "Golpear con bate."
+    },
+    {
+      "id": "desarmado",
+      "name": "Desarmado",
+      "attribute": "STR / END",
+      "description": "Pu?os, golpes, agarres",
+      "example": "Pelear sin arma."
+    },
+    {
+      "id": "explosivos",
+      "name": "Explosivos",
+      "attribute": "PER / AGI / INT",
+      "description": "Granadas, minas, trampas explosivas",
+      "example": "Lanzar o desactivar mina."
+    },
+    {
+      "id": "atletismo",
+      "name": "Atletismo",
+      "attribute": "STR / END / AGI",
+      "description": "Correr, saltar, nadar, trepar, empujar",
+      "example": "Huir bajo disparos."
+    },
+    {
+      "id": "sigilo",
+      "name": "Sigilo",
+      "attribute": "AGI",
+      "description": "Ocultarse, moverse sin ruido, emboscar",
+      "example": "Cruzar una calle sin ser visto."
+    },
+    {
+      "id": "supervivencia",
+      "name": "Supervivencia",
+      "attribute": "PER / END",
+      "description": "Rastrear, orientarse, detectar peligros naturales",
+      "example": "Seguir huellas."
+    },
+    {
+      "id": "medicina",
+      "name": "M?dico/Medicina",
+      "attribute": "INT / PER",
+      "description": "Curar, estabilizar, tratar heridas",
+      "example": "Usar kit m?dico."
+    },
+    {
+      "id": "reparacion",
+      "name": "Reparacion",
+      "attribute": "INT",
+      "description": "Reparar armas, generadores, puertas y equipo",
+      "example": "Arreglar una torreta."
+    },
+    {
+      "id": "ciencia",
+      "name": "Ciencia",
+      "attribute": "INT",
+      "description": "Terminales, robots, energ?a, tecnolog?a avanzada",
+      "example": "Hackear terminal."
+    },
+    {
+      "id": "ganzua",
+      "name": "Ganzua",
+      "attribute": "PER / AGI",
+      "description": "Abrir cerraduras mec?nicas",
+      "example": "Abrir caja fuerte."
+    },
+    {
+      "id": "comercio",
+      "name": "Comercio",
+      "attribute": "CHA",
+      "description": "Comprar, vender, regatear, valorar objetos",
+      "example": "Negociar munici?n."
+    },
+    {
+      "id": "charla",
+      "name": "Charla",
+      "attribute": "CHA",
+      "description": "Persuadir, mentir, calmar, convencer",
+      "example": "Evitar combate."
+    },
+    {
+      "id": "intimidacion",
+      "name": "Intimidacion",
+      "attribute": "CHA / STR",
+      "description": "Amenazar, imponer autoridad",
+      "example": "Hacer retroceder saqueador."
+    },
+    {
+      "id": "liderazgo",
+      "name": "Liderazgo",
+      "attribute": "CHA",
+      "description": "Coordinar aliados, colonos y grupo",
+      "example": "Dar orden tactica."
+    },
+    {
+      "id": "investigacion",
+      "name": "Investigacion",
+      "attribute": "PER / INT",
+      "description": "Analizar pistas, escenas y documentos",
+      "example": "Leer holocinta tecnica."
+    },
+    {
+      "id": "pilotaje_conduccion",
+      "name": "Pilotaje / Conduccion",
+      "attribute": "AGI / INT",
+      "description": "Moto, vehiculos, servoarmadura avanzada",
+      "example": "Maniobrar bajo presion."
+    },
+    {
+      "id": "crafteo",
+      "name": "Crafteo",
+      "attribute": "INT / PER",
+      "description": "Fabricar, modificar, cocinar, crear recursos",
+      "example": "Mejorar arma en taller."
+    }
+  ],
+  "origins": [
+    {
+      "id": "humano",
+      "name": "Humano",
+      "description": "Flexible y aceptado en la mayoría de asentamientos.",
+      "limit": "No tiene resistencia especial automática."
+    },
+    {
+      "id": "necrofago",
+      "name": "Necrófago",
+      "description": "Mejor tolerancia narrativa a radiación y zonas contaminadas.",
+      "limit": "Puede sufrir rechazo social o desconfianza."
+    },
+    {
+      "id": "synth",
+      "name": "Synth",
+      "description": "Afinidad con tecnología, infiltración y terminales.",
+      "limit": "Riesgo con Instituto, Hermandad o NPC que sospechen."
+    },
+    {
+      "id": "supermutante",
+      "name": "Supermutante",
+      "description": "Fuerza alta, resistencia física y presencia intimidante.",
+      "limit": "Equipo limitado, sigilo difícil y fuerte rechazo social."
+    }
+  ],
+  "freeModeSeeds": [
+    {
+      "id": "mara_vance",
+      "name": "Mara Vance",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Tiradora móvil / exploradora",
+      "perks": [
+        "Pistolera",
+        "Sigilo",
+        "Recolectora"
+      ]
+    },
+    {
+      "id": "elisa_mora",
+      "name": "Elisa Mora",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Médica de campo / soporte",
+      "perks": [
+        "Médica",
+        "Coleccionista de chapas",
+        "Inspiradora"
+      ]
+    },
+    {
+      "id": "ruth_keller",
+      "name": "Ruth Keller",
+      "origin": "Humana",
+      "gender": "Mujer",
+      "style": "Mecánica / constructora",
+      "perks": [
+        "Armera",
+        "Chatarrera",
+        "Líder local"
+      ]
+    },
+    {
+      "id": "darius_holt",
+      "name": "Darius Holt",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Mercenario pesado / explosivos",
+      "perks": [
+        "Comando",
+        "Dureza",
+        "Experto en demoliciones"
+      ]
+    },
+    {
+      "id": "mateo_briggs",
+      "name": "Mateo Briggs",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Comerciante armado / contactos",
+      "perks": [
+        "Coleccionista de chapas",
+        "Errante solitario",
+        "Fusilero"
+      ]
+    },
+    {
+      "id": "owen_pike",
+      "name": "Owen Pike",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Cazador / rastreador",
+      "perks": [
+        "Fusilero",
+        "Conciencia táctica",
+        "Dureza"
+      ]
+    },
+    {
+      "id": "caleb_rusk",
+      "name": "Caleb Rusk",
+      "origin": "Humano",
+      "gender": "Hombre",
+      "style": "Sigilo / saqueo urbano",
+      "perks": [
+        "Sigilo",
+        "Cerrajero",
+        "Chico de acción"
+      ]
+    },
+    {
+      "id": "silas_crowe",
+      "name": "Silas Crowe",
+      "origin": "Necrófago",
+      "gender": "Hombre",
+      "style": "Superviviente irradiado",
+      "perks": [
+        "Necrófago resistente",
+        "Estómago de plomo",
+        "Intimidación"
+      ]
+    },
+    {
+      "id": "n_47_nico_vale",
+      "name": "N-47 “Nico” Vale",
+      "origin": "Synth",
+      "gender": "Hombre",
+      "style": "Infiltrador técnico / hackeo",
+      "perks": [
+        "Hacker",
+        "Sigilo",
+        "Señor Sandman"
+      ]
+    },
+    {
+      "id": "brakk",
+      "name": "Brakk",
+      "origin": "Supermutante",
+      "gender": "Hombre",
+      "style": "Tanque / cuerpo a cuerpo",
+      "perks": [
+        "Grandes ligas",
+        "Enraizado",
+        "Dureza"
+      ]
+    }
+  ],
+  "xpRewards": [
+    {
+      "action": "Explorar zona peque?a",
+      "xp": 10
+    },
+    {
+      "action": "Descubrir ubicaci?n",
+      "xp": 25
+    },
+    {
+      "action": "Resolver encuentro sin combate",
+      "xp": 25
+    },
+    {
+      "action": "Derrotar enemigo menor",
+      "xp": 10
+    },
+    {
+      "action": "Derrotar enemigo normal",
+      "xp": 25
+    },
+    {
+      "action": "Derrotar enemigo fuerte",
+      "xp": 50
+    },
+    {
+      "action": "Completar objetivo menor",
+      "xp": 25
+    },
+    {
+      "action": "Completar misi?n corta",
+      "xp": 100
+    },
+    {
+      "action": "Completar misi?n importante",
+      "xp": 250
+    },
+    {
+      "action": "Defender asentamiento",
+      "xp": 100
+    },
+    {
+      "action": "Descubrir secreto",
+      "xp": 50
+    }
+  ],
+  "levelProgression": [
+    {
+      "level": 1,
+      "xpTotal": 0
+    },
+    {
+      "level": 2,
+      "xpTotal": 100
+    },
+    {
+      "level": 3,
+      "xpTotal": 250
+    },
+    {
+      "level": 4,
+      "xpTotal": 450
+    },
+    {
+      "level": 5,
+      "xpTotal": 700
+    },
+    {
+      "level": 6,
+      "xpTotal": 1000
+    },
+    {
+      "level": 7,
+      "xpTotal": 1350
+    },
+    {
+      "level": 8,
+      "xpTotal": 1750
+    },
+    {
+      "level": 9,
+      "xpTotal": 2200
+    },
+    {
+      "level": 10,
+      "xpTotal": 2700
+    }
+  ],
   "templateFuture": false
 }

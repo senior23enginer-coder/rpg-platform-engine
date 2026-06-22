@@ -1,4 +1,5 @@
-import { ArrowLeft, Check, Eye, Monitor, Palette, RotateCcw, Save, Speaker, Swords, Target, Volume2, Zap } from "lucide-react";
+import { ArrowLeft, Check, Eye, Image, Monitor, Palette, RotateCcw, Save, Speaker, Swords, Target, Volume2, X, Zap } from "lucide-react";
+import { useState } from "react";
 import { playTrack, stopAudio, type TrackCategory } from "../lib/audioEngine";
 import type { AudioManifest } from "../types/game";
 import type { HudColor, ThemeMode, UserSettings } from "../types/profile";
@@ -24,6 +25,8 @@ const hudOptions: Array<{ value: HudColor; label: string }> = [
 ];
 
 export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) {
+  const [assetModalOpen, setAssetModalOpen] = useState(false);
+  const [assetDraft, setAssetDraft] = useState(settings.assetOverrides ?? {});
   function patch(next: Partial<UserSettings>) {
     onChange({ ...settings, ...next });
   }
@@ -52,6 +55,15 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
 
     const track = manifest.tracks.background?.find((item) => item.id === settings.tracks.background);
     playTrack(track?.path, "background");
+  }
+
+  function setAssetPath(key: string, value: string) {
+    setAssetDraft((current) => ({ ...current, [key]: value }));
+  }
+
+  function saveAssetPaths() {
+    patch({ assetOverrides: assetDraft });
+    setAssetModalOpen(false);
   }
 
   return (
@@ -200,7 +212,40 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           <Save size={22} />
           <span><strong>Guardar personalizacion</strong><small>Aplicar y guardar cambios</small></span>
         </button>
+        <button onClick={() => setAssetModalOpen(true)}>
+          <Image size={22} />
+          <span><strong>Editar imagenes</strong><small>Paths de iconos y fondos</small></span>
+        </button>
       </footer>
+
+      {assetModalOpen && (
+        <div className="modal-backdrop">
+          <article className="app-modal asset-path-modal">
+            <button className="modal-close" onClick={() => setAssetModalOpen(false)}><X size={18} /></button>
+            <h3><Image size={22} /> Editor de paths visuales</h3>
+            <p>Cambia rutas de imagenes o iconos desde configuracion. Usa paths publicos como /platform/uiux-icons/home.png.</p>
+            {[
+              ["platform.logo", "/platform/uiux-icons/brand-gear.png"],
+              ["topbar.logo", "/platform/uiux-icons/brand-gear.png"],
+              ["sidebar.home", "/platform/uiux-icons/home.png"],
+              ["sidebar.library", "/platform/uiux-icons/library.png"],
+              ["sidebar.newGame", "/platform/uiux-icons/newGame.png"],
+              ["sidebar.load", "/platform/uiux-icons/load.png"],
+              ["sidebar.settings", "/platform/uiux-icons/settings.png"],
+            ].map(([key, fallback]) => {
+              const value = assetDraft[key] ?? fallback;
+              return (
+                <label className="asset-path-row" key={key}>
+                  <span>{key}</span>
+                  <input value={value} onChange={(event) => setAssetPath(key, event.target.value)} />
+                  <i style={{ backgroundImage: `url("${value}")` }} />
+                </label>
+              );
+            })}
+            <button className="green-button" onClick={saveAssetPaths}>Guardar paths</button>
+          </article>
+        </div>
+      )}
     </section>
   );
 }

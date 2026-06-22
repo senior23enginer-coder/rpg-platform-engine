@@ -4,17 +4,19 @@ import { resolveUserAsset } from "../lib/userLibrary";
 
 type Props = {
   profile: PlayerProfile;
+  assetOverrides?: Record<string, string>;
   onProfile: () => void;
   onSettings: () => void;
 };
 
-export function TopBar({ profile, onProfile, onSettings }: Props) {
+export function TopBar({ profile, assetOverrides, onProfile, onSettings }: Props) {
   const avatarPath = resolveUserAsset(profile, profile.avatar);
+  const logoPath = assetOverrides?.["topbar.logo"];
 
   return (
     <header className="topbar">
       <div className="topbar-logo">
-        <span className="topbar-gear"><Settings size={44} /></span>
+        <span className="topbar-gear">{logoPath ? <img src={logoPath} alt="" /> : <Settings size={44} />}</span>
         <strong>RPG Platform Engine</strong>
         <span>Tu universo. Tu historia. Tu aventura.</span>
       </div>

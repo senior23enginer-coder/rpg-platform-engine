@@ -5,6 +5,7 @@ import { TopBar } from "./components/TopBar";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ContentScreen } from "./screens/ContentScreen";
 import { DiceScreen } from "./screens/DiceScreen";
+import { Fallout4CampaignScreen } from "./screens/Fallout4CampaignScreen";
 import { FilesScreen } from "./screens/FilesScreen";
 import { HomeScreen } from "./screens/HomeScreen";
 import { LibraryScreen } from "./screens/LibraryScreen";
@@ -15,11 +16,12 @@ import { ProfileScreen } from "./screens/ProfileScreen";
 import { RulesScreen } from "./screens/RulesScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import type { Screen } from "./screens/types";
-import type { AudioManifest, GameConfig } from "./types/game";
-import type { GameHistoryEntry, PlayerProfile, UserSettings } from "./types/profile";
+import type { AudioManifest, GameConfig, GameJsonFile } from "./types/game";
+import type { GameHistoryEntry, PlayerProfile, PlayerSave, UserSettings } from "./types/profile";
 import { createActivity, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
-import { loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
+import { loadBundledGameJsonFiles, loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
+import { loadBundledUserProfiles } from "./lib/userLibrary";
 import { createSaveGameDocument, getSaveGamePath } from "./lib/saveGameStorage";
 import {
   loadNativeMetadata,
@@ -40,6 +42,8 @@ import {
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
 const bundledGames = loadBundledGames();
+const bundledGameJsonFiles = loadBundledGameJsonFiles();
+const bundledUsers = loadBundledUserProfiles();
 
 function upsertHistoryEntry(history: GameHistoryEntry[], entry: GameHistoryEntry) {
   const exists = history.some((item) => item.gameId === entry.gameId);
@@ -50,8 +54,9 @@ function upsertHistoryEntry(history: GameHistoryEntry[], entry: GameHistoryEntry
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [games, setGames] = useState<GameConfig[]>(bundledGames);
+  const [gameJsonFiles, setGameJsonFiles] = useState<GameJsonFile[]>(bundledGameJsonFiles);
   const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(bundledGames));
-  const [users, setUsers] = useState<PlayerProfile[]>([]);
+  const [users, setUsers] = useState<PlayerProfile[]>(() => bundledUsers.map((user) => normalizeProfile(user, bundledGames)));
   const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
   const [storageReady, setStorageReady] = useState(false);
@@ -66,6 +71,7 @@ export default function App() {
     const pool = games.filter((game) => game.id !== activeGame.id);
     return [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
   }, [activeGame.id, games]);
+  const hideTopBar = screen === "newGame" || screen === "load";
 
   useEffect(() => {
     document.documentElement.dataset.theme = profile.settings.theme;
@@ -79,7 +85,9 @@ export default function App() {
 
     Promise.all([loadNativeProfile(), loadNativeMetadata(), loadPersistentUsers()])
       .then(([nativeProfile, nativeMetadata, persistedUsers]) => {
-        const normalizedUsers = persistedUsers.map((user) => normalizeProfile(user, bundledGames));
+        const normalizedUsers = [...persistedUsers, ...bundledUsers]
+          .map((user) => normalizeProfile(user, bundledGames))
+          .filter((user, index, array) => array.findIndex((item) => item.id === user.id) === index);
         const normalizedProfile = nativeProfile ? normalizeProfile(nativeProfile, bundledGames) : undefined;
         if (normalizedUsers.length > 0) {
           setUsers(normalizedUsers);
@@ -130,6 +138,26 @@ export default function App() {
     playTrack(track?.path, "background");
   }, [activeAudioManifest, profile.settings.audioEnabled, profile.settings.tracks.background]);
 
+  useEffect(() => {
+    if (screen !== "fallout4Campaign" || !activeSave) return;
+    const interval = window.setInterval(() => {
+      setProfile((current) => ({
+        ...current,
+        saves: current.saves.map((save) => {
+          if (save.saveId !== activeSave.saveId) return save;
+          const playTimeHours = Number(((save.playTimeHours ?? 0) + 1 / 60).toFixed(2));
+          return {
+            ...save,
+            playTimeHours,
+            daysElapsed: Math.floor(playTimeHours / 24),
+            updatedAt: new Date().toISOString(),
+          };
+        }),
+      }));
+    }, 60000);
+    return () => window.clearInterval(interval);
+  }, [activeSave, screen]);
+
   function updateContent(category: "dlc" | "features" | "extras", itemId: string) {
     setGames((currentGames) =>
       currentGames.map((game) => {
@@ -149,6 +177,11 @@ export default function App() {
 
   function selectGame(gameId: string, nextScreen: Screen = "newGame") {
     const now = new Date().toISOString();
+    try {
+      window.localStorage.setItem("rpg-platform.last-game-id", gameId);
+    } catch {
+      // Local storage can be unavailable in some native shells.
+    }
     setProfile((current) => ({
       ...current,
       lastActivityAt: now,
@@ -174,7 +207,7 @@ export default function App() {
     }));
   }
 
-  function registerUser(account: { email: string; username: string; password: string }) {
+  function registerUser(account: { email: string; username: string; password: string; role?: "user" | "admin" }) {
     const now = new Date().toISOString();
     const id = `user_${account.username.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")}_${Date.now()}`;
     const newProfile = normalizeProfile(
@@ -183,6 +216,7 @@ export default function App() {
         id,
         name: account.username,
         username: account.username,
+        role: account.role ?? "user",
         email: account.email,
         password: account.password,
         basePath: `/users/${id}`,
@@ -211,13 +245,18 @@ export default function App() {
       activeGameId: save.gameId,
       saves: current.saves.map((item) => {
         if (item.saveId !== saveId) return item;
-        const updatedSave = { ...item, updatedAt: now };
+        const updatedSave = {
+          ...item,
+          sessions: (item.sessions ?? 0) + 1,
+          lastLoadedAt: now,
+          updatedAt: now,
+        };
         pendingSaveDocument = createSaveGameDocument({ game: saveGame, profile: current, save: updatedSave });
         return updatedSave;
       }),
       history: upsertHistoryEntry(current.history, {
         gameId: save.gameId,
-        sessions: 0,
+        sessions: (current.history.find((entry) => entry.gameId === save.gameId)?.sessions ?? 0) + 1,
         activeSaveId: save.saveId,
         activeCampaignId: save.campaignId,
         lastPlayedAt: now,
@@ -225,11 +264,49 @@ export default function App() {
     }));
     if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
     trackActivity(`Partida cargada: ${save.name}`);
-    setScreen("home");
+    setScreen(save.gameId === "fallout4" && save.campaignId === "sanctuary_commonwealth" ? "fallout4Campaign" : "home");
+  }
+
+  function persistActiveSaveProgress(patch: Partial<PlayerSave>) {
+    const now = new Date().toISOString();
+    let pendingSaveDocument: ReturnType<typeof createSaveGameDocument> | undefined;
+
+    setProfile((current) => {
+      const currentSave = getActiveSave(current, activeGame.id);
+      if (!currentSave) return current;
+
+      const updatedSave = {
+        ...currentSave,
+        ...patch,
+        updatedAt: now,
+      };
+
+      pendingSaveDocument = createSaveGameDocument({ game: activeGame, profile: current, save: updatedSave });
+
+      return {
+        ...current,
+        lastActivityAt: now,
+        saves: current.saves.map((save) => (save.saveId === currentSave.saveId ? updatedSave : save)),
+        history: upsertHistoryEntry(current.history, {
+          gameId: updatedSave.gameId,
+          sessions: current.history.find((entry) => entry.gameId === updatedSave.gameId)?.sessions ?? 0,
+          activeCampaignId: updatedSave.campaignId,
+          activeSaveId: updatedSave.saveId,
+          lastPlayedAt: now,
+        }),
+      };
+    });
+
+    if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
   }
 
   function continueGame() {
     if (activeSave) loadSave(activeSave.saveId);
+  }
+
+  function signOut() {
+    setProfile((current) => ({ ...current, signedIn: false, lastActivityAt: new Date().toISOString() }));
+    trackActivity("Sesion cerrada");
   }
 
   function createNewGame() {
@@ -279,7 +356,7 @@ export default function App() {
     return (
       <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
         <div className="animated-bg" />
-        <AuthScreen profile={profile} users={users} onAccess={setProfile} onRegister={registerUser} />
+        <AuthScreen profile={profile} users={users} games={games} onAccess={setProfile} onRegister={registerUser} />
       </div>
     );
   }
@@ -288,14 +365,23 @@ export default function App() {
     <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
       <div className="animated-bg" />
       <div className={`app-frame screen-${screen}`}>
-          <TopBar
-            profile={profile}
-            onProfile={() => setScreen("profile")}
-            onSettings={() => setScreen("settings")}
-          />
+          {!hideTopBar && (
+            <TopBar
+              profile={profile}
+              assetOverrides={profile.settings.assetOverrides}
+              onProfile={() => setScreen("profile")}
+              onSettings={() => setScreen("settings")}
+            />
+          )}
 
         <div className="app-body">
-          <Sidebar active={screen} appVersion={appMetadata.version} onChange={setScreen} />
+          <Sidebar
+            active={screen}
+            appVersion={appMetadata.version}
+            assetOverrides={profile.settings.assetOverrides}
+            onChange={setScreen}
+            onExit={signOut}
+          />
 
           <main className="app-main">
           {screen === "home" && (
@@ -356,11 +442,12 @@ export default function App() {
               characters={seedCharacters}
               onContent={() => setScreen("content")}
               onBack={() => setScreen("home")}
-              onStart={(characterName, attributes) => {
+              onStart={(characterName, attributes, options) => {
                 const campaignId = activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
                 const now = new Date().toISOString();
                 const saveId = `${activeGame.id}_${Date.now()}`;
                 const storagePath = getSaveGamePath(activeGame.id, profile.id, saveId);
+                const route = activeCampaign?.simulation?.route ?? [];
                 let pendingSaveDocument: ReturnType<typeof createSaveGameDocument> | undefined;
                 setProfile((current) => {
                   const newSave = {
@@ -372,11 +459,18 @@ export default function App() {
                     playerName: characterName,
                     name: `${characterName} - ${activeGame.name}`,
                     currentMission: activeCampaign?.title ?? "Explorando Yermo",
-                    currentZone: activeGame.name,
+                    currentZone: route[0] ?? activeGame.name,
+                    progressPercent: route.length ? Math.round(100 / route.length) : 0,
+                    route,
+                    visitedZones: route[0] ? [route[0]] : [activeGame.name],
+                    currentStep: 0,
                     level: 1,
                     sessions: 0,
                     playTimeHours: 0,
+                    playStartedAt: now,
+                    lastLoadedAt: now,
                     daysElapsed: 0,
+                    inGameDayStartedAt: now,
                     createdAt: now,
                     updatedAt: now,
                   };
@@ -399,8 +493,18 @@ export default function App() {
                 });
                 if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
                 trackActivity(`Partida creada: ${characterName} - ${activeGame.name}`);
-                setScreen("home");
+                setScreen(activeGame.id === "fallout4" && options?.mode === "guided" ? "fallout4Campaign" : "home");
               }}
+            />
+          )}
+
+          {screen === "fallout4Campaign" && (
+            <Fallout4CampaignScreen
+              game={activeGame}
+              save={activeSave}
+              onBack={() => setScreen("home")}
+              onDice={() => setScreen("dice")}
+              onProgress={persistActiveSaveProgress}
             />
           )}
 
@@ -425,8 +529,17 @@ export default function App() {
           {screen === "rules" && <RulesScreen onBack={() => setScreen("home")} />}
           {screen === "files" && (
             <FilesScreen
+              games={games}
+              activeGameId={activeGame.id}
+              files={gameJsonFiles}
               onLoadGames={(loadedGames) => setGames(loadedGames.map((game) => normalizeGameConfig(game)))}
-              onEditConfig={() => setScreen("jsonEditor")}
+              onSelectGame={(gameId) => selectGame(gameId, "files")}
+              onEditConfig={(gameId) => selectGame(gameId, "jsonEditor")}
+              onUpdateFile={(path, raw) =>
+                setGameJsonFiles((currentFiles) =>
+                  currentFiles.map((file) => (file.path === path ? { ...file, raw } : file))
+                )
+              }
             />
           )}
           {screen === "profile" && (

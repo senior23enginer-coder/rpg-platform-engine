@@ -11,167 +11,11 @@
     "power armor"
   ],
   "templateFuture": false,
-  "campaigns": [
-    {
-      "id": "sanctuary_commonwealth",
-      "title": "Sanctuary -> Commonwealth",
-      "implemented": true,
-      "description": "Campaña base para salir del Vault 111 y reconstruir Sanctuary.",
-      "characters": [
-        {
-          "id": "nate",
-          "name": "Nate",
-          "role": "Superviviente masculino del Refugio 111",
-          "sheetImage": "assets/characters/campaign-character-sheet.png",
-          "attributes": {
-            "STR": 6,
-            "PER": 5,
-            "END": 6,
-            "CHA": 4,
-            "INT": 5,
-            "AGI": 5,
-            "LCK": 4
-          }
-        },
-        {
-          "id": "nora",
-          "name": "Nora",
-          "role": "Superviviente femenina del Refugio 111",
-          "sheetImage": "assets/characters/campaign-character-sheet.png",
-          "attributes": {
-            "STR": 4,
-            "PER": 6,
-            "END": 5,
-            "CHA": 6,
-            "INT": 6,
-            "AGI": 5,
-            "LCK": 4
-          }
-        }
-      ]
-    }
-  ],
+  "campaigns": [],
   "content": {
-    "dlc": [
-      {
-        "id": "automatron",
-        "name": "Automatron",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "wasteland_workshop",
-        "name": "Wasteland Workshop",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "far_harbor",
-        "name": "Far Harbor",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "contraptions_workshop",
-        "name": "Contraptions Workshop",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "vault_tec_workshop",
-        "name": "Vault-Tec Workshop",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "nuka_world",
-        "name": "Nuka-World",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      },
-      {
-        "id": "high_resolution_texture_pack",
-        "name": "High Resolution Texture Pack",
-        "description": "Contenido disponible para activar.",
-        "enabled": false
-      }
-    ],
-    "features": [
-      {
-        "id": "asentamientos",
-        "name": "Asentamientos",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "servoarmadura",
-        "name": "Servoarmadura",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "crafting_avanzado",
-        "name": "Crafting avanzado",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "compa_eros",
-        "name": "Compa?eros",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "vats_tactico",
-        "name": "VATS tactico",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "radiacion_avanzada",
-        "name": "Radiacion avanzada",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      },
-      {
-        "id": "mods_de_armas_y_armaduras",
-        "name": "Mods de armas y armaduras",
-        "description": "Regla o sistema disponible para este juego.",
-        "enabled": true
-      }
-    ],
-    "extras": [
-      {
-        "id": "modo_supervivencia",
-        "name": "Modo supervivencia",
-        "description": "Extra opcional para ampliar la campa?a.",
-        "enabled": false
-      },
-      {
-        "id": "enemigos_legendarios",
-        "name": "Enemigos legendarios",
-        "description": "Extra opcional para ampliar la campa?a.",
-        "enabled": false
-      },
-      {
-        "id": "misiones_radiantes",
-        "name": "Misiones radiantes",
-        "description": "Extra opcional para ampliar la campa?a.",
-        "enabled": false
-      },
-      {
-        "id": "ataques_a_asentamientos",
-        "name": "Ataques a asentamientos",
-        "description": "Extra opcional para ampliar la campa?a.",
-        "enabled": false
-      },
-      {
-        "id": "clima_radiactivo",
-        "name": "Clima radiactivo",
-        "description": "Extra opcional para ampliar la campa?a.",
-        "enabled": false
-      }
-    ]
+    "dlc": [],
+    "features": [],
+    "extras": []
   },
   "assets": {
     "hero": "assets/hero/internet.jpg",
@@ -212,5 +56,13 @@
       "label": "4 jugadores",
       "mode": "Grupo"
     }
-  ]
+  ],
+  "templates": "templates/templates.json",
+  "moduleFolders": {
+    "dlc": "dlc",
+    "features": "features",
+    "extras": "extras",
+    "campaigns": "campaigns"
+  },
+  "newGame": "setup/new-game.config.json"
 }

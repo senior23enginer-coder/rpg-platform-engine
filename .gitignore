@@ -1,5 +1,13 @@
 node_modules/
 dist/
 vite-dev.*.log
+vite-dev.log
 npm-debug.log*
 *.local
+deploy/foundry-vtt/.env
+deploy/foundry-vtt/data/
+deploy/foundry-vtt/container-cache/
+deploy/foundry-vtt/caddy-data/
+deploy/foundry-vtt/caddy-config/
+deploy/foundry-vtt/backups/
+deploy/planarally/.env

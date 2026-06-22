@@ -7,9 +7,27 @@
       "implemented": true
     },
     {
+      "id": "ascensor_y_superficie",
+      "name": "Ascensor a la superficie",
+      "type": "main",
+      "implemented": true
+    },
+    {
       "id": "reconstruir_sanctuary",
-      "name": "Reconstruir Sanctuary",
-      "type": "side",
+      "name": "Regreso a Sanctuary Hills",
+      "type": "main",
+      "implemented": true
+    },
+    {
+      "id": "ruta_red_rocket",
+      "name": "Ruta por Red Rocket",
+      "type": "main",
+      "implemented": true
+    },
+    {
+      "id": "llegar_a_concord",
+      "name": "Llegar a Concord",
+      "type": "main",
       "implemented": true
     }
   ]

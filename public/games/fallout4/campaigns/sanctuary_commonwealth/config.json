@@ -1,0 +1,75 @@
+{
+  "id": "sanctuary_commonwealth",
+  "title": "Vault 111 -> Sanctuary Hills -> Concord",
+  "implemented": true,
+  "description": "Campana base sin DLC: despertar en Vault 111, salir a la superficie, volver a Sanctuary Hills y avanzar hasta Concord.",
+  "rulesSource": "core-book/TOMO 01 - Iteracion 5.1 Libro Publicable Refinado.txt",
+  "scope": "fallout4_base_game",
+  "templates": "templates/templates.json",
+  "image": "assets/hero/generated.png",
+  "simulation": {
+    "style": "text_turn_based",
+    "route": [
+      "vault111",
+      "vault_exit",
+      "sanctuary_hills",
+      "red_rocket",
+      "concord"
+    ],
+    "interface": "modern_text_ui"
+  },
+  "characters": [
+    {
+      "id": "nate",
+      "name": "Nate",
+      "role": "Superviviente masculino del Refugio 111",
+      "sheetImage": "assets/characters/campaign-character-sheet.png",
+      "attributes": {
+        "STR": 5,
+        "PER": 5,
+        "END": 5,
+        "CHA": 4,
+        "INT": 4,
+        "AGI": 4,
+        "LCK": 4
+      }
+    },
+    {
+      "id": "nora",
+      "name": "Nora",
+      "role": "Superviviente femenina del Refugio 111",
+      "sheetImage": "assets/characters/campaign-character-sheet.png",
+      "attributes": {
+        "STR": 3,
+        "PER": 5,
+        "END": 4,
+        "CHA": 6,
+        "INT": 6,
+        "AGI": 4,
+        "LCK": 4
+      }
+    }
+  ],
+  "playerLimits": {
+    "min": 1,
+    "max": 2,
+    "companionLimit": 1
+  },
+  "initialState": {
+    "id": "fallout4_campaign",
+    "players": [
+      1,
+      2
+    ],
+    "protagonists": [
+      "Nate",
+      "Nora"
+    ],
+    "start": "Vault 111",
+    "companionLimit": 1,
+    "initialEquipment": [
+      "Traje de Vault 111"
+    ],
+    "pipBoy": "Se obtiene al final de Vault 111, antes de abrir la puerta principal."
+  }
+}

@@ -1,11 +1,26 @@
-import type { AudioManifest, CharacterSheetConfig, GameConfig } from "../types/game";
-import { seedAudioManifest, seedCharacters, seedGames } from "./seedLibrary";
+import type { AudioManifest, CharacterSheetConfig, GameConfig, GameJsonFile } from "../types/game";
+import { seedAudioManifest, seedCharacters } from "./seedLibrary";
 
 const gameConfigModules = import.meta.glob("/public/games/*/game.config.json", {
   eager: true,
   query: "?raw",
   import: "default",
 });
+
+const gameJsonModules = import.meta.glob("/public/games/**/*.json", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+
+const gameModuleConfigModules = import.meta.glob(
+  "/public/games/*/{dlc,features,extras,campaigns}/*/config.json",
+  {
+    eager: true,
+    query: "?raw",
+    import: "default",
+  }
+);
 
 function normalizePublicPath(path: string) {
   return path.replace(/^\/public\//, "/").replace(/^public\//, "/").replace(/\\/g, "/");
@@ -52,6 +67,80 @@ export function contentThumbnail(game: GameConfig, category: "dlc" | "features" 
   return resolveGameAsset(game, itemThumbnail ?? fromPattern ?? `assets/content-thumbs/${category}/${itemId}.png`);
 }
 
+type FolderModule = {
+  gameId: string;
+  category: "dlc" | "features" | "extras" | "campaigns";
+  moduleId: string;
+  configPath: string;
+  basePath: string;
+  payload: unknown;
+};
+
+function loadFolderModules(): FolderModule[] {
+  return Object.entries(gameModuleConfigModules)
+    .map(([path, raw]) => {
+      const normalizedPath = normalizePublicPath(path);
+      const match = normalizedPath.match(/^\/games\/([^/]+)\/(dlc|features|extras|campaigns)\/([^/]+)\/config\.json$/);
+      if (!match) return null;
+      try {
+        const [, gameId, category, moduleId] = match;
+        return {
+          gameId,
+          category: category as FolderModule["category"],
+          moduleId,
+          configPath: normalizedPath,
+          basePath: normalizedPath.replace(/\/config\.json$/, ""),
+          payload: JSON.parse(String(raw)),
+        };
+      } catch (error) {
+        console.warn("Invalid module config:", normalizedPath, error);
+        return null;
+      }
+    })
+    .filter((module): module is FolderModule => Boolean(module));
+}
+
+function itemFromFolderModule(module: FolderModule) {
+  const payload = module.payload as Partial<{
+    id: string;
+    name: string;
+    description: string;
+    enabled: boolean;
+    thumbnail: string;
+    assets: { thumbnail?: string; hero?: string; gallery?: string[] };
+  }>;
+
+  return {
+    ...payload,
+    id: payload.id ?? module.moduleId,
+    name: payload.name ?? module.moduleId,
+    description: payload.description,
+    enabled: payload.enabled ?? false,
+    thumbnail: payload.thumbnail ?? payload.assets?.thumbnail,
+    configPath: module.configPath,
+    basePath: module.basePath,
+  };
+}
+
+function campaignFromFolderModule(module: FolderModule) {
+  const payload = module.payload as Partial<GameConfig["campaigns"][number]>;
+  return {
+    ...payload,
+    id: payload.id ?? module.moduleId,
+    title: payload.title ?? module.moduleId,
+    implemented: payload.implemented ?? false,
+    configPath: module.configPath,
+    basePath: module.basePath,
+  };
+}
+
+function mergeByFolderConfig<T extends { id: string }>(inlineItems: T[], folderItems: T[]) {
+  const byId = new Map<string, T>();
+  for (const item of inlineItems) byId.set(item.id, item);
+  for (const item of folderItems) byId.set(item.id, { ...byId.get(item.id), ...item });
+  return [...byId.values()];
+}
+
 export function diceCatalog(game: GameConfig) {
   return resolveGameAsset(game, game.assets?.diceCatalog ?? "assets/dice/catalog.png") ?? `/games/${game.id}/assets/dice/catalog.png`;
 }
@@ -70,17 +159,23 @@ export function normalizeGameConfig(game: GameConfig, configPath?: string): Game
     ? normalizePublicPath(configPath).replace(/\/game\.config\.json$/, "")
     : game.basePath ?? `/games/${id}`;
 
+  const folderModules = loadFolderModules().filter((module) => module.gameId === id);
+  const folderDlc = folderModules.filter((module) => module.category === "dlc").map(itemFromFolderModule);
+  const folderFeatures = folderModules.filter((module) => module.category === "features").map(itemFromFolderModule);
+  const folderExtras = folderModules.filter((module) => module.category === "extras").map(itemFromFolderModule);
+  const folderCampaigns = folderModules.filter((module) => module.category === "campaigns").map(campaignFromFolderModule);
+
   return {
     ...game,
     id,
     basePath,
     configPath: configPath ? normalizePublicPath(configPath) : game.configPath ?? `${basePath}/game.config.json`,
     content: {
-      dlc: game.content?.dlc ?? [],
-      features: game.content?.features ?? [],
-      extras: game.content?.extras ?? [],
+      dlc: mergeByFolderConfig(game.content?.dlc ?? [], folderDlc),
+      features: mergeByFolderConfig(game.content?.features ?? [], folderFeatures),
+      extras: mergeByFolderConfig(game.content?.extras ?? [], folderExtras),
     },
-    campaigns: game.campaigns ?? [],
+    campaigns: mergeByFolderConfig(game.campaigns ?? [], folderCampaigns),
   };
 }
 
@@ -96,7 +191,27 @@ export function loadBundledGames(): GameConfig[] {
     })
     .filter((game): game is GameConfig => Boolean(game));
 
-  return games.length ? games.sort((a, b) => a.name.localeCompare(b.name)) : seedGames;
+  return games.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export function loadBundledGameJsonFiles(): GameJsonFile[] {
+  return Object.entries(gameJsonModules)
+    .map(([path, raw]) => {
+      const normalizedPath = normalizePublicPath(path);
+      const match = normalizedPath.match(/^\/games\/([^/]+)\/(.+)$/);
+      if (!match) return null;
+      const [, gameId, relativePath] = match;
+      return {
+        gameId,
+        path: normalizedPath,
+        relativePath,
+        fileName: relativePath.split("/").pop() ?? relativePath,
+        raw: String(raw),
+        isConfig: relativePath === "game.config.json",
+      };
+    })
+    .filter((file): file is GameJsonFile => Boolean(file))
+    .sort((a, b) => a.gameId.localeCompare(b.gameId) || a.relativePath.localeCompare(b.relativePath));
 }
 
 export async function loadGameAudioManifest(game: GameConfig): Promise<AudioManifest> {

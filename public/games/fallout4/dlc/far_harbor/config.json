@@ -1,0 +1,12 @@
+{
+  "id": "far_harbor",
+  "name": "Far Harbor",
+  "description": "Expansion jugable de isla, niebla radioactiva, facciones locales, investigacion y supervivencia.",
+  "enabled": false,
+  "templates": "templates/templates.json",
+  "rules": "rules/rules.json",
+  "assets": {
+    "thumbnail": "assets/content-thumbs/dlc/far_harbor.png",
+    "sourceCover": "assets/source-covers/dlc/far_harbor.jpg"
+  }
+}

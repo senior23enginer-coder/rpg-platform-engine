@@ -4,6 +4,13 @@ export type ContentItem = {
   description?: string;
   enabled: boolean;
   thumbnail?: string;
+  configPath?: string;
+  basePath?: string;
+  assets?: {
+    thumbnail?: string;
+    hero?: string;
+    gallery?: string[];
+  };
 };
 
 export type CampaignCharacter = {
@@ -20,14 +27,80 @@ export type Campaign = {
   implemented: boolean;
   description?: string;
   image?: string;
+  configPath?: string;
+  basePath?: string;
   characters?: CampaignCharacter[];
   freeModeSheetImage?: string;
+  simulation?: {
+    style?: string;
+    route?: string[];
+    interface?: string;
+  };
 };
 
 export type PlayerOption = {
   value: number;
   label: string;
   mode: string;
+};
+
+export type NewGameSetupConfig = {
+  title?: string;
+  subtitle?: string;
+  loadedDescription?: string;
+  recommended?: {
+    title?: string;
+    description?: string;
+  };
+  labels?: {
+    species?: string;
+    quote?: string;
+    system?: string;
+    defaultCharacterName?: string;
+    fallbackCampaignTitle?: string;
+    fallbackMission?: string;
+  };
+  blocks?: {
+    gameLoaded?: string;
+    campaign?: string;
+    mode?: string;
+    players?: string;
+    survival?: string;
+    content?: string;
+  };
+  modes?: {
+    guided?: {
+      label?: string;
+      description?: string;
+    };
+    free?: {
+      label?: string;
+      description?: string;
+    };
+  };
+  survival?: {
+    description?: string;
+  };
+  content?: {
+    description?: string;
+  };
+  fallbackOrigins?: Array<{
+    id: string;
+    name: string;
+    description?: string;
+  }>;
+  fallbackSkills?: Array<{
+    id: string;
+    name: string;
+    description?: string;
+  }>;
+  footer?: {
+    note?: string;
+    guidedStart?: string;
+    freeStart?: string;
+    guidedHint?: string;
+    freeHint?: string;
+  };
 };
 
 export type GameConfig = {
@@ -64,12 +137,24 @@ export type GameConfig = {
   };
   characterSheet?: string;
   rules?: string;
+  templates?: string;
+  newGame?: string;
+  newGameSetup?: NewGameSetupConfig;
   campaigns: Campaign[];
   content: {
     dlc: ContentItem[];
     features: ContentItem[];
     extras: ContentItem[];
   };
+};
+
+export type GameJsonFile = {
+  gameId: string;
+  path: string;
+  relativePath: string;
+  fileName: string;
+  raw: string;
+  isConfig: boolean;
 };
 
 export type CharacterAttribute = {

@@ -17,6 +17,33 @@ export type SavedGameDocument = {
   state: {
     characterName: string;
     attributes?: Record<string, number>;
+    campaign: {
+      id: string;
+      progressPercent: number;
+      currentMission?: string;
+      currentZone: string;
+      route: string[];
+      visitedZones: string[];
+      currentStep: number;
+      level: number;
+      sessions: number;
+      playTimeHours: number;
+      daysElapsed: number;
+      playStartedAt?: string;
+      lastLoadedAt?: string;
+    };
+    contentEnabled: {
+      dlc: string[];
+      features: string[];
+      extras: string[];
+    };
+    variables: Record<string, unknown>;
+  };
+  configSnapshot: {
+    gameConfigPath?: string;
+    rules?: string;
+    templates?: string;
+    characterSheet?: string;
     contentEnabled: {
       dlc: string[];
       features: string[];
@@ -44,6 +71,12 @@ export function createSaveGameDocument({
   save: PlayerSave;
   attributes?: Record<string, number>;
 }): SavedGameDocument {
+  const contentEnabled = {
+    dlc: game.content.dlc.filter((item) => item.enabled).map((item) => item.id),
+    features: game.content.features.filter((item) => item.enabled).map((item) => item.id),
+    extras: game.content.extras.filter((item) => item.enabled).map((item) => item.id),
+  };
+
   return {
     schemaVersion: 1,
     save,
@@ -60,11 +93,32 @@ export function createSaveGameDocument({
     state: {
       characterName: save.playerName,
       attributes,
-      contentEnabled: {
-        dlc: game.content.dlc.filter((item) => item.enabled).map((item) => item.id),
-        features: game.content.features.filter((item) => item.enabled).map((item) => item.id),
-        extras: game.content.extras.filter((item) => item.enabled).map((item) => item.id),
+      campaign: {
+        id: save.campaignId,
+        progressPercent: save.progressPercent ?? 0,
+        currentMission: save.currentMission,
+        currentZone: save.currentZone,
+        route: save.route ?? [],
+        visitedZones: save.visitedZones ?? [save.currentZone],
+        currentStep: save.currentStep ?? 0,
+        level: save.level,
+        sessions: save.sessions,
+        playTimeHours: save.playTimeHours ?? 0,
+        daysElapsed: save.daysElapsed ?? 0,
+        playStartedAt: save.playStartedAt,
+        lastLoadedAt: save.lastLoadedAt,
       },
+      contentEnabled,
+      variables: {
+        campaignState: save.campaignState ?? {},
+      },
+    },
+    configSnapshot: {
+      gameConfigPath: game.configPath,
+      rules: game.rules,
+      templates: game.templates,
+      characterSheet: game.characterSheet,
+      contentEnabled,
     },
   };
 }

@@ -30,12 +30,14 @@ type Props = {
 export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
   const [name, setName] = useState(profile.name);
   const [username, setUsername] = useState(profile.username ?? profile.id);
+  const [gender, setGender] = useState(profile.gender ?? "");
   const [email, setEmail] = useState(profile.email ?? "");
   const [avatar, setAvatar] = useState(profile.avatar ?? "");
   const [avatarFit, setAvatarFit] = useState(profile.avatarFit ?? { x: 50, y: 50, scale: 1 });
   const [password, setPassword] = useState("");
   const [savedModal, setSavedModal] = useState(false);
   const [saveError, setSaveError] = useState("");
+  const [editing, setEditing] = useState(false);
   const avatarPath = resolveUserAsset(profile, avatar);
   const gameNameById = new Map(games.map((game) => [game.id, game.name]));
   const totalSessions = profile.openSessions ?? 0;
@@ -57,6 +59,7 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
         ...profile,
         name: name.trim() || "Operador",
         username: username.trim() || profile.id,
+        gender: gender.trim(),
         email: email.trim() || "operador@vault.local",
         avatar: avatar.trim() || profile.avatar,
         avatarFit,
@@ -65,6 +68,7 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
       });
       setPassword("");
       setSaveError("");
+      setEditing(false);
       setSavedModal(true);
     } catch {
       setSaveError("No se pudo guardar el perfil.");
@@ -146,25 +150,37 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
         <article className="settings-card profile-login-panel">
           <h3><User size={32} /> {profile.signedIn ? "Perfil de sesion" : "Iniciar sesion"}</h3>
           <p>{profile.signedIn ? "Edita los datos del usuario activo en este equipo." : "Inicia sesion para guardar tus preferencias y sincronizar tu progreso."}</p>
+          {profile.signedIn && (
+            <button className="profile-edit-toggle" onClick={() => setEditing((value) => !value)}>
+              {editing ? "Cancelar modificacion" : "Modificar"}
+            </button>
+          )}
           <label className="form-row">
             <span>Nombre</span>
             <div className="profile-input-shell">
               <User size={18} />
-              <input value={name} onChange={(event) => setName(event.target.value)} />
+              <input value={name} disabled={profile.signedIn && !editing} onChange={(event) => setName(event.target.value)} />
             </div>
           </label>
           <label className="form-row">
             <span>Nombre de usuario</span>
             <div className="profile-input-shell">
               <User size={18} />
-              <input value={username} onChange={(event) => setUsername(event.target.value)} />
+              <input value={username} disabled={profile.signedIn && !editing} onChange={(event) => setUsername(event.target.value)} />
+            </div>
+          </label>
+          <label className="form-row">
+            <span>Genero</span>
+            <div className="profile-input-shell">
+              <User size={18} />
+              <input value={gender} disabled={profile.signedIn && !editing} onChange={(event) => setGender(event.target.value)} />
             </div>
           </label>
           <label className="form-row">
             <span>Correo</span>
             <div className="profile-input-shell">
               <Mail size={18} />
-              <input value={email} onChange={(event) => setEmail(event.target.value)} />
+              <input value={email} disabled={profile.signedIn && !editing} onChange={(event) => setEmail(event.target.value)} />
             </div>
           </label>
           <label className="form-row">
@@ -177,6 +193,7 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
               <input
                 type="file"
                 accept="image/*"
+                disabled={profile.signedIn && !editing}
                 onChange={(event) => loadAvatarFile(event.target.files?.[0])}
               />
               <strong>Cargar</strong>
@@ -184,9 +201,9 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
           </label>
           <div className="avatar-fit-controls">
             <span>Mover, zoom y recorte circular de la foto</span>
-            <label>Horizontal <input type="range" min="0" max="100" value={avatarFit.x} onChange={(event) => setAvatarFit((current) => ({ ...current, x: Number(event.target.value) }))} /></label>
-            <label>Vertical <input type="range" min="0" max="100" value={avatarFit.y} onChange={(event) => setAvatarFit((current) => ({ ...current, y: Number(event.target.value) }))} /></label>
-            <label>Zoom / recorte <input type="range" min="1" max="2.8" step="0.05" value={avatarFit.scale} onChange={(event) => setAvatarFit((current) => ({ ...current, scale: Number(event.target.value) }))} /></label>
+            <label>Horizontal <input type="range" min="0" max="100" disabled={profile.signedIn && !editing} value={avatarFit.x} onChange={(event) => setAvatarFit((current) => ({ ...current, x: Number(event.target.value) }))} /></label>
+            <label>Vertical <input type="range" min="0" max="100" disabled={profile.signedIn && !editing} value={avatarFit.y} onChange={(event) => setAvatarFit((current) => ({ ...current, y: Number(event.target.value) }))} /></label>
+            <label>Zoom / recorte <input type="range" min="1" max="2.8" step="0.05" disabled={profile.signedIn && !editing} value={avatarFit.scale} onChange={(event) => setAvatarFit((current) => ({ ...current, scale: Number(event.target.value) }))} /></label>
           </div>
           {!profile.signedIn && (
             <label className="form-row">
@@ -202,7 +219,7 @@ export function ProfileScreen({ profile, games, onSave, onBack }: Props) {
             <span>Recordar sesion en este equipo</span>
           </label>
           <div className="settings-actions inline-actions">
-            <button className="green-button" onClick={signIn}><LogIn size={18} /> {profile.signedIn ? "Guardar perfil" : "Iniciar sesion"}</button>
+            <button className="green-button" disabled={profile.signedIn && !editing} onClick={signIn}><LogIn size={18} /> {profile.signedIn ? "Guardar perfil" : "Iniciar sesion"}</button>
             <button onClick={signOut}><LogOut size={18} /> Cerrar sesion</button>
           </div>
           <div className="profile-local-note">
