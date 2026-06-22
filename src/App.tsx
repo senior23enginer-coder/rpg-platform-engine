@@ -540,6 +540,7 @@ export default function App() {
                   currentFiles.map((file) => (file.path === path ? { ...file, raw } : file))
                 )
               }
+              canEdit={profile.role === "admin"}
             />
           )}
           {screen === "profile" && (

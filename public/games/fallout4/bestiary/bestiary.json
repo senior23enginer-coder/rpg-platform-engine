@@ -1,22 +1,2138 @@
 {
+  "schemaVersion": 2,
+  "sourceTome": "TOMO 03",
+  "generatedFrom": "public/games/fallout4/templates/templates.json/catalogs.bestiary",
+  "generatedAt": "2026-06-22T21:12:49.466Z",
   "creatures": [
     {
-      "id": "saqueador",
-      "name": "Saqueador",
-      "hp": 8,
-      "template": false
+      "id": "B-118",
+      "name": "Albino Radstag",
+      "hp": 180,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
     },
     {
-      "id": "ghoul_salvaje",
-      "name": "Ghoul salvaje",
-      "hp": 12,
-      "template": false
+      "id": "B-137",
+      "name": "Cat",
+      "hp": 10,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
     },
     {
-      "id": "synth",
-      "name": "Synth",
-      "hp": 16,
-      "template": false
+      "id": "B-138",
+      "name": "Crow",
+      "hp": 10,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-120",
+      "name": "Devolved Radstag",
+      "hp": 380,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-119",
+      "name": "Erratic Radstag",
+      "hp": 260,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-030",
+      "name": "Glowing Radstag",
+      "hp": 260,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-136",
+      "name": "Junkyard Dog",
+      "hp": 100,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-029",
+      "name": "Rabid Radstag",
+      "hp": 160,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-028",
+      "name": "Radstag",
+      "hp": 80,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-116",
+      "name": "Radstag Doe",
+      "hp": 65,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-117",
+      "name": "Radstag Yearling",
+      "hp": 45,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-168",
+      "name": "Codsworth",
+      "hp": 500,
+      "threat": 2.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-169",
+      "name": "Curie robot",
+      "hp": 450,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-161",
+      "name": "Glory",
+      "hp": 900,
+      "threat": 3.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-077",
+      "name": "X6-88",
+      "hp": 1300,
+      "threat": 3.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-035",
+      "name": "Albino Yao Guai",
+      "hp": 1200,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-122",
+      "name": "Dusky Yao Guai",
+      "hp": 1300,
+      "threat": 3.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-015",
+      "name": "Glowing Mole Rat",
+      "hp": 130,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-066",
+      "name": "Glowing Mutant Hound",
+      "hp": 420,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-034",
+      "name": "Glowing Yao Guai",
+      "hp": 950,
+      "threat": 2.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-139",
+      "name": "Gorilla del Instituto",
+      "hp": 800,
+      "threat": 3.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-124",
+      "name": "Irradiated Yao Guai",
+      "hp": 1800,
+      "threat": 4.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-013",
+      "name": "Mole Rat",
+      "hp": 60,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-014",
+      "name": "Rabid Mole Rat",
+      "hp": 95,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-121",
+      "name": "Rabid Yao Guai",
+      "hp": 900,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-033",
+      "name": "Shaggy Yao Guai",
+      "hp": 750,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-032",
+      "name": "Stunted Yao Guai",
+      "hp": 350,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-016",
+      "name": "Suicide Mole Rat",
+      "hp": 75,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-031",
+      "name": "Yao Guai",
+      "hp": 550,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-053",
+      "name": "Albino Deathclaw",
+      "hp": 3200,
+      "threat": 5.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-050",
+      "name": "Alpha Deathclaw",
+      "hp": 1800,
+      "threat": 4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-054",
+      "name": "Chameleon Deathclaw",
+      "hp": 3000,
+      "threat": 5.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-049",
+      "name": "Deathclaw",
+      "hp": 1200,
+      "threat": 3.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-133",
+      "name": "Deathclaw de Concord",
+      "hp": 1000,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-134",
+      "name": "Deathclaw del Museo de la Brujeria",
+      "hp": 1800,
+      "threat": 5.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-131",
+      "name": "Deathclaw joven",
+      "hp": 800,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-325",
+      "name": "Deathclaws",
+      "hp": 500,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-055",
+      "name": "Glowing Deathclaw",
+      "hp": 3600,
+      "threat": 6.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-132",
+      "name": "Legendary Deathclaw",
+      "hp": 2800,
+      "threat": 7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-052",
+      "name": "Matriarch Deathclaw",
+      "hp": 2600,
+      "threat": 4.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-056",
+      "name": "Mythic Deathclaw",
+      "hp": 4500,
+      "threat": 7.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-051",
+      "name": "Savage Deathclaw",
+      "hp": 2200,
+      "threat": 4.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-009",
+      "name": "Bloated Glowing One",
+      "hp": 900,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-007",
+      "name": "Charred Feral Ghoul",
+      "hp": 750,
+      "threat": 3.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-192",
+      "name": "Eddie Winter",
+      "hp": 1000,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-001",
+      "name": "Feral Ghoul",
+      "hp": 45,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-006",
+      "name": "Feral Ghoul Reaver",
+      "hp": 520,
+      "threat": 2.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-002",
+      "name": "Feral Ghoul Roamer",
+      "hp": 85,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-003",
+      "name": "Feral Ghoul Stalker",
+      "hp": 130,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-321",
+      "name": "Feral Ghouls",
+      "hp": 45,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-005",
+      "name": "Gangrenous Feral Ghoul",
+      "hp": 320,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-008",
+      "name": "Glowing One",
+      "hp": 650,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-010",
+      "name": "Putrid Glowing One",
+      "hp": 1100,
+      "threat": 3.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-004",
+      "name": "Withered Feral Ghoul",
+      "hp": 220,
+      "threat": 2.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-123",
+      "name": "Yao Guai Ghoul",
+      "hp": 1500,
+      "threat": 4.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-203",
+      "name": "Zao",
+      "hp": 900,
+      "threat": 2.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-135",
+      "name": "Attack Dog",
+      "hp": 80,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-200",
+      "name": "Baker",
+      "hp": 1200,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-195",
+      "name": "Bosco",
+      "hp": 700,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-219",
+      "name": "Child of Atom Zealot",
+      "hp": 260,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-327",
+      "name": "Children of Atom",
+      "hp": 60,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-198",
+      "name": "Clint",
+      "hp": 1500,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-102",
+      "name": "Forged",
+      "hp": 180,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-185",
+      "name": "Forged Boss",
+      "hp": 800,
+      "threat": 2.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-183",
+      "name": "Forged Forager",
+      "hp": 180,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-184",
+      "name": "Forged Survivalist",
+      "hp": 450,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-103",
+      "name": "Forged Veteran",
+      "hp": 380,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-180",
+      "name": "Gunner Brigadier",
+      "hp": 1200,
+      "threat": 4.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-179",
+      "name": "Gunner Captain",
+      "hp": 800,
+      "threat": 3.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-101",
+      "name": "Gunner Commander",
+      "hp": 850,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-182",
+      "name": "Gunner con Fat Man",
+      "hp": 800,
+      "threat": 3.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-181",
+      "name": "Gunner con servoarmadura",
+      "hp": 900,
+      "threat": 4.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-099",
+      "name": "Gunner Corporal",
+      "hp": 260,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-178",
+      "name": "Gunner Lieutenant",
+      "hp": 500,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-098",
+      "name": "Gunner Private",
+      "hp": 160,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-100",
+      "name": "Gunner Sergeant",
+      "hp": 420,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-319",
+      "name": "Gunners",
+      "hp": 60,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-202",
+      "name": "Jack Cabot hostil",
+      "hp": 800,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-194",
+      "name": "Jared",
+      "hp": 750,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-186",
+      "name": "Kellogg",
+      "hp": 900,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-201",
+      "name": "Lorenzo Cabot",
+      "hp": 1400,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-092",
+      "name": "Raider",
+      "hp": 70,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-097",
+      "name": "Raider Boss",
+      "hp": 650,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-177",
+      "name": "Raider con Fat Man",
+      "hp": 350,
+      "threat": 2.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-176",
+      "name": "Raider con servoarmadura",
+      "hp": 500,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-093",
+      "name": "Raider Psycho",
+      "hp": 130,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-175",
+      "name": "Raider Scavver",
+      "hp": 130,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-174",
+      "name": "Raider Scum",
+      "hp": 90,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-095",
+      "name": "Raider Survivalist",
+      "hp": 300,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-096",
+      "name": "Raider Veteran",
+      "hp": 420,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-094",
+      "name": "Raider Waster",
+      "hp": 190,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-318",
+      "name": "Raiders",
+      "hp": 60,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-197",
+      "name": "Red Tourette",
+      "hp": 700,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-191",
+      "name": "Sinjin",
+      "hp": 850,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-193",
+      "name": "Skinny Malone",
+      "hp": 550,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-190",
+      "name": "Slag",
+      "hp": 1000,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-199",
+      "name": "Tessa",
+      "hp": 1400,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-196",
+      "name": "Tower Tom",
+      "hp": 650,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-104",
+      "name": "Triggerman",
+      "hp": 140,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-105",
+      "name": "Triggerman Boss",
+      "hp": 420,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-115",
+      "name": "Albino Radscorpion",
+      "hp": 1700,
+      "threat": 4.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-018",
+      "name": "Black Bloatfly",
+      "hp": 85,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-017",
+      "name": "Bloatfly",
+      "hp": 40,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-021",
+      "name": "Bloodbug",
+      "hp": 90,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-109",
+      "name": "Bloodbug adulto",
+      "hp": 120,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-020",
+      "name": "Bloodbug Hatchling",
+      "hp": 35,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-039",
+      "name": "Deathskull Radscorpion",
+      "hp": 1800,
+      "threat": 4.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-107",
+      "name": "Diseased Bloatfly",
+      "hp": 130,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-106",
+      "name": "Festering Bloatfly",
+      "hp": 110,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-019",
+      "name": "Glowing Bloatfly",
+      "hp": 150,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-023",
+      "name": "Glowing Bloodbug",
+      "hp": 260,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-012",
+      "name": "Glowing Radroach",
+      "hp": 55,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-038",
+      "name": "Glowing Radscorpion",
+      "hp": 1100,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-027",
+      "name": "Glowing Stingwing",
+      "hp": 330,
+      "threat": 2.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-108",
+      "name": "Infected Bloodbug",
+      "hp": 210,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-011",
+      "name": "Radroach",
+      "hp": 25,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-036",
+      "name": "Radscorpion",
+      "hp": 500,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-037",
+      "name": "Radscorpion Hunter",
+      "hp": 800,
+      "threat": 2.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-114",
+      "name": "Radscorpion Predator",
+      "hp": 1250,
+      "threat": 3.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-113",
+      "name": "Radscorpion Stalker",
+      "hp": 900,
+      "threat": 3.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-022",
+      "name": "Red Widow Bloodbug",
+      "hp": 180,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-025",
+      "name": "Stingwing",
+      "hp": 120,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-111",
+      "name": "Stingwing Chaser",
+      "hp": 310,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-026",
+      "name": "Stingwing Darter",
+      "hp": 180,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-112",
+      "name": "Stingwing Racer",
+      "hp": 420,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-110",
+      "name": "Stingwing Skimmer",
+      "hp": 210,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-024",
+      "name": "Vampiric Bloodbug",
+      "hp": 380,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-128",
+      "name": "Albino Mirelurk Hunter",
+      "hp": 1400,
+      "threat": 3.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-126",
+      "name": "Bloodrage Mirelurk",
+      "hp": 1000,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-045",
+      "name": "Glowing Mirelurk",
+      "hp": 850,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-127",
+      "name": "Glowing Mirelurk Hunter",
+      "hp": 1200,
+      "threat": 3.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-130",
+      "name": "Glowing Mirelurk King",
+      "hp": 1800,
+      "threat": 5.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-041",
+      "name": "Mirelurk",
+      "hp": 220,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-129",
+      "name": "Mirelurk Deep King",
+      "hp": 1500,
+      "threat": 4.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-040",
+      "name": "Mirelurk Hatchling",
+      "hp": 20,
+      "threat": 1.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-046",
+      "name": "Mirelurk Hunter",
+      "hp": 650,
+      "threat": 2.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-044",
+      "name": "Mirelurk Killclaw",
+      "hp": 700,
+      "threat": 2.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-047",
+      "name": "Mirelurk King",
+      "hp": 900,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-048",
+      "name": "Mirelurk Queen",
+      "hp": 3800,
+      "threat": 5.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-189",
+      "name": "Mirelurk Queen de Spectacle Island",
+      "hp": 4500,
+      "threat": 6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-188",
+      "name": "Mirelurk Queen del Castillo",
+      "hp": 4200,
+      "threat": 5.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-043",
+      "name": "Mirelurk Razorclaw",
+      "hp": 420,
+      "threat": 2.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-125",
+      "name": "Mirelurk Spawn",
+      "hp": 15,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-324",
+      "name": "Mirelurks",
+      "hp": 120,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-042",
+      "name": "Softshell Mirelurk",
+      "hp": 160,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-090",
+      "name": "Annihilator Sentry Bot Mk II",
+      "hp": 2800,
+      "threat": 3.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-087",
+      "name": "Assaultron",
+      "hp": 900,
+      "threat": 2.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-088",
+      "name": "Assaultron Dominator",
+      "hp": 1500,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-086",
+      "name": "Colonel Gutsy",
+      "hp": 1100,
+      "threat": 2.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-163",
+      "name": "Construction Protectron",
+      "hp": 360,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-091",
+      "name": "Eyebot",
+      "hp": 120,
+      "threat": 1.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-083",
+      "name": "Fire Brigadier Protectron",
+      "hp": 380,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-172",
+      "name": "Gunner Sentry Bot",
+      "hp": 2400,
+      "threat": 4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-173",
+      "name": "Liberty Prime",
+      "hp": 10,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-081",
+      "name": "Medical Protectron",
+      "hp": 320,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-170",
+      "name": "Miss Nanny",
+      "hp": 350,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-085",
+      "name": "Mr. Gutsy",
+      "hp": 650,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-084",
+      "name": "Mr. Handy",
+      "hp": 300,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-082",
+      "name": "Police Protectron",
+      "hp": 400,
+      "threat": 1.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-080",
+      "name": "Protectron",
+      "hp": 350,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-323",
+      "name": "Robots",
+      "hp": 90,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-089",
+      "name": "Sentry Bot",
+      "hp": 1600,
+      "threat": 2.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-171",
+      "name": "Sentry Bot Mk II",
+      "hp": 2200,
+      "threat": 3.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-164",
+      "name": "Subway Steward Protectron",
+      "hp": 340,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-165",
+      "name": "Supervisor Brown",
+      "hp": 400,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-166",
+      "name": "Supervisor Greene",
+      "hp": 400,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-167",
+      "name": "Supervisor White",
+      "hp": 420,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-162",
+      "name": "Utility Protectron",
+      "hp": 320,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-068",
+      "name": "Ancient Behemoth",
+      "hp": 4200,
+      "threat": 5.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-142",
+      "name": "Epic Behemoth",
+      "hp": 5200,
+      "threat": 6.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-145",
+      "name": "Fist",
+      "hp": 900,
+      "threat": 2.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-069",
+      "name": "Glowing Behemoth",
+      "hp": 5000,
+      "threat": 7.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-143",
+      "name": "Grun",
+      "hp": 1500,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-144",
+      "name": "Hammer",
+      "hp": 1200,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-065",
+      "name": "Mutant Hound",
+      "hp": 180,
+      "threat": 1.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-057",
+      "name": "Super Mutant",
+      "hp": 240,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-067",
+      "name": "Super Mutant Behemoth",
+      "hp": 3200,
+      "threat": 4.6,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-058",
+      "name": "Super Mutant Brute",
+      "hp": 380,
+      "threat": 1.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-140",
+      "name": "Super Mutant Butcher",
+      "hp": 900,
+      "threat": 2.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-141",
+      "name": "Super Mutant Enforcer",
+      "hp": 1250,
+      "threat": 3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-060",
+      "name": "Super Mutant Master",
+      "hp": 750,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-061",
+      "name": "Super Mutant Overlord",
+      "hp": 1200,
+      "threat": 2.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-062",
+      "name": "Super Mutant Primus",
+      "hp": 1600,
+      "threat": 3.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-059",
+      "name": "Super Mutant Skirmisher",
+      "hp": 450,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-064",
+      "name": "Super Mutant Suicider",
+      "hp": 350,
+      "threat": 1.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-063",
+      "name": "Super Mutant Warlord",
+      "hp": 2200,
+      "threat": 4.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-320",
+      "name": "Supermutants",
+      "hp": 180,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-187",
+      "name": "Swan",
+      "hp": 3500,
+      "threat": 4.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-078",
+      "name": "Art Synth",
+      "hp": 350,
+      "threat": 1.9,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-153",
+      "name": "B2-57",
+      "hp": 500,
+      "threat": 2.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-075",
+      "name": "Courser",
+      "hp": 1200,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-154",
+      "name": "F6-33",
+      "hp": 500,
+      "threat": 2.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-079",
+      "name": "Gabriel",
+      "hp": 950,
+      "threat": 2.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-160",
+      "name": "H2-22",
+      "hp": 350,
+      "threat": 2.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-155",
+      "name": "K1-98 / Jenny",
+      "hp": 300,
+      "threat": 2.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-156",
+      "name": "Sammy",
+      "hp": 250,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-074",
+      "name": "Synth Assaulter",
+      "hp": 420,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-150",
+      "name": "Synth eradicator",
+      "hp": 1000,
+      "threat": 4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-070",
+      "name": "Synth Gen 1",
+      "hp": 120,
+      "threat": 1.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-071",
+      "name": "Synth Gen 2",
+      "hp": 260,
+      "threat": 1.8,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-146",
+      "name": "Synth Gen 3 civil",
+      "hp": 250,
+      "threat": 2.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-147",
+      "name": "Synth infiltrado",
+      "hp": 400,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-072",
+      "name": "Synth Leader",
+      "hp": 500,
+      "threat": 2.2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-148",
+      "name": "Synth seeker",
+      "hp": 450,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-149",
+      "name": "Synth stormer",
+      "hp": 650,
+      "threat": 3.1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-073",
+      "name": "Synth Strider",
+      "hp": 320,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-322",
+      "name": "Synths",
+      "hp": 80,
+      "threat": 1,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-157",
+      "name": "Timothy",
+      "hp": 250,
+      "threat": 2,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-151",
+      "name": "X4-18",
+      "hp": 800,
+      "threat": 3.4,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-152",
+      "name": "X9-27",
+      "hp": 850,
+      "threat": 3.5,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-158",
+      "name": "Y9-15",
+      "hp": 550,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-076",
+      "name": "Z2-47",
+      "hp": 1400,
+      "threat": 3.3,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
+    },
+    {
+      "id": "B-159",
+      "name": "Z3-22",
+      "hp": 550,
+      "threat": 2.7,
+      "templateType": "bestiary",
+      "playableStatus": "template-ready",
+      "sourceTome": "TOMO 03",
+      "useInPlay": "Usar como ficha de enemigo/NPC; escalar cantidad segun jugadores y cruzar con ubicacion/mision."
     }
   ],
   "npcs": []

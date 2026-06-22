@@ -13,8 +13,8 @@ import {
   Zap,
 } from "lucide-react";
 import type { CSSProperties } from "react";
-import { useMemo, useState } from "react";
-import { gameHeroVars } from "../lib/gameLibrary";
+import { useEffect, useMemo, useState } from "react";
+import { gameHeroVars, resolveGameAsset } from "../lib/gameLibrary";
 import type { GameConfig } from "../types/game";
 import type { PlayerSave } from "../types/profile";
 
@@ -60,6 +60,50 @@ type Scene = {
 };
 
 const AP_MAX = 11;
+
+type TomeLocation = {
+  id: string;
+  name: string;
+  category?: string;
+  biome?: string;
+  risk?: string;
+  enemies?: string[];
+  subzones?: Array<{ name: string; role?: string }>;
+  summary?: string;
+  sourceTome?: string;
+  playableStatus?: string;
+  useInPlay?: string;
+};
+
+type TomeMission = {
+  id: string;
+  name: string;
+  type?: string;
+  sourceTome?: string;
+  playableStatus?: string;
+  activation?: string;
+  execution?: string;
+  completion?: string;
+  useInPlay?: string;
+};
+
+type TomeBestiary = {
+  id: string;
+  name: string;
+  hp?: number;
+  threat?: number;
+  sourceTome?: string;
+  playableStatus?: string;
+};
+
+type TemplateCatalog = {
+  catalogs?: {
+    locations?: TomeLocation[];
+    missions?: TomeMission[];
+    bestiary?: TomeBestiary[];
+    collectibles?: Array<{ id: string; name: string; locationId?: string; subzone?: string; collectibleType?: string }>;
+  };
+};
 
 const scenes: Scene[] = [
   {
@@ -589,6 +633,20 @@ function nodeIcon(kind: NodeKind) {
   return <CircleDot size={17} />;
 }
 
+function riskDifficulty(risk?: string) {
+  const value = (risk ?? "").toLowerCase();
+  if (value.includes("alto")) return 3;
+  if (value.includes("medio")) return 2;
+  return 1;
+}
+
+function readableThreat(enemy?: TomeBestiary) {
+  if (!enemy) return "Amenaza local menor";
+  const threat = enemy.threat ? `amenaza ${enemy.threat}` : "amenaza variable";
+  const hp = enemy.hp ? `${enemy.hp} PV` : "PV segun mesa";
+  return `${enemy.name} / ${threat} / ${hp}`;
+}
+
 export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress }: Props) {
   const artStyle = gameHeroVars(game) as CSSProperties;
   const initialSceneId = isSceneId(save?.campaignState?.sceneId) ? save.campaignState.sceneId : "vault111";
@@ -620,6 +678,35 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       "Tomo 2 M-0170: Vault 111 -> Sanctuary Hills -> Red Rocket opcional -> Concord.",
     ]
   );
+  const [templateCatalog, setTemplateCatalog] = useState<TemplateCatalog>();
+  const [atlasLocationId, setAtlasLocationId] = useState(save?.campaignState?.atlasLocationId ?? "U-0001");
+  const [atlasSubzoneIndex, setAtlasSubzoneIndex] = useState(save?.campaignState?.atlasSubzoneIndex ?? 0);
+  const [activeMissionId, setActiveMissionId] = useState(save?.campaignState?.activeMissionId ?? "M-0170");
+  const [atlasVisited, setAtlasVisited] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.atlasVisitedLocations ?? ["U-0001"])
+  );
+  const [atlasCompleted, setAtlasCompleted] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.atlasCompletedSubzones ?? [])
+  );
+  const [xp, setXp] = useState(save?.campaignState?.xp ?? 0);
+  const [inventory, setInventory] = useState<string[]>(save?.campaignState?.inventory ?? []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const templatePath = resolveGameAsset(game, game.templates);
+    if (!templatePath) return;
+    fetch(templatePath)
+      .then((response) => (response.ok ? response.json() : undefined))
+      .then((data: TemplateCatalog | undefined) => {
+        if (!cancelled) setTemplateCatalog(data);
+      })
+      .catch(() => {
+        if (!cancelled) setTemplateCatalog(undefined);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [game]);
 
   const scene = getScene(sceneId);
   const node = scene.nodes.find((item) => item.id === nodeId) ?? scene.nodes[0];
@@ -633,6 +720,34 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   );
   const sceneIndex = scenes.findIndex((item) => item.id === scene.id);
   const progress = Math.round(((sceneIndex + 1) / scenes.length) * 100);
+  const atlasLocations = useMemo(() => templateCatalog?.catalogs?.locations ?? [], [templateCatalog]);
+  const atlasMissions = useMemo(() => templateCatalog?.catalogs?.missions ?? [], [templateCatalog]);
+  const atlasBestiary = useMemo(() => templateCatalog?.catalogs?.bestiary ?? [], [templateCatalog]);
+  const atlasCollectibles = useMemo(() => templateCatalog?.catalogs?.collectibles ?? [], [templateCatalog]);
+  const atlasLocation = atlasLocations.find((item) => item.id === atlasLocationId) ?? atlasLocations[0];
+  const atlasMission = atlasMissions.find((item) => item.id === activeMissionId) ?? atlasMissions.find((item) => item.id === "M-0170") ?? atlasMissions[0];
+  const atlasSubzones = atlasLocation?.subzones?.length
+    ? atlasLocation.subzones
+    : [
+        { name: "Acceso principal", role: "Entrada / orientacion" },
+        { name: "Zona de busqueda", role: "Exploracion / loot" },
+        { name: "Salida conectada", role: "Viaje / enlace" },
+      ];
+  const atlasSubzone = atlasSubzones[Math.min(atlasSubzoneIndex, atlasSubzones.length - 1)];
+  const atlasKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzone?.name ?? "subzona"}` : "atlas:pendiente";
+  const atlasEnemy = useMemo(() => {
+    const enemyNames = atlasLocation?.enemies ?? [];
+    const match = atlasBestiary.find((creature) =>
+      enemyNames.some((name) => creature.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(creature.name.toLowerCase()))
+    );
+    return match ?? atlasBestiary[(atlasLocationId.length + atlasSubzoneIndex) % Math.max(1, atlasBestiary.length)];
+  }, [atlasBestiary, atlasLocation, atlasLocationId, atlasSubzoneIndex]);
+  const atlasLoot = useMemo(() => {
+    const direct = atlasCollectibles.find((item) => item.locationId === atlasLocation?.id);
+    if (direct) return direct.name;
+    if (atlasSubzone?.role?.toLowerCase().includes("loot")) return "Alijo menor de ubicacion";
+    return "Recurso comun";
+  }, [atlasCollectibles, atlasLocation?.id, atlasSubzone?.role]);
 
   function progressPatch({
     sceneValue = scene,
@@ -678,6 +793,69 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         enemyHp: enemyHpValue,
         actionLog: logValue,
         lastAction,
+        atlasLocationId,
+        atlasSubzoneIndex,
+        atlasVisitedLocations: [...atlasVisited],
+        atlasCompletedSubzones: [...atlasCompleted],
+        activeMissionId,
+        xp,
+        caps,
+        inventory,
+        updatedAt: new Date().toISOString(),
+      },
+    });
+  }
+
+  function progressAtlasPatch({
+    locationId = atlasLocationId,
+    subzoneIndex = atlasSubzoneIndex,
+    visitedAtlas = atlasVisited,
+    completedAtlas = atlasCompleted,
+    missionId = activeMissionId,
+    xpValue = xp,
+    inventoryValue = inventory,
+    logValue = log,
+    apValue = ap,
+    turnValue = turn,
+    lastAction,
+  }: {
+    locationId?: string;
+    subzoneIndex?: number;
+    visitedAtlas?: Set<string>;
+    completedAtlas?: Set<string>;
+    missionId?: string;
+    xpValue?: number;
+    inventoryValue?: string[];
+    logValue?: string[];
+    apValue?: number;
+    turnValue?: number;
+    lastAction?: string;
+  }) {
+    onProgress?.({
+      currentMission: atlasMission?.name ?? scene.missionStep,
+      currentZone: atlasLocation ? `${atlasLocation.name} / ${atlasSubzones[subzoneIndex]?.name ?? "Subzona"}` : scene.title,
+      progressPercent: Math.max(progress, Math.min(100, Math.round((completedAtlas.size / Math.max(1, atlasLocations.length * 3)) * 100))),
+      route: scenes.map((item) => item.title),
+      visitedZones: [...new Set([...visited, ...[...visitedAtlas].map((id) => atlasLocations.find((item) => item.id === id)?.name ?? id)])],
+      currentStep: Math.max(0, sceneIndex),
+      campaignState: {
+        sceneId,
+        nodeId,
+        ap: apValue,
+        turn: turnValue,
+        visitedNodes: [...visited],
+        securedNodes: [...secured],
+        enemyHp,
+        actionLog: logValue,
+        lastAction,
+        atlasLocationId: locationId,
+        atlasSubzoneIndex: subzoneIndex,
+        atlasVisitedLocations: [...visitedAtlas],
+        atlasCompletedSubzones: [...completedAtlas],
+        activeMissionId: missionId,
+        xp: xpValue,
+        caps,
+        inventory: inventoryValue,
         updatedAt: new Date().toISOString(),
       },
     });
@@ -793,6 +971,87 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     });
   }
 
+  function selectAtlasLocation(locationId: string) {
+    const nextVisited = new Set(atlasVisited).add(locationId);
+    const target = atlasLocations.find((item) => item.id === locationId);
+    setAtlasLocationId(locationId);
+    setAtlasSubzoneIndex(0);
+    setAtlasVisited(nextVisited);
+    const nextLog = writeLog(
+      `Atlas: viaje textual a ${target?.name ?? locationId}. La ubicacion se abre por subzonas conectadas.`,
+      `Tomo 6: ${target?.category ?? "ubicacion"} / riesgo ${target?.risk ?? "variable"}.`
+    );
+    progressAtlasPatch({ locationId, subzoneIndex: 0, visitedAtlas: nextVisited, logValue: nextLog, lastAction: `atlas:viajar:${locationId}` });
+  }
+
+  function selectAtlasMission(missionId: string) {
+    const mission = atlasMissions.find((item) => item.id === missionId);
+    setActiveMissionId(missionId);
+    const nextLog = writeLog(
+      `Mision activa: ${mission?.name ?? missionId}.`,
+      mission?.activation ?? "Activacion textual segun Tomo 2."
+    );
+    progressAtlasPatch({ missionId, logValue: nextLog, lastAction: `atlas:mision:${missionId}` });
+  }
+
+  function resolveAtlasSubzone() {
+    if (!atlasLocation) {
+      writeLog("Atlas no cargado todavia: espera a que templates.json este disponible.");
+      return;
+    }
+    if (!spend(1)) return;
+    const difficulty = riskDifficulty(atlasLocation.risk);
+    const result = roll2d20(difficulty);
+    setRoll(result);
+    const nextAp = ap - 1;
+    const completed = new Set(atlasCompleted);
+    const nextInventory = [...inventory];
+    const nextXp = result.passed ? xp + 25 : xp + 5;
+    if (result.passed) {
+      completed.add(atlasKey);
+      if (atlasLoot && !nextInventory.includes(atlasLoot)) nextInventory.push(atlasLoot);
+    }
+    setAtlasCompleted(completed);
+    setXp(nextXp);
+    setInventory(nextInventory);
+    const nextLog = writeLog(
+      `Subzona: ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Exploracion completada." : "Complicacion sin cerrar la subzona."}`,
+      result.passed ? `Recurso registrado: ${atlasLoot}. XP total: ${nextXp}.` : `Riesgo activo: ${readableThreat(atlasEnemy)}. XP total: ${nextXp}.`
+    );
+    progressAtlasPatch({
+      completedAtlas: completed,
+      xpValue: nextXp,
+      inventoryValue: nextInventory,
+      logValue: nextLog,
+      apValue: nextAp,
+      lastAction: `atlas:resolver:${atlasKey}`,
+    });
+  }
+
+  function resolveAtlasEncounter() {
+    if (!atlasLocation) return;
+    if (!spend(1)) return;
+    const difficulty = Math.max(2, riskDifficulty(atlasLocation.risk));
+    const result = roll2d20(difficulty);
+    setRoll(result);
+    const nextAp = ap - 1;
+    const nextXp = result.passed ? xp + 35 : xp + 10;
+    setXp(nextXp);
+    const nextLog = writeLog(
+      `Encuentro: ${readableThreat(atlasEnemy)}. Tirada ${result.dice.join(" / ")} contra D${difficulty}.`,
+      result.passed ? "Combate textual controlado: amenaza reducida o expulsada." : "La amenaza queda activa: conviene gastar AP en cobertura o nuevo turno."
+    );
+    progressAtlasPatch({ xpValue: nextXp, logValue: nextLog, apValue: nextAp, lastAction: `atlas:encuentro:${atlasLocation.id}` });
+  }
+
+  function nextAtlasSubzone() {
+    if (!atlasLocation) return;
+    const nextIndex = Math.min(atlasSubzoneIndex + 1, atlasSubzones.length - 1);
+    setAtlasSubzoneIndex(nextIndex);
+    const nextLog = writeLog(`Avance de subzona: ${atlasSubzones[nextIndex]?.name ?? "Fin de ubicacion"}.`, "Moverse entre subzonas conserva el modo textual por turnos.");
+    progressAtlasPatch({ subzoneIndex: nextIndex, logValue: nextLog, lastAction: `atlas:subzona:${nextIndex}` });
+  }
+
   return (
     <section className="fallout4-campaign-screen fo4-text-campaign" style={artStyle}>
       <header className="fo4-campaign-header">
@@ -865,6 +1124,106 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                 </button>
               );
             })}
+          </article>
+
+          <article className="fo4-atlas-panel">
+            <header>
+              <span>
+                <BookOpen size={18} />
+                <strong>Atlas textual Fallout 4</strong>
+              </span>
+              <small>
+                {atlasLocations.length} ubicaciones / {atlasMissions.length} misiones / {atlasBestiary.length} criaturas
+              </small>
+            </header>
+
+            <div className="fo4-atlas-controls">
+              <label>
+                <span>Ubicacion del Tomo 6</span>
+                <select value={atlasLocation?.id ?? ""} onChange={(event) => selectAtlasLocation(event.target.value)}>
+                  {atlasLocations.slice(0, 220).map((location) => (
+                    <option key={location.id} value={location.id}>
+                      {location.id} - {location.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>Mision del Tomo 2</span>
+                <select value={atlasMission?.id ?? ""} onChange={(event) => selectAtlasMission(event.target.value)}>
+                  {atlasMissions.slice(0, 220).map((mission) => (
+                    <option key={mission.id} value={mission.id}>
+                      {mission.id} - {mission.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            {atlasLocation ? (
+              <>
+                <div className="fo4-atlas-brief">
+                  <strong>{atlasLocation.name}</strong>
+                  <p>{atlasLocation.summary ?? atlasLocation.useInPlay ?? "Ubicacion jugable cargada desde las plantillas del Tomo 6."}</p>
+                  <div>
+                    <span>Riesgo: {atlasLocation.risk ?? "variable"}</span>
+                    <span>Bioma: {atlasLocation.biome ?? atlasLocation.category ?? "Commonwealth"}</span>
+                    <span>Visitada: {atlasVisited.has(atlasLocation.id) ? "si" : "no"}</span>
+                  </div>
+                </div>
+
+                <div className="fo4-atlas-subzones">
+                  {atlasSubzones.map((subzone, index) => {
+                    const key = `${atlasLocation.id}:${subzone.name}`;
+                    return (
+                      <button
+                        key={key}
+                        className={`${index === atlasSubzoneIndex ? "active" : ""} ${atlasCompleted.has(key) ? "seen" : ""}`}
+                        onClick={() => {
+                          setAtlasSubzoneIndex(index);
+                          progressAtlasPatch({ subzoneIndex: index, lastAction: `atlas:seleccionar-subzona:${index}` });
+                        }}
+                      >
+                        <span>{index + 1}. {subzone.name}</span>
+                        <small>{atlasCompleted.has(key) ? "resuelta" : subzone.role ?? "explorar"}</small>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="fo4-atlas-active">
+                  <span>
+                    <small>Subzona actual</small>
+                    <strong>{atlasSubzone.name}</strong>
+                    <i>{atlasSubzone.role ?? "Exploracion textual por turnos"}</i>
+                  </span>
+                  <span>
+                    <small>Encuentro sugerido</small>
+                    <strong>{readableThreat(atlasEnemy)}</strong>
+                    <i>{atlasLocation.enemies?.join(", ") || "segun riesgo local"}</i>
+                  </span>
+                  <span>
+                    <small>Progreso atlas</small>
+                    <strong>{atlasCompleted.size} subzonas</strong>
+                    <i>{xp} XP / {inventory.length} objetos</i>
+                  </span>
+                </div>
+
+                <div className="fo4-atlas-actions">
+                  <button className="green-button" onClick={resolveAtlasSubzone}>
+                    <Search size={18} /> Resolver subzona
+                  </button>
+                  <button onClick={resolveAtlasEncounter}>
+                    <Swords size={18} /> Encuentro
+                  </button>
+                  <button onClick={nextAtlasSubzone} disabled={atlasSubzoneIndex >= atlasSubzones.length - 1}>
+                    <Footprints size={18} /> Siguiente
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="fo4-atlas-empty">Cargando plantillas jugables desde templates.json.</p>
+            )}
           </article>
         </section>
 

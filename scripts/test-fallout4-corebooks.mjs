@@ -106,6 +106,7 @@ const characters = readJson("public", "games", "fallout4", "characters", "charac
 const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
 const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
 const campaign = readJson("public", "games", "fallout4", "campaigns", "sanctuary_commonwealth", "config.json");
+const runtimeBestiary = readJson("public", "games", "fallout4", "bestiary", "bestiary.json");
 const news = readJson("public", "platform", "news", "news.json");
 const normalUser = readJson("public", "users", "operador-local", "profile.json");
 const adminUser = readJson("public", "users", "admin-local", "profile.json");
@@ -170,6 +171,7 @@ assert(templates?.counts?.equipment >= 288, "Plantillas deben contener equipo de
 assert(templates?.counts?.settlements >= 36, "Plantillas deben contener asentamientos del Tomo 7");
 assert(templates?.counts?.factions >= 10, "Plantillas deben contener facciones del Tomo 8");
 assert(templates?.counts?.collectibles >= 618, "Plantillas deben contener coleccionables del Tomo 9");
+assert(arrayAt(runtimeBestiary, "creatures").length >= 213, "Runtime bestiary debe exponer criaturas completas para juego textual");
 pass("Catalogos: conteos de misiones, ubicaciones, bestiario, armas, equipo, asentamientos, facciones y coleccionables validados.");
 
 const tomeRoles = arrayAt(templates, "tomeRoles");
@@ -202,7 +204,10 @@ for (const sceneId of ["vault111", "vaultExit", "sanctuary", "redRocket", "conco
 for (const expectedText of ["AP_MAX = 11", "roll2d20", "campaignState", "onProgress", "Radroaches", "Mole rats", "Jared's gang"]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener ${expectedText}`);
 }
-pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, AP, 2d20, combate y persistencia.");
+for (const expectedText of ["fo4-atlas-panel", "resolveAtlasSubzone", "resolveAtlasEncounter", "atlasVisitedLocations", "activeMissionId"]) {
+  assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener atlas textual: ${expectedText}`);
+}
+pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, atlas textual, AP, 2d20, combate y persistencia.");
 
 function playCompleteDemo() {
   const now = new Date().toISOString();
@@ -299,9 +304,6 @@ assert(adminUser?.username === "admin" && adminUser?.password === "admin123" && 
 pass("Login: noticias y usuarios operador/admin validados.");
 
 if (templates?.counts?.tomes !== 10) warn("templates.counts.tomes no es 10", String(templates?.counts?.tomes));
-if (arrayAt(readJson("public", "games", "fallout4", "bestiary", "bestiary.json"), "creatures").length < 10) {
-  warn("bestiary/bestiary.json es minimo; el bestiario completo vive en templates.json", "Esto es aceptable si el runtime usa templates para el catalogo completo.");
-}
 
 console.log("\nFallout 4 core-book playable audit");
 console.log("==================================");

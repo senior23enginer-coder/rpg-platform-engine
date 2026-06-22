@@ -55,6 +55,14 @@ export type PlayerSave = {
     enemyHp?: Record<string, number>;
     actionLog?: string[];
     lastAction?: string;
+    atlasLocationId?: string;
+    atlasSubzoneIndex?: number;
+    atlasVisitedLocations?: string[];
+    atlasCompletedSubzones?: string[];
+    activeMissionId?: string;
+    xp?: number;
+    caps?: number;
+    inventory?: string[];
     updatedAt?: string;
   };
   createdAt?: string;

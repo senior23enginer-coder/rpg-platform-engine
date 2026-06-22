@@ -11,6 +11,7 @@ type Props = {
   onSelectGame: (gameId: string) => void;
   onEditConfig: (gameId: string) => void;
   onUpdateFile: (path: string, raw: string) => void;
+  canEdit?: boolean;
 };
 
 function formatBytes(raw: string) {
@@ -28,6 +29,7 @@ export function FilesScreen({
   onSelectGame,
   onEditConfig,
   onUpdateFile,
+  canEdit = false,
 }: Props) {
   const activeGame = games.find((game) => game.id === activeGameId) ?? games[0];
   const [selectedPath, setSelectedPath] = useState(activeGame?.configPath ?? files[0]?.path ?? "");
@@ -56,6 +58,7 @@ export function FilesScreen({
   }, [draft, selectedFile]);
 
   async function selectFolder() {
+    if (!canEdit) return;
     const folder = await pickGamesFolder();
     if (!folder) return;
     const loaded = await loadLibraryFromFolder(folder);
@@ -68,7 +71,7 @@ export function FilesScreen({
   }
 
   function applyDraft() {
-    if (!selectedFile || !parsedStatus.ok) return;
+    if (!selectedFile || !parsedStatus.ok || !canEdit) return;
     onUpdateFile(selectedFile.path, draft);
   }
 
@@ -104,9 +107,10 @@ export function FilesScreen({
   audio/audio.manifest.json
   assets/...`}</pre>
           <div className="file-actions">
-            <button className="green-button" onClick={selectFolder}><FolderOpen size={16} /> Validar carpeta games/</button>
-            {activeGame && <button onClick={() => onEditConfig(activeGame.id)}><Edit3 size={16} /> Editar config activo</button>}
+            <button className="green-button" disabled={!canEdit} onClick={selectFolder}><FolderOpen size={16} /> Validar carpeta games/</button>
+            {activeGame && <button disabled={!canEdit} onClick={() => onEditConfig(activeGame.id)}><Edit3 size={16} /> Editar config activo</button>}
           </div>
+          {!canEdit && <p className="role-lock-note">Modo lectura: inicia sesion como administrador para editar archivos.</p>}
         </article>
 
         <article className="file-card library-source-card">
@@ -168,7 +172,7 @@ export function FilesScreen({
                   <p>{selectedFile.path} · {formatBytes(draft)}</p>
                 </div>
                 <div className="inline-actions">
-                  {selectedFile.isConfig && <button onClick={() => onEditConfig(selectedFile.gameId)}><Edit3 size={16} /> Formulario</button>}
+                  {selectedFile.isConfig && <button disabled={!canEdit} onClick={() => onEditConfig(selectedFile.gameId)}><Edit3 size={16} /> Formulario</button>}
                   <button onClick={() => setDraftByPath((current) => ({ ...current, [selectedFile.path]: selectedFile.raw }))}>
                     <RefreshCw size={16} /> Restaurar
                   </button>
@@ -182,13 +186,13 @@ export function FilesScreen({
                 <span>{parsedStatus.message}</span>
               </div>
 
-              <textarea className="raw-json-editor file-json-textarea" value={draft} onChange={(event) => updateDraft(event.target.value)} />
+              <textarea className="raw-json-editor file-json-textarea" value={draft} readOnly={!canEdit} onChange={(event) => updateDraft(event.target.value)} />
 
               <div className="inline-actions editor-footer-actions">
-                <button className="green-button" disabled={!parsedStatus.ok} onClick={applyDraft}>
+                <button className="green-button" disabled={!parsedStatus.ok || !canEdit} onClick={applyDraft}>
                   Aplicar al estado de la plataforma
                 </button>
-                <span>Para persistir en disco desde navegador, usa Descargar; en Tauri se puede conectar escritura directa.</span>
+                <span>{canEdit ? "Para persistir en disco desde navegador, usa Descargar; en Tauri se puede conectar escritura directa." : "Lectura protegida: el rol usuario no modifica configuracion."}</span>
               </div>
             </>
           ) : (
