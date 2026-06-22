@@ -5925,6 +5925,50 @@ svg {
   font-weight: 900;
 }
 
+.fo4-world-links {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 191, 71, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 191, 71, 0.05);
+}
+
+.fo4-world-links > strong {
+  color: #ffbf47;
+  text-transform: uppercase;
+}
+
+.fo4-world-links > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.fo4-world-links button {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  justify-items: start;
+  border-color: rgba(255, 191, 71, 0.26);
+  background: rgba(0, 0, 0, 0.26);
+  text-align: left;
+}
+
+.fo4-world-links span {
+  min-width: 0;
+  color: #e8ffe4;
+  font-weight: 1000;
+  overflow-wrap: anywhere;
+}
+
+.fo4-world-links small {
+  color: #b8d5a5;
+  font-weight: 900;
+}
+
 .fo4-atlas-subzones {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -5955,6 +5999,11 @@ svg {
 
 .fo4-atlas-subzones button.seen {
   border-color: rgba(126, 255, 87, 0.5);
+}
+
+.fo4-atlas-subzones button:disabled:not(.active) {
+  opacity: 0.44;
+  cursor: not-allowed;
 }
 
 .fo4-atlas-active i {

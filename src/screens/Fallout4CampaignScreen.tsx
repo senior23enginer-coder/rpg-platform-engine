@@ -97,6 +97,13 @@ type TomeBestiary = {
 };
 
 type TemplateCatalog = {
+  routeTemplates?: Array<{
+    id: string;
+    name: string;
+    nodes?: string[];
+    missionIds?: string[];
+    playableStatus?: string;
+  }>;
   catalogs?: {
     locations?: TomeLocation[];
     missions?: TomeMission[];
@@ -647,6 +654,22 @@ function readableThreat(enemy?: TomeBestiary) {
   return `${enemy.name} / ${threat} / ${hp}`;
 }
 
+function patchLocationState(
+  states: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"] | undefined,
+  locationId: string,
+  patch: Partial<{ visitedNodes: string[]; completedNodes: string[]; loot: string[] }>
+) {
+  const current = states?.[locationId] ?? { visitedNodes: [], completedNodes: [], loot: [] };
+  return {
+    ...(states ?? {}),
+    [locationId]: {
+      visitedNodes: patch.visitedNodes ?? current.visitedNodes,
+      completedNodes: patch.completedNodes ?? current.completedNodes,
+      loot: patch.loot ?? current.loot,
+    },
+  };
+}
+
 export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress }: Props) {
   const artStyle = gameHeroVars(game) as CSSProperties;
   const initialSceneId = isSceneId(save?.campaignState?.sceneId) ? save.campaignState.sceneId : "vault111";
@@ -685,9 +708,15 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [atlasVisited, setAtlasVisited] = useState<Set<string>>(
     () => new Set(save?.campaignState?.atlasVisitedLocations ?? ["U-0001"])
   );
+  const [atlasVisitedInternalNodes, setAtlasVisitedInternalNodes] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.atlasVisitedInternalNodes ?? [])
+  );
   const [atlasCompleted, setAtlasCompleted] = useState<Set<string>>(
     () => new Set(save?.campaignState?.atlasCompletedSubzones ?? [])
   );
+  const [atlasLocationStates, setAtlasLocationStates] = useState<
+    NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"]
+  >(save?.campaignState?.atlasLocationStates ?? {});
   const [xp, setXp] = useState(save?.campaignState?.xp ?? 0);
   const [inventory, setInventory] = useState<string[]>(save?.campaignState?.inventory ?? []);
 
@@ -724,6 +753,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const atlasMissions = useMemo(() => templateCatalog?.catalogs?.missions ?? [], [templateCatalog]);
   const atlasBestiary = useMemo(() => templateCatalog?.catalogs?.bestiary ?? [], [templateCatalog]);
   const atlasCollectibles = useMemo(() => templateCatalog?.catalogs?.collectibles ?? [], [templateCatalog]);
+  const atlasWorldRoute = useMemo(() => {
+    const route = templateCatalog?.routeTemplates?.find((item) => item.id === "out-of-time-base-route");
+    return route?.nodes?.length ? route.nodes : ["U-0001", "U-0002", "U-0003", "U-0011"];
+  }, [templateCatalog]);
   const atlasLocation = atlasLocations.find((item) => item.id === atlasLocationId) ?? atlasLocations[0];
   const atlasMission = atlasMissions.find((item) => item.id === activeMissionId) ?? atlasMissions.find((item) => item.id === "M-0170") ?? atlasMissions[0];
   const atlasSubzones = atlasLocation?.subzones?.length
@@ -735,6 +768,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       ];
   const atlasSubzone = atlasSubzones[Math.min(atlasSubzoneIndex, atlasSubzones.length - 1)];
   const atlasKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzone?.name ?? "subzona"}` : "atlas:pendiente";
+  const atlasInternalKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzoneIndex}:${atlasSubzone?.name ?? "nodo"}` : "atlas:pendiente";
+  const atlasRouteIndex = atlasWorldRoute.indexOf(atlasLocation?.id ?? atlasLocationId);
+  const atlasConnectedLocationIds = [
+    atlasRouteIndex > 0 ? atlasWorldRoute[atlasRouteIndex - 1] : undefined,
+    atlasRouteIndex >= 0 && atlasRouteIndex < atlasWorldRoute.length - 1 ? atlasWorldRoute[atlasRouteIndex + 1] : undefined,
+  ].filter((id): id is string => Boolean(id));
+  const atlasConnectedLocations = atlasConnectedLocationIds
+    .map((id) => atlasLocations.find((location) => location.id === id))
+    .filter((location): location is TomeLocation => Boolean(location));
+  const currentLocationState = atlasLocationStates?.[atlasLocation?.id ?? ""] ?? { visitedNodes: [], completedNodes: [], loot: [] };
+  const connectedInternalIndexes = [atlasSubzoneIndex - 1, atlasSubzoneIndex, atlasSubzoneIndex + 1].filter(
+    (index) => index >= 0 && index < atlasSubzones.length
+  );
   const atlasEnemy = useMemo(() => {
     const enemyNames = atlasLocation?.enemies ?? [];
     const match = atlasBestiary.find((creature) =>
@@ -796,7 +842,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasLocationId,
         atlasSubzoneIndex,
         atlasVisitedLocations: [...atlasVisited],
+        atlasVisitedInternalNodes: [...atlasVisitedInternalNodes],
         atlasCompletedSubzones: [...atlasCompleted],
+        atlasLocationStates,
         activeMissionId,
         xp,
         caps,
@@ -810,7 +858,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     locationId = atlasLocationId,
     subzoneIndex = atlasSubzoneIndex,
     visitedAtlas = atlasVisited,
+    visitedInternalNodes = atlasVisitedInternalNodes,
     completedAtlas = atlasCompleted,
+    locationStates = atlasLocationStates,
     missionId = activeMissionId,
     xpValue = xp,
     inventoryValue = inventory,
@@ -822,7 +872,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     locationId?: string;
     subzoneIndex?: number;
     visitedAtlas?: Set<string>;
+    visitedInternalNodes?: Set<string>;
     completedAtlas?: Set<string>;
+    locationStates?: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"];
     missionId?: string;
     xpValue?: number;
     inventoryValue?: string[];
@@ -851,7 +903,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasLocationId: locationId,
         atlasSubzoneIndex: subzoneIndex,
         atlasVisitedLocations: [...visitedAtlas],
+        atlasVisitedInternalNodes: [...visitedInternalNodes],
         atlasCompletedSubzones: [...completedAtlas],
+        atlasLocationStates: locationStates,
         activeMissionId: missionId,
         xp: xpValue,
         caps,
@@ -972,16 +1026,56 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   }
 
   function selectAtlasLocation(locationId: string) {
-    const nextVisited = new Set(atlasVisited).add(locationId);
     const target = atlasLocations.find((item) => item.id === locationId);
+    const nextVisited = new Set(atlasVisited).add(locationId);
+    const nextInternalVisited = new Set(atlasVisitedInternalNodes).add(`${locationId}:0:${target?.subzones?.[0]?.name ?? "inicio"}`);
+    const nextLocationStates = patchLocationState(atlasLocationStates, locationId, {
+      visitedNodes: [...new Set([...(atlasLocationStates?.[locationId]?.visitedNodes ?? []), `${locationId}:0:${target?.subzones?.[0]?.name ?? "inicio"}`])],
+    });
     setAtlasLocationId(locationId);
     setAtlasSubzoneIndex(0);
     setAtlasVisited(nextVisited);
+    setAtlasVisitedInternalNodes(nextInternalVisited);
+    setAtlasLocationStates(nextLocationStates);
     const nextLog = writeLog(
       `Mapa mundi: viaje textual a ${target?.name ?? locationId}. Entras al mapa interno de esa ubicacion.`,
       `Tomo 6: ${target?.category ?? "ubicacion"} / riesgo ${target?.risk ?? "variable"}.`
     );
-    progressAtlasPatch({ locationId, subzoneIndex: 0, visitedAtlas: nextVisited, logValue: nextLog, lastAction: `atlas:viajar:${locationId}` });
+    progressAtlasPatch({
+      locationId,
+      subzoneIndex: 0,
+      visitedAtlas: nextVisited,
+      visitedInternalNodes: nextInternalVisited,
+      locationStates: nextLocationStates,
+      logValue: nextLog,
+      lastAction: `atlas:viajar:${locationId}`,
+    });
+  }
+
+  function moveAtlasInternalNode(index: number) {
+    if (!atlasLocation || index === atlasSubzoneIndex || !connectedInternalIndexes.includes(index)) return;
+    if (!spend(1)) return;
+    const target = atlasSubzones[index];
+    const targetKey = `${atlasLocation.id}:${index}:${target.name}`;
+    const nextVisitedInternal = new Set(atlasVisitedInternalNodes).add(targetKey);
+    const nextState = patchLocationState(atlasLocationStates, atlasLocation.id, {
+      visitedNodes: [...new Set([...currentLocationState.visitedNodes, targetKey])],
+    });
+    setAtlasSubzoneIndex(index);
+    setAtlasVisitedInternalNodes(nextVisitedInternal);
+    setAtlasLocationStates(nextState);
+    const nextLog = writeLog(
+      `Mapa interno: movimiento a ${target.name}. Coste 1 AP.`,
+      target.role ?? "Nodo interno de la ubicacion definida por Tomo 6."
+    );
+    progressAtlasPatch({
+      subzoneIndex: index,
+      visitedInternalNodes: nextVisitedInternal,
+      locationStates: nextState,
+      apValue: ap - 1,
+      logValue: nextLog,
+      lastAction: `atlas:mover-nodo:${index}`,
+    });
   }
 
   function selectAtlasMission(missionId: string) {
@@ -1010,14 +1104,21 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextAp = ap - actionCost;
     const completed = new Set(atlasCompleted);
     const nextInventory = [...inventory];
+    let nextLocationStates = atlasLocationStates;
     const nextXp = result.passed ? xp + 25 : xp + 5;
     if (result.passed) {
       completed.add(atlasKey);
       if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
       }
+      nextLocationStates = patchLocationState(atlasLocationStates, atlasLocation.id, {
+        visitedNodes: [...new Set([...currentLocationState.visitedNodes, atlasInternalKey])],
+        completedNodes: [...new Set([...currentLocationState.completedNodes, atlasInternalKey])],
+        loot: atlasLoot ? [...new Set([...currentLocationState.loot, atlasLoot])] : currentLocationState.loot,
+      });
     }
     setAtlasCompleted(completed);
+    setAtlasLocationStates(nextLocationStates);
     setXp(nextXp);
     setInventory(nextInventory);
     const nextLog = writeLog(
@@ -1028,6 +1129,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       completedAtlas: completed,
       xpValue: nextXp,
       inventoryValue: nextInventory,
+      locationStates: nextLocationStates,
       logValue: nextLog,
       apValue: nextAp,
       lastAction: `atlas:resolver:${atlasKey}`,
@@ -1053,9 +1155,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   function nextAtlasSubzone() {
     if (!atlasLocation) return;
     const nextIndex = Math.min(atlasSubzoneIndex + 1, atlasSubzones.length - 1);
-    setAtlasSubzoneIndex(nextIndex);
-    const nextLog = writeLog(`Mapa interno: avance a ${atlasSubzones[nextIndex]?.name ?? "Fin de ubicacion"}.`, "Este nodo pertenece al mapa propio de la ubicacion seleccionada.");
-    progressAtlasPatch({ subzoneIndex: nextIndex, logValue: nextLog, lastAction: `atlas:nodo-interno:${nextIndex}` });
+    moveAtlasInternalNode(nextIndex);
   }
 
   return (
@@ -1178,20 +1278,39 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </div>
                 </div>
 
+                <div className="fo4-world-links">
+                  <strong>Conexiones del mapa mundi</strong>
+                  <div>
+                    {atlasConnectedLocations.length ? atlasConnectedLocations.map((location) => (
+                      <button key={location.id} onClick={() => selectAtlasLocation(location.id)}>
+                        <Footprints size={16} />
+                        <span>{location.name}</span>
+                        <small>{location.id}</small>
+                      </button>
+                    )) : <small>Sin conexiones directas registradas en la ruta activa.</small>}
+                  </div>
+                </div>
+
                 <div className="fo4-atlas-subzones">
                   {atlasSubzones.map((subzone, index) => {
                     const key = `${atlasLocation.id}:${subzone.name}`;
+                    const internalKey = `${atlasLocation.id}:${index}:${subzone.name}`;
+                    const canMove = connectedInternalIndexes.includes(index);
                     return (
                       <button
                         key={key}
                         className={`${index === atlasSubzoneIndex ? "active" : ""} ${atlasCompleted.has(key) ? "seen" : ""}`}
-                        onClick={() => {
-                          setAtlasSubzoneIndex(index);
-                          progressAtlasPatch({ subzoneIndex: index, lastAction: `atlas:seleccionar-nodo-interno:${index}` });
-                        }}
+                        onClick={() => moveAtlasInternalNode(index)}
+                        disabled={!canMove}
                       >
                         <span>{index + 1}. {subzone.name}</span>
-                        <small>{atlasCompleted.has(key) ? "nodo resuelto" : subzone.role ?? "explorar"}</small>
+                        <small>
+                          {atlasCompleted.has(key)
+                            ? "nodo resuelto"
+                            : atlasVisitedInternalNodes.has(internalKey)
+                              ? subzone.role ?? "visitado"
+                              : canMove ? subzone.role ?? "explorar" : "fuera de ruta directa"}
+                        </small>
                       </button>
                     );
                   })}
@@ -1216,7 +1335,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   <span>
                     <small>Progreso atlas</small>
                     <strong>{atlasCompleted.size} nodos internos</strong>
-                    <i>{xp} XP / {inventory.length} objetos</i>
+                    <i>{xp} XP / {inventory.length} objetos / {currentLocationState.completedNodes.length} aqui</i>
                   </span>
                 </div>
 

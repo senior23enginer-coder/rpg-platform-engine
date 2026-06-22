@@ -204,7 +204,17 @@ for (const sceneId of ["vault111", "vaultExit", "sanctuary", "redRocket", "conco
 for (const expectedText of ["AP_MAX = 11", "roll2d20", "campaignState", "onProgress", "Radroaches", "Mole rats", "Jared's gang"]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener ${expectedText}`);
 }
-for (const expectedText of ["fo4-atlas-panel", "Mapa interno", "Resolver nodo interno", "resolveAtlasSubzone", "resolveAtlasEncounter", "activeMissionId"]) {
+for (const expectedText of [
+  "fo4-atlas-panel",
+  "Conexiones del mapa mundi",
+  "Mapa interno",
+  "Resolver nodo interno",
+  "moveAtlasInternalNode",
+  "atlasLocationStates",
+  "resolveAtlasSubzone",
+  "resolveAtlasEncounter",
+  "activeMissionId",
+]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener atlas textual: ${expectedText}`);
 }
 assert(!campaignScreen.includes("buildMicrozones"), "La campana no debe inventar una capa extra sobre las ubicaciones del Tomo 6");
