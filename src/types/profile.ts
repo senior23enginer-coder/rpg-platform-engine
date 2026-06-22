@@ -57,8 +57,10 @@ export type PlayerSave = {
     lastAction?: string;
     atlasLocationId?: string;
     atlasSubzoneIndex?: number;
+    atlasMicrozoneIndex?: number;
     atlasVisitedLocations?: string[];
     atlasCompletedSubzones?: string[];
+    atlasCompletedMicrozones?: string[];
     activeMissionId?: string;
     xp?: number;
     caps?: number;
