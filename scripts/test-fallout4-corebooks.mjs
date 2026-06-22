@@ -204,10 +204,12 @@ for (const sceneId of ["vault111", "vaultExit", "sanctuary", "redRocket", "conco
 for (const expectedText of ["AP_MAX = 11", "roll2d20", "campaignState", "onProgress", "Radroaches", "Mole rats", "Jared's gang"]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener ${expectedText}`);
 }
-for (const expectedText of ["fo4-atlas-panel", "fo4-microzone-map", "buildMicrozones", "resolveAtlasSubzone", "resolveAtlasEncounter", "atlasCompletedMicrozones", "activeMissionId"]) {
+for (const expectedText of ["fo4-atlas-panel", "Mapa interno", "Resolver nodo interno", "resolveAtlasSubzone", "resolveAtlasEncounter", "activeMissionId"]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener atlas textual: ${expectedText}`);
 }
-pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapas internos por subzona, AP, 2d20, combate y persistencia.");
+assert(!campaignScreen.includes("buildMicrozones"), "La campana no debe inventar una capa extra sobre las ubicaciones del Tomo 6");
+assert(!campaignScreen.includes("atlasCompletedMicrozones"), "El guardado no debe persistir una capa interna inventada");
+pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapa interno por ubicacion, AP, 2d20, combate y persistencia.");
 
 function playCompleteDemo() {
   const now = new Date().toISOString();

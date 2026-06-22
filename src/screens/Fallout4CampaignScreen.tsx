@@ -105,14 +105,6 @@ type TemplateCatalog = {
   };
 };
 
-type AtlasMicrozone = {
-  id: string;
-  name: string;
-  kind: NodeKind;
-  ap: number;
-  role: string;
-};
-
 const scenes: Scene[] = [
   {
     id: "vault111",
@@ -655,51 +647,6 @@ function readableThreat(enemy?: TomeBestiary) {
   return `${enemy.name} / ${threat} / ${hp}`;
 }
 
-function buildMicrozones(subzone: { name: string; role?: string }, location?: TomeLocation): AtlasMicrozone[] {
-  const label = subzone.name;
-  const role = subzone.role ?? location?.category ?? "Exploracion";
-  const hasThreat = Boolean(location?.enemies?.length) || /combate|amenaza|enemigo|peligro/i.test(role);
-  const hasLoot = /loot|alijo|recurso|contenedor|registro|busqueda|exploracion/i.test(role);
-
-  return [
-    {
-      id: "entrada",
-      name: `Acceso: ${label}`,
-      kind: "move",
-      ap: 1,
-      role: `Entrada, orientacion y lectura tactica de ${label}.`,
-    },
-    {
-      id: "cobertura",
-      name: `Cobertura y rutas`,
-      kind: "move",
-      ap: 1,
-      role: "Define posicion, lineas de paso, puertas, pasillos y retirada.",
-    },
-    {
-      id: "punto-clave",
-      name: `Punto clave`,
-      kind: hasThreat ? "combat" : "search",
-      ap: 1,
-      role,
-    },
-    {
-      id: "registro",
-      name: `Registro interno`,
-      kind: hasLoot ? "loot" : "search",
-      ap: 1,
-      role: "Buscar objetos, terminales, pistas, recursos o marcas de mision.",
-    },
-    {
-      id: "salida",
-      name: `Salida conectada`,
-      kind: "exit",
-      ap: 1,
-      role: "Cerrar la microzona y abrir la siguiente subzona o la ruta de viaje.",
-    },
-  ];
-}
-
 export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress }: Props) {
   const artStyle = gameHeroVars(game) as CSSProperties;
   const initialSceneId = isSceneId(save?.campaignState?.sceneId) ? save.campaignState.sceneId : "vault111";
@@ -734,16 +681,12 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [templateCatalog, setTemplateCatalog] = useState<TemplateCatalog>();
   const [atlasLocationId, setAtlasLocationId] = useState(save?.campaignState?.atlasLocationId ?? "U-0001");
   const [atlasSubzoneIndex, setAtlasSubzoneIndex] = useState(save?.campaignState?.atlasSubzoneIndex ?? 0);
-  const [atlasMicrozoneIndex, setAtlasMicrozoneIndex] = useState(save?.campaignState?.atlasMicrozoneIndex ?? 0);
   const [activeMissionId, setActiveMissionId] = useState(save?.campaignState?.activeMissionId ?? "M-0170");
   const [atlasVisited, setAtlasVisited] = useState<Set<string>>(
     () => new Set(save?.campaignState?.atlasVisitedLocations ?? ["U-0001"])
   );
   const [atlasCompleted, setAtlasCompleted] = useState<Set<string>>(
     () => new Set(save?.campaignState?.atlasCompletedSubzones ?? [])
-  );
-  const [atlasCompletedMicrozones, setAtlasCompletedMicrozones] = useState<Set<string>>(
-    () => new Set(save?.campaignState?.atlasCompletedMicrozones ?? [])
   );
   const [xp, setXp] = useState(save?.campaignState?.xp ?? 0);
   const [inventory, setInventory] = useState<string[]>(save?.campaignState?.inventory ?? []);
@@ -792,9 +735,6 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       ];
   const atlasSubzone = atlasSubzones[Math.min(atlasSubzoneIndex, atlasSubzones.length - 1)];
   const atlasKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzone?.name ?? "subzona"}` : "atlas:pendiente";
-  const atlasMicrozones = useMemo(() => buildMicrozones(atlasSubzone, atlasLocation), [atlasLocation, atlasSubzone]);
-  const atlasMicrozone = atlasMicrozones[Math.min(atlasMicrozoneIndex, atlasMicrozones.length - 1)];
-  const atlasMicroKey = `${atlasKey}:${atlasMicrozone?.id ?? "microzona"}`;
   const atlasEnemy = useMemo(() => {
     const enemyNames = atlasLocation?.enemies ?? [];
     const match = atlasBestiary.find((creature) =>
@@ -855,10 +795,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         lastAction,
         atlasLocationId,
         atlasSubzoneIndex,
-        atlasMicrozoneIndex,
         atlasVisitedLocations: [...atlasVisited],
         atlasCompletedSubzones: [...atlasCompleted],
-        atlasCompletedMicrozones: [...atlasCompletedMicrozones],
         activeMissionId,
         xp,
         caps,
@@ -871,10 +809,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   function progressAtlasPatch({
     locationId = atlasLocationId,
     subzoneIndex = atlasSubzoneIndex,
-    microzoneIndex = atlasMicrozoneIndex,
     visitedAtlas = atlasVisited,
     completedAtlas = atlasCompleted,
-    completedMicrozones = atlasCompletedMicrozones,
     missionId = activeMissionId,
     xpValue = xp,
     inventoryValue = inventory,
@@ -885,10 +821,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   }: {
     locationId?: string;
     subzoneIndex?: number;
-    microzoneIndex?: number;
     visitedAtlas?: Set<string>;
     completedAtlas?: Set<string>;
-    completedMicrozones?: Set<string>;
     missionId?: string;
     xpValue?: number;
     inventoryValue?: string[];
@@ -899,10 +833,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   }) {
     onProgress?.({
       currentMission: atlasMission?.name ?? scene.missionStep,
-      currentZone: atlasLocation
-        ? `${atlasLocation.name} / ${atlasSubzones[subzoneIndex]?.name ?? "Subzona"} / ${atlasMicrozones[microzoneIndex]?.name ?? "Microzona"}`
-        : scene.title,
-      progressPercent: Math.max(progress, Math.min(100, Math.round((completedMicrozones.size / Math.max(1, atlasLocations.length * 15)) * 100))),
+      currentZone: atlasLocation ? `${atlasLocation.name} / ${atlasSubzones[subzoneIndex]?.name ?? "Nodo interno"}` : scene.title,
+      progressPercent: Math.max(progress, Math.min(100, Math.round((completedAtlas.size / Math.max(1, atlasLocations.length * 3)) * 100))),
       route: scenes.map((item) => item.title),
       visitedZones: [...new Set([...visited, ...[...visitedAtlas].map((id) => atlasLocations.find((item) => item.id === id)?.name ?? id)])],
       currentStep: Math.max(0, sceneIndex),
@@ -918,10 +850,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         lastAction,
         atlasLocationId: locationId,
         atlasSubzoneIndex: subzoneIndex,
-        atlasMicrozoneIndex: microzoneIndex,
         atlasVisitedLocations: [...visitedAtlas],
         atlasCompletedSubzones: [...completedAtlas],
-        atlasCompletedMicrozones: [...completedMicrozones],
         activeMissionId: missionId,
         xp: xpValue,
         caps,
@@ -1046,13 +976,12 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const target = atlasLocations.find((item) => item.id === locationId);
     setAtlasLocationId(locationId);
     setAtlasSubzoneIndex(0);
-    setAtlasMicrozoneIndex(0);
     setAtlasVisited(nextVisited);
     const nextLog = writeLog(
-      `Atlas: viaje textual a ${target?.name ?? locationId}. La ubicacion se abre por subzonas conectadas.`,
+      `Mapa mundi: viaje textual a ${target?.name ?? locationId}. Entras al mapa interno de esa ubicacion.`,
       `Tomo 6: ${target?.category ?? "ubicacion"} / riesgo ${target?.risk ?? "variable"}.`
     );
-    progressAtlasPatch({ locationId, subzoneIndex: 0, microzoneIndex: 0, visitedAtlas: nextVisited, logValue: nextLog, lastAction: `atlas:viajar:${locationId}` });
+    progressAtlasPatch({ locationId, subzoneIndex: 0, visitedAtlas: nextVisited, logValue: nextLog, lastAction: `atlas:viajar:${locationId}` });
   }
 
   function selectAtlasMission(missionId: string) {
@@ -1070,40 +999,38 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       writeLog("Atlas no cargado todavia: espera a que templates.json este disponible.");
       return;
     }
-    const actionCost = atlasMicrozone.ap;
+    const actionCost = 1;
     if (!spend(actionCost)) return;
-    const difficulty = atlasMicrozone.kind === "combat" ? Math.max(2, riskDifficulty(atlasLocation.risk)) : riskDifficulty(atlasLocation.risk);
+    const role = atlasSubzone.role ?? "";
+    const isInternalCombat = Boolean(atlasLocation.enemies?.length) || /combate|amenaza|enemigo|peligro/i.test(role);
+    const isInternalLoot = /loot|alijo|recurso|contenedor|registro|busqueda|exploracion/i.test(role);
+    const difficulty = isInternalCombat ? Math.max(2, riskDifficulty(atlasLocation.risk)) : riskDifficulty(atlasLocation.risk);
     const result = roll2d20(difficulty);
     setRoll(result);
     const nextAp = ap - actionCost;
     const completed = new Set(atlasCompleted);
-    const completedMicrozones = new Set(atlasCompletedMicrozones);
     const nextInventory = [...inventory];
     const nextXp = result.passed ? xp + 25 : xp + 5;
     if (result.passed) {
-      completedMicrozones.add(atlasMicroKey);
-      const subzoneMicroKeys = atlasMicrozones.map((microzone) => `${atlasKey}:${microzone.id}`);
-      if (subzoneMicroKeys.every((key) => completedMicrozones.has(key))) completed.add(atlasKey);
-      if ((atlasMicrozone.kind === "loot" || atlasMicrozone.kind === "search") && atlasLoot && !nextInventory.includes(atlasLoot)) {
+      completed.add(atlasKey);
+      if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
       }
     }
     setAtlasCompleted(completed);
-    setAtlasCompletedMicrozones(completedMicrozones);
     setXp(nextXp);
     setInventory(nextInventory);
     const nextLog = writeLog(
-      `Microzona: ${atlasSubzone.name} / ${atlasMicrozone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Punto interno completado." : "Complicacion sin cerrar este punto."}`,
-      result.passed ? `${atlasMicrozone.role} XP total: ${nextXp}.` : `Riesgo activo: ${readableThreat(atlasEnemy)}. XP total: ${nextXp}.`
+      `Mapa interno: ${atlasLocation.name} / ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Nodo interno completado." : "Complicacion sin cerrar este nodo."}`,
+      result.passed ? `${role || "Exploracion del nodo interno"} XP total: ${nextXp}.` : `Riesgo activo: ${readableThreat(atlasEnemy)}. XP total: ${nextXp}.`
     );
     progressAtlasPatch({
       completedAtlas: completed,
-      completedMicrozones,
       xpValue: nextXp,
       inventoryValue: nextInventory,
       logValue: nextLog,
       apValue: nextAp,
-      lastAction: `atlas:resolver:${atlasMicroKey}`,
+      lastAction: `atlas:resolver:${atlasKey}`,
     });
   }
 
@@ -1127,9 +1054,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     if (!atlasLocation) return;
     const nextIndex = Math.min(atlasSubzoneIndex + 1, atlasSubzones.length - 1);
     setAtlasSubzoneIndex(nextIndex);
-    setAtlasMicrozoneIndex(0);
-    const nextLog = writeLog(`Avance de subzona: ${atlasSubzones[nextIndex]?.name ?? "Fin de ubicacion"}.`, "La nueva subzona abre sus propias microzonas internas.");
-    progressAtlasPatch({ subzoneIndex: nextIndex, microzoneIndex: 0, logValue: nextLog, lastAction: `atlas:subzona:${nextIndex}` });
+    const nextLog = writeLog(`Mapa interno: avance a ${atlasSubzones[nextIndex]?.name ?? "Fin de ubicacion"}.`, "Este nodo pertenece al mapa propio de la ubicacion seleccionada.");
+    progressAtlasPatch({ subzoneIndex: nextIndex, logValue: nextLog, lastAction: `atlas:nodo-interno:${nextIndex}` });
   }
 
   return (
@@ -1261,37 +1187,14 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                         className={`${index === atlasSubzoneIndex ? "active" : ""} ${atlasCompleted.has(key) ? "seen" : ""}`}
                         onClick={() => {
                           setAtlasSubzoneIndex(index);
-                          setAtlasMicrozoneIndex(0);
-                          progressAtlasPatch({ subzoneIndex: index, microzoneIndex: 0, lastAction: `atlas:seleccionar-subzona:${index}` });
+                          progressAtlasPatch({ subzoneIndex: index, lastAction: `atlas:seleccionar-nodo-interno:${index}` });
                         }}
                       >
                         <span>{index + 1}. {subzone.name}</span>
-                        <small>{atlasCompleted.has(key) ? "mapa interno resuelto" : subzone.role ?? "explorar"}</small>
+                        <small>{atlasCompleted.has(key) ? "nodo resuelto" : subzone.role ?? "explorar"}</small>
                       </button>
                     );
                   })}
-                </div>
-
-                <div className="fo4-microzone-map">
-                  <strong>Mapa interno de subzona</strong>
-                  <div>
-                    {atlasMicrozones.map((microzone, index) => {
-                      const key = `${atlasKey}:${microzone.id}`;
-                      return (
-                        <button
-                          key={key}
-                          className={`${index === atlasMicrozoneIndex ? "active" : ""} ${atlasCompletedMicrozones.has(key) ? "seen" : ""}`}
-                          onClick={() => {
-                            setAtlasMicrozoneIndex(index);
-                            progressAtlasPatch({ microzoneIndex: index, lastAction: `atlas:microzona:${index}` });
-                          }}
-                        >
-                          <span>{nodeIcon(microzone.kind)} {microzone.name}</span>
-                          <small>{microzone.ap} AP / {atlasCompletedMicrozones.has(key) ? "completada" : microzone.role}</small>
-                        </button>
-                      );
-                    })}
-                  </div>
                 </div>
 
                 <div className="fo4-atlas-active">
@@ -1301,14 +1204,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                     <i>{atlasLocation.category ?? "Mapa mundi"} / {atlasLocation.sourceTome ?? "Tomo 6"}</i>
                   </span>
                   <span>
-                    <small>Subzona actual</small>
+                    <small>Nodo del mapa interno</small>
                     <strong>{atlasSubzone.name}</strong>
                     <i>{atlasSubzone.role ?? "Exploracion textual por turnos"}</i>
-                  </span>
-                  <span>
-                    <small>Microzona actual</small>
-                    <strong>{atlasMicrozone.name}</strong>
-                    <i>{atlasMicrozone.role}</i>
                   </span>
                   <span>
                     <small>Encuentro sugerido</small>
@@ -1317,20 +1215,20 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </span>
                   <span>
                     <small>Progreso atlas</small>
-                    <strong>{atlasCompleted.size} subzonas / {atlasCompletedMicrozones.size} microzonas</strong>
+                    <strong>{atlasCompleted.size} nodos internos</strong>
                     <i>{xp} XP / {inventory.length} objetos</i>
                   </span>
                 </div>
 
                 <div className="fo4-atlas-actions">
                   <button className="green-button" onClick={resolveAtlasSubzone}>
-                    <Search size={18} /> Resolver microzona
+                    <Search size={18} /> Resolver nodo interno
                   </button>
                   <button onClick={resolveAtlasEncounter}>
                     <Swords size={18} /> Encuentro
                   </button>
                   <button onClick={nextAtlasSubzone} disabled={atlasSubzoneIndex >= atlasSubzones.length - 1}>
-                    <Footprints size={18} /> Siguiente
+                    <Footprints size={18} /> Siguiente nodo
                   </button>
                 </div>
               </>
