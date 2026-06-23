@@ -21,6 +21,28 @@ function formatBytes(raw: string) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
+function detectEditorType(relativePath = "") {
+  if (relativePath.includes("mission")) return "misiones";
+  if (relativePath.includes("templates")) return "plantillas";
+  if (relativePath.includes("location")) return "ubicaciones";
+  if (relativePath.includes("bestiary")) return "enemigos";
+  if (relativePath.includes("rules")) return "reglas";
+  if (relativePath.includes("save")) return "guardados";
+  if (relativePath.includes("game.config")) return "config";
+  return "json";
+}
+
+function collectFormRows(value: unknown, limit = 8): Array<Record<string, unknown>> {
+  if (!value || typeof value !== "object") return [];
+  const root = value as Record<string, unknown>;
+  const directArrays = Object.values(root).filter(Array.isArray) as Array<Array<Record<string, unknown>>>;
+  const nestedCatalogs = root.catalogs && typeof root.catalogs === "object"
+    ? Object.values(root.catalogs as Record<string, unknown>).filter(Array.isArray) as Array<Array<Record<string, unknown>>>
+    : [];
+  const rows = [...directArrays, ...nestedCatalogs].find((items) => items.length && typeof items[0] === "object") ?? [];
+  return rows.slice(0, limit);
+}
+
 export function FilesScreen({
   games,
   activeGameId,
@@ -114,6 +136,19 @@ export function FilesScreen({
       return sections.slice(0, 20);
     } catch {
       return [];
+    }
+  }, [draft, parsedStatus.ok, selectedFile]);
+
+  const specializedPreview = useMemo(() => {
+    if (!selectedFile || !parsedStatus.ok) return { type: "json", rows: [] as Array<Record<string, unknown>> };
+    try {
+      const parsed = JSON.parse(draft) as unknown;
+      return {
+        type: detectEditorType(selectedFile.relativePath),
+        rows: collectFormRows(parsed),
+      };
+    } catch {
+      return { type: "json", rows: [] as Array<Record<string, unknown>> };
     }
   }, [draft, parsedStatus.ok, selectedFile]);
 
@@ -278,6 +313,31 @@ export function FilesScreen({
                         <small>{section.kind} / {section.count}</small>
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {specializedPreview.rows.length > 0 && (
+                <div className="json-specialized-forms">
+                  <strong>Formulario {specializedPreview.type}</strong>
+                  <div>
+                    {specializedPreview.rows.map((row, index) => {
+                      const id = String(row.id ?? row.saveId ?? row.name ?? `fila-${index}`);
+                      const title = String(row.name ?? row.displayName ?? row.title ?? row.originalName ?? id);
+                      const subtitle = String(row.type ?? row.sourceTome ?? row.playableStatus ?? row.currentZone ?? "registro");
+                      const detail = String(row.useInPlay ?? row.summary ?? row.objective ?? row.description ?? row.condition ?? "").slice(0, 140);
+                      return (
+                        <article key={`${id}-${index}`}>
+                          <small>{id}</small>
+                          <strong>{title}</strong>
+                          <span>{subtitle}</span>
+                          {detail && <p>{detail}</p>}
+                          <button onClick={() => navigator.clipboard?.writeText(JSON.stringify(row, null, 2))}>
+                            <Copy size={14} /> Copiar ficha
+                          </button>
+                        </article>
+                      );
+                    })}
                   </div>
                 </div>
               )}

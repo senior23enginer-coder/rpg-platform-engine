@@ -5295,6 +5295,52 @@ svg {
   overflow-wrap: anywhere;
 }
 
+.json-specialized-forms {
+  display: grid;
+  gap: 10px;
+}
+
+.json-specialized-forms > strong {
+  color: var(--pip-amber);
+  text-transform: uppercase;
+}
+
+.json-specialized-forms > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.json-specialized-forms article {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid rgba(126, 255, 87, 0.16);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.26);
+}
+
+.json-specialized-forms small {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.json-specialized-forms strong,
+.json-specialized-forms span,
+.json-specialized-forms p {
+  overflow-wrap: anywhere;
+}
+
+.json-specialized-forms p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .file-json-textarea {
   min-height: 520px;
   resize: vertical;
@@ -5333,7 +5379,8 @@ svg {
 
   .json-file-summary,
   .json-image-preview-strip,
-  .json-assisted-editor > div {
+  .json-assisted-editor > div,
+  .json-specialized-forms > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -6310,7 +6357,8 @@ svg {
 
   .json-file-summary,
   .json-image-preview-strip,
-  .json-assisted-editor > div {
+  .json-assisted-editor > div,
+  .json-specialized-forms > div {
     grid-template-columns: 1fr;
   }
 

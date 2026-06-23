@@ -9,8 +9,10 @@
     "generate:fallout4-coverage": "node scripts/generate-fallout4-coverage.mjs",
     "generate:fallout4-mission-details": "node scripts/generate-fallout4-mission-details.mjs",
     "generate:fallout4-runtime-depth": "node scripts/generate-fallout4-runtime-depth.mjs",
+    "generate:fallout4-final-runtime": "node scripts/generate-fallout4-final-runtime.mjs",
     "test:fallout4": "node scripts/test-fallout4-corebooks.mjs",
     "test:responsive": "node scripts/test-responsive-layout.mjs",
+    "test:visual": "node scripts/test-visual-responsive.mjs",
     "preview": "vite preview",
     "android:init": "cap add android",
     "android:sync": "npm run build && cap sync android",
@@ -46,6 +48,7 @@
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "playwright": "^1.61.1",
     "typescript": "^5.6.3",
     "vite": "^5.4.10"
   }

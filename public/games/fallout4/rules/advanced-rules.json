@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-23T21:25:19.133Z",
+  "sourceTome": "TOMO 01",
+  "rules": {
+    "tests": {
+      "dice": "2d20",
+      "targetNumber": "atributo + habilidad o valor operativo 12 por defecto",
+      "criticalSuccess": "cada 1 suma exito critico y mejora dano/efecto",
+      "criticalFailure": "cada 20 genera complicacion, dano recibido o coste",
+      "difficultyFloor": 0,
+      "difficultyModifiers": [
+        "perk",
+        "equipo",
+        "supervivencia",
+        "riesgo de ubicacion",
+        "cobertura"
+      ]
+    },
+    "combat": {
+      "damageDie": "d6",
+      "damageFormula": "d6 + dano base de arma + bono perk + momentum + criticos",
+      "defenseFormula": "armadura + perk + cobertura, recomendado maximo 6 en niveles bajos",
+      "injuryHook": "si dano recibido supera defensa y falla la escena, registrar complicacion/herida",
+      "ammo": "municion por arma en save.game.json"
+    },
+    "perks": {
+      "conversion": [
+        {
+          "source": "+20% dano",
+          "tableEffect": "+1 dano"
+        },
+        {
+          "source": "+40% dano",
+          "tableEffect": "+2 dano"
+        },
+        {
+          "source": "+60% dano",
+          "tableEffect": "+3 dano"
+        },
+        {
+          "source": "mejor precision",
+          "tableEffect": "-1 dificultad o +1 dado situacional"
+        },
+        {
+          "source": "mejor resistencia",
+          "tableEffect": "+1 defensa o reduce 1 dano una vez por turno"
+        },
+        {
+          "source": "mejor comercio",
+          "tableEffect": "10-25% mejor precio o reduce dificultad de Comercio"
+        }
+      ],
+      "runtimeState": [
+        "active",
+        "pendingPerkChoices",
+        "damageBonus",
+        "defenseBonus",
+        "difficultyReduction"
+      ]
+    },
+    "economy": {
+      "capsEarned": "registrado en ruleState.capsEarned",
+      "capsSpent": "registrado en ruleState.capsSpent",
+      "tradeHook": "usar Carisma/Comercio + perks para modificar coste 10-25%"
+    },
+    "loadout": {
+      "weapons": 95,
+      "equipment": 288,
+      "modsHook": "Tomo 04/05 proveen mods; runtime aplica bono abstracto hasta ficha fina"
+    }
+  }
+}

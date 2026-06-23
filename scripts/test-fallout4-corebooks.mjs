@@ -116,9 +116,12 @@ const rules = readJson("public", "games", "fallout4", "rules", "rules.json");
 const characters = readJson("public", "games", "fallout4", "characters", "characters.json");
 const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
 const missionDetails = readJson("public", "games", "fallout4", "missions", "mission-details.json");
+const missionPolish = readJson("public", "games", "fallout4", "missions", "mission-polish.json");
 const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
 const coverage = readJson("public", "games", "fallout4", "coverage", "core-book-coverage.json");
 const runtimeDepth = readJson("public", "games", "fallout4", "coverage", "runtime-depth.json");
+const advancedRules = readJson("public", "games", "fallout4", "rules", "advanced-rules.json");
+const locationEvents = readJson("public", "games", "fallout4", "locations", "location-events.json");
 const campaign = readJson("public", "games", "fallout4", "campaigns", "sanctuary_commonwealth", "config.json");
 const runtimeBestiary = readJson("public", "games", "fallout4", "bestiary", "bestiary.json");
 const news = readJson("public", "platform", "news", "news.json");
@@ -217,6 +220,12 @@ pass("Manifiesto total: todos los tomos tienen sistemas runtime, cero excepcione
 assert(runtimeDepth?.summary?.missions === templates?.counts?.missions, "Runtime depth debe cubrir todas las misiones de templates");
 assert(missionDetails?.counts?.missions === templates?.counts?.missions, "Mission details debe cubrir todas las misiones de templates");
 assert(missionDetails?.counts?.stages >= 1600, "Mission details debe extraer etapas exactas del Tomo 2");
+assert(missionPolish?.counts?.missions === templates?.counts?.missions, "Mission polish debe cubrir todas las misiones");
+assert(missionPolish?.counts?.stages === missionDetails?.counts?.stages, "Mission polish debe conservar todas las etapas");
+assert(advancedRules?.rules?.combat?.damageFormula, "Advanced rules debe definir formula de dano");
+assert(advancedRules?.rules?.perks?.conversion?.length >= 4, "Advanced rules debe definir conversion de perks");
+assert(locationEvents?.counts?.locations === templates?.counts?.locations, "Location events debe cubrir todas las ubicaciones");
+assert(locationEvents?.counts?.events >= templates?.counts?.locations, "Location events debe crear eventos por ubicacion");
 assert(runtimeDepth?.summary?.missionStages === missionDetails?.counts?.stages, "Runtime depth debe incluir etapas exactas de mision");
 assert(runtimeDepth?.summary?.locations === templates?.counts?.locations, "Runtime depth debe cubrir todas las ubicaciones de templates");
 assert(runtimeDepth?.summary?.locationsWithInternalMaps >= 558, "Todas las ubicaciones deben tener mapa interno o fallback de mapa interno");
@@ -301,7 +310,7 @@ assert(!campaignScreen.includes("atlasCompletedMicrozones"), "El guardado no deb
 pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapa interno por ubicacion, AP, 2d20, combate, misiones genericas y persistencia.");
 
 const filesScreen = readText("src", "screens", "FilesScreen.tsx");
-for (const expectedText of ["json-file-summary", "json-image-preview-strip", "json-assisted-editor", "imagePathCandidates", "parsedSummary", "assistedSections"]) {
+for (const expectedText of ["json-file-summary", "json-image-preview-strip", "json-assisted-editor", "json-specialized-forms", "imagePathCandidates", "parsedSummary", "assistedSections", "specializedPreview"]) {
   assert(filesScreen.includes(expectedText), `Archivos y estructura debe soportar editor/preview JSON: ${expectedText}`);
 }
 const appScreen = readText("src", "App.tsx");
@@ -317,6 +326,7 @@ for (const expectedText of [
   ".json-file-summary",
   ".json-image-preview-strip",
   ".json-assisted-editor",
+  ".json-specialized-forms",
 ]) {
   assert(appCss.includes(expectedText), `CSS responsive/editor debe contener ${expectedText}`);
 }

@@ -3,6 +3,7 @@ dist/
 vite-dev.*.log
 vite-dev.log
 npm-debug.log*
+test-results/
 *.local
 deploy/foundry-vtt/.env
 deploy/foundry-vtt/data/

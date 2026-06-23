@@ -7,11 +7,20 @@ const gameConfigModules = import.meta.glob("/public/games/*/game.config.json", {
   import: "default",
 });
 
-const gameJsonModules = import.meta.glob("/public/games/**/*.json", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-});
+const gameJsonModules = import.meta.glob(
+  [
+    "/public/games/**/*.json",
+    "!/public/games/**/coverage/runtime-depth.json",
+    "!/public/games/**/missions/mission-details.json",
+    "!/public/games/**/missions/mission-polish.json",
+    "!/public/games/**/locations/location-events.json",
+  ],
+  {
+    eager: true,
+    query: "?raw",
+    import: "default",
+  }
+);
 
 const gameModuleConfigModules = import.meta.glob(
   "/public/games/*/{dlc,features,extras,campaigns}/*/config.json",
