@@ -23,6 +23,7 @@ import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGameJsonFiles, loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { loadBundledUserProfiles } from "./lib/userLibrary";
 import { createSaveGameDocument, getSaveGamePath } from "./lib/saveGameStorage";
+import { writeText } from "./lib/tauriFs";
 import {
   loadNativeMetadata,
   loadNativeProfile,
@@ -535,11 +536,13 @@ export default function App() {
               onLoadGames={(loadedGames) => setGames(loadedGames.map((game) => normalizeGameConfig(game)))}
               onSelectGame={(gameId) => selectGame(gameId, "files")}
               onEditConfig={(gameId) => selectGame(gameId, "jsonEditor")}
-              onUpdateFile={(path, raw) =>
+              onUpdateFile={(path, raw) => {
                 setGameJsonFiles((currentFiles) =>
                   currentFiles.map((file) => (file.path === path ? { ...file, raw } : file))
-                )
-              }
+                );
+                const diskPath = path.startsWith("/games/") ? `public${path}` : path;
+                void writeText(diskPath, raw);
+              }}
               canEdit={profile.role === "admin"}
             />
           )}

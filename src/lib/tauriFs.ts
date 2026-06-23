@@ -31,8 +31,20 @@ export async function readText(path: string): Promise<string | null> {
 export async function writeText(path: string, contents: string): Promise<boolean> {
   try {
     const { writeTextFile } = await import("@tauri-apps/plugin-fs");
-    await writeTextFile(path, contents);
-    return true;
+    const candidates = [
+      path,
+      path.startsWith("/games/") ? `public${path}` : undefined,
+      path.startsWith("public/games/") ? path.replace(/^public/, "") : undefined,
+    ].filter((candidate): candidate is string => Boolean(candidate));
+    for (const candidate of candidates) {
+      try {
+        await writeTextFile(candidate, contents);
+        return true;
+      } catch {
+        // Try the next path shape; bundled web paths and Tauri disk paths differ.
+      }
+    }
+    return false;
   } catch (error) {
     console.warn("Cannot write text file:", path, error);
     return false;

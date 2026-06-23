@@ -117,11 +117,14 @@ const characters = readJson("public", "games", "fallout4", "characters", "charac
 const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
 const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
 const coverage = readJson("public", "games", "fallout4", "coverage", "core-book-coverage.json");
+const runtimeDepth = readJson("public", "games", "fallout4", "coverage", "runtime-depth.json");
 const campaign = readJson("public", "games", "fallout4", "campaigns", "sanctuary_commonwealth", "config.json");
 const runtimeBestiary = readJson("public", "games", "fallout4", "bestiary", "bestiary.json");
 const news = readJson("public", "platform", "news", "news.json");
+const mobileTargets = readJson("public", "platform", "mobile-targets.json");
 const normalUser = readJson("public", "users", "operador-local", "profile.json");
 const adminUser = readJson("public", "users", "admin-local", "profile.json");
+const packageJson = readJson("package.json");
 
 assert(game?.id === "fallout4", "Fallout 4 debe cargar desde public/games/fallout4/game.config.json");
 assert(game?.moduleFolders?.dlc === "dlc", "Fallout 4 debe declarar carpeta dlc");
@@ -130,6 +133,7 @@ assert(game?.moduleFolders?.extras === "extras", "Fallout 4 debe declarar carpet
 assert(game?.moduleFolders?.campaigns === "campaigns", "Fallout 4 debe declarar carpeta campaigns");
 assert(game?.newGame === "setup/new-game.config.json", "Nueva partida debe venir de setup/new-game.config.json");
 assert(game?.manifests?.coverage === "coverage/core-book-coverage.json", "Fallout 4 debe declarar manifiesto de cobertura core-book");
+assert(game?.manifests?.runtimeDepth === "coverage/runtime-depth.json", "Fallout 4 debe declarar manifiesto de profundidad runtime");
 pass("Config base: Fallout 4 usa game.config.json, moduleFolders y new-game config.");
 
 const dlcFolders = listDirs("public", "games", "fallout4", "dlc").sort();
@@ -209,6 +213,18 @@ for (const tome of expectedTomes) {
 }
 pass("Manifiesto total: todos los tomos tienen sistemas runtime, cero excepciones y agregados no canonicos listados.");
 
+assert(runtimeDepth?.summary?.missions === templates?.counts?.missions, "Runtime depth debe cubrir todas las misiones de templates");
+assert(runtimeDepth?.summary?.locations === templates?.counts?.locations, "Runtime depth debe cubrir todas las ubicaciones de templates");
+assert(runtimeDepth?.summary?.locationsWithInternalMaps >= 558, "Todas las ubicaciones deben tener mapa interno o fallback de mapa interno");
+assert(runtimeDepth?.summary?.bestiary === templates?.counts?.bestiary, "Runtime depth debe declarar bestiario completo");
+assert(runtimeDepth?.summary?.weapons === templates?.counts?.weapons, "Runtime depth debe declarar armas completas");
+assert(runtimeDepth?.summary?.equipment === templates?.counts?.equipment, "Runtime depth debe declarar equipo completo");
+assert(runtimeDepth?.summary?.settlements === templates?.counts?.settlements, "Runtime depth debe declarar asentamientos completos");
+assert(runtimeDepth?.summary?.factions === templates?.counts?.factions, "Runtime depth debe declarar facciones completas");
+assert(runtimeDepth?.summary?.collectibles === templates?.counts?.collectibles, "Runtime depth debe declarar coleccionables completos");
+assert(Array.isArray(runtimeDepth?.nonCanonicalRuntime) && runtimeDepth.nonCanonicalRuntime.length >= 1, "Runtime depth debe listar agregados runtime no canonicos");
+pass("Profundidad runtime: misiones, ubicaciones y sistemas de los tomos quedan trazados como jugables.");
+
 const routeTemplate = arrayAt(templates, "routeTemplates").find((item) => item.id === "out-of-time-base-route");
 assert(Boolean(routeTemplate), "Debe existir routeTemplate out-of-time-base-route");
 for (const locationId of ["U-0001", "U-0002", "U-0003", "U-0011"]) {
@@ -277,6 +293,12 @@ const filesScreen = readText("src", "screens", "FilesScreen.tsx");
 for (const expectedText of ["json-file-summary", "json-image-preview-strip", "imagePathCandidates", "parsedSummary"]) {
   assert(filesScreen.includes(expectedText), `Archivos y estructura debe soportar editor/preview JSON: ${expectedText}`);
 }
+const appScreen = readText("src", "App.tsx");
+const tauriFs = readText("src", "lib", "tauriFs.ts");
+const tauriCapabilities = readText("src-tauri", "capabilities", "default.json");
+assert(appScreen.includes("writeText(diskPath, raw)"), "Editor debe intentar escribir JSON real mediante Tauri");
+assert(tauriFs.includes("writeTextFile") && tauriFs.includes("public${path}"), "Tauri FS debe soportar escritura de JSON public/games");
+assert(tauriCapabilities.includes("rpg-platform-engine/public/games"), "Permisos Tauri deben permitir editar public/games");
 const appCss = readText("src", "styles", "app.css");
 for (const expectedText of [
   "@media (max-width: 720px)",
@@ -287,6 +309,14 @@ for (const expectedText of [
   assert(appCss.includes(expectedText), `CSS responsive/editor debe contener ${expectedText}`);
 }
 pass("Editor y responsive: JSON, previews visuales y cortes mobile/tablet validados.");
+
+const capacitorConfig = readText("capacitor.config.ts");
+assert(capacitorConfig.includes("android") && capacitorConfig.includes("ios"), "Capacitor debe declarar Android e iOS");
+assert(mobileTargets?.targets?.android?.status === "synced", "Mobile targets debe declarar Android sincronizado");
+assert(mobileTargets?.targets?.ios?.status === "synced", "Mobile targets debe declarar iOS sincronizado");
+assert(packageJson?.scripts?.["android:sync"], "package.json debe tener script android:sync");
+assert(packageJson?.scripts?.["ios:sync"], "package.json debe tener script ios:sync");
+pass("Mobile: Android sincronizable e iOS configurado con rutas de validacion declaradas.");
 
 function playCompleteDemo() {
   const now = new Date().toISOString();

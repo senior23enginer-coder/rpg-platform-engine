@@ -11,19 +11,35 @@
     "fs:default",
     {
       "identifier": "fs:allow-read-text-file",
-      "allow": [{ "path": "$DOCUMENT/RPG Platform Engine/**" }]
+      "allow": [
+        { "path": "$DOCUMENT/RPG Platform Engine/**" },
+        { "path": "$DOCUMENT/**/rpg-platform-engine/public/games/**" },
+        { "path": "$HOME/**/rpg-platform-engine/public/games/**" }
+      ]
     },
     {
       "identifier": "fs:allow-write-text-file",
-      "allow": [{ "path": "$DOCUMENT/RPG Platform Engine/**" }]
+      "allow": [
+        { "path": "$DOCUMENT/RPG Platform Engine/**" },
+        { "path": "$DOCUMENT/**/rpg-platform-engine/public/games/**" },
+        { "path": "$HOME/**/rpg-platform-engine/public/games/**" }
+      ]
     },
     {
       "identifier": "fs:allow-mkdir",
-      "allow": [{ "path": "$DOCUMENT/RPG Platform Engine/**" }]
+      "allow": [
+        { "path": "$DOCUMENT/RPG Platform Engine/**" },
+        { "path": "$DOCUMENT/**/rpg-platform-engine/public/games/**" },
+        { "path": "$HOME/**/rpg-platform-engine/public/games/**" }
+      ]
     },
     {
       "identifier": "fs:allow-read-dir",
-      "allow": [{ "path": "$DOCUMENT/RPG Platform Engine/**" }]
+      "allow": [
+        { "path": "$DOCUMENT/RPG Platform Engine/**" },
+        { "path": "$DOCUMENT/**/rpg-platform-engine/public/games/**" },
+        { "path": "$HOME/**/rpg-platform-engine/public/games/**" }
+      ]
     },
     "store:default"
   ]

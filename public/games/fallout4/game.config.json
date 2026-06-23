@@ -31,7 +31,8 @@
   "manifests": {
     "assets": "assets/assets.manifest.json",
     "audio": "audio/audio.manifest.json",
-    "coverage": "coverage/core-book-coverage.json"
+    "coverage": "coverage/core-book-coverage.json",
+    "runtimeDepth": "coverage/runtime-depth.json"
   },
   "characterSheet": "characters/characters.json",
   "rules": "rules/rules.json",

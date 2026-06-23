@@ -10,6 +10,11 @@ const config: CapacitorConfig = {
     allowMixedContent: true,
     captureInput: true,
   },
+  ios: {
+    backgroundColor: "#050905",
+    contentInset: "automatic",
+    scrollEnabled: true,
+  },
   server: {
     androidScheme: "https",
   },

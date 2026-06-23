@@ -135,6 +135,7 @@ export type GameConfig = {
     audio?: string;
     assets?: string;
     coverage?: string;
+    runtimeDepth?: string;
   };
   characterSheet?: string;
   rules?: string;

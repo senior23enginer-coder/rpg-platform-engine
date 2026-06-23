@@ -43,6 +43,24 @@ type CoverageManifest = {
   }>;
 };
 
+type RuntimeDepthManifest = {
+  summary?: {
+    missions?: number;
+    missionsSpecificRuntime?: number;
+    missionsGenericRuntime?: number;
+    locations?: number;
+    locationsWithInternalMaps?: number;
+    locationsWithEnemies?: number;
+    bestiary?: number;
+    weapons?: number;
+    equipment?: number;
+    settlements?: number;
+    factions?: number;
+    collectibles?: number;
+  };
+  nonCanonicalRuntime?: Array<{ id: string; reason: string }>;
+};
+
 type Props = {
   game: GameConfig;
   onBack: () => void;
@@ -99,6 +117,7 @@ function ContentCard({
 export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: Props) {
   const [templates, setTemplates] = useState<TemplateManifest | undefined>();
   const [coverage, setCoverage] = useState<CoverageManifest | undefined>();
+  const [runtimeDepth, setRuntimeDepth] = useState<RuntimeDepthManifest | undefined>();
   const allItems = useMemo(
     () =>
       (["dlc", "features", "extras"] as const).flatMap((category) =>
@@ -131,6 +150,28 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
       })
       .catch(() => {
         if (!cancelled) setTemplates(undefined);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [game]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const runtimePath = resolveGameAsset(game, game.manifests?.runtimeDepth);
+    if (!runtimePath) {
+      setRuntimeDepth(undefined);
+      return;
+    }
+
+    fetch(runtimePath)
+      .then((response) => response.ok ? response.json() : undefined)
+      .then((data) => {
+        if (!cancelled) setRuntimeDepth(data);
+      })
+      .catch(() => {
+        if (!cancelled) setRuntimeDepth(undefined);
       });
 
     return () => {
@@ -314,6 +355,38 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
                 <small>{item.type}</small>
                 <strong>{item.id}</strong>
                 <p>{item.description}</p>
+                <p>{item.reason}</p>
+              </article>
+            ))}
+          </div>
+        </article>
+      )}
+
+      {runtimeDepth?.summary && (
+        <article className="template-coverage-panel runtime-depth-panel">
+          <div>
+            <small>Profundidad jugable</small>
+            <h3>Runtime Fallout 4</h3>
+            <p>
+              {runtimeDepth.summary.missions ?? 0} misiones y {runtimeDepth.summary.locations ?? 0} ubicaciones convertidas a flujo textual.
+              Especificas: {runtimeDepth.summary.missionsSpecificRuntime ?? 0}. Genericas: {runtimeDepth.summary.missionsGenericRuntime ?? 0}.
+            </p>
+          </div>
+          <div className="template-count-grid">
+            <span><strong>{runtimeDepth.summary.locationsWithInternalMaps ?? 0}</strong><small>mapas internos</small></span>
+            <span><strong>{runtimeDepth.summary.locationsWithEnemies ?? 0}</strong><small>con enemigos</small></span>
+            <span><strong>{runtimeDepth.summary.bestiary ?? 0}</strong><small>bestiario</small></span>
+            <span><strong>{runtimeDepth.summary.weapons ?? 0}</strong><small>armas</small></span>
+            <span><strong>{runtimeDepth.summary.equipment ?? 0}</strong><small>equipo</small></span>
+            <span><strong>{runtimeDepth.summary.settlements ?? 0}</strong><small>asentamientos</small></span>
+            <span><strong>{runtimeDepth.summary.factions ?? 0}</strong><small>facciones</small></span>
+            <span><strong>{runtimeDepth.summary.collectibles ?? 0}</strong><small>coleccionables</small></span>
+          </div>
+          <div className="template-card-grid">
+            {(runtimeDepth.nonCanonicalRuntime ?? []).map((item) => (
+              <article key={item.id}>
+                <small>Agregado runtime</small>
+                <strong>{item.id}</strong>
                 <p>{item.reason}</p>
               </article>
             ))}
