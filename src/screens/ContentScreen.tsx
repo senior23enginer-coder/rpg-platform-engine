@@ -19,6 +19,30 @@ type TemplateManifest = {
   }>>;
 };
 
+type CoverageManifest = {
+  coveragePolicy?: {
+    exceptionsAllowed?: boolean;
+    exceptions?: string[];
+  };
+  summary?: {
+    tomes?: number;
+    coverageFindings?: number;
+    nonCanonicalAdditions?: number;
+  };
+  tomes?: Array<{
+    id: string;
+    fileName?: string;
+    runtimeSystems?: string[];
+    catalogCounts?: Record<string, number>;
+  }>;
+  nonCanonicalAdditions?: Array<{
+    id: string;
+    type: string;
+    description: string;
+    reason: string;
+  }>;
+};
+
 type Props = {
   game: GameConfig;
   onBack: () => void;
@@ -74,6 +98,7 @@ function ContentCard({
 
 export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: Props) {
   const [templates, setTemplates] = useState<TemplateManifest | undefined>();
+  const [coverage, setCoverage] = useState<CoverageManifest | undefined>();
   const allItems = useMemo(
     () =>
       (["dlc", "features", "extras"] as const).flatMap((category) =>
@@ -106,6 +131,28 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
       })
       .catch(() => {
         if (!cancelled) setTemplates(undefined);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [game]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const coveragePath = resolveGameAsset(game, game.manifests?.coverage);
+    if (!coveragePath) {
+      setCoverage(undefined);
+      return;
+    }
+
+    fetch(coveragePath)
+      .then((response) => response.ok ? response.json() : undefined)
+      .then((data) => {
+        if (!cancelled) setCoverage(data);
+      })
+      .catch(() => {
+        if (!cancelled) setCoverage(undefined);
       });
 
     return () => {
@@ -242,6 +289,37 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
           </div>
         </div>
       ) : null}
+
+      {coverage && (
+        <article className="template-coverage-panel core-coverage-panel">
+          <div>
+            <small>Cobertura total</small>
+            <h3>Tomos aplicados</h3>
+            <p>
+              {coverage.summary?.tomes ?? 0} tomos trazados. Hallazgos: {coverage.summary?.coverageFindings ?? 0}.
+              Excepciones: {coverage.coveragePolicy?.exceptions?.length ?? 0}.
+            </p>
+          </div>
+          <div className="template-source-grid">
+            {(coverage.tomes ?? []).map((tome) => (
+              <span key={tome.id}>
+                <strong>{tome.id}</strong>
+                <small>{tome.runtimeSystems?.length ?? 0} sistemas / {Object.values(tome.catalogCounts ?? {}).reduce((sum, value) => sum + value, 0)} datos</small>
+              </span>
+            ))}
+          </div>
+          <div className="template-card-grid">
+            {(coverage.nonCanonicalAdditions ?? []).map((item) => (
+              <article key={item.id}>
+                <small>{item.type}</small>
+                <strong>{item.id}</strong>
+                <p>{item.description}</p>
+                <p>{item.reason}</p>
+              </article>
+            ))}
+          </div>
+        </article>
+      )}
 
       <div className="content-section campaign-content-section">
         <h3>Campañas</h3>

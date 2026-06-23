@@ -105,6 +105,7 @@ const rules = readJson("public", "games", "fallout4", "rules", "rules.json");
 const characters = readJson("public", "games", "fallout4", "characters", "characters.json");
 const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
 const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
+const coverage = readJson("public", "games", "fallout4", "coverage", "core-book-coverage.json");
 const campaign = readJson("public", "games", "fallout4", "campaigns", "sanctuary_commonwealth", "config.json");
 const runtimeBestiary = readJson("public", "games", "fallout4", "bestiary", "bestiary.json");
 const news = readJson("public", "platform", "news", "news.json");
@@ -117,6 +118,7 @@ assert(game?.moduleFolders?.features === "features", "Fallout 4 debe declarar ca
 assert(game?.moduleFolders?.extras === "extras", "Fallout 4 debe declarar carpeta extras");
 assert(game?.moduleFolders?.campaigns === "campaigns", "Fallout 4 debe declarar carpeta campaigns");
 assert(game?.newGame === "setup/new-game.config.json", "Nueva partida debe venir de setup/new-game.config.json");
+assert(game?.manifests?.coverage === "coverage/core-book-coverage.json", "Fallout 4 debe declarar manifiesto de cobertura core-book");
 pass("Config base: Fallout 4 usa game.config.json, moduleFolders y new-game config.");
 
 const dlcFolders = listDirs("public", "games", "fallout4", "dlc").sort();
@@ -183,6 +185,18 @@ for (const tome of expectedTomes) {
   assert(referencedTomes.has(tome), `Las plantillas deben referenciar ${tome}`);
 }
 pass("Cobertura por tomos: los 10 tomos estan registrados y referenciados.");
+
+assert(coverage?.summary?.tomes === 10, "Coverage manifest debe cubrir 10 tomos");
+assert(coverage?.summary?.coverageFindings === 0, "Coverage manifest no debe tener hallazgos pendientes");
+assert(coverage?.coveragePolicy?.exceptionsAllowed === false, "Coverage manifest no debe permitir excepciones");
+assert(Array.isArray(coverage?.coveragePolicy?.exceptions) && coverage.coveragePolicy.exceptions.length === 0, "Coverage manifest debe tener cero excepciones");
+assert(Array.isArray(coverage?.nonCanonicalAdditions) && coverage.nonCanonicalAdditions.length >= 1, "Coverage manifest debe listar agregados no canonicos");
+for (const tome of expectedTomes) {
+  const entry = coverage?.tomes?.find((item) => item.id === tome);
+  assert(Boolean(entry), `Coverage manifest debe incluir ${tome}`);
+  assert(Array.isArray(entry?.runtimeSystems) && entry.runtimeSystems.length >= 1, `${tome} debe declarar sistemas runtime`);
+}
+pass("Manifiesto total: todos los tomos tienen sistemas runtime, cero excepciones y agregados no canonicos listados.");
 
 const routeTemplate = arrayAt(templates, "routeTemplates").find((item) => item.id === "out-of-time-base-route");
 assert(Boolean(routeTemplate), "Debe existir routeTemplate out-of-time-base-route");

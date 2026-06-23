@@ -134,6 +134,7 @@ export type GameConfig = {
   manifests?: {
     audio?: string;
     assets?: string;
+    coverage?: string;
   };
   characterSheet?: string;
   rules?: string;

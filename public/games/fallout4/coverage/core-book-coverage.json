@@ -1,0 +1,463 @@
+{
+  "schemaVersion": 1,
+  "gameId": "fallout4",
+  "generatedAt": "2026-06-23T17:13:48.870Z",
+  "source": {
+    "coreBookDir": "core-book",
+    "templates": "public/games/fallout4/templates/templates.json"
+  },
+  "coveragePolicy": {
+    "requirement": "Todos los tomos deben estar trazados a reglas, catalogos o sistemas jugables.",
+    "exceptionsAllowed": false,
+    "exceptions": []
+  },
+  "summary": {
+    "tomes": 10,
+    "catalogCounts": {
+      "tomes": 10,
+      "gameplayTemplates": 7,
+      "missions": 216,
+      "locations": 558,
+      "bestiary": 213,
+      "weapons": 95,
+      "equipment": 288,
+      "settlements": 36,
+      "factions": 10,
+      "collectibles": 618,
+      "coreSkills": 20,
+      "companions": 13,
+      "freeModeSeeds": 10
+    },
+    "catalogs": {
+      "missions": 216,
+      "locations": 558,
+      "bestiary": 213,
+      "weapons": 95,
+      "equipment": 288,
+      "settlements": 36,
+      "factions": 10,
+      "collectibles": 618
+    },
+    "coverageFindings": 0,
+    "nonCanonicalAdditions": 5
+  },
+  "tomes": [
+    {
+      "id": "TOMO 01",
+      "fileName": "TOMO 01 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 278122,
+      "characters": 274422,
+      "sha256": "de078ba2a19b02aea398ddbf521cbeccd614732c69a31e9c1000e368c5b1fd06",
+      "role": "AP, turnos, 2d20, dificultad, Momentum, SPECIAL, campa?a, modo libre, compa?eros, combate, progresi?n y econom?a core.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "turn_based_ap",
+        "2d20_tests",
+        "momentum",
+        "noise_complications",
+        "special_character_seed",
+        "companions",
+        "free_mode",
+        "survival_flags"
+      ],
+      "catalogCounts": {}
+    },
+    {
+      "id": "TOMO 02",
+      "fileName": "TOMO 02 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 1803180,
+      "characters": 1777499,
+      "sha256": "274e753f0b1b2fd8b288d2ae35eefccb92605e9fccc0f49a836d70a67300429a",
+      "role": "Objetivos, pasos, enemigos de mision, contactos, cierres y desbloqueos.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "mission_catalog",
+        "active_mission_tracker",
+        "out_of_time_objectives",
+        "mission_unlocks",
+        "mission_prerequisites"
+      ],
+      "catalogCounts": {
+        "missions": 216
+      }
+    },
+    {
+      "id": "TOMO 03",
+      "fileName": "TOMO 03 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 1136910,
+      "characters": 1118244,
+      "sha256": "d5078cbb8271e21ce075e79b32ac1dd7ec8bd1b8913a4e6c657a82a4704c6d2d",
+      "role": "Fichas de enemigos, criaturas, companeros, amenaza y escalado.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "bestiary_catalog",
+        "encounter_threats",
+        "enemy_hp_templates",
+        "location_enemy_matching"
+      ],
+      "catalogCounts": {
+        "bestiary": 213
+      }
+    },
+    {
+      "id": "TOMO 04",
+      "fileName": "TOMO 04 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 156276,
+      "characters": 153464,
+      "sha256": "acc11ea81de73589c03c787255f3b22af7fcb066bb4e6676de024ab092c8ead5",
+      "role": "Armas, dano, municion, mods y uso tactico.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "weapon_catalog",
+        "weapon_rewards",
+        "ammo_and_mod_hooks"
+      ],
+      "catalogCounts": {
+        "weapons": 95
+      }
+    },
+    {
+      "id": "TOMO 05",
+      "fileName": "TOMO 05 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 226336,
+      "characters": 224470,
+      "sha256": "eb24915a511abd57733b2933d32376eff12f091e7dbf51b37e85d1c0c891b057",
+      "role": "Armaduras, ropa, servoarmaduras, defensas, carga y mods.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "equipment_catalog",
+        "armor_and_outfit_hooks",
+        "carry_and_defense_hooks"
+      ],
+      "catalogCounts": {
+        "equipment": 288
+      }
+    },
+    {
+      "id": "TOMO 06",
+      "fileName": "TOMO 06 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 8263744,
+      "characters": 8247215,
+      "sha256": "1457747b7fd31bd37ea689090c11fb6af315c9be9f5af76373191a2f3f72f4fc",
+      "role": "Ubicaciones, subzonas, biomas, rutas, enemigos normales y loot.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "world_atlas_locations",
+        "internal_location_maps",
+        "subzone_navigation",
+        "world_route_connections",
+        "biome_risk_enemy_loot_context"
+      ],
+      "catalogCounts": {
+        "locations": 558
+      }
+    },
+    {
+      "id": "TOMO 07",
+      "fileName": "TOMO 07 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 73028,
+      "characters": 72120,
+      "sha256": "09efa7a9e0ea46d2ada00ec14e295153a7503dcad763505ea0d410df8864d2ee",
+      "role": "Construccion, poblacion, recursos, defensa, economia y rutas.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "settlement_catalog",
+        "settlement_resource_loop",
+        "population_food_water_beds_defense"
+      ],
+      "catalogCounts": {
+        "settlements": 36
+      }
+    },
+    {
+      "id": "TOMO 08",
+      "fileName": "TOMO 08 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 38567,
+      "characters": 38073,
+      "sha256": "82b18bb2250715bd97d1f474822ab7c4a18b8288edbf166b5cdb7f302940df6b",
+      "role": "Reputacion, politica, territorios, hostilidad y contratos.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "faction_catalog",
+        "reputation_hooks",
+        "hostility_and_contract_hooks"
+      ],
+      "catalogCounts": {
+        "factions": 10
+      }
+    },
+    {
+      "id": "TOMO 09",
+      "fileName": "TOMO 09 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 373537,
+      "characters": 370086,
+      "sha256": "8d679084c3305637f2fd3efe089acafbc541e885ef370f363dd0b84e2b974485",
+      "role": "Terminales, notas, holocintas, revistas, llaves y pistas.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "collectibles_catalog",
+        "terminal_note_holotape_keys",
+        "location_subzone_collectible_matching"
+      ],
+      "catalogCounts": {
+        "collectibles": 618
+      }
+    },
+    {
+      "id": "TOMO 10",
+      "fileName": "TOMO 10 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "bytes": 343762,
+      "characters": 343343,
+      "sha256": "d6a1ef78eb69d341fe681a89bb5f3f4bf01e1b83f924d90e0c65e7b7e718a65b",
+      "role": "Clima, hambre, sed, sueno, enfermedad, radiacion avanzada y desgaste.",
+      "playableStatus": "template-ready",
+      "runtimeSystems": [
+        "survival_optional_layer",
+        "weather_hunger_thirst_sleep_disease_radiation_fatigue"
+      ],
+      "catalogCounts": {}
+    }
+  ],
+  "gameplayTemplates": [
+    {
+      "id": "core-turn-ap",
+      "name": "Turno y AP",
+      "sourceTomes": [
+        "TOMO 01"
+      ],
+      "rule": "Cada personaje actua por Puntos de Accion; AP maximos = 6 + AGI. Moverse, atacar, registrar, curar, hablar o activar objetos consume AP.",
+      "fields": [
+        "turn",
+        "apMax",
+        "apCurrent",
+        "actions",
+        "noise",
+        "position",
+        "eventClock"
+      ]
+    },
+    {
+      "id": "core-2d20-test",
+      "name": "Prueba 2d20 y Momentum",
+      "sourceTomes": [
+        "TOMO 01"
+      ],
+      "rule": "Tirar 2d20 contra SPECIAL + habilidad. Exitos >= dificultad resuelven accion; exitos sobrantes generan Momentum.",
+      "fields": [
+        "attribute",
+        "skill",
+        "difficulty",
+        "dicePool",
+        "successes",
+        "momentum",
+        "complication"
+      ]
+    },
+    {
+      "id": "core-character-sheet",
+      "name": "Hoja core de personaje",
+      "sourceTomes": [
+        "TOMO 01"
+      ],
+      "rule": "Identidad, SPECIAL, habilidades, combate, equipo, inventario rapido, perks, estados, economia, misiones y notas.",
+      "fields": [
+        "identity",
+        "special",
+        "skills",
+        "combat",
+        "equipment",
+        "quickInventory",
+        "perks",
+        "states",
+        "economy",
+        "missions",
+        "notes"
+      ]
+    },
+    {
+      "id": "location-scene",
+      "name": "Escena de ubicacion",
+      "sourceTomes": [
+        "TOMO 01",
+        "TOMO 06"
+      ],
+      "rule": "Entrada, subzonas conectadas, AP de movimiento, cobertura, enemigos, loot, interacciones y salida.",
+      "fields": [
+        "locationId",
+        "nodes",
+        "routes",
+        "apCosts",
+        "cover",
+        "enemies",
+        "loot",
+        "exit"
+      ]
+    },
+    {
+      "id": "mission-scene",
+      "name": "Escena de mision",
+      "sourceTomes": [
+        "TOMO 01",
+        "TOMO 02"
+      ],
+      "rule": "Paso activo, objetivo, contacto, enemigos propios, cierre, recompensa y desbloqueo.",
+      "fields": [
+        "missionId",
+        "step",
+        "objective",
+        "contact",
+        "requiredItem",
+        "reward",
+        "completion"
+      ]
+    },
+    {
+      "id": "settlement-loop",
+      "name": "Ciclo de asentamiento",
+      "sourceTomes": [
+        "TOMO 01",
+        "TOMO 07"
+      ],
+      "rule": "Poblacion, camas, comida, agua, defensa, rutas, economia y eventos.",
+      "fields": [
+        "settlementId",
+        "population",
+        "food",
+        "water",
+        "beds",
+        "defense",
+        "supplyRoutes"
+      ]
+    },
+    {
+      "id": "survival-loop",
+      "name": "Supervivencia avanzada",
+      "sourceTomes": [
+        "TOMO 01",
+        "TOMO 10"
+      ],
+      "rule": "Capa opcional de hambre, sed, sueno, enfermedad, radiacion, clima y desgaste.",
+      "fields": [
+        "weather",
+        "hunger",
+        "thirst",
+        "sleep",
+        "disease",
+        "radiation",
+        "fatigue"
+      ]
+    }
+  ],
+  "routeTemplates": [
+    {
+      "id": "out-of-time-base-route",
+      "name": "Out of Time base route",
+      "sourceTomes": [
+        "TOMO 02",
+        "TOMO 06"
+      ],
+      "nodes": [
+        "U-0001",
+        "U-0002",
+        "U-0003",
+        "U-0011"
+      ],
+      "missionIds": [
+        "M-0170"
+      ],
+      "playableStatus": "implemented-demo"
+    }
+  ],
+  "catalogRequirements": {
+    "missions": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "locations": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "subzones",
+      "useInPlay"
+    ],
+    "bestiary": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "weapons": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "equipment": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "settlements": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "factions": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ],
+    "collectibles": [
+      "id",
+      "name",
+      "sourceTome",
+      "playableStatus",
+      "useInPlay"
+    ]
+  },
+  "coverageFindings": [],
+  "nonCanonicalAdditions": [
+    {
+      "id": "platform-ui-shell",
+      "type": "technical",
+      "description": "Interfaz RPG Platform Engine, login, perfiles, biblioteca, carga/guardado y paneles administrativos.",
+      "reason": "Necesario para operar la plataforma; no es contenido narrativo de los tomos."
+    },
+    {
+      "id": "save-game-schema",
+      "type": "technical",
+      "description": "Campos de persistencia: atlasLocationStates, completedMissionSteps, momentum, noise, inventory y session timing.",
+      "reason": "Estructura tecnica para guardar el progreso de lo definido en los tomos."
+    },
+    {
+      "id": "out-of-time-objective-ids",
+      "type": "derived-structure",
+      "description": "IDs internos como wake-cryo, take-pipboy y arrive-concord.",
+      "reason": "Son etiquetas tecnicas derivadas de la mision Out of Time y ubicaciones del Tomo 2/6; no son texto literal de los tomos."
+    },
+    {
+      "id": "fallback-loot-labels",
+      "type": "fallback",
+      "description": "Etiquetas de reserva como Recurso comun y Alijo menor de ubicacion.",
+      "reason": "Se usan cuando un nodo no tiene coleccionable especifico del Tomo 9 asociado."
+    },
+    {
+      "id": "generated-assets-and-demo-users",
+      "type": "technical",
+      "description": "Imagenes generadas/locales, noticias demo y usuarios operador/admin.",
+      "reason": "Soporte de plataforma y pruebas; no altera reglas ni canon de Fallout 4."
+    }
+  ]
+}

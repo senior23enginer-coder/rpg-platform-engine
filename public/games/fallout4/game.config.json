@@ -30,7 +30,8 @@
   },
   "manifests": {
     "assets": "assets/assets.manifest.json",
-    "audio": "audio/audio.manifest.json"
+    "audio": "audio/audio.manifest.json",
+    "coverage": "coverage/core-book-coverage.json"
   },
   "characterSheet": "characters/characters.json",
   "rules": "rules/rules.json",

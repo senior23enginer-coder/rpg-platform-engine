@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "generate:fallout4-coverage": "node scripts/generate-fallout4-coverage.mjs",
     "test:fallout4": "node scripts/test-fallout4-corebooks.mjs",
     "preview": "vite preview",
     "android:init": "cap add android",
