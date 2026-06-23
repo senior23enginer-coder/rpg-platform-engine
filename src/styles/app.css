@@ -5206,6 +5206,64 @@ svg {
   border-color: rgba(255, 128, 95, 0.4);
 }
 
+.json-file-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.json-file-summary span {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  padding: 9px;
+  border: 1px solid rgba(126, 255, 87, 0.16);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.json-file-summary small {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.json-file-summary strong {
+  color: #e8ffe4;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.json-image-preview-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.json-image-preview-strip figure {
+  min-width: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.json-image-preview-strip img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  border: 1px solid rgba(255, 191, 71, 0.28);
+  border-radius: 6px;
+  background: #030703;
+}
+
+.json-image-preview-strip figcaption {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .file-json-textarea {
   min-height: 520px;
   resize: vertical;
@@ -5240,6 +5298,11 @@ svg {
 
   .json-file-header {
     display: grid;
+  }
+
+  .json-file-summary,
+  .json-image-preview-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -6171,6 +6234,55 @@ svg {
   .fo4-action-row,
   .fo4-travel-row {
     grid-template-columns: 1fr;
+  }
+
+  .fo4-atlas-controls,
+  .fo4-mission-tracker,
+  .fo4-atlas-active,
+  .fo4-runtime-grid,
+  .fo4-atlas-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .fallout4-campaign-screen {
+    padding: 10px;
+  }
+
+  .fo4-campaign-header,
+  .fo4-atlas-panel header {
+    align-items: stretch;
+  }
+
+  .fo4-campaign-header button,
+  .fo4-atlas-actions button,
+  .fo4-action-row button,
+  .fo4-travel-row button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .fo4-atlas-controls,
+  .fo4-mission-tracker,
+  .fo4-atlas-active,
+  .fo4-runtime-grid,
+  .fo4-atlas-actions,
+  .fo4-world-links > div {
+    grid-template-columns: 1fr;
+  }
+
+  .fo4-atlas-subzones {
+    max-height: none;
+  }
+
+  .json-file-summary,
+  .json-image-preview-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .file-json-textarea {
+    min-height: 360px;
   }
 }
 /* Home dashboard fit pass for 100% browser zoom */

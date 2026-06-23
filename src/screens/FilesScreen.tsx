@@ -57,6 +57,40 @@ export function FilesScreen({
     }
   }, [draft, selectedFile]);
 
+  const parsedSummary = useMemo(() => {
+    if (!selectedFile || !parsedStatus.ok) return [];
+    try {
+      const parsed = JSON.parse(draft) as Record<string, unknown>;
+      return Object.entries(parsed).slice(0, 14).map(([key, value]) => {
+        const label = Array.isArray(value)
+          ? `${value.length} elementos`
+          : value && typeof value === "object"
+            ? `${Object.keys(value as Record<string, unknown>).length} claves`
+            : String(value ?? "vacio").slice(0, 80);
+        return { key, label };
+      });
+    } catch {
+      return [];
+    }
+  }, [draft, parsedStatus.ok, selectedFile]);
+
+  const imagePathCandidates = useMemo(() => {
+    if (!selectedFile || !parsedStatus.ok) return [];
+    try {
+      const parsed = JSON.parse(draft) as unknown;
+      const paths: string[] = [];
+      const scan = (value: unknown) => {
+        if (typeof value === "string" && /\.(png|jpe?g|webp|gif|svg)$/i.test(value)) paths.push(value);
+        if (Array.isArray(value)) value.forEach(scan);
+        if (value && typeof value === "object") Object.values(value as Record<string, unknown>).forEach(scan);
+      };
+      scan(parsed);
+      return [...new Set(paths)].slice(0, 12);
+    } catch {
+      return [];
+    }
+  }, [draft, parsedStatus.ok, selectedFile]);
+
   async function selectFolder() {
     if (!canEdit) return;
     const folder = await pickGamesFolder();
@@ -185,6 +219,28 @@ export function FilesScreen({
                 {parsedStatus.ok ? <CheckCircle2 size={16} /> : <XCircle size={16} />}
                 <span>{parsedStatus.message}</span>
               </div>
+
+              {parsedSummary.length > 0 && (
+                <div className="json-file-summary">
+                  {parsedSummary.map((item) => (
+                    <span key={item.key}>
+                      <small>{item.key}</small>
+                      <strong>{item.label}</strong>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {imagePathCandidates.length > 0 && (
+                <div className="json-image-preview-strip">
+                  {imagePathCandidates.map((path) => (
+                    <figure key={path}>
+                      <img src={path.startsWith("/") ? path : `/${path.replace(/^public\//, "")}`} alt={path} />
+                      <figcaption>{path}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
 
               <textarea className="raw-json-editor file-json-textarea" value={draft} readOnly={!canEdit} onChange={(event) => updateDraft(event.target.value)} />
 

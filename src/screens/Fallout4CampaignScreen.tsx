@@ -131,6 +131,7 @@ type MissionObjectiveStep = {
   title: string;
   objective: string;
   nodeHints: string[];
+  kind?: "travel" | "explore" | "combat" | "loot" | "social" | "technical" | "settlement" | "faction";
   requiredItem?: string;
   grantsItem?: string;
   reward?: string;
@@ -138,6 +139,7 @@ type MissionObjectiveStep = {
 };
 
 type SurvivalState = { hunger: number; thirst: number; sleep: number; disease: number; radiation: number; fatigue: number };
+type RuleState = NonNullable<NonNullable<PlayerSave["campaignState"]>["ruleState"]>;
 
 const outOfTimeSteps: MissionObjectiveStep[] = [
   {
@@ -766,6 +768,109 @@ function pickCatalogItem<T extends TomeCatalogItem>(items: T[], seed: string) {
   return items[deterministicIndex(seed, items.length)];
 }
 
+function defaultRuleState(): RuleState {
+  return {
+    actionPointsSpent: 0,
+    testsRolled: 0,
+    combatRounds: 0,
+    socialChecks: 0,
+    technicalChecks: 0,
+    travelActions: 0,
+    failures: 0,
+    complications: [],
+  };
+}
+
+function mergeRuleState(current: RuleState | undefined, patch: Partial<RuleState>): RuleState {
+  return {
+    ...defaultRuleState(),
+    ...(current ?? {}),
+    ...patch,
+    complications: patch.complications ?? current?.complications ?? [],
+  };
+}
+
+function missionSeed(missionId: string, missionName = "") {
+  return `${missionId}:${missionName}`;
+}
+
+function buildMissionRuntimeSteps(mission: TomeMission | undefined, locations: TomeLocation[], route: string[]) {
+  if (mission?.id === "M-0170") return outOfTimeSteps;
+  const safeLocations = locations.length ? locations : [];
+  const seed = missionSeed(mission?.id ?? "M-0000", mission?.name);
+  const start = deterministicIndex(seed, Math.max(1, safeLocations.length));
+  const pickedLocations = Array.from({ length: 4 }, (_, index) => {
+    const byRoute = route[index] ? safeLocations.find((location) => location.id === route[index]) : undefined;
+    return byRoute ?? safeLocations[(start + index * 17) % Math.max(1, safeLocations.length)];
+  }).filter((location): location is TomeLocation => Boolean(location));
+  const uniqueLocations = pickedLocations.filter((location, index, array) => array.findIndex((item) => item.id === location.id) === index);
+  const title = mission?.name ?? "Mision sin nombre";
+  const type = normalizeName(mission?.type);
+  const hasFaction = type.includes("faccion") || type.includes("campana principal");
+  return uniqueLocations.flatMap((location, index) => {
+    const subzones = location.subzones?.length ? location.subzones : [{ name: "Acceso principal", role: "Entrada" }];
+    const firstSubzone = subzones[0];
+    const combatSubzone = subzones.find((subzone) => /combate|amenaza|peligro|exterior|calle/i.test(subzone.role ?? subzone.name)) ?? subzones[Math.min(1, subzones.length - 1)];
+    const lootSubzone = subzones.find((subzone) => /loot|alijo|recurso|registro|terminal|oficina|sala/i.test(subzone.role ?? subzone.name)) ?? subzones[subzones.length - 1];
+    const steps: MissionObjectiveStep[] = [
+      {
+        id: `${mission?.id ?? "M"}:${location.id}:travel`,
+        locationId: location.id,
+        title: index === 0 ? `Activar ${title}` : `Viajar a ${location.name}`,
+        objective: `${mission?.activation || mission?.useInPlay || "Sigue la pista de la mision"} en ${location.name}.`,
+        nodeHints: [firstSubzone.name],
+        kind: "travel",
+      },
+      {
+        id: `${mission?.id ?? "M"}:${location.id}:explore`,
+        locationId: location.id,
+        title: `Explorar ${location.name}`,
+        objective: `Recorre el mapa interno de ${location.name}; cada recuadro/subzona consume AP y queda registrado en el guardado.`,
+        nodeHints: [firstSubzone.name, combatSubzone.name, lootSubzone.name],
+        kind: "explore",
+      },
+      {
+        id: `${mission?.id ?? "M"}:${location.id}:secure`,
+        locationId: location.id,
+        title: `Resolver amenaza local`,
+        objective: `Aplica Tomo 1 y Tomo 3: prueba 2d20, combate o complicacion segun el riesgo de ${location.name}.`,
+        nodeHints: [combatSubzone.name],
+        kind: location.enemies?.length ? "combat" : "technical",
+      },
+      {
+        id: `${mission?.id ?? "M"}:${location.id}:reward`,
+        locationId: location.id,
+        title: `Registrar recompensa`,
+        objective: `Cruza Tomo 4/5/9: botin, equipo, registro, terminal o pista util de ${location.name}.`,
+        nodeHints: [lootSubzone.name],
+        kind: "loot",
+        reward: mission?.completion || `Avance registrado para ${title}`,
+      },
+    ];
+    if (location.settlement) {
+      steps.push({
+        id: `${mission?.id ?? "M"}:${location.id}:settlement`,
+        locationId: location.id,
+        title: `Gestionar asentamiento`,
+        objective: `Aplica Tomo 7: poblacion, camas, comida, agua, defensa y ruta local.`,
+        nodeHints: subzones.map((subzone) => subzone.name),
+        kind: "settlement",
+      });
+    }
+    if (hasFaction && index === uniqueLocations.length - 1) {
+      steps.push({
+        id: `${mission?.id ?? "M"}:${location.id}:faction`,
+        locationId: location.id,
+        title: `Consecuencia de faccion`,
+        objective: `Aplica Tomo 8: reputacion, hostilidad, aliado/neutral/enemigo y consecuencia politica.`,
+        nodeHints: subzones.map((subzone) => subzone.name),
+        kind: "faction",
+      });
+    }
+    return steps;
+  });
+}
+
 function patchLocationState(
   states: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"] | undefined,
   locationId: string,
@@ -839,8 +944,15 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [unlockedMissionIds, setUnlockedMissionIds] = useState<Set<string>>(
     () => new Set(save?.campaignState?.unlockedMissionIds ?? ["M-0170"])
   );
+  const [missionRuntime, setMissionRuntime] = useState<NonNullable<PlayerSave["campaignState"]>["missionRuntime"]>(
+    save?.campaignState?.missionRuntime ?? {}
+  );
+  const [discoveredCollectibles, setDiscoveredCollectibles] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.discoveredCollectibles ?? [])
+  );
   const [momentum, setMomentum] = useState(save?.campaignState?.momentum ?? 0);
   const [noise, setNoise] = useState(save?.campaignState?.noise ?? 0);
+  const [ruleState, setRuleState] = useState<RuleState>(mergeRuleState(save?.campaignState?.ruleState, {}));
   const [equippedWeaponId, setEquippedWeaponId] = useState(save?.campaignState?.equippedWeaponId ?? "W-0003");
   const [equippedArmorId, setEquippedArmorId] = useState(save?.campaignState?.equippedArmorId ?? "EQ-0001");
   const [ammo, setAmmo] = useState<Record<string, number>>(save?.campaignState?.ammo ?? { ".38": 24, "10mm": 12 });
@@ -921,13 +1033,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const connectedInternalIndexes = [atlasSubzoneIndex - 1, atlasSubzoneIndex, atlasSubzoneIndex + 1].filter(
     (index) => index >= 0 && index < atlasSubzones.length
   );
-  const missionSteps: MissionObjectiveStep[] = activeMissionId === "M-0170" ? outOfTimeSteps : atlasWorldRoute.map((locationId, index) => ({
-    id: `${activeMissionId}:route:${index}`,
-    locationId,
-    title: `Objetivo ${index + 1}`,
-    objective: `Explora ${atlasLocations.find((location) => location.id === locationId)?.name ?? locationId}.`,
-    nodeHints: [],
-  } satisfies MissionObjectiveStep));
+  const missionSteps: MissionObjectiveStep[] = useMemo(
+    () => buildMissionRuntimeSteps(atlasMission, atlasLocations, atlasWorldRoute),
+    [atlasLocations, atlasMission, atlasWorldRoute]
+  );
   const activeObjectiveStep = missionSteps[Math.min(activeMissionStep, missionSteps.length - 1)] ?? missionSteps[0];
   const missionStepLocationId = activeObjectiveStep?.locationId ?? atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
   const missionStepLocation = atlasLocations.find((location) => location.id === missionStepLocationId);
@@ -941,6 +1050,12 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const missionObjectiveText = isAtMissionLocation
     ? activeObjectiveStep?.objective ?? `Resuelve el nodo interno requerido de ${atlasLocation?.name ?? "la ubicacion"}.`
     : `Viaja por el mapa mundi hacia ${missionStepLocation?.name ?? missionStepLocationId}: ${activeObjectiveStep?.title ?? "objetivo activo"}.`;
+  const activeMissionRuntime = missionRuntime?.[activeMissionId] ?? {
+    status: "active" as const,
+    currentStep: activeMissionStep,
+    completedSteps: [...completedMissionSteps].filter((step) => step.startsWith(`${activeMissionId}:`)),
+    failedChecks: 0,
+  };
   const atlasEnemy = useMemo(() => {
     const enemyNames = atlasLocation?.enemies ?? [];
     const match = atlasBestiary.find((creature) =>
@@ -1024,12 +1139,15 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasCompletedSubzones: [...atlasCompleted],
         atlasLocationStates,
         atlasEnemyStates,
+        missionRuntime,
+        discoveredCollectibles: [...discoveredCollectibles],
         activeMissionId,
         activeMissionStep,
         completedMissionSteps: [...completedMissionSteps],
         unlockedMissionIds: [...unlockedMissionIds],
         momentum,
         noise,
+        ruleState,
         equippedWeaponId,
         equippedArmorId,
         ammo,
@@ -1056,8 +1174,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     missionStep = activeMissionStep,
     completedSteps = completedMissionSteps,
     unlockedMissions = unlockedMissionIds,
+    missionRuntimeValue = missionRuntime,
+    discoveredCollectiblesValue = discoveredCollectibles,
     momentumValue = momentum,
     noiseValue = noise,
+    ruleStateValue = ruleState,
     equippedWeaponValue = equippedWeaponId,
     equippedArmorValue = equippedArmorId,
     ammoValue = ammo,
@@ -1082,8 +1203,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     missionStep?: number;
     completedSteps?: Set<string>;
     unlockedMissions?: Set<string>;
+    missionRuntimeValue?: NonNullable<PlayerSave["campaignState"]>["missionRuntime"];
+    discoveredCollectiblesValue?: Set<string>;
     momentumValue?: number;
     noiseValue?: number;
+    ruleStateValue?: RuleState;
     equippedWeaponValue?: string;
     equippedArmorValue?: string;
     ammoValue?: Record<string, number>;
@@ -1122,12 +1246,15 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasCompletedSubzones: [...completedAtlas],
         atlasLocationStates: locationStates,
         atlasEnemyStates: enemyStates,
+        missionRuntime: missionRuntimeValue,
+        discoveredCollectibles: [...discoveredCollectiblesValue],
         activeMissionId: missionId,
         activeMissionStep: missionStep,
         completedMissionSteps: [...completedSteps],
         unlockedMissionIds: [...unlockedMissions],
         momentum: momentumValue,
         noise: noiseValue,
+        ruleState: ruleStateValue,
         equippedWeaponId: equippedWeaponValue,
         equippedArmorId: equippedArmorValue,
         ammo: ammoValue,
@@ -1162,7 +1289,14 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       return false;
     }
     setAp((current) => current - cost);
+    setRuleState((current) => mergeRuleState(current, { actionPointsSpent: current.actionPointsSpent + cost }));
     return true;
+  }
+
+  function nextRuleState(patch: Partial<RuleState>) {
+    const merged = mergeRuleState(ruleState, patch);
+    setRuleState(merged);
+    return merged;
   }
 
   function moveTo(targetId: string) {
@@ -1256,6 +1390,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const target = atlasLocations.find((item) => item.id === locationId);
     const nextVisited = new Set(atlasVisited).add(locationId);
     const nextInternalVisited = new Set(atlasVisitedInternalNodes).add(`${locationId}:0:${target?.subzones?.[0]?.name ?? "inicio"}`);
+    const nextRule = nextRuleState({
+      travelActions: ruleState.travelActions + 1,
+    });
     const nextLocationStates = patchLocationState(atlasLocationStates, locationId, {
       visitedNodes: [...new Set([...(atlasLocationStates?.[locationId]?.visitedNodes ?? []), `${locationId}:0:${target?.subzones?.[0]?.name ?? "inicio"}`])],
     });
@@ -1274,6 +1411,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       visitedAtlas: nextVisited,
       visitedInternalNodes: nextInternalVisited,
       locationStates: nextLocationStates,
+      ruleStateValue: nextRule,
       logValue: nextLog,
       lastAction: `atlas:viajar:${locationId}`,
     });
@@ -1285,6 +1423,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const target = atlasSubzones[index];
     const targetKey = `${atlasLocation.id}:${index}:${target.name}`;
     const nextVisitedInternal = new Set(atlasVisitedInternalNodes).add(targetKey);
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + 1,
+    });
     const nextState = patchLocationState(atlasLocationStates, atlasLocation.id, {
       visitedNodes: [...new Set([...currentLocationState.visitedNodes, targetKey])],
     });
@@ -1299,6 +1440,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       subzoneIndex: index,
       visitedInternalNodes: nextVisitedInternal,
       locationStates: nextState,
+      ruleStateValue: nextRule,
       apValue: ap - 1,
       logValue: nextLog,
       lastAction: `atlas:mover-nodo:${index}`,
@@ -1307,12 +1449,24 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
   function selectAtlasMission(missionId: string) {
     const mission = atlasMissions.find((item) => item.id === missionId);
+    const nextRuntime = {
+      ...(missionRuntime ?? {}),
+      [missionId]: missionRuntime?.[missionId] ?? { status: "active" as const, currentStep: 0, completedSteps: [], failedChecks: 0 },
+    };
     setActiveMissionId(missionId);
+    setActiveMissionStep(nextRuntime[missionId].currentStep);
+    setMissionRuntime(nextRuntime);
     const nextLog = writeLog(
       `Mision activa: ${mission?.name ?? missionId}.`,
       mission?.activation ?? "Activacion textual segun Tomo 2."
     );
-    progressAtlasPatch({ missionId, logValue: nextLog, lastAction: `atlas:mision:${missionId}` });
+    progressAtlasPatch({
+      missionId,
+      missionStep: nextRuntime[missionId].currentStep,
+      missionRuntimeValue: nextRuntime,
+      logValue: nextLog,
+      lastAction: `atlas:mision:${missionId}`,
+    });
   }
 
   function resolveAtlasSubzone() {
@@ -1331,6 +1485,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextAp = ap - actionCost;
     const completed = new Set(atlasCompleted);
     const nextInventory = [...inventory];
+    const nextDiscoveredCollectibles = new Set(discoveredCollectibles);
     let nextLocationStates = atlasLocationStates;
     const nextXp = result.passed ? xp + 25 : xp + 5;
     const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
@@ -1344,6 +1499,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
       }
+      const directCollectible = atlasCollectibles.find((item) => item.name === atlasLoot);
+      if (directCollectible) nextDiscoveredCollectibles.add(directCollectible.id);
       if (isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem) {
         nextCompletedMissionSteps.add(currentMissionStepKey);
         nextMissionStep = Math.min(activeMissionStep + 1, missionSteps.length - 1);
@@ -1363,11 +1520,34 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         loot: atlasLoot ? [...new Set([...currentLocationState.loot, atlasLoot])] : currentLocationState.loot,
       });
     }
+    const missionCompleted = result.passed && nextMissionStep >= missionSteps.length - 1 && nextCompletedMissionSteps.has(currentMissionStepKey);
+    const nextMissionRuntime = {
+      ...(missionRuntime ?? {}),
+      [activeMissionId]: {
+        status: missionCompleted ? "completed" as const : "active" as const,
+        currentStep: nextMissionStep,
+        completedSteps: [...nextCompletedMissionSteps].filter((step) => step.startsWith(`${activeMissionId}:`)),
+        failedChecks: (missionRuntime?.[activeMissionId]?.failedChecks ?? 0) + (result.passed ? 0 : 1),
+      },
+    };
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + actionCost,
+      testsRolled: ruleState.testsRolled + 1,
+      combatRounds: ruleState.combatRounds + (isInternalCombat ? 1 : 0),
+      socialChecks: ruleState.socialChecks + (activeObjectiveStep?.kind === "social" || activeObjectiveStep?.kind === "faction" ? 1 : 0),
+      technicalChecks: ruleState.technicalChecks + (activeObjectiveStep?.kind === "technical" || activeObjectiveStep?.kind === "loot" ? 1 : 0),
+      failures: ruleState.failures + (result.passed ? 0 : 1),
+      complications: result.passed
+        ? ruleState.complications
+        : [`${atlasLocation.name}: ${atlasSubzone.name}`, ...ruleState.complications].slice(0, 8),
+    });
     setAtlasCompleted(completed);
     setAtlasLocationStates(nextLocationStates);
     setActiveMissionStep(nextMissionStep);
     setCompletedMissionSteps(nextCompletedMissionSteps);
     setUnlockedMissionIds(nextUnlockedMissionIds);
+    setMissionRuntime(nextMissionRuntime);
+    setDiscoveredCollectibles(nextDiscoveredCollectibles);
     setMomentum(nextMomentum);
     setNoise(nextNoise);
     setXp(nextXp);
@@ -1383,8 +1563,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       missionStep: nextMissionStep,
       completedSteps: nextCompletedMissionSteps,
       unlockedMissions: nextUnlockedMissionIds,
+      missionRuntimeValue: nextMissionRuntime,
+      discoveredCollectiblesValue: nextDiscoveredCollectibles,
       momentumValue: nextMomentum,
       noiseValue: nextNoise,
+      ruleStateValue: nextRule,
       xpValue: nextXp,
       inventoryValue: nextInventory,
       locationStates: nextLocationStates,
@@ -1423,14 +1606,27 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     };
     const nextEnemyStates = { ...(atlasEnemyStates ?? {}), [atlasInternalKey]: nextEnemyState };
     const nextInventory = [...inventory];
+    const nextDiscoveredCollectibles = new Set(discoveredCollectibles);
     if (nextEnemyState.defeated && atlasLoot && !nextInventory.includes(atlasLoot)) {
       nextInventory.push(atlasLoot);
     }
+    const directCollectible = atlasCollectibles.find((item) => item.name === atlasLoot);
+    if (nextEnemyState.defeated && directCollectible) nextDiscoveredCollectibles.add(directCollectible.id);
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + 1,
+      testsRolled: ruleState.testsRolled + 1,
+      combatRounds: ruleState.combatRounds + 1,
+      failures: ruleState.failures + (result.passed ? 0 : 1),
+      complications: result.passed
+        ? ruleState.complications
+        : [`Combate: ${atlasLocation.name} / ${nextEnemyState.name}`, ...ruleState.complications].slice(0, 8),
+    });
     setXp(nextXp);
     setMomentum(nextMomentum);
     setNoise(nextNoise);
     setAtlasEnemyStates(nextEnemyStates);
     setInventory(nextInventory);
+    setDiscoveredCollectibles(nextDiscoveredCollectibles);
     const nextLog = writeLog(
       `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Dano d6=${damageDie}, aplicado=${damage}.`,
       result.passed
@@ -1441,8 +1637,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       xpValue: nextXp,
       inventoryValue: nextInventory,
       enemyStates: nextEnemyStates,
+      discoveredCollectiblesValue: nextDiscoveredCollectibles,
       momentumValue: nextMomentum,
       noiseValue: nextNoise,
+      ruleStateValue: nextRule,
       logValue: nextLog,
       apValue: nextAp,
       lastAction: `atlas:encuentro:${atlasLocation.id}`,
@@ -1479,6 +1677,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       ...factionReputation,
       [factionId]: (factionReputation[factionId] ?? 0) + 1,
     };
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + 2,
+      socialChecks: ruleState.socialChecks + 1,
+    });
     setSettlementStates(nextSettlementStates);
     setFactionReputation(nextFactionReputation);
     const nextLog = writeLog(
@@ -1488,6 +1690,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     progressAtlasPatch({
       settlementStatesValue: nextSettlementStates,
       factionReputationValue: nextFactionReputation,
+      ruleStateValue: nextRule,
       apValue: ap - 2,
       logValue: nextLog,
       lastAction: `settlement:improve:${settlementId}`,
@@ -1504,6 +1707,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       radiation: survival.radiation,
       fatigue: Math.max(0, survival.fatigue - 2),
     };
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + 1,
+    });
     setSurvival(nextSurvival);
     const nextLog = writeLog(
       "Supervivencia: descanso corto aplicado.",
@@ -1511,9 +1717,60 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     );
     progressAtlasPatch({
       survivalValue: nextSurvival,
+      ruleStateValue: nextRule,
       apValue: ap - 1,
       logValue: nextLog,
       lastAction: "survival:rest",
+    });
+  }
+
+  function equipNextLoadout(kind: "weapon" | "armor") {
+    const items = kind === "weapon" ? atlasWeapons : atlasEquipment;
+    if (!items.length) return;
+    const currentId = kind === "weapon" ? equippedWeaponId : equippedArmorId;
+    const currentIndex = Math.max(0, items.findIndex((item) => item.id === currentId));
+    const nextItem = items[(currentIndex + 1) % items.length];
+    if (kind === "weapon") setEquippedWeaponId(nextItem.id);
+    else setEquippedArmorId(nextItem.id);
+    const nextLog = writeLog(
+      `${kind === "weapon" ? "Arma" : "Equipo"} equipado: ${nextItem.name}.`,
+      `Catalogo ${kind === "weapon" ? "Tomo 4" : "Tomo 5"} aplicado al guardado.`
+    );
+    progressAtlasPatch({
+      equippedWeaponValue: kind === "weapon" ? nextItem.id : equippedWeaponId,
+      equippedArmorValue: kind === "armor" ? nextItem.id : equippedArmorId,
+      logValue: nextLog,
+      lastAction: `loadout:${kind}:${nextItem.id}`,
+    });
+  }
+
+  function consumeSurvivalSupply() {
+    if (!spend(1)) return;
+    const nextSurvival = {
+      hunger: Math.max(0, survival.hunger - 2),
+      thirst: Math.max(0, survival.thirst - 2),
+      sleep: survival.sleep,
+      disease: Math.max(0, survival.disease - 1),
+      radiation: Math.max(0, survival.radiation - 1),
+      fatigue: survival.fatigue,
+    };
+    const nextInventory = inventory.includes("Agua purificada") ? inventory : ["Agua purificada", ...inventory];
+    const nextRule = nextRuleState({
+      actionPointsSpent: ruleState.actionPointsSpent + 1,
+    });
+    setSurvival(nextSurvival);
+    setInventory(nextInventory);
+    const nextLog = writeLog(
+      "Supervivencia: suministro consumido.",
+      `Hambre ${nextSurvival.hunger}, sed ${nextSurvival.thirst}, enfermedad ${nextSurvival.disease}, radiacion ${nextSurvival.radiation}.`
+    );
+    progressAtlasPatch({
+      survivalValue: nextSurvival,
+      inventoryValue: nextInventory,
+      ruleStateValue: nextRule,
+      apValue: ap - 1,
+      logValue: nextLog,
+      lastAction: "survival:supply",
     });
   }
 
@@ -1606,7 +1863,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
               <label>
                 <span>Ubicacion del Tomo 6</span>
                 <select value={atlasLocation?.id ?? ""} onChange={(event) => selectAtlasLocation(event.target.value)}>
-                  {atlasLocations.slice(0, 220).map((location) => (
+                  {atlasLocations.map((location) => (
                     <option key={location.id} value={location.id}>
                       {location.id} - {location.name}
                     </option>
@@ -1616,7 +1873,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
               <label>
                 <span>Mision del Tomo 2</span>
                 <select value={atlasMission?.id ?? ""} onChange={(event) => selectAtlasMission(event.target.value)}>
-                  {atlasMissions.slice(0, 220).map((mission) => (
+                  {atlasMissions.map((mission) => (
                     <option key={mission.id} value={mission.id}>
                       {mission.id} - {mission.name}
                     </option>
@@ -1635,8 +1892,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </span>
                   <span>
                     <small>Ruta de mision</small>
-                    <strong>{missionRouteProgress}%</strong>
-                    <i>Paso {Math.min(activeMissionStep + 1, missionSteps.length)} de {missionSteps.length}</i>
+                    <strong>{missionRouteProgress}% / {activeMissionRuntime.status}</strong>
+                    <i>Paso {Math.min(activeMissionStep + 1, missionSteps.length)} de {missionSteps.length}; fallos {activeMissionRuntime.failedChecks}</i>
                   </span>
                   <span>
                     <small>Condicion</small>
@@ -1730,6 +1987,21 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
                 <div className="fo4-runtime-grid">
                   <span>
+                    <small>Tomo 1 / Reglas</small>
+                    <strong>{ruleState.testsRolled} pruebas / {ruleState.actionPointsSpent} AP</strong>
+                    <i>Combates {ruleState.combatRounds} / fallos {ruleState.failures} / viajes {ruleState.travelActions}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 2 / Misiones</small>
+                    <strong>{atlasMissions.length} plantillas</strong>
+                    <i>{Object.keys(missionRuntime ?? {}).length} misiones con estado runtime</i>
+                  </span>
+                  <span>
+                    <small>Tomo 3 / Bestiario</small>
+                    <strong>{atlasEnemy?.name ?? "Amenaza local"}</strong>
+                    <i>{Object.values(atlasEnemyStates ?? {}).filter((enemy) => enemy.defeated).length} encuentros derrotados</i>
+                  </span>
+                  <span>
                     <small>Tomo 4 / Arma</small>
                     <strong>{equippedWeapon?.name ?? equippedWeaponId}</strong>
                     <i>Municion .38: {ammo[".38"] ?? 0} / 10mm: {ammo["10mm"] ?? 0}</i>
@@ -1761,7 +2033,12 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   <span>
                     <small>Tomo 9 / Loot</small>
                     <strong>{atlasLoot}</strong>
-                    <i>{currentLocationState.loot.length} objetos registrados aqui</i>
+                    <i>{currentLocationState.loot.length} aqui / {discoveredCollectibles.size} coleccionables descubiertos</i>
+                  </span>
+                  <span>
+                    <small>Cobertura total</small>
+                    <strong>{atlasLocations.length} ubicaciones</strong>
+                    <i>{atlasWeapons.length} armas / {atlasEquipment.length} equipo / {atlasSettlements.length} asentamientos</i>
                   </span>
                 </div>
 
@@ -1778,8 +2055,17 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   <button onClick={improveSettlement} disabled={!atlasLocation.settlement}>
                     <Package size={18} /> Asentamiento
                   </button>
+                  <button onClick={() => equipNextLoadout("weapon")}>
+                    <Swords size={18} /> Cambiar arma
+                  </button>
+                  <button onClick={() => equipNextLoadout("armor")}>
+                    <Shield size={18} /> Cambiar equipo
+                  </button>
                   <button onClick={restAndRecover}>
                     <HeartPulse size={18} /> Descanso
+                  </button>
+                  <button onClick={consumeSurvivalSupply}>
+                    <Package size={18} /> Suministro
                   </button>
                 </div>
               </>

@@ -86,6 +86,17 @@ const expectedDlc = [
 ];
 const expectedFeatureFolders = ["asentamientos", "facciones", "supervivencia"];
 const expectedCampaignRoute = ["vault111", "vault_exit", "sanctuary_hills", "red_rocket", "concord"];
+const outOfTimeMissionSteps = [
+  "M-0170:wake-cryo",
+  "M-0170:check-pods",
+  "M-0170:secure-office",
+  "M-0170:take-pipboy",
+  "M-0170:open-vault-door",
+  "M-0170:reach-sanctuary",
+  "M-0170:talk-codsworth",
+  "M-0170:red-rocket-route",
+  "M-0170:arrive-concord",
+];
 
 const coreBookDir = file("core-book");
 const coreBookFiles = existsSync(coreBookDir) ? readdirSync(coreBookDir).filter((entry) => entry.endsWith(".txt")) : [];
@@ -245,12 +256,37 @@ for (const expectedText of [
   "resolveAtlasSubzone",
   "resolveAtlasEncounter",
   "activeMissionId",
+  "buildMissionRuntimeSteps",
+  "missionRuntime",
+  "discoveredCollectibles",
+  "ruleState",
+  "equipNextLoadout",
+  "consumeSurvivalSupply",
+  "atlasMissions.map",
+  "atlasLocations.map",
 ]) {
   assert(campaignScreen.includes(expectedText), `Pantalla de campana debe contener atlas textual: ${expectedText}`);
 }
+assert(!campaignScreen.includes("atlasMissions.slice(0, 220)"), "La campana debe exponer las 216 misiones, no un subconjunto");
+assert(!campaignScreen.includes("atlasLocations.slice(0, 220)"), "La campana debe exponer las 558 ubicaciones, no un subconjunto");
 assert(!campaignScreen.includes("buildMicrozones"), "La campana no debe inventar una capa extra sobre las ubicaciones del Tomo 6");
 assert(!campaignScreen.includes("atlasCompletedMicrozones"), "El guardado no debe persistir una capa interna inventada");
-pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapa interno por ubicacion, AP, 2d20, combate y persistencia.");
+pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapa interno por ubicacion, AP, 2d20, combate, misiones genericas y persistencia.");
+
+const filesScreen = readText("src", "screens", "FilesScreen.tsx");
+for (const expectedText of ["json-file-summary", "json-image-preview-strip", "imagePathCandidates", "parsedSummary"]) {
+  assert(filesScreen.includes(expectedText), `Archivos y estructura debe soportar editor/preview JSON: ${expectedText}`);
+}
+const appCss = readText("src", "styles", "app.css");
+for (const expectedText of [
+  "@media (max-width: 720px)",
+  ".fo4-runtime-grid",
+  ".json-file-summary",
+  ".json-image-preview-strip",
+]) {
+  assert(appCss.includes(expectedText), `CSS responsive/editor debe contener ${expectedText}`);
+}
+pass("Editor y responsive: JSON, previews visuales y cortes mobile/tablet validados.");
 
 function playCompleteDemo() {
   const now = new Date().toISOString();
@@ -286,6 +322,18 @@ function playCompleteDemo() {
       securedNodes: [],
       enemyHp: {},
       actionLog: [],
+      missionRuntime: {},
+      discoveredCollectibles: [],
+      ruleState: {
+        actionPointsSpent: 0,
+        testsRolled: 0,
+        combatRounds: 0,
+        socialChecks: 0,
+        technicalChecks: 0,
+        travelActions: 0,
+        failures: 0,
+        complications: [],
+      },
       updatedAt: now,
     },
   };
@@ -313,6 +361,8 @@ function playCompleteDemo() {
       save.campaignState.nodeId = nodeId;
       save.campaignState.visitedNodes.push(`${sceneId}:${nodeId}`);
       save.campaignState.ap -= nodeId.includes("exit") || nodeId.includes("road") ? 2 : 1;
+      save.campaignState.ruleState.actionPointsSpent += nodeId.includes("exit") || nodeId.includes("road") ? 2 : 1;
+      save.campaignState.ruleState.testsRolled += 1;
       if (save.campaignState.ap < 0) {
         save.campaignState.turn += 1;
         save.campaignState.ap = 10;
@@ -320,6 +370,7 @@ function playCompleteDemo() {
       if (combatNodes.has(nodeId)) {
         save.campaignState.enemyHp[`${sceneId}:${nodeId}`] = 0;
         save.campaignState.securedNodes.push(`${sceneId}:${nodeId}`);
+        save.campaignState.ruleState.combatRounds += 1;
         save.campaignState.actionLog.unshift(`Combate resuelto en ${sceneId}:${nodeId}`);
       } else {
         save.campaignState.securedNodes.push(`${sceneId}:${nodeId}`);
@@ -327,6 +378,13 @@ function playCompleteDemo() {
       }
     }
   }
+  save.campaignState.missionRuntime["M-0170"] = {
+    status: "completed",
+    currentStep: 8,
+    completedSteps: outOfTimeMissionSteps,
+    failedChecks: 0,
+  };
+  save.campaignState.discoveredCollectibles = ["COL-0188"];
 
   save.updatedAt = new Date().toISOString();
   save.campaignState.updatedAt = save.updatedAt;
@@ -339,6 +397,10 @@ assert(simulatedSave.visitedZones.length === expectedCampaignRoute.length, "La s
 assert(new Set(simulatedSave.campaignState.visitedNodes).size >= 25, "La simulacion debe recorrer subzonas suficientes");
 assert(Object.values(simulatedSave.campaignState.enemyHp).every((hp) => hp === 0), "La simulacion debe resolver combates demo");
 assert(simulatedSave.campaignState.actionLog.length >= 20, "La simulacion debe registrar acciones para save.game.json");
+assert(simulatedSave.campaignState.missionRuntime["M-0170"].status === "completed", "La simulacion debe persistir runtime de mision completo");
+assert(simulatedSave.campaignState.ruleState.actionPointsSpent > 0, "La simulacion debe persistir AP gastados del Tomo 1");
+assert(simulatedSave.campaignState.ruleState.combatRounds >= 1, "La simulacion debe persistir rondas de combate del Tomo 3");
+assert(simulatedSave.campaignState.discoveredCollectibles.length >= 1, "La simulacion debe persistir coleccionables del Tomo 9");
 pass("Partida simulada: recorrido completo, AP, combates, progreso y save.game.json en memoria validados.");
 
 assert(Array.isArray(news?.items) && news.items.length >= 1, "Noticias deben cargar desde public/platform/news/news.json");

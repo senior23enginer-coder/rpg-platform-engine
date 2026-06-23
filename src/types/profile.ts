@@ -63,12 +63,24 @@ export type PlayerSave = {
     atlasCompletedSubzones?: string[];
     atlasLocationStates?: Record<string, { visitedNodes: string[]; completedNodes: string[]; loot: string[] }>;
     atlasEnemyStates?: Record<string, { enemyId: string; name: string; hp: number; maxHp: number; defeated: boolean }>;
+    missionRuntime?: Record<string, { status: "locked" | "active" | "completed"; currentStep: number; completedSteps: string[]; failedChecks: number }>;
+    discoveredCollectibles?: string[];
     activeMissionId?: string;
     activeMissionStep?: number;
     completedMissionSteps?: string[];
     unlockedMissionIds?: string[];
     momentum?: number;
     noise?: number;
+    ruleState?: {
+      actionPointsSpent: number;
+      testsRolled: number;
+      combatRounds: number;
+      socialChecks: number;
+      technicalChecks: number;
+      travelActions: number;
+      failures: number;
+      complications: string[];
+    };
     equippedWeaponId?: string;
     equippedArmorId?: string;
     ammo?: Record<string, number>;
