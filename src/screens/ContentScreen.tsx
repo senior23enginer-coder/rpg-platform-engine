@@ -48,6 +48,9 @@ type RuntimeDepthManifest = {
     missions?: number;
     missionsSpecificRuntime?: number;
     missionsGenericRuntime?: number;
+    missionStages?: number;
+    missionNpcs?: number;
+    missionRequiredItems?: number;
     locations?: number;
     locationsWithInternalMaps?: number;
     locationsWithEnemies?: number;
@@ -370,10 +373,14 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
             <p>
               {runtimeDepth.summary.missions ?? 0} misiones y {runtimeDepth.summary.locations ?? 0} ubicaciones convertidas a flujo textual.
               Especificas: {runtimeDepth.summary.missionsSpecificRuntime ?? 0}. Genericas: {runtimeDepth.summary.missionsGenericRuntime ?? 0}.
+              Etapas exactas: {runtimeDepth.summary.missionStages ?? 0}.
             </p>
           </div>
           <div className="template-count-grid">
             <span><strong>{runtimeDepth.summary.locationsWithInternalMaps ?? 0}</strong><small>mapas internos</small></span>
+            <span><strong>{runtimeDepth.summary.missionStages ?? 0}</strong><small>etapas mision</small></span>
+            <span><strong>{runtimeDepth.summary.missionNpcs ?? 0}</strong><small>npc mision</small></span>
+            <span><strong>{runtimeDepth.summary.missionRequiredItems ?? 0}</strong><small>objetos mision</small></span>
             <span><strong>{runtimeDepth.summary.locationsWithEnemies ?? 0}</strong><small>con enemigos</small></span>
             <span><strong>{runtimeDepth.summary.bestiary ?? 0}</strong><small>bestiario</small></span>
             <span><strong>{runtimeDepth.summary.weapons ?? 0}</strong><small>armas</small></span>

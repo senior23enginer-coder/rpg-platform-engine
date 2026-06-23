@@ -3,6 +3,12 @@ import path from "node:path";
 
 const root = process.cwd();
 const templates = JSON.parse(readFileSync(path.join(root, "public/games/fallout4/templates/templates.json"), "utf8"));
+let missionDetails;
+try {
+  missionDetails = JSON.parse(readFileSync(path.join(root, "public/games/fallout4/missions/mission-details.json"), "utf8"));
+} catch {
+  missionDetails = { missions: [] };
+}
 const catalogs = templates.catalogs ?? {};
 const missions = catalogs.missions ?? [];
 const locations = catalogs.locations ?? [];
@@ -31,20 +37,26 @@ function missionLocations(mission) {
 }
 
 function missionDepth(mission) {
+  const detail = missionDetails.missions?.find((item) => item.id === mission.id);
   const route = missionLocations(mission);
-  const generatedSteps = route.reduce((sum, location) => {
+  const generatedSteps = detail?.stages?.length || route.reduce((sum, location) => {
     const subzones = location.subzones?.length ?? 0;
     const base = 4 + (location.settlement ? 1 : 0);
     return sum + Math.max(base, Math.min(8, subzones));
   }, 0);
-  const hasSpecificText = Boolean(mission.activation || mission.execution || mission.completion);
+  const hasSpecificText = Boolean(detail?.stages?.length || mission.activation || mission.execution || mission.completion);
   return {
     id: mission.id,
     name: mission.name,
     sourceTome: mission.sourceTome,
     status: hasSpecificText ? "specific-runtime" : "generic-runtime",
     playableSteps: generatedSteps,
-    linkedLocationIds: route.map((location) => location.id),
+    linkedLocationIds: detail?.stages?.some((stage) => stage.locationId)
+      ? [...new Set(detail.stages.map((stage) => stage.locationId).filter(Boolean))]
+      : route.map((location) => location.id),
+    npcCount: detail?.npcs?.length ?? 0,
+    enemyCount: detail?.enemies?.length ?? 0,
+    requiredItemCount: detail?.requiredItems?.length ?? 0,
     systems: ["ap", "2d20", "mission-state", "location-map", "encounter", "loot", "save-game"],
   };
 }
@@ -72,8 +84,11 @@ const manifest = {
   scope: "base-game",
   summary: {
     missions: missions.length,
-    missionsSpecificRuntime: missions.filter((mission) => mission.activation || mission.execution || mission.completion).length,
-    missionsGenericRuntime: missions.filter((mission) => !(mission.activation || mission.execution || mission.completion)).length,
+    missionsSpecificRuntime: missions.filter((mission) => missionDetails.missions?.find((item) => item.id === mission.id)?.stages?.length || mission.activation || mission.execution || mission.completion).length,
+    missionsGenericRuntime: missions.filter((mission) => !(missionDetails.missions?.find((item) => item.id === mission.id)?.stages?.length || mission.activation || mission.execution || mission.completion)).length,
+    missionStages: missionDetails.counts?.stages ?? 0,
+    missionNpcs: missionDetails.counts?.npcs ?? 0,
+    missionRequiredItems: missionDetails.counts?.requiredItems ?? 0,
     locations: locations.length,
     locationsWithInternalMaps: locations.filter((location) => location.subzones?.length).length,
     locationsWithEnemies: locations.filter((location) => location.enemies?.length).length,

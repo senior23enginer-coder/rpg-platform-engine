@@ -80,6 +80,20 @@ export type PlayerSave = {
       travelActions: number;
       failures: number;
       complications: string[];
+      criticalSuccesses?: number;
+      criticalFailures?: number;
+      damageDealt?: number;
+      damageTaken?: number;
+      defenseApplied?: number;
+      capsEarned?: number;
+      capsSpent?: number;
+    };
+    perkState?: {
+      active: string[];
+      pendingPerkChoices: number;
+      damageBonus: number;
+      defenseBonus: number;
+      difficultyReduction: number;
     };
     equippedWeaponId?: string;
     equippedArmorId?: string;

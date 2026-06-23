@@ -1,12 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-23T19:14:01.423Z",
+  "generatedAt": "2026-06-23T20:10:28.644Z",
   "gameId": "fallout4",
   "scope": "base-game",
   "summary": {
     "missions": 216,
-    "missionsSpecificRuntime": 0,
-    "missionsGenericRuntime": 216,
+    "missionsSpecificRuntime": 216,
+    "missionsGenericRuntime": 0,
+    "missionStages": 1640,
+    "missionNpcs": 454,
+    "missionRequiredItems": 77,
     "locations": 558,
     "locationsWithInternalMaps": 558,
     "locationsWithEnemies": 558,
@@ -79,14 +82,17 @@
       "id": "M-0001",
       "name": "Veinte leguas de viaje submarino",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 18,
       "linkedLocationIds": [
         "U-0118",
         "U-0135",
         "U-0152",
         "U-0169"
       ],
+      "npcCount": 5,
+      "enemyCount": 3,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -101,14 +107,17 @@
       "id": "M-0002",
       "name": "Una ecuacion limpia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0532",
         "U-0549",
         "U-0008",
         "U-0025"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -123,14 +132,15 @@
       "id": "M-0004",
       "name": "Un hogar para la familia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 13,
       "linkedLocationIds": [
-        "U-0345",
-        "U-0362",
-        "U-0379",
-        "U-0396"
+        "U-0213",
+        "V-08"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -145,14 +155,14 @@
       "id": "M-0005",
       "name": "Una casa dividida",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0298",
-        "U-0315",
-        "U-0332",
-        "U-0349"
+        "U-0185"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -167,14 +177,14 @@
       "id": "M-0006",
       "name": "Un cabo suelto",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0037",
-        "U-0054",
-        "U-0071",
-        "U-0088"
+        "U-0141"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -189,14 +199,14 @@
       "id": "M-0009",
       "name": "Un nuevo amanecer",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0352",
-        "U-0369",
-        "U-0386",
-        "U-0403"
+        "U-0110"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -211,14 +221,14 @@
       "id": "M-0012",
       "name": "Un pilar de la comunidad",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0357",
-        "U-0374",
-        "U-0391",
-        "U-0408"
+        "U-0202"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -233,14 +243,17 @@
       "id": "M-0014",
       "name": "Un lugar al que llamar hogar",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
         "U-0180",
         "U-0197",
         "U-0214",
         "U-0231"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -255,14 +268,18 @@
       "id": "M-0018",
       "name": "Ad Victoriam",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0405",
-        "U-0422",
-        "U-0439",
-        "U-0456"
+        "A-002",
+        "U-0105",
+        "U-0449",
+        "U-0177",
+        "U-0185"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -277,14 +294,15 @@
       "id": "M-0019",
       "name": "Dirigible abatido",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0372",
-        "U-0389",
-        "U-0406",
-        "U-0423"
+        "U-0185",
+        "A-002"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -299,14 +317,15 @@
       "id": "M-0022",
       "name": "All Hallows' Eve",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0105",
-        "U-0122",
-        "U-0139",
-        "U-0156"
+        "U-0238",
+        "U-0001"
       ],
+      "npcCount": 1,
+      "enemyCount": 2,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -321,14 +340,14 @@
       "id": "M-0023",
       "name": "Limosna para los necesitados",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0331",
-        "U-0348",
-        "U-0365",
-        "U-0382"
+        "U-0329"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -343,14 +362,17 @@
       "id": "M-0026",
       "name": "Apropiacion",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0406",
         "U-0423",
         "U-0440",
         "U-0457"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -365,14 +387,15 @@
       "id": "M-0027",
       "name": "Apreciacion artistica",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0264",
-        "U-0281",
-        "U-0298",
-        "U-0315"
+        "U-0215",
+        "U-0228"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -387,14 +410,15 @@
       "id": "M-0028",
       "name": "Atom Cats",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0095",
-        "U-0112",
-        "U-0129",
-        "U-0146"
+        "U-0171",
+        "A-030"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -409,11 +433,14 @@
       "id": "M-0029",
       "name": "Desterrado del Instituto",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
         "U-0185"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -428,14 +455,14 @@
       "id": "M-0030",
       "name": "Benign Intervention",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0056",
-        "U-0073",
-        "U-0090",
-        "U-0107"
+        "V-05"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -450,14 +477,15 @@
       "id": "M-0034",
       "name": "Traicion ciega",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 19,
       "linkedLocationIds": [
-        "U-0068",
-        "U-0085",
-        "U-0102",
-        "U-0119"
+        "U-0040",
+        "U-0110"
       ],
+      "npcCount": 8,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -472,14 +500,14 @@
       "id": "M-0035",
       "name": "Blood Bank",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0173",
-        "U-0190",
-        "U-0207",
-        "U-0224"
+        "U-0110"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -494,14 +522,17 @@
       "id": "M-0037",
       "name": "Boston despues del anochecer",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0324",
-        "U-0341",
-        "U-0358",
-        "U-0375"
+        "U-0489",
+        "A-003",
+        "U-0329",
+        "U-0438"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -516,14 +547,15 @@
       "id": "M-0038",
       "name": "Clase de botanica",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0296",
-        "U-0313",
-        "U-0330",
-        "U-0347"
+        "U-0199",
+        "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -538,14 +570,17 @@
       "id": "M-0039",
       "name": "Bottle message",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
         "U-0102",
         "U-0119",
         "U-0136",
         "U-0153"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -560,14 +595,14 @@
       "id": "M-0041",
       "name": "Build a Suit",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
-        "U-0340",
-        "U-0357",
-        "U-0374",
-        "U-0391"
+        "V-08"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -582,14 +617,17 @@
       "id": "M-0042",
       "name": "Build Resources",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0188",
         "U-0205",
         "U-0222",
         "U-0239"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -604,14 +642,15 @@
       "id": "M-0043",
       "name": "Building a Better Crop",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0173",
-        "U-0190",
-        "U-0207",
-        "U-0224"
+        "U-0185",
+        "A-030"
       ],
+      "npcCount": 5,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -626,14 +665,17 @@
       "id": "M-0044",
       "name": "Bala",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0191",
         "U-0208",
         "U-0225",
         "U-0242"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -648,14 +690,17 @@
       "id": "M-0045",
       "name": "Burned on the River",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0474",
-        "U-0491",
-        "U-0508",
-        "U-0525"
+        "U-0154",
+        "A-021",
+        "U-0286",
+        "U-0153"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -670,14 +715,14 @@
       "id": "M-0046",
       "name": "Burning Cover",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0535",
-        "U-0552",
-        "U-0011",
-        "U-0028"
+        "U-0489"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -692,14 +737,14 @@
       "id": "M-0047",
       "name": "Butcher's Bill 2",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0082",
-        "U-0099",
-        "U-0116",
-        "U-0133"
+        "U-0489"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -714,14 +759,15 @@
       "id": "M-0048",
       "name": "Butcher's Bill",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0001",
-        "U-0018",
-        "U-0035",
-        "U-0052"
+        "U-0489",
+        "U-0182"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -736,14 +782,15 @@
       "id": "M-0050",
       "name": "Llamada a las armas",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 16,
       "linkedLocationIds": [
-        "U-0433",
-        "U-0450",
-        "U-0467",
-        "U-0484"
+        "U-0177",
+        "U-0061"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -758,11 +805,15 @@
       "id": "M-0051",
       "name": "Cambridge Polymer Labs",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
+        "U-0329",
         "U-0183"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -777,14 +828,14 @@
       "id": "M-0054",
       "name": "Captain Cosmos",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0072",
-        "U-0089",
-        "U-0106",
-        "U-0123"
+        "U-0520"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -799,14 +850,14 @@
       "id": "M-0056",
       "name": "Carbonated Concerns",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0022",
-        "U-0039",
-        "U-0056",
-        "U-0073"
+        "U-0505"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -821,14 +872,17 @@
       "id": "M-0059",
       "name": "Limpiando la Commonwealth",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0053",
         "U-0070",
         "U-0087",
         "U-0104"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -843,14 +897,17 @@
       "id": "M-0062",
       "name": "Clearing the Way",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0202",
         "U-0219",
         "U-0236",
         "U-0253"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -865,14 +922,14 @@
       "id": "M-0065",
       "name": "Combat Ready",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0399",
-        "U-0416",
-        "U-0433",
-        "U-0450"
+        "U-0228"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -887,14 +944,17 @@
       "id": "M-0066",
       "name": "Conserje",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0094",
         "U-0111",
         "U-0128",
         "U-0145"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -909,14 +969,14 @@
       "id": "M-0068",
       "name": "Hombre de confianza",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0536",
-        "U-0553",
-        "U-0012",
-        "U-0029"
+        "U-0079"
       ],
+      "npcCount": 5,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -931,14 +991,16 @@
       "id": "M-0070",
       "name": "Ultima funcion",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0112",
-        "U-0129",
-        "U-0146",
-        "U-0163"
+        "U-0208",
+        "U-0204",
+        "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -953,14 +1015,17 @@
       "id": "M-0071",
       "name": "Mentes peligrosas",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 16,
       "linkedLocationIds": [
         "U-0440",
         "U-0457",
         "U-0474",
         "U-0491"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -975,14 +1040,16 @@
       "id": "M-0073",
       "name": "Dead Drop",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0070",
-        "U-0087",
-        "U-0104",
-        "U-0121"
+        "U-0098",
+        "U-0529",
+        "U-0248"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -997,14 +1064,14 @@
       "id": "M-0074",
       "name": "Dead on Delivery",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0197",
-        "U-0214",
-        "U-0231",
-        "U-0248"
+        "U-0243"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1019,14 +1086,15 @@
       "id": "M-0076",
       "name": "Deathmatch",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0281",
-        "U-0298",
-        "U-0315",
-        "U-0332"
+        "U-0187",
+        "U-0329"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1041,14 +1109,17 @@
       "id": "M-0077",
       "name": "Defender",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0068",
         "U-0085",
         "U-0102",
         "U-0119"
       ],
+      "npcCount": 2,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1063,14 +1134,17 @@
       "id": "M-0078",
       "name": "Defender",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0069",
         "U-0086",
         "U-0103",
         "U-0120"
       ],
+      "npcCount": 2,
+      "enemyCount": 4,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1085,14 +1159,17 @@
       "id": "M-0079",
       "name": "Defender the Artillery",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0291",
         "U-0308",
         "U-0325",
         "U-0342"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1107,11 +1184,15 @@
       "id": "M-0080",
       "name": "Defender el Castillo",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0247"
+        "A-004",
+        "U-0110"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1126,14 +1207,17 @@
       "id": "M-0081",
       "name": "Defender",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
         "U-0063",
         "U-0080",
         "U-0097",
         "U-0114"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1148,14 +1232,14 @@
       "id": "M-0082",
       "name": "Dependencia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0371",
-        "U-0388",
-        "U-0405",
-        "U-0422"
+        "V-03"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1170,14 +1254,15 @@
       "id": "M-0083",
       "name": "Detective Case Files",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0020",
-        "U-0037",
-        "U-0054",
-        "U-0071"
+        "U-0198",
+        "V-06"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -1192,11 +1277,14 @@
       "id": "M-0084",
       "name": "Tristezas de Diamond City",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 13,
       "linkedLocationIds": [
         "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1211,11 +1299,14 @@
       "id": "M-0085",
       "name": "Diamond City's Most Wanted",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
         "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 3,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1230,14 +1321,15 @@
       "id": "M-0087",
       "name": "Deber o deshonor",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 17,
       "linkedLocationIds": [
-        "U-0237",
-        "U-0254",
-        "U-0271",
-        "U-0288"
+        "A-002",
+        "U-0110"
       ],
+      "npcCount": 4,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1252,14 +1344,14 @@
       "id": "M-0088",
       "name": "Early Retirement",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0311",
-        "U-0328",
-        "U-0345",
-        "U-0362"
+        "U-0185"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -1274,14 +1366,17 @@
       "id": "M-0090",
       "name": "Comportamiento emergente",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
         "U-0069",
         "U-0086",
         "U-0103",
         "U-0120"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1296,14 +1391,14 @@
       "id": "M-0091",
       "name": "Emogene toma un amante",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0241",
-        "U-0258",
-        "U-0275",
-        "U-0292"
+        "U-0214"
       ],
+      "npcCount": 6,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1318,14 +1413,15 @@
       "id": "M-0093",
       "name": "Final de la linea",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0224",
-        "U-0241",
-        "U-0258",
-        "U-0275"
+        "U-0489",
+        "U-0110"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1340,14 +1436,14 @@
       "id": "M-0095",
       "name": "Fallen Hero",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0295",
-        "U-0312",
-        "U-0329",
-        "U-0346"
+        "A-003"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1362,14 +1458,14 @@
       "id": "M-0096",
       "name": "Familiar Faces",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0033",
-        "U-0050",
-        "U-0067",
-        "U-0084"
+        "U-0228"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1384,14 +1480,17 @@
       "id": "M-0098",
       "name": "Feeding the Troops",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0438",
         "U-0455",
         "U-0472",
         "U-0489"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1406,14 +1505,14 @@
       "id": "M-0099",
       "name": "Fertilizer Woman",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0319",
-        "U-0336",
-        "U-0353",
-        "U-0370"
+        "V-03"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1428,11 +1527,14 @@
       "id": "M-0100",
       "name": "Find the Treasures de Jamaica Plain",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0160"
+        "A-015"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1447,14 +1549,15 @@
       "id": "M-0101",
       "name": "Apoyo de fuego",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0020",
-        "U-0037",
-        "U-0054",
-        "U-0071"
+        "U-0177",
+        "U-0329"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1469,14 +1572,15 @@
       "id": "M-0102",
       "name": "Fly Fishing",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
-        "U-0303",
-        "U-0320",
-        "U-0337",
-        "U-0354"
+        "U-0440",
+        "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1491,14 +1595,15 @@
       "id": "M-0104",
       "name": "Formar filas",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0436",
-        "U-0453",
-        "U-0470",
-        "U-0487"
+        "U-0185",
+        "A-004"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1513,14 +1618,15 @@
       "id": "M-0106",
       "name": "From Within",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0327",
-        "U-0344",
-        "U-0361",
-        "U-0378"
+        "U-0185",
+        "U-0110"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -1535,14 +1641,15 @@
       "id": "M-0107",
       "name": "Galeria",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0516",
-        "U-0533",
-        "U-0550",
-        "U-0009"
+        "U-0034",
+        "U-0241"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -1557,14 +1664,17 @@
       "id": "M-0108",
       "name": "Siguiendo una pista",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
         "U-0018",
         "U-0035",
         "U-0052",
         "U-0069"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -1579,14 +1689,14 @@
       "id": "M-0109",
       "name": "Getting Technical",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0370",
-        "U-0387",
-        "U-0404",
-        "U-0421"
+        "U-0110"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1601,14 +1711,17 @@
       "id": "M-0110",
       "name": "Ghoul Problem",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0523",
         "U-0540",
         "U-0557",
         "U-0016"
       ],
+      "npcCount": 3,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1623,14 +1736,15 @@
       "id": "M-0111",
       "name": "Giddyup 'n Go",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
-        "U-0381",
-        "U-0398",
-        "U-0415",
-        "U-0432"
+        "U-0546",
+        "A-029"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1645,14 +1759,17 @@
       "id": "M-0113",
       "name": "Greenskins",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0311",
         "U-0328",
         "U-0345",
         "U-0362"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1667,14 +1784,15 @@
       "id": "M-0114",
       "name": "Gun Run",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0460",
-        "U-0477",
-        "U-0494",
-        "U-0511"
+        "U-0089",
+        "U-0090"
       ],
+      "npcCount": 3,
+      "enemyCount": 2,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -1689,14 +1807,15 @@
       "id": "M-0115",
       "name": "Hazardous Material",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0498",
-        "U-0515",
-        "U-0532",
-        "U-0549"
+        "U-0228",
+        "U-0203"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1711,14 +1830,17 @@
       "id": "M-0117",
       "name": "Ayuda a defender el puesto de control",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
         "U-0503",
         "U-0520",
         "U-0537",
         "U-0554"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1733,14 +1855,15 @@
       "id": "M-0118",
       "name": "Ven, gatita",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0274",
-        "U-0291",
-        "U-0308",
-        "U-0325"
+        "V-03",
+        "U-0082"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1755,14 +1878,17 @@
       "id": "M-0119",
       "name": "Aqui hay monstruos",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
         "U-0514",
         "U-0531",
         "U-0548",
         "U-0007"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1777,14 +1903,17 @@
       "id": "M-0120",
       "name": "High Ground",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0299",
         "U-0316",
         "U-0333",
         "U-0350"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1799,14 +1928,14 @@
       "id": "M-0122",
       "name": "Agujero en la pared",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0457",
-        "U-0474",
-        "U-0491",
-        "U-0508"
+        "V-03"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1821,14 +1950,15 @@
       "id": "M-0123",
       "name": "Holiday Spirits",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0201",
-        "U-0218",
-        "U-0235",
-        "U-0252"
+        "U-0198",
+        "U-0156"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1843,14 +1973,17 @@
       "id": "M-0124",
       "name": "Hogar Away from Hogar",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
         "U-0076",
         "U-0093",
         "U-0110",
         "U-0127"
       ],
+      "npcCount": 1,
+      "enemyCount": 2,
+      "requiredItemCount": 3,
       "systems": [
         "ap",
         "2d20",
@@ -1865,14 +1998,14 @@
       "id": "M-0127",
       "name": "Error humano",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 15,
       "linkedLocationIds": [
-        "U-0469",
-        "U-0486",
-        "U-0503",
-        "U-0520"
+        "A-007"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1887,14 +2020,15 @@
       "id": "M-0128",
       "name": "Cazador cazado",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0076",
-        "U-0093",
-        "U-0110",
-        "U-0127"
+        "U-0184",
+        "U-0186"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -1909,14 +2043,17 @@
       "id": "M-0130",
       "name": "Hipotesis",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0213",
         "U-0230",
         "U-0247",
         "U-0264"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1931,14 +2068,14 @@
       "id": "M-0131",
       "name": "In Sheep's Clothing",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0430",
-        "U-0447",
-        "U-0464",
-        "U-0481"
+        "U-0198"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -1953,14 +2090,16 @@
       "id": "M-0132",
       "name": "Trabajo interno",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0211",
-        "U-0228",
-        "U-0245",
-        "U-0262"
+        "A-022",
+        "U-0185",
+        "U-0110"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -1975,14 +2114,14 @@
       "id": "M-0133",
       "name": "Institucionalizado",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0065",
-        "U-0082",
-        "U-0099",
-        "U-0116"
+        "U-0185"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -1997,14 +2136,17 @@
       "id": "M-0134",
       "name": "Premio gordo",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0456",
         "U-0473",
         "U-0490",
         "U-0507"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2019,14 +2161,16 @@
       "id": "M-0135",
       "name": "Joya de la Commonwealth",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0317",
-        "U-0334",
-        "U-0351",
-        "U-0368"
+        "U-0198",
+        "U-0228",
+        "U-0011"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2041,14 +2185,16 @@
       "id": "M-0136",
       "name": "Nino en una nevera",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0385",
-        "U-0402",
-        "U-0419",
-        "U-0436"
+        "U-0166",
+        "U-0170",
+        "U-0400"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2063,14 +2209,17 @@
       "id": "M-0137",
       "name": "Kidnapped Trader",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0264",
         "U-0281",
         "U-0298",
         "U-0315"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2085,14 +2234,17 @@
       "id": "M-0138",
       "name": "Kidnapping",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0298",
         "U-0315",
         "U-0332",
         "U-0349"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2107,11 +2259,14 @@
       "id": "M-0140",
       "name": "Ultimo viaje del U.S.S. Constitution",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
         "U-0191"
       ],
+      "npcCount": 7,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2126,14 +2281,17 @@
       "id": "M-0141",
       "name": "Leading by Example",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0396",
         "U-0413",
         "U-0430",
         "U-0447"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2148,14 +2306,17 @@
       "id": "M-0142",
       "name": "Learning Curve",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0071",
         "U-0088",
         "U-0105",
         "U-0122"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2170,14 +2331,14 @@
       "id": "M-0143",
       "name": "Legendary Hunt",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0077",
-        "U-0094",
-        "U-0111",
-        "U-0128"
+        "U-0134"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2192,14 +2353,16 @@
       "id": "M-0144",
       "name": "Liberty reactivado",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 18,
       "linkedLocationIds": [
-        "U-0529",
-        "U-0546",
-        "U-0005",
-        "U-0022"
+        "A-002",
+        "U-0143",
+        "U-0125"
       ],
+      "npcCount": 6,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2214,14 +2377,16 @@
       "id": "M-0146",
       "name": "Long Camino Ahead",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 14,
       "linkedLocationIds": [
-        "U-0240",
-        "U-0257",
-        "U-0274",
-        "U-0291"
+        "U-0080",
+        "U-0048",
+        "U-0228"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2236,14 +2401,14 @@
       "id": "M-0147",
       "name": "Ya era hora",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0257",
-        "U-0274",
-        "U-0291",
-        "U-0308"
+        "U-0242"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2258,14 +2423,16 @@
       "id": "M-0148",
       "name": "Perdido at Sea",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
-        "U-0539",
-        "U-0556",
-        "U-0015",
-        "U-0032"
+        "A-019",
+        "U-0116",
+        "U-0524"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -2280,14 +2447,17 @@
       "id": "M-0149",
       "name": "Perdido Soul",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0433",
         "U-0450",
         "U-0467",
         "U-0484"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2302,14 +2472,14 @@
       "id": "M-0150",
       "name": "Maintenance Man",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0144",
-        "U-0161",
-        "U-0178",
-        "U-0195"
+        "V-03"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2324,14 +2494,14 @@
       "id": "M-0151",
       "name": "Malevolent Malfunction",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0379",
-        "U-0396",
-        "U-0413",
-        "U-0430"
+        "U-0022"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2346,14 +2516,15 @@
       "id": "M-0152",
       "name": "Humanidad redefinida",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0123",
-        "U-0140",
-        "U-0157",
-        "U-0174"
+        "U-0185",
+        "U-0184"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2368,14 +2539,15 @@
       "id": "M-0153",
       "name": "Mass Fusion",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 17,
       "linkedLocationIds": [
-        "U-0330",
-        "U-0347",
-        "U-0364",
-        "U-0381"
+        "U-0185",
+        "U-0223"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 4,
       "systems": [
         "ap",
         "2d20",
@@ -2390,11 +2562,15 @@
       "id": "M-0155",
       "name": "Meet Ness at the Crash Site",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0338"
+        "U-0339",
+        "U-0033"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2409,14 +2585,17 @@
       "id": "M-0156",
       "name": "Memoria interrumpida",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0199",
         "U-0216",
         "U-0233",
         "U-0250"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2431,14 +2610,17 @@
       "id": "M-0157",
       "name": "Mercer Safehouse",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0281",
         "U-0298",
         "U-0315",
         "U-0332"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2453,14 +2635,14 @@
       "id": "M-0159",
       "name": "Mystery Meat",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0460",
-        "U-0477",
-        "U-0494",
-        "U-0511"
+        "U-0094"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2475,14 +2657,17 @@
       "id": "M-0160",
       "name": "Neon Winter",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 15,
       "linkedLocationIds": [
-        "U-0329",
-        "U-0346",
-        "U-0363",
-        "U-0380"
+        "U-0228",
+        "U-0204",
+        "U-0161",
+        "U-0118"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -2497,14 +2682,14 @@
       "id": "M-0161",
       "name": "Familia nuclear",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0176",
-        "U-0193",
-        "U-0210",
-        "U-0227"
+        "U-0185"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2519,14 +2704,14 @@
       "id": "M-0162",
       "name": "Nuka Cola Needs",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
-        "U-0049",
-        "U-0066",
-        "U-0083",
-        "U-0100"
+        "U-0199"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2541,14 +2726,17 @@
       "id": "M-0163",
       "name": "Off the Grid",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0325",
         "U-0342",
         "U-0359",
         "U-0376"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -2563,14 +2751,14 @@
       "id": "M-0164",
       "name": "Viejos canones",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0109",
-        "U-0126",
-        "U-0143",
-        "U-0160"
+        "A-004"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2585,11 +2773,15 @@
       "id": "M-0166",
       "name": "Operacion Ticonderoga",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0436"
+        "U-0438",
+        "U-0489"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2604,14 +2796,14 @@
       "id": "M-0167",
       "name": "Order Up",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0008",
-        "U-0025",
-        "U-0042",
-        "U-0059"
+        "U-0015"
       ],
+      "npcCount": 8,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2626,14 +2818,16 @@
       "id": "M-0168",
       "name": "Out en Left Field",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0212",
-        "U-0229",
-        "U-0246",
-        "U-0263"
+        "U-0198",
+        "U-0145",
+        "U-0199"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2648,14 +2842,15 @@
       "id": "M-0169",
       "name": "Out de la Fuego",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0031",
-        "U-0048",
-        "U-0065",
-        "U-0082"
+        "A-010",
+        "U-0042"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2670,14 +2865,16 @@
       "id": "M-0170",
       "name": "Fuera del tiempo",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0233",
-        "U-0250",
-        "U-0267",
-        "U-0284"
+        "U-0001",
+        "A-022",
+        "U-0011"
       ],
+      "npcCount": 0,
+      "enemyCount": 4,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2692,14 +2889,14 @@
       "id": "M-0171",
       "name": "Outside the Wire",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0233",
-        "U-0250",
-        "U-0267",
-        "U-0284"
+        "U-0185"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -2714,14 +2911,14 @@
       "id": "M-0172",
       "name": "Over the Moon",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0473",
-        "U-0490",
-        "U-0507",
-        "U-0524"
+        "A-011"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2736,14 +2933,16 @@
       "id": "M-0174",
       "name": "Pintando la ciudad",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0427",
-        "U-0444",
-        "U-0461",
-        "U-0478"
+        "U-0425",
+        "U-0198",
+        "U-0201"
       ],
+      "npcCount": 4,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2758,14 +2957,17 @@
       "id": "M-0176",
       "name": "Pest Control",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0452",
         "U-0469",
         "U-0486",
         "U-0503"
       ],
+      "npcCount": 1,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2780,14 +2982,14 @@
       "id": "M-0177",
       "name": "El regalo de Pickman",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0529",
-        "U-0546",
-        "U-0005",
-        "U-0022"
+        "U-0215"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -2802,14 +3004,15 @@
       "id": "M-0178",
       "name": "Acorralado",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0289",
-        "U-0306",
-        "U-0323",
-        "U-0340"
+        "A-011",
+        "U-0185"
       ],
+      "npcCount": 5,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2824,14 +3027,14 @@
       "id": "M-0179",
       "name": "Plugging a Leak",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0087",
-        "U-0104",
-        "U-0121",
-        "U-0138"
+        "U-0185"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -2846,14 +3049,15 @@
       "id": "M-0180",
       "name": "Political Leanings",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0486",
-        "U-0503",
-        "U-0520",
-        "U-0537"
+        "U-0185",
+        "U-0198"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2868,14 +3072,14 @@
       "id": "M-0181",
       "name": "Pool Cleaning",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
-        "U-0510",
-        "U-0527",
-        "U-0544",
-        "U-0003"
+        "U-0198"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2890,14 +3094,17 @@
       "id": "M-0183",
       "name": "Energia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0526",
         "U-0543",
         "U-0002",
         "U-0019"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2912,14 +3119,15 @@
       "id": "M-0185",
       "name": "Puesta en marcha",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0234",
-        "U-0251",
-        "U-0268",
-        "U-0285"
+        "U-0198",
+        "U-0185"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2934,14 +3142,17 @@
       "id": "M-0187",
       "name": "Precipicio de guerra",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0099",
-        "U-0116",
-        "U-0133",
-        "U-0150"
+        "U-0489",
+        "U-0177",
+        "U-0216",
+        "U-0329"
       ],
+      "npcCount": 5,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2956,14 +3167,15 @@
       "id": "M-0188",
       "name": "Prep School",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0329",
-        "U-0346",
-        "U-0363",
-        "U-0380"
+        "A-003",
+        "U-0106"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -2978,14 +3190,15 @@
       "id": "M-0189",
       "name": "Public Knowledge",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0284",
-        "U-0301",
-        "U-0318",
-        "U-0335"
+        "U-0204",
+        "U-0228"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3000,14 +3213,14 @@
       "id": "M-0190",
       "name": "Pull the Plug",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0473",
-        "U-0490",
-        "U-0507",
-        "U-0524"
+        "U-0005"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3022,14 +3235,16 @@
       "id": "M-0192",
       "name": "Quality Assurance",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0421",
-        "U-0438",
-        "U-0455",
-        "U-0472"
+        "U-0241",
+        "U-0400",
+        "U-0546"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3044,14 +3259,17 @@
       "id": "M-0193",
       "name": "Quartermastery",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0225",
         "U-0242",
         "U-0259",
         "U-0276"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3066,14 +3284,17 @@
       "id": "M-0194",
       "name": "Raider Troubles",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0192",
         "U-0209",
         "U-0226",
         "U-0243"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3088,14 +3309,17 @@
       "id": "M-0195",
       "name": "Randolph Safehouse",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0501",
         "U-0518",
         "U-0535",
         "U-0552"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3110,14 +3334,14 @@
       "id": "M-0196",
       "name": "Reactor Coolant",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
-        "U-0187",
-        "U-0204",
-        "U-0221",
-        "U-0238"
+        "U-0110"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3132,14 +3356,17 @@
       "id": "M-0197",
       "name": "Reclamacion",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0392",
         "U-0409",
         "U-0426",
         "U-0443"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3154,14 +3381,14 @@
       "id": "M-0198",
       "name": "Recruiting Hancock",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0496",
-        "U-0513",
-        "U-0530",
-        "U-0547"
+        "U-0551"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3176,14 +3403,17 @@
       "id": "M-0200",
       "name": "Resettle Refugees",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0395",
         "U-0412",
         "U-0429",
         "U-0446"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3198,14 +3428,15 @@
       "id": "M-0202",
       "name": "Returning the Favor",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0556",
-        "U-0015",
-        "U-0032",
-        "U-0049"
+        "A-001",
+        "U-0006"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3220,14 +3451,14 @@
       "id": "M-0203",
       "name": "Reencuentros",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0539",
-        "U-0556",
-        "U-0015",
-        "U-0032"
+        "U-0071"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3242,14 +3473,16 @@
       "id": "M-0204",
       "name": "Diana",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0298",
-        "U-0315",
-        "U-0332",
-        "U-0349"
+        "U-0071",
+        "U-0177",
+        "U-0329"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3264,14 +3497,17 @@
       "id": "M-0206",
       "name": "Camino a la libertad",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0543",
-        "U-0002",
-        "U-0019",
-        "U-0036"
+        "U-0220",
+        "U-0216",
+        "U-0198",
+        "U-0228"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3286,14 +3522,16 @@
       "id": "M-0207",
       "name": "Rockets' Red Glare",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0316",
-        "U-0333",
-        "U-0350",
-        "U-0367"
+        "U-0216",
+        "U-0177",
+        "U-0110"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3308,14 +3546,17 @@
       "id": "M-0208",
       "name": "Rogue Courser",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0552",
         "U-0011",
         "U-0028",
         "U-0045"
       ],
+      "npcCount": 1,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3330,14 +3571,16 @@
       "id": "M-0210",
       "name": "Run a the Hills",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0033",
-        "U-0050",
-        "U-0067",
-        "U-0084"
+        "U-0071",
+        "U-0524",
+        "U-0022"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3352,14 +3595,17 @@
       "id": "M-0213",
       "name": "Rescate de chatarra",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0519",
         "U-0536",
         "U-0553",
         "U-0012"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3374,14 +3620,14 @@
       "id": "M-0214",
       "name": "Sanctuary",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0218",
-        "U-0235",
-        "U-0252",
-        "U-0269"
+        "A-022"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3396,14 +3642,15 @@
       "id": "M-0216",
       "name": "Semper Invicta",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0078",
-        "U-0095",
-        "U-0112",
-        "U-0129"
+        "U-0177",
+        "U-0329"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3418,14 +3665,16 @@
       "id": "M-0217",
       "name": "Sombra de acero",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0108",
-        "U-0125",
-        "U-0142",
-        "U-0159"
+        "U-0177",
+        "U-0110",
+        "U-0329"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3440,14 +3689,14 @@
       "id": "M-0220",
       "name": "Short Stories",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0008",
-        "U-0025",
-        "U-0042",
-        "U-0059"
+        "V-03"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3462,14 +3711,15 @@
       "id": "M-0221",
       "name": "Show No Mercy",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0444",
-        "U-0461",
-        "U-0478",
-        "U-0495"
+        "U-0110",
+        "U-0111"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3484,14 +3734,15 @@
       "id": "M-0222",
       "name": "Shrouded Manor",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0076",
-        "U-0093",
-        "U-0110",
-        "U-0127"
+        "U-0195",
+        "U-0479"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -3506,14 +3757,17 @@
       "id": "M-0223",
       "name": "Silver like the Shroud",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
         "U-0244",
         "U-0261",
         "U-0278",
         "U-0295"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3528,14 +3782,14 @@
       "id": "M-0224",
       "name": "Slocum's Joe",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
-        "U-0364",
-        "U-0381",
-        "U-0398",
-        "U-0415"
+        "U-0045"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3550,14 +3804,16 @@
       "id": "M-0226",
       "name": "Special Delivery",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0282",
-        "U-0299",
-        "U-0316",
-        "U-0333"
+        "U-0214",
+        "U-0198",
+        "A-003"
       ],
+      "npcCount": 5,
+      "enemyCount": 1,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3572,14 +3828,16 @@
       "id": "M-0227",
       "name": "Spoils de Guerra",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 18,
       "linkedLocationIds": [
         "U-0223",
-        "U-0240",
-        "U-0257",
-        "U-0274"
+        "U-0185",
+        "A-002"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 4,
       "systems": [
         "ap",
         "2d20",
@@ -3594,14 +3852,17 @@
       "id": "M-0229",
       "name": "Stop the Raiding",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0221",
         "U-0238",
         "U-0255",
         "U-0272"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3616,14 +3877,17 @@
       "id": "M-0230",
       "name": "La historia del siglo",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
         "U-0133",
         "U-0150",
         "U-0167",
         "U-0184"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3638,14 +3902,17 @@
       "id": "M-0233",
       "name": "Suspected Synth",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0217",
         "U-0234",
         "U-0251",
         "U-0268"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3660,14 +3927,16 @@
       "id": "M-0234",
       "name": "Retencion synth",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0241",
-        "U-0258",
-        "U-0275",
-        "U-0292"
+        "U-0185",
+        "U-0099",
+        "A-003"
       ],
+      "npcCount": 2,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3682,14 +3951,16 @@
       "id": "M-0235",
       "name": "Tactical Thinking",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 14,
       "linkedLocationIds": [
-        "U-0374",
-        "U-0391",
-        "U-0408",
-        "U-0425"
+        "U-0488",
+        "U-0216",
+        "U-0489"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3704,14 +3975,14 @@
       "id": "M-0237",
       "name": "Tomando independencia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 14,
       "linkedLocationIds": [
-        "U-0258",
-        "U-0275",
-        "U-0292",
-        "U-0309"
+        "A-004"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3726,14 +3997,17 @@
       "id": "M-0239",
       "name": "Taking Point",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0431",
         "U-0448",
         "U-0465",
         "U-0482"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3748,14 +4022,17 @@
       "id": "M-0240",
       "name": "That's the Spirit",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 1,
       "linkedLocationIds": [
         "U-0280",
         "U-0297",
         "U-0314",
         "U-0331"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3770,11 +4047,16 @@
       "id": "M-0242",
       "name": "La batalla de Bunker Hill",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0190"
+        "U-0185",
+        "A-003",
+        "U-0184"
       ],
+      "npcCount": 2,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3789,14 +4071,17 @@
       "id": "M-0243",
       "name": "La gran excavacion",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
-        "U-0426",
-        "U-0443",
-        "U-0460",
-        "U-0477"
+        "U-0228",
+        "U-0410",
+        "U-0198",
+        "U-0150"
       ],
+      "npcCount": 6,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3811,14 +4096,14 @@
       "id": "M-0245",
       "name": "El Cleaner",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0175",
-        "U-0192",
-        "U-0209",
-        "U-0226"
+        "U-0228"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3833,11 +4118,14 @@
       "id": "M-0246",
       "name": "El Combat Zone",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0231"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3852,14 +4140,17 @@
       "id": "M-0247",
       "name": "El Devil's Due",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 8,
       "linkedLocationIds": [
         "U-0451",
         "U-0468",
         "U-0485",
         "U-0502"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3874,14 +4165,14 @@
       "id": "M-0248",
       "name": "El Disappearing Act",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0473",
-        "U-0490",
-        "U-0507",
-        "U-0524"
+        "U-0198"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -3896,14 +4187,17 @@
       "id": "M-0249",
       "name": "El Endless Guerra",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0287",
         "U-0304",
         "U-0321",
         "U-0338"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3918,14 +4212,17 @@
       "id": "M-0250",
       "name": "El Enemy de My Enemy",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 2,
       "linkedLocationIds": [
         "U-0430",
         "U-0447",
         "U-0464",
         "U-0481"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3940,14 +4237,17 @@
       "id": "M-0251",
       "name": "El First Step",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0438",
         "U-0455",
         "U-0472",
         "U-0489"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3962,14 +4262,17 @@
       "id": "M-0252",
       "name": "El Gilded Grasshopper",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0142",
         "U-0159",
         "U-0176",
         "U-0193"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -3984,14 +4287,16 @@
       "id": "M-0253",
       "name": "El Mar Resplandeciente",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0238",
-        "U-0255",
-        "U-0272",
-        "U-0289"
+        "U-0136",
+        "U-0124",
+        "U-0141"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4006,14 +4311,16 @@
       "id": "M-0259",
       "name": "El Perdido Patrol",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
-        "U-0293",
-        "U-0310",
-        "U-0327",
-        "U-0344"
+        "U-0055",
+        "U-0056",
+        "U-0027"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -4028,14 +4335,15 @@
       "id": "M-0260",
       "name": "El Marowski Heist",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0302",
-        "U-0319",
-        "U-0336",
-        "U-0353"
+        "U-0198",
+        "U-0228"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4050,14 +4358,17 @@
       "id": "M-0261",
       "name": "El Memory Den",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0419",
         "U-0436",
         "U-0453",
         "U-0470"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4072,14 +4383,15 @@
       "id": "M-0262",
       "name": "El nivel molecular",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 14,
       "linkedLocationIds": [
-        "U-0456",
-        "U-0473",
-        "U-0490",
-        "U-0507"
+        "U-0489",
+        "U-0185"
       ],
+      "npcCount": 4,
+      "enemyCount": 1,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -4094,14 +4406,14 @@
       "id": "M-0263",
       "name": "La opcion nuclear",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 13,
       "linkedLocationIds": [
-        "U-0341",
-        "U-0358",
-        "U-0375",
-        "U-0392"
+        "U-0185"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -4116,14 +4428,14 @@
       "id": "M-0264",
       "name": "La opcion nuclear",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 16,
       "linkedLocationIds": [
-        "U-0342",
-        "U-0359",
-        "U-0376",
-        "U-0393"
+        "U-0185"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -4138,14 +4450,14 @@
       "id": "M-0265",
       "name": "La opcion nuclear",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 17,
       "linkedLocationIds": [
-        "U-0343",
-        "U-0360",
-        "U-0377",
-        "U-0394"
+        "U-0185"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -4160,14 +4472,18 @@
       "id": "M-0266",
       "name": "El Paper Mirror",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 15,
       "linkedLocationIds": [
-        "U-0093",
-        "U-0110",
-        "U-0127",
-        "U-0144"
+        "U-0087",
+        "U-0186",
+        "U-0011",
+        "U-0022",
+        "U-0505"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4182,14 +4498,15 @@
       "id": "M-0269",
       "name": "El Quantum Stag",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0103",
-        "U-0120",
-        "U-0137",
-        "U-0154"
+        "A-020",
+        "A-028"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4204,14 +4521,17 @@
       "id": "M-0270",
       "name": "El Replacement",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0053",
         "U-0070",
         "U-0087",
         "U-0104"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -4226,11 +4546,15 @@
       "id": "M-0271",
       "name": "El secreto de la Casa Cabot",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 13,
       "linkedLocationIds": [
+        "U-0030",
         "U-0214"
       ],
+      "npcCount": 5,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4245,14 +4569,14 @@
       "id": "M-0272",
       "name": "El Sight",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 9,
       "linkedLocationIds": [
-        "U-0546",
-        "U-0005",
-        "U-0022",
-        "U-0039"
+        "A-022"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4267,14 +4591,16 @@
       "id": "M-0273",
       "name": "El Silver Shroud",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
-        "U-0210",
-        "U-0227",
-        "U-0244",
-        "U-0261"
+        "U-0228",
+        "U-0206",
+        "U-0056"
       ],
+      "npcCount": 6,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4289,14 +4615,17 @@
       "id": "M-0277",
       "name": "To the Mattresses",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0362",
         "U-0379",
         "U-0396",
         "U-0413"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4311,14 +4640,14 @@
       "id": "M-0278",
       "name": "Tour de Duty",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
-        "U-0387",
-        "U-0404",
-        "U-0421",
-        "U-0438"
+        "U-0110"
       ],
+      "npcCount": 4,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4333,14 +4662,15 @@
       "id": "M-0279",
       "name": "Oficio de espias",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0228",
-        "U-0245",
-        "U-0262",
-        "U-0279"
+        "U-0282",
+        "U-0216"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4355,14 +4685,15 @@
       "id": "M-0280",
       "name": "Traffic Jam",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
-        "U-0282",
-        "U-0299",
-        "U-0316",
-        "U-0333"
+        "A-003",
+        "U-0056"
       ],
+      "npcCount": 2,
+      "enemyCount": 2,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4377,14 +4708,17 @@
       "id": "M-0282",
       "name": "Treasure Hunt",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
         "U-0001",
         "U-0018",
         "U-0035",
         "U-0052"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4399,14 +4733,15 @@
       "id": "M-0284",
       "name": "Trouble Brewin'",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0132",
-        "U-0149",
-        "U-0166",
-        "U-0183"
+        "U-0228",
+        "U-0237"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4421,14 +4756,15 @@
       "id": "M-0285",
       "name": "Troubled Waters",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0209",
-        "U-0226",
-        "U-0243",
-        "U-0260"
+        "A-011",
+        "U-0075"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4443,14 +4779,17 @@
       "id": "M-0286",
       "name": "Tunnel Snakes Rule!",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 6,
       "linkedLocationIds": [
         "U-0463",
         "U-0480",
         "U-0497",
         "U-0514"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4465,14 +4804,16 @@
       "id": "M-0290",
       "name": "Encubierto bajo tierra",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 20,
       "linkedLocationIds": [
-        "U-0315",
-        "U-0332",
-        "U-0349",
-        "U-0366"
+        "U-0183",
+        "U-0185",
+        "U-0329"
       ],
+      "npcCount": 9,
+      "enemyCount": 0,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -4487,14 +4828,17 @@
       "id": "M-0291",
       "name": "Valentine improbable",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
         "U-0172",
         "U-0189",
         "U-0206",
         "U-0223"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4509,14 +4853,17 @@
       "id": "M-0292",
       "name": "Variable Removal",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0276",
         "U-0293",
         "U-0310",
         "U-0327"
       ],
+      "npcCount": 2,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4531,11 +4878,15 @@
       "id": "M-0293",
       "name": "Vault 75",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
+      "status": "specific-runtime",
       "playableSteps": 8,
       "linkedLocationIds": [
-        "U-0047"
+        "V-02",
+        "U-0046"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 2,
       "systems": [
         "ap",
         "2d20",
@@ -4550,11 +4901,14 @@
       "id": "M-0294",
       "name": "Vault 81",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0081"
+        "V-03"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4569,11 +4923,14 @@
       "id": "M-0295",
       "name": "Vault 81 Tour",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 8,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0081"
+        "V-03"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4588,14 +4945,17 @@
       "id": "M-0297",
       "name": "Virgil's Cure",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 3,
       "linkedLocationIds": [
         "U-0481",
         "U-0498",
         "U-0515",
         "U-0532"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4610,14 +4970,15 @@
       "id": "M-0301",
       "name": "La guerra nunca cambia",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 19,
       "linkedLocationIds": [
-        "U-0198",
-        "U-0215",
-        "U-0232",
-        "U-0249"
+        "A-022",
+        "U-0001"
       ],
+      "npcCount": 3,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4632,14 +4993,15 @@
       "id": "M-0302",
       "name": "Guerra Paint",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 11,
       "linkedLocationIds": [
-        "U-0416",
-        "U-0433",
-        "U-0450",
-        "U-0467"
+        "U-0162",
+        "U-0168"
       ],
+      "npcCount": 1,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4654,14 +5016,17 @@
       "id": "M-0303",
       "name": "Way Back Hogar",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 13,
       "linkedLocationIds": [
-        "U-0498",
-        "U-0515",
-        "U-0532",
-        "U-0549"
+        "A-022",
+        "U-0198",
+        "U-0228",
+        "A-003"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4676,14 +5041,14 @@
       "id": "M-0304",
       "name": "Weathervane",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 5,
       "linkedLocationIds": [
-        "U-0410",
-        "U-0427",
-        "U-0444",
-        "U-0461"
+        "U-0489"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4698,14 +5063,17 @@
       "id": "M-0305",
       "name": "Wedding Day",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 4,
       "linkedLocationIds": [
         "U-0289",
         "U-0306",
         "U-0323",
         "U-0340"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4720,14 +5088,16 @@
       "id": "M-0307",
       "name": "Cuando la libertad llama",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 12,
       "linkedLocationIds": [
-        "U-0412",
-        "U-0429",
-        "U-0446",
-        "U-0463"
+        "U-0011",
+        "U-0012",
+        "A-022"
       ],
+      "npcCount": 3,
+      "enemyCount": 1,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",
@@ -4742,14 +5112,17 @@
       "id": "M-0308",
       "name": "When Pigs Fly",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 7,
       "linkedLocationIds": [
-        "U-0436",
-        "U-0453",
-        "U-0470",
-        "U-0487"
+        "U-0188",
+        "U-0182",
+        "U-0187",
+        "U-0001"
       ],
+      "npcCount": 1,
+      "enemyCount": 0,
+      "requiredItemCount": 1,
       "systems": [
         "ap",
         "2d20",
@@ -4764,14 +5137,15 @@
       "id": "M-0311",
       "name": "Con nuestros poderes combinados",
       "sourceTome": "TOMO 02",
-      "status": "generic-runtime",
-      "playableSteps": 32,
+      "status": "specific-runtime",
+      "playableSteps": 10,
       "linkedLocationIds": [
-        "U-0122",
-        "U-0139",
-        "U-0156",
-        "U-0173"
+        "A-004",
+        "U-0110"
       ],
+      "npcCount": 2,
+      "enemyCount": 0,
+      "requiredItemCount": 0,
       "systems": [
         "ap",
         "2d20",

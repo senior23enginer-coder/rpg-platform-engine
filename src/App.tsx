@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import "./styles/app.css";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from "./components/TopBar";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ContentScreen } from "./screens/ContentScreen";
 import { DiceScreen } from "./screens/DiceScreen";
-import { Fallout4CampaignScreen } from "./screens/Fallout4CampaignScreen";
 import { FilesScreen } from "./screens/FilesScreen";
 import { HomeScreen } from "./screens/HomeScreen";
 import { LibraryScreen } from "./screens/LibraryScreen";
@@ -40,9 +39,13 @@ import {
   loadProfile,
   normalizeProfile,
 } from "./lib/playerProfile";
+
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
 const bundledGames = loadBundledGames();
+const Fallout4CampaignScreen = lazy(() =>
+  import("./screens/Fallout4CampaignScreen").then((module) => ({ default: module.Fallout4CampaignScreen }))
+);
 const bundledGameJsonFiles = loadBundledGameJsonFiles();
 const bundledUsers = loadBundledUserProfiles();
 
@@ -500,13 +503,15 @@ export default function App() {
           )}
 
           {screen === "fallout4Campaign" && (
-            <Fallout4CampaignScreen
-              game={activeGame}
-              save={activeSave}
-              onBack={() => setScreen("home")}
-              onDice={() => setScreen("dice")}
-              onProgress={persistActiveSaveProgress}
-            />
+            <Suspense fallback={<section className="screen-panel"><div className="screen-heading"><h2>Cargando campana</h2><p>Preparando Fallout 4 textual.</p></div></section>}>
+              <Fallout4CampaignScreen
+                game={activeGame}
+                save={activeSave}
+                onBack={() => setScreen("home")}
+                onDice={() => setScreen("dice")}
+                onProgress={persistActiveSaveProgress}
+              />
+            </Suspense>
           )}
 
           {screen === "load" && (

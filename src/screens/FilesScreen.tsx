@@ -91,6 +91,32 @@ export function FilesScreen({
     }
   }, [draft, parsedStatus.ok, selectedFile]);
 
+  const assistedSections = useMemo(() => {
+    if (!selectedFile || !parsedStatus.ok) return [];
+    try {
+      const parsed = JSON.parse(draft) as Record<string, unknown>;
+      const sections: Array<{ path: string; kind: string; count: number }> = [];
+      const visit = (value: unknown, currentPath: string) => {
+        if (Array.isArray(value)) {
+          sections.push({ path: currentPath, kind: "lista", count: value.length });
+          return;
+        }
+        if (value && typeof value === "object") {
+          const entries = Object.entries(value as Record<string, unknown>);
+          if (entries.length) sections.push({ path: currentPath || "root", kind: "objeto", count: entries.length });
+          for (const [key, child] of entries) {
+            if (sections.length >= 20) break;
+            visit(child, currentPath ? `${currentPath}.${key}` : key);
+          }
+        }
+      };
+      visit(parsed, "");
+      return sections.slice(0, 20);
+    } catch {
+      return [];
+    }
+  }, [draft, parsedStatus.ok, selectedFile]);
+
   async function selectFolder() {
     if (!canEdit) return;
     const folder = await pickGamesFolder();
@@ -239,6 +265,20 @@ export function FilesScreen({
                       <figcaption>{path}</figcaption>
                     </figure>
                   ))}
+                </div>
+              )}
+
+              {assistedSections.length > 0 && (
+                <div className="json-assisted-editor">
+                  <strong>Editor asistido</strong>
+                  <div>
+                    {assistedSections.map((section) => (
+                      <button key={section.path} onClick={() => navigator.clipboard?.writeText(section.path)}>
+                        <span>{section.path}</span>
+                        <small>{section.kind} / {section.count}</small>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 

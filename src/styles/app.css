@@ -5264,6 +5264,37 @@ svg {
   overflow-wrap: anywhere;
 }
 
+.json-assisted-editor {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 191, 71, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 191, 71, 0.05);
+}
+
+.json-assisted-editor > strong {
+  color: var(--pip-amber);
+  text-transform: uppercase;
+}
+
+.json-assisted-editor > div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.json-assisted-editor button {
+  min-width: 0;
+  justify-content: space-between;
+  min-height: 42px;
+}
+
+.json-assisted-editor button span,
+.json-assisted-editor button small {
+  overflow-wrap: anywhere;
+}
+
 .file-json-textarea {
   min-height: 520px;
   resize: vertical;
@@ -5301,7 +5332,8 @@ svg {
   }
 
   .json-file-summary,
-  .json-image-preview-strip {
+  .json-image-preview-strip,
+  .json-assisted-editor > div {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -6277,7 +6309,8 @@ svg {
   }
 
   .json-file-summary,
-  .json-image-preview-strip {
+  .json-image-preview-strip,
+  .json-assisted-editor > div {
     grid-template-columns: 1fr;
   }
 

@@ -125,6 +125,24 @@ type TemplateCatalog = {
   };
 };
 
+type MissionDetailsManifest = {
+  counts?: {
+    missions?: number;
+    stages?: number;
+    npcs?: number;
+    enemies?: number;
+    requiredItems?: number;
+  };
+  missions?: Array<{
+    id: string;
+    stages?: Array<{ step: number; task: string; location: string; locationId?: string; condition: string }>;
+    npcs?: Array<{ role: string; name: string; location: string; condition: string; use: string }>;
+    enemies?: Array<{ name: string; quantity: string; location: string; zone: string; condition: string }>;
+    requiredItems?: Array<{ name: string; location: string; use: string }>;
+    rewards?: string[];
+  }>;
+};
+
 type MissionObjectiveStep = {
   id: string;
   locationId: string;
@@ -140,6 +158,7 @@ type MissionObjectiveStep = {
 
 type SurvivalState = { hunger: number; thirst: number; sleep: number; disease: number; radiation: number; fatigue: number };
 type RuleState = NonNullable<NonNullable<PlayerSave["campaignState"]>["ruleState"]>;
+type PerkState = NonNullable<NonNullable<PlayerSave["campaignState"]>["perkState"]>;
 
 const outOfTimeSteps: MissionObjectiveStep[] = [
   {
@@ -730,7 +749,9 @@ function isSceneId(value?: string): value is SceneId {
 function roll2d20(difficulty: number) {
   const dice: [number, number] = [Math.ceil(Math.random() * 20), Math.ceil(Math.random() * 20)];
   const successes = dice.filter((die) => die <= 12).length;
-  return { dice, successes, passed: successes >= difficulty };
+  const criticalSuccesses = dice.filter((die) => die === 1).length;
+  const criticalFailures = dice.filter((die) => die === 20).length;
+  return { dice, successes, passed: successes >= difficulty, criticalSuccesses, criticalFailures };
 }
 
 function nodeIcon(kind: NodeKind) {
@@ -778,6 +799,13 @@ function defaultRuleState(): RuleState {
     travelActions: 0,
     failures: 0,
     complications: [],
+    criticalSuccesses: 0,
+    criticalFailures: 0,
+    damageDealt: 0,
+    damageTaken: 0,
+    defenseApplied: 0,
+    capsEarned: 0,
+    capsSpent: 0,
   };
 }
 
@@ -790,12 +818,76 @@ function mergeRuleState(current: RuleState | undefined, patch: Partial<RuleState
   };
 }
 
+function defaultPerkState(): PerkState {
+  return {
+    active: [],
+    pendingPerkChoices: 0,
+    damageBonus: 0,
+    defenseBonus: 0,
+    difficultyReduction: 0,
+  };
+}
+
+function deriveActionKind(step?: MissionObjectiveStep, role = "") {
+  const normalized = normalizeName(`${step?.kind ?? ""} ${role}`);
+  if (normalized.includes("social") || normalized.includes("faccion")) return "social";
+  if (normalized.includes("terminal") || normalized.includes("tecnico") || normalized.includes("loot")) return "technical";
+  if (normalized.includes("combat") || normalized.includes("amenaza")) return "combat";
+  return "exploration";
+}
+
+function applyAdvancedDifficulty(base: number, kind: string, perkState: PerkState, survival: SurvivalState) {
+  const survivalPenalty = survival.hunger >= 7 || survival.thirst >= 7 || survival.fatigue >= 7 ? 1 : 0;
+  const perkReduction = kind === "combat" ? 0 : perkState.difficultyReduction;
+  return Math.max(0, base + survivalPenalty - perkReduction);
+}
+
+function calculateDefense(armor?: TomeCatalogItem, perkState?: PerkState, cover = false) {
+  const armorBase = armor?.name ? Math.max(1, Math.min(4, Math.ceil(armor.name.length / 18))) : 0;
+  return Math.min(6, armorBase + (perkState?.defenseBonus ?? 0) + (cover ? 1 : 0));
+}
+
+function calculateWeaponDamage(weapon?: TomeCatalogItem, perkState?: PerkState, criticalSuccesses = 0) {
+  const weaponBase = weapon?.name ? Math.max(2, Math.min(8, Math.ceil(weapon.name.length / 8))) : 2;
+  return weaponBase + (perkState?.damageBonus ?? 0) + criticalSuccesses;
+}
+
 function missionSeed(missionId: string, missionName = "") {
   return `${missionId}:${missionName}`;
 }
 
-function buildMissionRuntimeSteps(mission: TomeMission | undefined, locations: TomeLocation[], route: string[]) {
+function buildMissionRuntimeSteps(
+  mission: TomeMission | undefined,
+  locations: TomeLocation[],
+  route: string[],
+  missionDetails?: MissionDetailsManifest
+) {
   if (mission?.id === "M-0170") return outOfTimeSteps;
+  const detail = missionDetails?.missions?.find((item) => item.id === mission?.id);
+  if (detail?.stages?.length) {
+    return detail.stages.map((stage) => {
+      const locationId = stage.locationId && locations.some((location) => location.id === stage.locationId) ? stage.locationId : route[0] ?? locations[0]?.id ?? "";
+      const normalizedTask = normalizeName(stage.task);
+      const kind: MissionObjectiveStep["kind"] = normalizedTask.includes("hablar") || normalizedTask.includes("informar") || normalizedTask.includes("convencer")
+        ? "social"
+        : normalizedTask.includes("eliminar") || normalizedTask.includes("limpiar") || normalizedTask.includes("defender")
+          ? "combat"
+          : normalizedTask.includes("terminal") || normalizedTask.includes("unlock") || normalizedTask.includes("reparar")
+            ? "technical"
+            : normalizedTask.includes("obtener") || normalizedTask.includes("recuperar") || normalizedTask.includes("registrar")
+              ? "loot"
+              : "explore";
+      return {
+        id: `${mission?.id}:${stage.step}`,
+        locationId,
+        title: `${stage.step}. ${stage.task}`,
+        objective: stage.condition || `Completa ${stage.task}.`,
+        nodeHints: [stage.task, stage.location].filter(Boolean),
+        kind,
+        reward: detail.rewards?.[0],
+      } satisfies MissionObjectiveStep;
+    });
+  }
   const safeLocations = locations.length ? locations : [];
   const seed = missionSeed(mission?.id ?? "M-0000", mission?.name);
   const start = deterministicIndex(seed, Math.max(1, safeLocations.length));
@@ -919,6 +1011,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     ]
   );
   const [templateCatalog, setTemplateCatalog] = useState<TemplateCatalog>();
+  const [missionDetails, setMissionDetails] = useState<MissionDetailsManifest>();
   const [atlasLocationId, setAtlasLocationId] = useState(save?.campaignState?.atlasLocationId ?? "U-0001");
   const [atlasSubzoneIndex, setAtlasSubzoneIndex] = useState(save?.campaignState?.atlasSubzoneIndex ?? 0);
   const [activeMissionId, setActiveMissionId] = useState(save?.campaignState?.activeMissionId ?? "M-0170");
@@ -953,6 +1046,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [momentum, setMomentum] = useState(save?.campaignState?.momentum ?? 0);
   const [noise, setNoise] = useState(save?.campaignState?.noise ?? 0);
   const [ruleState, setRuleState] = useState<RuleState>(mergeRuleState(save?.campaignState?.ruleState, {}));
+  const [perkState, setPerkState] = useState<PerkState>({
+    ...defaultPerkState(),
+    ...(save?.campaignState?.perkState ?? {}),
+  });
   const [equippedWeaponId, setEquippedWeaponId] = useState(save?.campaignState?.equippedWeaponId ?? "W-0003");
   const [equippedArmorId, setEquippedArmorId] = useState(save?.campaignState?.equippedArmorId ?? "EQ-0001");
   const [ammo, setAmmo] = useState<Record<string, number>>(save?.campaignState?.ammo ?? { ".38": 24, "10mm": 12 });
@@ -979,6 +1076,23 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       })
       .catch(() => {
         if (!cancelled) setTemplateCatalog(undefined);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [game]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const detailsPath = resolveGameAsset(game, "missions/mission-details.json");
+    if (!detailsPath) return;
+    fetch(detailsPath)
+      .then((response) => (response.ok ? response.json() : undefined))
+      .then((data: MissionDetailsManifest | undefined) => {
+        if (!cancelled) setMissionDetails(data);
+      })
+      .catch(() => {
+        if (!cancelled) setMissionDetails(undefined);
       });
     return () => {
       cancelled = true;
@@ -1034,9 +1148,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     (index) => index >= 0 && index < atlasSubzones.length
   );
   const missionSteps: MissionObjectiveStep[] = useMemo(
-    () => buildMissionRuntimeSteps(atlasMission, atlasLocations, atlasWorldRoute),
-    [atlasLocations, atlasMission, atlasWorldRoute]
+    () => buildMissionRuntimeSteps(atlasMission, atlasLocations, atlasWorldRoute, missionDetails),
+    [atlasLocations, atlasMission, atlasWorldRoute, missionDetails]
   );
+  const activeMissionDetails = missionDetails?.missions?.find((item) => item.id === activeMissionId);
   const activeObjectiveStep = missionSteps[Math.min(activeMissionStep, missionSteps.length - 1)] ?? missionSteps[0];
   const missionStepLocationId = activeObjectiveStep?.locationId ?? atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
   const missionStepLocation = atlasLocations.find((location) => location.id === missionStepLocationId);
@@ -1148,6 +1263,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         momentum,
         noise,
         ruleState,
+        perkState,
         equippedWeaponId,
         equippedArmorId,
         ammo,
@@ -1179,6 +1295,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     momentumValue = momentum,
     noiseValue = noise,
     ruleStateValue = ruleState,
+    perkStateValue = perkState,
     equippedWeaponValue = equippedWeaponId,
     equippedArmorValue = equippedArmorId,
     ammoValue = ammo,
@@ -1208,6 +1325,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     momentumValue?: number;
     noiseValue?: number;
     ruleStateValue?: RuleState;
+    perkStateValue?: PerkState;
     equippedWeaponValue?: string;
     equippedArmorValue?: string;
     ammoValue?: Record<string, number>;
@@ -1255,6 +1373,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         momentum: momentumValue,
         noise: noiseValue,
         ruleState: ruleStateValue,
+        perkState: perkStateValue,
         equippedWeaponId: equippedWeaponValue,
         equippedArmorId: equippedArmorValue,
         ammo: ammoValue,
@@ -1479,7 +1598,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const role = atlasSubzone.role ?? "";
     const isInternalCombat = Boolean(atlasLocation.enemies?.length) || /combate|amenaza|enemigo|peligro/i.test(role);
     const isInternalLoot = /loot|alijo|recurso|contenedor|registro|busqueda|exploracion/i.test(role);
-    const difficulty = isInternalCombat ? Math.max(2, riskDifficulty(atlasLocation.risk)) : riskDifficulty(atlasLocation.risk);
+    const actionKind = deriveActionKind(activeObjectiveStep, role);
+    const baseDifficulty = isInternalCombat ? Math.max(2, riskDifficulty(atlasLocation.risk)) : riskDifficulty(atlasLocation.risk);
+    const difficulty = applyAdvancedDifficulty(baseDifficulty, actionKind, perkState, survival);
     const result = roll2d20(difficulty);
     setRoll(result);
     const nextAp = ap - actionCost;
@@ -1491,6 +1612,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
     const nextMomentum = momentum + generatedMomentum;
     const nextNoise = result.passed ? noise : noise + 1;
+    const criticalSuccesses = result.criticalSuccesses ?? 0;
+    const criticalFailures = result.criticalFailures ?? 0;
+    const defense = calculateDefense(equippedArmor, perkState, role.toLowerCase().includes("cobertura"));
+    const incomingDamage = result.passed ? 0 : Math.max(0, riskDifficulty(atlasLocation.risk) + criticalFailures - defense);
     let nextMissionStep = activeMissionStep;
     const nextCompletedMissionSteps = new Set(completedMissionSteps);
     const nextUnlockedMissionIds = new Set(unlockedMissionIds);
@@ -1537,6 +1662,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       socialChecks: ruleState.socialChecks + (activeObjectiveStep?.kind === "social" || activeObjectiveStep?.kind === "faction" ? 1 : 0),
       technicalChecks: ruleState.technicalChecks + (activeObjectiveStep?.kind === "technical" || activeObjectiveStep?.kind === "loot" ? 1 : 0),
       failures: ruleState.failures + (result.passed ? 0 : 1),
+      criticalSuccesses: (ruleState.criticalSuccesses ?? 0) + criticalSuccesses,
+      criticalFailures: (ruleState.criticalFailures ?? 0) + criticalFailures,
+      damageTaken: (ruleState.damageTaken ?? 0) + incomingDamage,
+      defenseApplied: (ruleState.defenseApplied ?? 0) + defense,
+      capsEarned: (ruleState.capsEarned ?? 0) + (result.passed && activeObjectiveStep?.kind === "loot" ? 5 : 0),
       complications: result.passed
         ? ruleState.complications
         : [`${atlasLocation.name}: ${atlasSubzone.name}`, ...ruleState.complications].slice(0, 8),
@@ -1555,8 +1685,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextLog = writeLog(
       `Mapa interno: ${atlasLocation.name} / ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Nodo interno completado." : "Complicacion sin cerrar este nodo."}`,
       result.passed
-        ? `${role || "Exploracion del nodo interno"} ${isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem ? "Objetivo de mision actualizado." : "Exploracion registrada."} XP total: ${nextXp}. Momentum +${generatedMomentum}.`
-        : `Riesgo activo: ${readableThreat(atlasEnemy)}. Ruido ${nextNoise}. XP total: ${nextXp}.`
+        ? `${role || "Exploracion del nodo interno"} ${isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem ? "Objetivo de mision actualizado." : "Exploracion registrada."} XP total: ${nextXp}. Momentum +${generatedMomentum}. Criticos ${criticalSuccesses}.`
+        : `Riesgo activo: ${readableThreat(atlasEnemy)}. Ruido ${nextNoise}. Defensa ${defense}; dano recibido ${incomingDamage}. XP total: ${nextXp}.`
     );
     progressAtlasPatch({
       completedAtlas: completed,
@@ -1580,7 +1710,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   function resolveAtlasEncounter() {
     if (!atlasLocation) return;
     if (!spend(1)) return;
-    const difficulty = Math.max(2, riskDifficulty(atlasLocation.risk));
+    const difficulty = applyAdvancedDifficulty(Math.max(2, riskDifficulty(atlasLocation.risk)), "combat", perkState, survival);
     const result = roll2d20(difficulty);
     setRoll(result);
     const nextAp = ap - 1;
@@ -1597,7 +1727,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       defeated: false,
     };
     const damageDie = Math.ceil(Math.random() * 6);
-    const damage = result.passed ? Math.max(1, damageDie + generatedMomentum) : 0;
+    const weaponDamage = calculateWeaponDamage(equippedWeapon, perkState, result.criticalSuccesses);
+    const damage = result.passed ? Math.max(1, damageDie + generatedMomentum + weaponDamage) : 0;
     const nextEnemyHp = result.passed ? Math.max(0, existingEnemy.hp - damage) : existingEnemy.hp;
     const nextEnemyState = {
       ...existingEnemy,
@@ -1612,11 +1743,18 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     }
     const directCollectible = atlasCollectibles.find((item) => item.name === atlasLoot);
     if (nextEnemyState.defeated && directCollectible) nextDiscoveredCollectibles.add(directCollectible.id);
+    const defense = calculateDefense(equippedArmor, perkState, true);
+    const incomingDamage = result.passed ? 0 : Math.max(0, Math.ceil(maxHp / 4) + (result.criticalFailures ?? 0) - defense);
     const nextRule = nextRuleState({
       actionPointsSpent: ruleState.actionPointsSpent + 1,
       testsRolled: ruleState.testsRolled + 1,
       combatRounds: ruleState.combatRounds + 1,
       failures: ruleState.failures + (result.passed ? 0 : 1),
+      criticalSuccesses: (ruleState.criticalSuccesses ?? 0) + (result.criticalSuccesses ?? 0),
+      criticalFailures: (ruleState.criticalFailures ?? 0) + (result.criticalFailures ?? 0),
+      damageDealt: (ruleState.damageDealt ?? 0) + damage,
+      damageTaken: (ruleState.damageTaken ?? 0) + incomingDamage,
+      defenseApplied: (ruleState.defenseApplied ?? 0) + defense,
       complications: result.passed
         ? ruleState.complications
         : [`Combate: ${atlasLocation.name} / ${nextEnemyState.name}`, ...ruleState.complications].slice(0, 8),
@@ -1628,10 +1766,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     setInventory(nextInventory);
     setDiscoveredCollectibles(nextDiscoveredCollectibles);
     const nextLog = writeLog(
-      `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Dano d6=${damageDie}, aplicado=${damage}.`,
+      `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Arma ${equippedWeapon?.name ?? "improvisada"}, d6=${damageDie}, dano=${damage}.`,
       result.passed
         ? `${nextEnemyState.defeated ? "Amenaza derrotada" : `PV enemigo ${nextEnemyHp}/${nextEnemyState.maxHp}`}. Momentum +${generatedMomentum}.`
-        : `La amenaza queda activa: ruido ${nextNoise}; conviene gastar AP en cobertura o nuevo turno.`
+        : `La amenaza queda activa: defensa ${defense}, dano recibido ${incomingDamage}, ruido ${nextNoise}; conviene gastar AP en cobertura o nuevo turno.`
     );
     progressAtlasPatch({
       xpValue: nextXp,
@@ -1771,6 +1909,36 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       apValue: ap - 1,
       logValue: nextLog,
       lastAction: "survival:supply",
+    });
+  }
+
+  function trainPerk() {
+    const nextXp = Math.max(0, xp - 100);
+    const canSpendXp = xp >= 100;
+    const nextPerkName = canSpendXp ? `Perk de campo ${perkState.active.length + 1}` : "Entrenamiento pendiente";
+    const nextPerkState = canSpendXp
+      ? {
+          active: [...perkState.active, nextPerkName],
+          pendingPerkChoices: perkState.pendingPerkChoices,
+          damageBonus: perkState.damageBonus + 1,
+          defenseBonus: Math.min(3, perkState.defenseBonus + (perkState.active.length % 2 === 0 ? 1 : 0)),
+          difficultyReduction: Math.min(1, perkState.difficultyReduction + (perkState.active.length >= 2 ? 1 : 0)),
+        }
+      : {
+          ...perkState,
+          pendingPerkChoices: perkState.pendingPerkChoices + 1,
+        };
+    setPerkState(nextPerkState);
+    if (canSpendXp) setXp(nextXp);
+    const nextLog = writeLog(
+      canSpendXp ? `Perk adquirido: ${nextPerkName}.` : "Progresion: queda una eleccion de perk pendiente.",
+      "Tomo 1: los perks convierten bono de dano, defensa o dificultad sin bajar dificultad por debajo de 0."
+    );
+    progressAtlasPatch({
+      xpValue: canSpendXp ? nextXp : xp,
+      perkStateValue: nextPerkState,
+      logValue: nextLog,
+      lastAction: "perk:train",
     });
   }
 
@@ -1989,12 +2157,22 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   <span>
                     <small>Tomo 1 / Reglas</small>
                     <strong>{ruleState.testsRolled} pruebas / {ruleState.actionPointsSpent} AP</strong>
-                    <i>Combates {ruleState.combatRounds} / fallos {ruleState.failures} / viajes {ruleState.travelActions}</i>
+                    <i>Combates {ruleState.combatRounds} / crit {ruleState.criticalSuccesses ?? 0}-{ruleState.criticalFailures ?? 0} / dano {ruleState.damageDealt ?? 0}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 1 / Perks</small>
+                    <strong>{perkState.active.length} activos / {perkState.pendingPerkChoices} pendientes</strong>
+                    <i>Dano +{perkState.damageBonus} / defensa +{perkState.defenseBonus} / dif -{perkState.difficultyReduction}</i>
                   </span>
                   <span>
                     <small>Tomo 2 / Misiones</small>
-                    <strong>{atlasMissions.length} plantillas</strong>
-                    <i>{Object.keys(missionRuntime ?? {}).length} misiones con estado runtime</i>
+                    <strong>{activeMissionDetails?.stages?.length ?? missionSteps.length} etapas</strong>
+                    <i>{missionDetails?.counts?.stages ?? 0} etapas extraidas / {Object.keys(missionRuntime ?? {}).length} runtime</i>
+                  </span>
+                  <span>
+                    <small>Tomo 2 / Escena exacta</small>
+                    <strong>{activeMissionDetails ? "Ficha refinada" : "Flujo derivado"}</strong>
+                    <i>NPC {activeMissionDetails?.npcs?.length ?? 0} / enemigos {activeMissionDetails?.enemies?.length ?? 0} / objetos {activeMissionDetails?.requiredItems?.length ?? 0}</i>
                   </span>
                   <span>
                     <small>Tomo 3 / Bestiario</small>
@@ -2060,6 +2238,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </button>
                   <button onClick={() => equipNextLoadout("armor")}>
                     <Shield size={18} /> Cambiar equipo
+                  </button>
+                  <button onClick={trainPerk}>
+                    <Sparkles size={18} /> Perk
                   </button>
                   <button onClick={restAndRecover}>
                     <HeartPulse size={18} /> Descanso

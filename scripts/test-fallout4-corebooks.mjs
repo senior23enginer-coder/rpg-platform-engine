@@ -115,6 +115,7 @@ const game = readJson("public", "games", "fallout4", "game.config.json");
 const rules = readJson("public", "games", "fallout4", "rules", "rules.json");
 const characters = readJson("public", "games", "fallout4", "characters", "characters.json");
 const missions = readJson("public", "games", "fallout4", "missions", "missions.json");
+const missionDetails = readJson("public", "games", "fallout4", "missions", "mission-details.json");
 const templates = readJson("public", "games", "fallout4", "templates", "templates.json");
 const coverage = readJson("public", "games", "fallout4", "coverage", "core-book-coverage.json");
 const runtimeDepth = readJson("public", "games", "fallout4", "coverage", "runtime-depth.json");
@@ -214,6 +215,9 @@ for (const tome of expectedTomes) {
 pass("Manifiesto total: todos los tomos tienen sistemas runtime, cero excepciones y agregados no canonicos listados.");
 
 assert(runtimeDepth?.summary?.missions === templates?.counts?.missions, "Runtime depth debe cubrir todas las misiones de templates");
+assert(missionDetails?.counts?.missions === templates?.counts?.missions, "Mission details debe cubrir todas las misiones de templates");
+assert(missionDetails?.counts?.stages >= 1600, "Mission details debe extraer etapas exactas del Tomo 2");
+assert(runtimeDepth?.summary?.missionStages === missionDetails?.counts?.stages, "Runtime depth debe incluir etapas exactas de mision");
 assert(runtimeDepth?.summary?.locations === templates?.counts?.locations, "Runtime depth debe cubrir todas las ubicaciones de templates");
 assert(runtimeDepth?.summary?.locationsWithInternalMaps >= 558, "Todas las ubicaciones deben tener mapa interno o fallback de mapa interno");
 assert(runtimeDepth?.summary?.bestiary === templates?.counts?.bestiary, "Runtime depth debe declarar bestiario completo");
@@ -278,6 +282,13 @@ for (const expectedText of [
   "ruleState",
   "equipNextLoadout",
   "consumeSurvivalSupply",
+  "missionDetails",
+  "activeMissionDetails",
+  "calculateWeaponDamage",
+  "calculateDefense",
+  "criticalSuccesses",
+  "criticalFailures",
+  "trainPerk",
   "atlasMissions.map",
   "atlasLocations.map",
 ]) {
@@ -290,7 +301,7 @@ assert(!campaignScreen.includes("atlasCompletedMicrozones"), "El guardado no deb
 pass("Demo jugable: pantalla Fallout4Campaign implementa escenas, mapa mundi textual, mapa interno por ubicacion, AP, 2d20, combate, misiones genericas y persistencia.");
 
 const filesScreen = readText("src", "screens", "FilesScreen.tsx");
-for (const expectedText of ["json-file-summary", "json-image-preview-strip", "imagePathCandidates", "parsedSummary"]) {
+for (const expectedText of ["json-file-summary", "json-image-preview-strip", "json-assisted-editor", "imagePathCandidates", "parsedSummary", "assistedSections"]) {
   assert(filesScreen.includes(expectedText), `Archivos y estructura debe soportar editor/preview JSON: ${expectedText}`);
 }
 const appScreen = readText("src", "App.tsx");
@@ -305,9 +316,12 @@ for (const expectedText of [
   ".fo4-runtime-grid",
   ".json-file-summary",
   ".json-image-preview-strip",
+  ".json-assisted-editor",
 ]) {
   assert(appCss.includes(expectedText), `CSS responsive/editor debe contener ${expectedText}`);
 }
+const viteConfig = readText("vite.config.ts");
+assert(viteConfig.includes("manualChunks") && viteConfig.includes("vendor-react") && viteConfig.includes("fallout4-campaign"), "Vite debe separar chunks principales");
 pass("Editor y responsive: JSON, previews visuales y cortes mobile/tablet validados.");
 
 const capacitorConfig = readText("capacitor.config.ts");
