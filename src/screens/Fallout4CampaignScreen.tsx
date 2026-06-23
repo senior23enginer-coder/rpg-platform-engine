@@ -69,6 +69,7 @@ type TomeLocation = {
   risk?: string;
   enemies?: string[];
   subzones?: Array<{ name: string; role?: string }>;
+  settlement?: boolean;
   summary?: string;
   sourceTome?: string;
   playableStatus?: string;
@@ -96,6 +97,14 @@ type TomeBestiary = {
   playableStatus?: string;
 };
 
+type TomeCatalogItem = {
+  id: string;
+  name: string;
+  sourceTome?: string;
+  playableStatus?: string;
+  useInPlay?: string;
+};
+
 type TemplateCatalog = {
   routeTemplates?: Array<{
     id: string;
@@ -108,6 +117,10 @@ type TemplateCatalog = {
     locations?: TomeLocation[];
     missions?: TomeMission[];
     bestiary?: TomeBestiary[];
+    weapons?: TomeCatalogItem[];
+    equipment?: TomeCatalogItem[];
+    settlements?: TomeCatalogItem[];
+    factions?: TomeCatalogItem[];
     collectibles?: Array<{ id: string; name: string; locationId?: string; subzone?: string; collectibleType?: string }>;
   };
 };
@@ -123,6 +136,8 @@ type MissionObjectiveStep = {
   reward?: string;
   unlocksMissionId?: string;
 };
+
+type SurvivalState = { hunger: number; thirst: number; sleep: number; disease: number; radiation: number; fatigue: number };
 
 const outOfTimeSteps: MissionObjectiveStep[] = [
   {
@@ -738,6 +753,19 @@ function readableThreat(enemy?: TomeBestiary) {
   return `${enemy.name} / ${threat} / ${hp}`;
 }
 
+function deterministicIndex(seed: string, size: number) {
+  if (size <= 0) return 0;
+  return [...seed].reduce((sum, char) => sum + char.charCodeAt(0), 0) % size;
+}
+
+function normalizeName(value?: string) {
+  return (value ?? "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function pickCatalogItem<T extends TomeCatalogItem>(items: T[], seed: string) {
+  return items[deterministicIndex(seed, items.length)];
+}
+
 function patchLocationState(
   states: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"] | undefined,
   locationId: string,
@@ -801,6 +829,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [atlasLocationStates, setAtlasLocationStates] = useState<
     NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"]
   >(save?.campaignState?.atlasLocationStates ?? {});
+  const [atlasEnemyStates, setAtlasEnemyStates] = useState<
+    NonNullable<PlayerSave["campaignState"]>["atlasEnemyStates"]
+  >(save?.campaignState?.atlasEnemyStates ?? {});
   const [activeMissionStep, setActiveMissionStep] = useState(save?.campaignState?.activeMissionStep ?? 0);
   const [completedMissionSteps, setCompletedMissionSteps] = useState<Set<string>>(
     () => new Set(save?.campaignState?.completedMissionSteps ?? [])
@@ -810,6 +841,18 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   );
   const [momentum, setMomentum] = useState(save?.campaignState?.momentum ?? 0);
   const [noise, setNoise] = useState(save?.campaignState?.noise ?? 0);
+  const [equippedWeaponId, setEquippedWeaponId] = useState(save?.campaignState?.equippedWeaponId ?? "W-0003");
+  const [equippedArmorId, setEquippedArmorId] = useState(save?.campaignState?.equippedArmorId ?? "EQ-0001");
+  const [ammo, setAmmo] = useState<Record<string, number>>(save?.campaignState?.ammo ?? { ".38": 24, "10mm": 12 });
+  const [factionReputation, setFactionReputation] = useState<Record<string, number>>(
+    save?.campaignState?.factionReputation ?? { "F-001": 0 }
+  );
+  const [settlementStates, setSettlementStates] = useState<NonNullable<PlayerSave["campaignState"]>["settlementStates"]>(
+    save?.campaignState?.settlementStates ?? {}
+  );
+  const [survival, setSurvival] = useState<SurvivalState>(
+    save?.campaignState?.survival ?? { hunger: 0, thirst: 0, sleep: 0, disease: 0, radiation: 0, fatigue: 0 }
+  );
   const [xp, setXp] = useState(save?.campaignState?.xp ?? 0);
   const [inventory, setInventory] = useState<string[]>(save?.campaignState?.inventory ?? []);
 
@@ -845,6 +888,10 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const atlasLocations = useMemo(() => templateCatalog?.catalogs?.locations ?? [], [templateCatalog]);
   const atlasMissions = useMemo(() => templateCatalog?.catalogs?.missions ?? [], [templateCatalog]);
   const atlasBestiary = useMemo(() => templateCatalog?.catalogs?.bestiary ?? [], [templateCatalog]);
+  const atlasWeapons = useMemo(() => templateCatalog?.catalogs?.weapons ?? [], [templateCatalog]);
+  const atlasEquipment = useMemo(() => templateCatalog?.catalogs?.equipment ?? [], [templateCatalog]);
+  const atlasSettlements = useMemo(() => templateCatalog?.catalogs?.settlements ?? [], [templateCatalog]);
+  const atlasFactions = useMemo(() => templateCatalog?.catalogs?.factions ?? [], [templateCatalog]);
   const atlasCollectibles = useMemo(() => templateCatalog?.catalogs?.collectibles ?? [], [templateCatalog]);
   const atlasWorldRoute = useMemo(() => {
     const route = templateCatalog?.routeTemplates?.find((item) => item.id === "out-of-time-base-route");
@@ -902,11 +949,28 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     return match ?? atlasBestiary[(atlasLocationId.length + atlasSubzoneIndex) % Math.max(1, atlasBestiary.length)];
   }, [atlasBestiary, atlasLocation, atlasLocationId, atlasSubzoneIndex]);
   const atlasLoot = useMemo(() => {
-    const direct = atlasCollectibles.find((item) => item.locationId === atlasLocation?.id);
+    const direct = atlasCollectibles.find((item) =>
+      item.locationId === atlasLocation?.id
+      && (!item.subzone || normalizeName(atlasSubzone?.name).includes(normalizeName(item.subzone)) || normalizeName(item.subzone).includes(normalizeName(atlasSubzone?.name)))
+    ) ?? atlasCollectibles.find((item) => item.locationId === atlasLocation?.id);
     if (direct) return direct.name;
-    if (atlasSubzone?.role?.toLowerCase().includes("loot")) return "Alijo menor de ubicacion";
-    return "Recurso comun";
-  }, [atlasCollectibles, atlasLocation?.id, atlasSubzone?.role]);
+    const role = normalizeName(atlasSubzone?.role);
+    if (role.includes("loot") || role.includes("cobertura") || role.includes("obstaculo")) {
+      return pickCatalogItem(atlasWeapons, atlasInternalKey)?.name
+        ?? pickCatalogItem(atlasEquipment, atlasInternalKey)?.name
+        ?? "Alijo menor de ubicacion";
+    }
+    if (role.includes("interior") || role.includes("sala")) {
+      return pickCatalogItem(atlasEquipment, atlasInternalKey)?.name ?? "Recurso comun";
+    }
+    return pickCatalogItem(atlasCollectibles, atlasInternalKey)?.name ?? "Recurso comun";
+  }, [atlasCollectibles, atlasEquipment, atlasInternalKey, atlasLocation?.id, atlasSubzone?.name, atlasSubzone?.role, atlasWeapons]);
+  const equippedWeapon = atlasWeapons.find((item) => item.id === equippedWeaponId) ?? atlasWeapons[0];
+  const equippedArmor = atlasEquipment.find((item) => item.id === equippedArmorId) ?? atlasEquipment[0];
+  const activeFaction = atlasFactions[0];
+  const activeSettlement = atlasSettlements.find((item) => normalizeName(item.name).includes(normalizeName(atlasLocation?.name)))
+    ?? (atlasLocation?.settlement ? atlasSettlements.find((item) => normalizeName(atlasLocation.name).includes(normalizeName(item.name))) : undefined);
+  const activeSettlementState = activeSettlement ? settlementStates?.[activeSettlement.id] : undefined;
 
   function progressPatch({
     sceneValue = scene,
@@ -959,12 +1023,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasVisitedInternalNodes: [...atlasVisitedInternalNodes],
         atlasCompletedSubzones: [...atlasCompleted],
         atlasLocationStates,
+        atlasEnemyStates,
         activeMissionId,
         activeMissionStep,
         completedMissionSteps: [...completedMissionSteps],
         unlockedMissionIds: [...unlockedMissionIds],
         momentum,
         noise,
+        equippedWeaponId,
+        equippedArmorId,
+        ammo,
+        factionReputation,
+        settlementStates,
+        survival,
         xp,
         caps,
         inventory,
@@ -980,12 +1051,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     visitedInternalNodes = atlasVisitedInternalNodes,
     completedAtlas = atlasCompleted,
     locationStates = atlasLocationStates,
+    enemyStates = atlasEnemyStates,
     missionId = activeMissionId,
     missionStep = activeMissionStep,
     completedSteps = completedMissionSteps,
     unlockedMissions = unlockedMissionIds,
     momentumValue = momentum,
     noiseValue = noise,
+    equippedWeaponValue = equippedWeaponId,
+    equippedArmorValue = equippedArmorId,
+    ammoValue = ammo,
+    factionReputationValue = factionReputation,
+    settlementStatesValue = settlementStates,
+    survivalValue = survival,
     xpValue = xp,
     inventoryValue = inventory,
     logValue = log,
@@ -999,12 +1077,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     visitedInternalNodes?: Set<string>;
     completedAtlas?: Set<string>;
     locationStates?: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"];
+    enemyStates?: NonNullable<PlayerSave["campaignState"]>["atlasEnemyStates"];
     missionId?: string;
     missionStep?: number;
     completedSteps?: Set<string>;
     unlockedMissions?: Set<string>;
     momentumValue?: number;
     noiseValue?: number;
+    equippedWeaponValue?: string;
+    equippedArmorValue?: string;
+    ammoValue?: Record<string, number>;
+    factionReputationValue?: Record<string, number>;
+    settlementStatesValue?: NonNullable<PlayerSave["campaignState"]>["settlementStates"];
+    survivalValue?: NonNullable<PlayerSave["campaignState"]>["survival"];
     xpValue?: number;
     inventoryValue?: string[];
     logValue?: string[];
@@ -1036,12 +1121,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         atlasVisitedInternalNodes: [...visitedInternalNodes],
         atlasCompletedSubzones: [...completedAtlas],
         atlasLocationStates: locationStates,
+        atlasEnemyStates: enemyStates,
         activeMissionId: missionId,
         activeMissionStep: missionStep,
         completedMissionSteps: [...completedSteps],
         unlockedMissionIds: [...unlockedMissions],
         momentum: momentumValue,
         noise: noiseValue,
+        equippedWeaponId: equippedWeaponValue,
+        equippedArmorId: equippedArmorValue,
+        ammo: ammoValue,
+        factionReputation: factionReputationValue,
+        settlementStates: settlementStatesValue,
+        survival: survivalValue,
         xp: xpValue,
         caps,
         inventory: inventoryValue,
@@ -1313,17 +1405,42 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
     const nextMomentum = momentum + generatedMomentum;
     const nextNoise = result.passed ? noise : noise + 1;
+    const maxHp = Math.max(4, Math.min(40, Math.round((atlasEnemy?.hp ?? 10) / 10)));
+    const existingEnemy = atlasEnemyStates?.[atlasInternalKey] ?? {
+      enemyId: atlasEnemy?.id ?? "enemy-local",
+      name: atlasEnemy?.name ?? "Amenaza local",
+      hp: maxHp,
+      maxHp,
+      defeated: false,
+    };
+    const damageDie = Math.ceil(Math.random() * 6);
+    const damage = result.passed ? Math.max(1, damageDie + generatedMomentum) : 0;
+    const nextEnemyHp = result.passed ? Math.max(0, existingEnemy.hp - damage) : existingEnemy.hp;
+    const nextEnemyState = {
+      ...existingEnemy,
+      hp: nextEnemyHp,
+      defeated: nextEnemyHp <= 0,
+    };
+    const nextEnemyStates = { ...(atlasEnemyStates ?? {}), [atlasInternalKey]: nextEnemyState };
+    const nextInventory = [...inventory];
+    if (nextEnemyState.defeated && atlasLoot && !nextInventory.includes(atlasLoot)) {
+      nextInventory.push(atlasLoot);
+    }
     setXp(nextXp);
     setMomentum(nextMomentum);
     setNoise(nextNoise);
+    setAtlasEnemyStates(nextEnemyStates);
+    setInventory(nextInventory);
     const nextLog = writeLog(
-      `Encuentro: ${readableThreat(atlasEnemy)}. Tirada ${result.dice.join(" / ")} contra D${difficulty}.`,
+      `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Dano d6=${damageDie}, aplicado=${damage}.`,
       result.passed
-        ? `Combate textual controlado: amenaza reducida o expulsada. Momentum +${generatedMomentum}.`
+        ? `${nextEnemyState.defeated ? "Amenaza derrotada" : `PV enemigo ${nextEnemyHp}/${nextEnemyState.maxHp}`}. Momentum +${generatedMomentum}.`
         : `La amenaza queda activa: ruido ${nextNoise}; conviene gastar AP en cobertura o nuevo turno.`
     );
     progressAtlasPatch({
       xpValue: nextXp,
+      inventoryValue: nextInventory,
+      enemyStates: nextEnemyStates,
       momentumValue: nextMomentum,
       noiseValue: nextNoise,
       logValue: nextLog,
@@ -1336,6 +1453,68 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     if (!atlasLocation) return;
     const nextIndex = Math.min(atlasSubzoneIndex + 1, atlasSubzones.length - 1);
     moveAtlasInternalNode(nextIndex);
+  }
+
+  function improveSettlement() {
+    if (!atlasLocation?.settlement) {
+      writeLog("Esta ubicacion no esta marcada como asentamiento en Tomo 6/7.");
+      return;
+    }
+    if (!spend(2)) return;
+    const settlementId = activeSettlement?.id ?? `settlement:${atlasLocation.id}`;
+    const current = settlementStates?.[settlementId] ?? { population: 1, food: 0, water: 0, beds: 0, defense: 0, linked: false };
+    const nextSettlementStates = {
+      ...(settlementStates ?? {}),
+      [settlementId]: {
+        population: current.population,
+        food: current.food + 1,
+        water: current.water + 1,
+        beds: current.beds + 1,
+        defense: current.defense + 1,
+        linked: true,
+      },
+    };
+    const factionId = activeFaction?.id ?? "F-001";
+    const nextFactionReputation = {
+      ...factionReputation,
+      [factionId]: (factionReputation[factionId] ?? 0) + 1,
+    };
+    setSettlementStates(nextSettlementStates);
+    setFactionReputation(nextFactionReputation);
+    const nextLog = writeLog(
+      `Asentamiento: ${activeSettlement?.name ?? atlasLocation.name} mejorado. +comida, +agua, +camas, +defensa.`,
+      `Faccion: ${activeFaction?.name ?? "Minutemen"} reputacion +1.`
+    );
+    progressAtlasPatch({
+      settlementStatesValue: nextSettlementStates,
+      factionReputationValue: nextFactionReputation,
+      apValue: ap - 2,
+      logValue: nextLog,
+      lastAction: `settlement:improve:${settlementId}`,
+    });
+  }
+
+  function restAndRecover() {
+    if (!spend(1)) return;
+    const nextSurvival = {
+      hunger: Math.min(10, survival.hunger + 1),
+      thirst: Math.min(10, survival.thirst + 1),
+      sleep: Math.max(0, survival.sleep - 2),
+      disease: survival.disease,
+      radiation: survival.radiation,
+      fatigue: Math.max(0, survival.fatigue - 2),
+    };
+    setSurvival(nextSurvival);
+    const nextLog = writeLog(
+      "Supervivencia: descanso corto aplicado.",
+      `Hambre ${nextSurvival.hunger}, sed ${nextSurvival.thirst}, sueno ${nextSurvival.sleep}, fatiga ${nextSurvival.fatigue}.`
+    );
+    progressAtlasPatch({
+      survivalValue: nextSurvival,
+      apValue: ap - 1,
+      logValue: nextLog,
+      lastAction: "survival:rest",
+    });
   }
 
   return (
@@ -1536,12 +1715,53 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   <span>
                     <small>Encuentro sugerido</small>
                     <strong>{readableThreat(atlasEnemy)}</strong>
-                    <i>{atlasLocation.enemies?.join(", ") || "segun riesgo local"}</i>
+                    <i>
+                      {atlasEnemyStates?.[atlasInternalKey]
+                        ? `${atlasEnemyStates[atlasInternalKey].hp}/${atlasEnemyStates[atlasInternalKey].maxHp} PV ${atlasEnemyStates[atlasInternalKey].defeated ? "derrotado" : "activo"}`
+                        : atlasLocation.enemies?.join(", ") || "segun riesgo local"}
+                    </i>
                   </span>
                   <span>
                     <small>Progreso atlas</small>
                     <strong>{atlasCompleted.size} nodos internos</strong>
                     <i>{xp} XP / {inventory.length} objetos / {currentLocationState.completedNodes.length} aqui</i>
+                  </span>
+                </div>
+
+                <div className="fo4-runtime-grid">
+                  <span>
+                    <small>Tomo 4 / Arma</small>
+                    <strong>{equippedWeapon?.name ?? equippedWeaponId}</strong>
+                    <i>Municion .38: {ammo[".38"] ?? 0} / 10mm: {ammo["10mm"] ?? 0}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 5 / Equipo</small>
+                    <strong>{equippedArmor?.name ?? equippedArmorId}</strong>
+                    <i>Defensa/carga se persiste desde hoja core.</i>
+                  </span>
+                  <span>
+                    <small>Tomo 8 / Faccion</small>
+                    <strong>{activeFaction?.name ?? "Faccion local"}</strong>
+                    <i>Reputacion: {factionReputation[activeFaction?.id ?? "F-001"] ?? 0}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 7 / Asentamiento</small>
+                    <strong>{atlasLocation.settlement ? activeSettlement?.name ?? atlasLocation.name : "No asentamiento"}</strong>
+                    <i>
+                      {activeSettlementState
+                        ? `Pob ${activeSettlementState.population} / Com ${activeSettlementState.food} / Agua ${activeSettlementState.water} / Def ${activeSettlementState.defense}`
+                        : atlasLocation.settlement ? "Listo para mejorar" : "Sin ciclo activo"}
+                    </i>
+                  </span>
+                  <span>
+                    <small>Tomo 10 / Supervivencia</small>
+                    <strong>H{survival.hunger} S{survival.thirst} RAD{survival.radiation}</strong>
+                    <i>Sueno {survival.sleep} / fatiga {survival.fatigue} / enfermedad {survival.disease}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 9 / Loot</small>
+                    <strong>{atlasLoot}</strong>
+                    <i>{currentLocationState.loot.length} objetos registrados aqui</i>
                   </span>
                 </div>
 
@@ -1554,6 +1774,12 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </button>
                   <button onClick={nextAtlasSubzone} disabled={atlasSubzoneIndex >= atlasSubzones.length - 1}>
                     <Footprints size={18} /> Siguiente nodo
+                  </button>
+                  <button onClick={improveSettlement} disabled={!atlasLocation.settlement}>
+                    <Package size={18} /> Asentamiento
+                  </button>
+                  <button onClick={restAndRecover}>
+                    <HeartPulse size={18} /> Descanso
                   </button>
                 </div>
               </>

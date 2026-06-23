@@ -4680,6 +4680,7 @@ svg {
   .fo4-atlas-controls,
   .fo4-atlas-active,
   .fo4-atlas-actions,
+  .fo4-runtime-grid,
   .fo4-mission-tracker,
   .save-meta-grid {
     grid-template-columns: 1fr;
@@ -4975,6 +4976,7 @@ svg {
   .fo4-atlas-controls,
   .fo4-atlas-active,
   .fo4-atlas-actions,
+  .fo4-runtime-grid,
   .fo4-mission-tracker {
     grid-template-columns: 1fr;
   }
@@ -5860,6 +5862,7 @@ svg {
 
 .fo4-atlas-controls,
 .fo4-atlas-active,
+.fo4-runtime-grid,
 .fo4-atlas-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -5891,6 +5894,7 @@ svg {
 
 .fo4-atlas-brief,
 .fo4-mission-tracker span,
+.fo4-runtime-grid span,
 .fo4-atlas-active span {
   border: 1px solid rgba(126, 255, 87, 0.16);
   border-radius: 6px;
@@ -5900,6 +5904,7 @@ svg {
 
 .fo4-atlas-brief strong,
 .fo4-mission-tracker strong,
+.fo4-runtime-grid strong,
 .fo4-atlas-active strong {
   color: #e8ffe4;
   overflow-wrap: anywhere;
@@ -5907,6 +5912,7 @@ svg {
 
 .fo4-atlas-brief p,
 .fo4-mission-tracker i,
+.fo4-runtime-grid i,
 .fo4-atlas-active i,
 .fo4-atlas-empty {
   margin: 0;
@@ -5925,14 +5931,21 @@ svg {
   gap: 6px;
 }
 
-.fo4-mission-tracker small {
+.fo4-runtime-grid span {
+  display: grid;
+  gap: 6px;
+}
+
+.fo4-mission-tracker small,
+.fo4-runtime-grid small {
   color: #b8d5a5;
   font-size: 11px;
   font-weight: 900;
   text-transform: uppercase;
 }
 
-.fo4-mission-tracker i {
+.fo4-mission-tracker i,
+.fo4-runtime-grid i {
   font-size: 12px;
   font-style: normal;
 }
