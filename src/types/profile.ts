@@ -57,11 +57,17 @@ export type PlayerSave = {
     lastAction?: string;
     atlasLocationId?: string;
     atlasSubzoneIndex?: number;
+    atlasWorldRoute?: string[];
     atlasVisitedLocations?: string[];
     atlasVisitedInternalNodes?: string[];
     atlasCompletedSubzones?: string[];
     atlasLocationStates?: Record<string, { visitedNodes: string[]; completedNodes: string[]; loot: string[] }>;
     activeMissionId?: string;
+    activeMissionStep?: number;
+    completedMissionSteps?: string[];
+    unlockedMissionIds?: string[];
+    momentum?: number;
+    noise?: number;
     xp?: number;
     caps?: number;
     inventory?: string[];

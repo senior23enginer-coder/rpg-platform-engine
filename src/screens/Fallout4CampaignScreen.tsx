@@ -717,6 +717,15 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [atlasLocationStates, setAtlasLocationStates] = useState<
     NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"]
   >(save?.campaignState?.atlasLocationStates ?? {});
+  const [activeMissionStep, setActiveMissionStep] = useState(save?.campaignState?.activeMissionStep ?? 0);
+  const [completedMissionSteps, setCompletedMissionSteps] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.completedMissionSteps ?? [])
+  );
+  const [unlockedMissionIds, setUnlockedMissionIds] = useState<Set<string>>(
+    () => new Set(save?.campaignState?.unlockedMissionIds ?? ["M-0170"])
+  );
+  const [momentum, setMomentum] = useState(save?.campaignState?.momentum ?? 0);
+  const [noise, setNoise] = useState(save?.campaignState?.noise ?? 0);
   const [xp, setXp] = useState(save?.campaignState?.xp ?? 0);
   const [inventory, setInventory] = useState<string[]>(save?.campaignState?.inventory ?? []);
 
@@ -781,6 +790,14 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const connectedInternalIndexes = [atlasSubzoneIndex - 1, atlasSubzoneIndex, atlasSubzoneIndex + 1].filter(
     (index) => index >= 0 && index < atlasSubzones.length
   );
+  const missionStepLocationId = atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
+  const missionStepLocation = atlasLocations.find((location) => location.id === missionStepLocationId);
+  const currentMissionStepKey = `${activeMissionId}:${missionStepLocationId}`;
+  const isAtMissionLocation = atlasLocation?.id === missionStepLocationId;
+  const missionRouteProgress = Math.round((completedMissionSteps.size / Math.max(1, atlasWorldRoute.length)) * 100);
+  const missionObjectiveText = isAtMissionLocation
+    ? `Explora y resuelve un nodo interno de ${atlasLocation?.name ?? "la ubicacion"} para avanzar la mision.`
+    : `Viaja por el mapa mundi hacia ${missionStepLocation?.name ?? missionStepLocationId}.`;
   const atlasEnemy = useMemo(() => {
     const enemyNames = atlasLocation?.enemies ?? [];
     const match = atlasBestiary.find((creature) =>
@@ -841,11 +858,17 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         lastAction,
         atlasLocationId,
         atlasSubzoneIndex,
+        atlasWorldRoute,
         atlasVisitedLocations: [...atlasVisited],
         atlasVisitedInternalNodes: [...atlasVisitedInternalNodes],
         atlasCompletedSubzones: [...atlasCompleted],
         atlasLocationStates,
         activeMissionId,
+        activeMissionStep,
+        completedMissionSteps: [...completedMissionSteps],
+        unlockedMissionIds: [...unlockedMissionIds],
+        momentum,
+        noise,
         xp,
         caps,
         inventory,
@@ -862,6 +885,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     completedAtlas = atlasCompleted,
     locationStates = atlasLocationStates,
     missionId = activeMissionId,
+    missionStep = activeMissionStep,
+    completedSteps = completedMissionSteps,
+    unlockedMissions = unlockedMissionIds,
+    momentumValue = momentum,
+    noiseValue = noise,
     xpValue = xp,
     inventoryValue = inventory,
     logValue = log,
@@ -876,6 +904,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     completedAtlas?: Set<string>;
     locationStates?: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"];
     missionId?: string;
+    missionStep?: number;
+    completedSteps?: Set<string>;
+    unlockedMissions?: Set<string>;
+    momentumValue?: number;
+    noiseValue?: number;
     xpValue?: number;
     inventoryValue?: string[];
     logValue?: string[];
@@ -902,11 +935,17 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         lastAction,
         atlasLocationId: locationId,
         atlasSubzoneIndex: subzoneIndex,
+        atlasWorldRoute,
         atlasVisitedLocations: [...visitedAtlas],
         atlasVisitedInternalNodes: [...visitedInternalNodes],
         atlasCompletedSubzones: [...completedAtlas],
         atlasLocationStates: locationStates,
         activeMissionId: missionId,
+        activeMissionStep: missionStep,
+        completedMissionSteps: [...completedSteps],
+        unlockedMissionIds: [...unlockedMissions],
+        momentum: momentumValue,
+        noise: noiseValue,
         xp: xpValue,
         caps,
         inventory: inventoryValue,
@@ -1106,10 +1145,23 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextInventory = [...inventory];
     let nextLocationStates = atlasLocationStates;
     const nextXp = result.passed ? xp + 25 : xp + 5;
+    const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
+    const nextMomentum = momentum + generatedMomentum;
+    const nextNoise = result.passed ? noise : noise + 1;
+    let nextMissionStep = activeMissionStep;
+    const nextCompletedMissionSteps = new Set(completedMissionSteps);
+    const nextUnlockedMissionIds = new Set(unlockedMissionIds);
     if (result.passed) {
       completed.add(atlasKey);
       if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
+      }
+      if (isAtMissionLocation) {
+        nextCompletedMissionSteps.add(currentMissionStepKey);
+        nextMissionStep = Math.min(activeMissionStep + 1, atlasWorldRoute.length - 1);
+        if (nextCompletedMissionSteps.size >= atlasWorldRoute.length) {
+          nextUnlockedMissionIds.add("M-0171");
+        }
       }
       nextLocationStates = patchLocationState(atlasLocationStates, atlasLocation.id, {
         visitedNodes: [...new Set([...currentLocationState.visitedNodes, atlasInternalKey])],
@@ -1119,14 +1171,26 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     }
     setAtlasCompleted(completed);
     setAtlasLocationStates(nextLocationStates);
+    setActiveMissionStep(nextMissionStep);
+    setCompletedMissionSteps(nextCompletedMissionSteps);
+    setUnlockedMissionIds(nextUnlockedMissionIds);
+    setMomentum(nextMomentum);
+    setNoise(nextNoise);
     setXp(nextXp);
     setInventory(nextInventory);
     const nextLog = writeLog(
       `Mapa interno: ${atlasLocation.name} / ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Nodo interno completado." : "Complicacion sin cerrar este nodo."}`,
-      result.passed ? `${role || "Exploracion del nodo interno"} XP total: ${nextXp}.` : `Riesgo activo: ${readableThreat(atlasEnemy)}. XP total: ${nextXp}.`
+      result.passed
+        ? `${role || "Exploracion del nodo interno"} XP total: ${nextXp}. Momentum +${generatedMomentum}.`
+        : `Riesgo activo: ${readableThreat(atlasEnemy)}. Ruido ${nextNoise}. XP total: ${nextXp}.`
     );
     progressAtlasPatch({
       completedAtlas: completed,
+      missionStep: nextMissionStep,
+      completedSteps: nextCompletedMissionSteps,
+      unlockedMissions: nextUnlockedMissionIds,
+      momentumValue: nextMomentum,
+      noiseValue: nextNoise,
       xpValue: nextXp,
       inventoryValue: nextInventory,
       locationStates: nextLocationStates,
@@ -1144,12 +1208,26 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     setRoll(result);
     const nextAp = ap - 1;
     const nextXp = result.passed ? xp + 35 : xp + 10;
+    const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
+    const nextMomentum = momentum + generatedMomentum;
+    const nextNoise = result.passed ? noise : noise + 1;
     setXp(nextXp);
+    setMomentum(nextMomentum);
+    setNoise(nextNoise);
     const nextLog = writeLog(
       `Encuentro: ${readableThreat(atlasEnemy)}. Tirada ${result.dice.join(" / ")} contra D${difficulty}.`,
-      result.passed ? "Combate textual controlado: amenaza reducida o expulsada." : "La amenaza queda activa: conviene gastar AP en cobertura o nuevo turno."
+      result.passed
+        ? `Combate textual controlado: amenaza reducida o expulsada. Momentum +${generatedMomentum}.`
+        : `La amenaza queda activa: ruido ${nextNoise}; conviene gastar AP en cobertura o nuevo turno.`
     );
-    progressAtlasPatch({ xpValue: nextXp, logValue: nextLog, apValue: nextAp, lastAction: `atlas:encuentro:${atlasLocation.id}` });
+    progressAtlasPatch({
+      xpValue: nextXp,
+      momentumValue: nextMomentum,
+      noiseValue: nextNoise,
+      logValue: nextLog,
+      apValue: nextAp,
+      lastAction: `atlas:encuentro:${atlasLocation.id}`,
+    });
   }
 
   function nextAtlasSubzone() {
@@ -1268,6 +1346,24 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
             {atlasLocation ? (
               <>
+                <div className="fo4-mission-tracker">
+                  <span>
+                    <small>Mision activa</small>
+                    <strong>{atlasMission?.name ?? activeMissionId}</strong>
+                    <i>{missionObjectiveText}</i>
+                  </span>
+                  <span>
+                    <small>Ruta de mision</small>
+                    <strong>{missionRouteProgress}%</strong>
+                    <i>Paso {Math.min(activeMissionStep + 1, atlasWorldRoute.length)} de {atlasWorldRoute.length}</i>
+                  </span>
+                  <span>
+                    <small>Tomo 1</small>
+                    <strong>Momentum {momentum} / Ruido {noise}</strong>
+                    <i>2d20, AP, complicaciones y avance por objetivos.</i>
+                  </span>
+                </div>
+
                 <div className="fo4-atlas-brief">
                   <strong>{atlasLocation.name}</strong>
                   <p>{atlasLocation.summary ?? atlasLocation.useInPlay ?? "Ubicacion jugable cargada desde las plantillas del Tomo 6."}</p>
