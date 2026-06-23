@@ -112,6 +112,90 @@ type TemplateCatalog = {
   };
 };
 
+type MissionObjectiveStep = {
+  id: string;
+  locationId: string;
+  title: string;
+  objective: string;
+  nodeHints: string[];
+  requiredItem?: string;
+  grantsItem?: string;
+  reward?: string;
+  unlocksMissionId?: string;
+};
+
+const outOfTimeSteps: MissionObjectiveStep[] = [
+  {
+    id: "wake-cryo",
+    locationId: "U-0001",
+    title: "Despertar en Vault 111",
+    objective: "Entra al mapa interno de Vault 111 y resuelve Camara criogenica.",
+    nodeHints: ["camara criogenica", "criogen"],
+  },
+  {
+    id: "check-pods",
+    locationId: "U-0001",
+    title: "Revisar criopods",
+    objective: "Resuelve Pasillo de criopods para confirmar el rastro inicial de Shaun.",
+    nodeHints: ["criopods", "capsula"],
+  },
+  {
+    id: "secure-office",
+    locationId: "U-0001",
+    title: "Asegurar oficina",
+    objective: "Llega a Oficina de seguridad y supera el nodo interno.",
+    nodeHints: ["oficina de seguridad", "seguridad"],
+  },
+  {
+    id: "take-pipboy",
+    locationId: "U-0001",
+    title: "Conseguir Pip-Boy",
+    objective: "Resuelve Sala del Pip-Boy para obtener el Pip-Boy antes de abrir la salida.",
+    nodeHints: ["pip-boy", "pip boy"],
+    grantsItem: "Pip-Boy 3000 Mark IV",
+  },
+  {
+    id: "open-vault-door",
+    locationId: "U-0001",
+    title: "Abrir puerta del Vault",
+    objective: "Resuelve Puerta del Vault / salida. Requiere Pip-Boy.",
+    nodeHints: ["puerta del vault", "salida"],
+    requiredItem: "Pip-Boy 3000 Mark IV",
+  },
+  {
+    id: "reach-sanctuary",
+    locationId: "U-0002",
+    title: "Llegar a Sanctuary Hills",
+    objective: "Viaja a Sanctuary Hills y resuelve Casa del protagonista o Calle circular central.",
+    nodeHints: ["casa del protagonista", "calle circular"],
+  },
+  {
+    id: "talk-codsworth",
+    locationId: "U-0002",
+    title: "Hablar con Codsworth",
+    objective: "Explora Sanctuary y completa un nodo interno de casa/calle/taller para avanzar la busqueda.",
+    nodeHints: ["casa", "calle", "taller", "workshop"],
+    grantsItem: "Pista de Concord",
+  },
+  {
+    id: "red-rocket-route",
+    locationId: "U-0003",
+    title: "Asegurar Red Rocket",
+    objective: "Viaja a Red Rocket y resuelve Garaje principal, Oficina o Taller.",
+    nodeHints: ["garaje", "oficina", "taller", "red rocket"],
+    reward: "Ruta a Concord confirmada",
+  },
+  {
+    id: "arrive-concord",
+    locationId: "U-0011",
+    title: "Llegar a Concord",
+    objective: "Viaja a Concord y resuelve Entrada norte, Calle principal o Museo exterior.",
+    nodeHints: ["entrada norte", "calle principal", "museo"],
+    reward: "Out of Time completada",
+    unlocksMissionId: "M-0171",
+  },
+];
+
 const scenes: Scene[] = [
   {
     id: "vault111",
@@ -790,14 +874,26 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const connectedInternalIndexes = [atlasSubzoneIndex - 1, atlasSubzoneIndex, atlasSubzoneIndex + 1].filter(
     (index) => index >= 0 && index < atlasSubzones.length
   );
-  const missionStepLocationId = atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
+  const missionSteps: MissionObjectiveStep[] = activeMissionId === "M-0170" ? outOfTimeSteps : atlasWorldRoute.map((locationId, index) => ({
+    id: `${activeMissionId}:route:${index}`,
+    locationId,
+    title: `Objetivo ${index + 1}`,
+    objective: `Explora ${atlasLocations.find((location) => location.id === locationId)?.name ?? locationId}.`,
+    nodeHints: [],
+  } satisfies MissionObjectiveStep));
+  const activeObjectiveStep = missionSteps[Math.min(activeMissionStep, missionSteps.length - 1)] ?? missionSteps[0];
+  const missionStepLocationId = activeObjectiveStep?.locationId ?? atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
   const missionStepLocation = atlasLocations.find((location) => location.id === missionStepLocationId);
-  const currentMissionStepKey = `${activeMissionId}:${missionStepLocationId}`;
+  const currentMissionStepKey = `${activeMissionId}:${activeObjectiveStep?.id ?? missionStepLocationId}`;
   const isAtMissionLocation = atlasLocation?.id === missionStepLocationId;
-  const missionRouteProgress = Math.round((completedMissionSteps.size / Math.max(1, atlasWorldRoute.length)) * 100);
+  const missionRouteProgress = Math.round((completedMissionSteps.size / Math.max(1, missionSteps.length)) * 100);
+  const normalizedAtlasNodeName = atlasSubzone?.name.toLowerCase() ?? "";
+  const matchesMissionNode = !activeObjectiveStep?.nodeHints?.length
+    || activeObjectiveStep.nodeHints.some((hint) => normalizedAtlasNodeName.includes(hint.toLowerCase()));
+  const hasRequiredMissionItem = !activeObjectiveStep?.requiredItem || inventory.includes(activeObjectiveStep.requiredItem);
   const missionObjectiveText = isAtMissionLocation
-    ? `Explora y resuelve un nodo interno de ${atlasLocation?.name ?? "la ubicacion"} para avanzar la mision.`
-    : `Viaja por el mapa mundi hacia ${missionStepLocation?.name ?? missionStepLocationId}.`;
+    ? activeObjectiveStep?.objective ?? `Resuelve el nodo interno requerido de ${atlasLocation?.name ?? "la ubicacion"}.`
+    : `Viaja por el mapa mundi hacia ${missionStepLocation?.name ?? missionStepLocationId}: ${activeObjectiveStep?.title ?? "objetivo activo"}.`;
   const atlasEnemy = useMemo(() => {
     const enemyNames = atlasLocation?.enemies ?? [];
     const match = atlasBestiary.find((creature) =>
@@ -1156,11 +1252,17 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
       }
-      if (isAtMissionLocation) {
+      if (isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem) {
         nextCompletedMissionSteps.add(currentMissionStepKey);
-        nextMissionStep = Math.min(activeMissionStep + 1, atlasWorldRoute.length - 1);
-        if (nextCompletedMissionSteps.size >= atlasWorldRoute.length) {
-          nextUnlockedMissionIds.add("M-0171");
+        nextMissionStep = Math.min(activeMissionStep + 1, missionSteps.length - 1);
+        if (activeObjectiveStep?.grantsItem && !nextInventory.includes(activeObjectiveStep.grantsItem)) {
+          nextInventory.push(activeObjectiveStep.grantsItem);
+        }
+        if (activeObjectiveStep?.reward && !nextInventory.includes(activeObjectiveStep.reward)) {
+          nextInventory.push(activeObjectiveStep.reward);
+        }
+        if (activeObjectiveStep?.unlocksMissionId) {
+          nextUnlockedMissionIds.add(activeObjectiveStep.unlocksMissionId);
         }
       }
       nextLocationStates = patchLocationState(atlasLocationStates, atlasLocation.id, {
@@ -1181,7 +1283,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextLog = writeLog(
       `Mapa interno: ${atlasLocation.name} / ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Nodo interno completado." : "Complicacion sin cerrar este nodo."}`,
       result.passed
-        ? `${role || "Exploracion del nodo interno"} XP total: ${nextXp}. Momentum +${generatedMomentum}.`
+        ? `${role || "Exploracion del nodo interno"} ${isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem ? "Objetivo de mision actualizado." : "Exploracion registrada."} XP total: ${nextXp}. Momentum +${generatedMomentum}.`
         : `Riesgo activo: ${readableThreat(atlasEnemy)}. Ruido ${nextNoise}. XP total: ${nextXp}.`
     );
     progressAtlasPatch({
@@ -1349,18 +1451,26 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                 <div className="fo4-mission-tracker">
                   <span>
                     <small>Mision activa</small>
-                    <strong>{atlasMission?.name ?? activeMissionId}</strong>
+                    <strong>{activeObjectiveStep?.title ?? atlasMission?.name ?? activeMissionId}</strong>
                     <i>{missionObjectiveText}</i>
                   </span>
                   <span>
                     <small>Ruta de mision</small>
                     <strong>{missionRouteProgress}%</strong>
-                    <i>Paso {Math.min(activeMissionStep + 1, atlasWorldRoute.length)} de {atlasWorldRoute.length}</i>
+                    <i>Paso {Math.min(activeMissionStep + 1, missionSteps.length)} de {missionSteps.length}</i>
                   </span>
                   <span>
-                    <small>Tomo 1</small>
-                    <strong>Momentum {momentum} / Ruido {noise}</strong>
-                    <i>2d20, AP, complicaciones y avance por objetivos.</i>
+                    <small>Condicion</small>
+                    <strong>{isAtMissionLocation && matchesMissionNode && hasRequiredMissionItem ? "Lista" : "Pendiente"}</strong>
+                    <i>
+                      {!isAtMissionLocation
+                        ? `Ubicacion requerida: ${missionStepLocation?.name ?? missionStepLocationId}.`
+                        : !matchesMissionNode
+                          ? `Nodo requerido: ${activeObjectiveStep?.nodeHints.join(", ") || "cualquiera"}.`
+                          : !hasRequiredMissionItem
+                            ? `Requiere: ${activeObjectiveStep?.requiredItem}.`
+                            : `Momentum ${momentum} / Ruido ${noise}.`}
+                    </i>
                   </span>
                 </div>
 
