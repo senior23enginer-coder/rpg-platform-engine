@@ -19,10 +19,12 @@ import { RulesScreen } from "./screens/RulesScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
 import { SupportScreen } from "./screens/SupportScreen";
 import type { Screen } from "./screens/types";
-import type { AudioManifest, GameConfig, GameJsonFile } from "./types/game";
+import type { AudioManifest, GameConfig, GameJsonFile, GameMap } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, PlayerSave, UserSettings } from "./types/profile";
-import { createActivity, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
+import { createActivity, createAuditEntry, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
 import type { AppMetadata, AppNewsEntry, AppNotificationEntry } from "./lib/appMetadataStorage";
+import { createPlatformRepository } from "./lib/platformRepository";
+import type { PlatformSession } from "./lib/platformContracts";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGameJsonFiles, loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { loadBundledUserProfiles } from "./lib/userLibrary";
@@ -53,6 +55,7 @@ const loginFallout4MainTheme = "/games/fallout4/audio/sounds/fallout_4_soundtrac
 const adminScreens = ["admin", "adminSettings", "adminSupport", "adminGames", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
 const disabledGamesKey = "rpg-platform.disabled-games.v1";
 const sessionScreenKey = "rpg-platform.session-screen.v1";
+const backendSessionKey = "rpg-platform.backend-session.v1";
 const sessionDurationMs = 8 * 60 * 60 * 1000;
 const screens = [
   "home",
@@ -123,6 +126,24 @@ function loadSessionScreen() {
   }
 }
 
+function loadBackendSession(): PlatformSession | undefined {
+  try {
+    const raw = window.localStorage.getItem(backendSessionKey);
+    return raw ? (JSON.parse(raw) as PlatformSession) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function persistBackendSession(session?: PlatformSession) {
+  try {
+    if (session) window.localStorage.setItem(backendSessionKey, JSON.stringify(session));
+    else window.localStorage.removeItem(backendSessionKey);
+  } catch {
+    // Local storage can be unavailable in some native shells.
+  }
+}
+
 function sanitizeScreenForProfile(nextScreen: Screen, profile: PlayerProfile) {
   if (isAdminScreen(nextScreen) && profile.role !== "admin") return "home";
   return nextScreen;
@@ -154,6 +175,37 @@ function applyDisabledGames(games: GameConfig[], disabledIds: string[]) {
   return games.map((game) => ({ ...game, enabled: disabledIds.includes(game.id) ? false : game.enabled ?? true }));
 }
 
+function toPlatformMapDocument(game: GameConfig, map: GameMap) {
+  return {
+    id: map.id,
+    gameId: game.id,
+    name: map.name,
+    width: map.width,
+    height: map.height,
+    tileSize: map.tileSize ?? 48,
+    image: map.background,
+    updatedAt: new Date().toISOString(),
+    layers: [
+      {
+        id: "terrain",
+        name: "Terreno",
+        visible: true,
+        opacity: map.terrainOpacity ?? 1,
+        tiles: Array.from({ length: map.height }, (_, y) =>
+          Array.from({ length: map.width }, (_, x) => map.tiles?.find((tile) => tile.x === x && tile.y === y)?.terrain ?? "plain")
+        ),
+      },
+      {
+        id: "markers",
+        name: "Marcadores",
+        visible: true,
+        opacity: map.markerScale ?? 1,
+        markers: map.markers ?? [],
+      },
+    ],
+  };
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>(() => loadSessionScreen());
   const [disabledGameIds, setDisabledGameIds] = useState<string[]>(() => loadDisabledGameIds());
@@ -162,13 +214,16 @@ export default function App() {
   const [profile, setProfile] = useState<PlayerProfile>(() => restoreSession(loadProfile(bundledGames)));
   const [users, setUsers] = useState<PlayerProfile[]>(() => bundledUsers.map((user) => normalizeProfile(user, bundledGames)));
   const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
+  const [platformSession, setPlatformSession] = useState<PlatformSession | undefined>();
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
   const [storageReady, setStorageReady] = useState(false);
   const hasHydratedStorage = useRef(false);
+  const hasHydratedBackend = useRef(false);
   const hasRefreshedSession = useRef(false);
   const lastActivityScreen = useRef(screen);
 
   const visibleGames = profile.role === "admin" ? games : games.filter((game) => !disabledGameIds.includes(game.id));
+  const platformRepository = useMemo(() => createPlatformRepository(appMetadata, platformSession?.id), [appMetadata.cloud, platformSession?.id]);
   const activeGame = visibleGames.find((game) => game.id === profile.activeGameId) ?? visibleGames[0] ?? games[0];
   const activeGameSaves = getGameSaves(profile, activeGame.id);
   const activeSave = getActiveSave(profile, activeGame.id);
@@ -215,6 +270,33 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (!storageReady || hasHydratedBackend.current) return;
+    hasHydratedBackend.current = true;
+    let active = true;
+    Promise.all([
+      platformRepository.users.list(),
+      platformRepository.games.list(),
+      platformRepository.content.metadata(),
+    ])
+      .then(([backendUsers, backendGames, backendMetadata]) => {
+        if (!active) return;
+        if (backendUsers.length) {
+          setUsers(backendUsers.map((user) => enforceFixedUserRole(normalizeProfile(user, bundledGames))));
+        }
+        if (backendGames.length) {
+          setGames(applyDisabledGames(backendGames.map((game) => normalizeGameConfig(game)), disabledGameIds));
+        }
+        setAppMetadata(normalizeMetadata(backendMetadata));
+      })
+      .catch(() => {
+        // Backend local opcional: la app conserva fallback local si no esta levantado.
+      });
+    return () => {
+      active = false;
+    };
+  }, [disabledGameIds, platformRepository, storageReady]);
+
+  useEffect(() => {
     setScreen((currentScreen) => sanitizeScreenForProfile(currentScreen, profile));
   }, [profile.role]);
 
@@ -239,10 +321,30 @@ export default function App() {
   }, [profile, screen, storageReady]);
 
   useEffect(() => {
-    if (!storageReady || !profile.signedIn || hasRefreshedSession.current) return;
+    if (!storageReady || hasRefreshedSession.current) return;
     hasRefreshedSession.current = true;
-    setProfile((current) => ({ ...current, lastActivityAt: new Date().toISOString() }));
-  }, [profile.signedIn, storageReady]);
+    const storedSession = platformSession ?? loadBackendSession();
+    if (!storedSession?.id) {
+      if (profile.signedIn) setProfile((current) => ({ ...current, lastActivityAt: new Date().toISOString() }));
+      return;
+    }
+    platformRepository.auth.refreshSession(storedSession.id)
+      .then((refreshedSession) => {
+        const refreshedUser = users.find((user) => user.id === refreshedSession.userId);
+        setPlatformSession(refreshedSession);
+        persistBackendSession(refreshedSession);
+        setProfile((current) => ({
+          ...(refreshedUser ? normalizeProfile(refreshedUser, bundledGames) : current),
+          signedIn: true,
+          lastActivityAt: refreshedSession.lastActivityAt,
+        }));
+      })
+      .catch(() => {
+        persistBackendSession(undefined);
+        setPlatformSession(undefined);
+        setProfile((current) => ({ ...current, signedIn: false }));
+      });
+  }, [platformRepository, platformSession, profile.signedIn, storageReady, users]);
 
   useEffect(() => {
     if (!profile.signedIn) return;
@@ -365,7 +467,17 @@ export default function App() {
     }));
   }
 
-  function registerUser(account: { email: string; username: string; password: string; role?: "user" | "admin" }) {
+  function trackAudit(action: string, module: Parameters<typeof createAuditEntry>[0]["module"], actorId: string, targetId?: string, metadata?: Record<string, string | number | boolean | undefined>) {
+    setAppMetadata((current) => ({
+      ...current,
+      auditLog: [
+        createAuditEntry({ action, module, actorId, targetId, metadata }),
+        ...(current.auditLog ?? []),
+      ].slice(0, 200),
+    }));
+  }
+
+  function registerUser(account: { email: string; username: string; password?: string; passwordHash?: string; role?: "user" | "admin" }) {
     const now = new Date().toISOString();
     const id = `user_${account.username.toLowerCase().replace(/[^a-z0-9_-]+/g, "_")}_${Date.now()}`;
     const newProfile = normalizeProfile(
@@ -376,7 +488,9 @@ export default function App() {
         username: account.username,
         role: account.role ?? "user",
         email: account.email,
-        password: account.password,
+        password: account.passwordHash ? "" : account.password ?? "",
+        passwordHash: account.passwordHash,
+        passwordUpdatedAt: account.passwordHash ? now : undefined,
         basePath: `/users/${id}`,
         profilePath: `/users/${id}/profile.json`,
         signedIn: true,
@@ -389,12 +503,32 @@ export default function App() {
     setUsers((currentUsers) => [newProfile, ...currentUsers]);
     setProfile(newProfile);
     setScreen("home");
+    void platformRepository.users.save(newProfile).catch(() => undefined);
+    trackAudit("auth.login", "auth", newProfile.id, newProfile.id, { registered: true });
+  }
+
+  async function loginUser(credentials: { usernameOrEmail: string; password: string; remember: boolean }) {
+    try {
+      const result = await platformRepository.auth.login(credentials);
+      setPlatformSession(result.session);
+      persistBackendSession(result.session);
+      setUsers((currentUsers) => [result.profile, ...currentUsers.filter((user) => user.id !== result.profile.id)]);
+      return result.profile;
+    } catch {
+      return undefined;
+    }
+  }
+
+  async function requestPasswordReset(usernameOrEmail: string) {
+    await platformRepository.auth.requestPasswordReset(usernameOrEmail).catch(() => undefined);
   }
 
   function accessUser(nextProfile: PlayerProfile) {
     const enforcedProfile = enforceFixedUserRole(nextProfile);
     setProfile(enforcedProfile);
     setScreen(enforcedProfile.role === "admin" ? "admin" : "home");
+    void platformRepository.users.save(enforcedProfile).catch(() => undefined);
+    trackAudit("auth.login", "auth", enforcedProfile.id, enforcedProfile.id, { role: enforcedProfile.role ?? "user" });
   }
 
   function loadSave(saveId: string) {
@@ -428,6 +562,12 @@ export default function App() {
       }),
     }));
     if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
+    void platformRepository.saves.save({
+      ...save,
+      sessions: (save.sessions ?? 0) + 1,
+      lastLoadedAt: now,
+      updatedAt: now,
+    }).catch(() => undefined);
     trackActivity(`Partida cargada: ${save.name}`);
     setScreen(save.gameId === "fallout4" && save.campaignId === "sanctuary_commonwealth" ? "fallout4Campaign" : "home");
   }
@@ -463,6 +603,8 @@ export default function App() {
     });
 
     if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
+    const currentSave = getActiveSave(profile, activeGame.id);
+    if (currentSave) void platformRepository.saves.save({ ...currentSave, ...patch, updatedAt: now }).catch(() => undefined);
   }
 
   function continueGame() {
@@ -470,6 +612,9 @@ export default function App() {
   }
 
   function signOut() {
+    if (platformSession?.id) void platformRepository.auth.logout(platformSession.id).catch(() => undefined);
+    setPlatformSession(undefined);
+    persistBackendSession(undefined);
     setProfile((current) => ({ ...current, signedIn: false, lastActivityAt: new Date().toISOString() }));
     try {
       window.localStorage.removeItem(sessionScreenKey);
@@ -478,6 +623,7 @@ export default function App() {
     }
     setScreen("home");
     trackActivity("Sesion cerrada");
+    trackAudit("auth.logout", "auth", profile.id, profile.id);
   }
 
   function createNewGame() {
@@ -542,6 +688,11 @@ export default function App() {
       }));
     }
     trackActivity(`Config admin actualizada: ${updatedGame.name}`);
+    void platformRepository.games.save(normalizeGameConfig(updatedGame)).catch(() => undefined);
+    (updatedGame.maps ?? []).forEach((map) => {
+      void platformRepository.maps.save(toPlatformMapDocument(updatedGame, map)).catch(() => undefined);
+    });
+    trackAudit("admin.game.update", "games", profile.id, updatedGame.id, { name: updatedGame.name });
   }
 
   function updateGames(nextGames: GameConfig[]) {
@@ -554,6 +705,13 @@ export default function App() {
     }
     setGames(applyDisabledGames(nextGames.map((game) => normalizeGameConfig(game)), nextDisabledIds));
     trackActivity("Gestor de juegos actualizado");
+    nextGames.forEach((game) => {
+      void platformRepository.games.save(normalizeGameConfig(game)).catch(() => undefined);
+      (game.maps ?? []).forEach((map) => {
+        void platformRepository.maps.save(toPlatformMapDocument(game, map)).catch(() => undefined);
+      });
+    });
+    trackAudit("admin.game.update", "games", profile.id, "library", { total: nextGames.length });
   }
 
   function updateUsers(nextUsers: PlayerProfile[]) {
@@ -562,6 +720,10 @@ export default function App() {
     const activeUser = normalizedUsers.find((user) => user.id === profile.id);
     if (activeUser) setProfile((current) => ({ ...activeUser, signedIn: current.signedIn }));
     trackActivity("Usuarios y accesos actualizados");
+    normalizedUsers.forEach((user) => {
+      void platformRepository.users.save(user).catch(() => undefined);
+    });
+    trackAudit("admin.user.update", "users", profile.id, "users", { total: normalizedUsers.length });
   }
 
   function updateNews(news: AppNewsEntry[]) {
@@ -570,6 +732,8 @@ export default function App() {
       news,
     }));
     trackActivity("Noticias actualizadas");
+    void platformRepository.content.saveNews(news).catch(() => undefined);
+    trackAudit("admin.news.update", "news", profile.id, "news", { total: news.length });
   }
 
   function updateNotifications(notifications: AppNotificationEntry[]) {
@@ -578,6 +742,8 @@ export default function App() {
       notifications,
     }));
     trackActivity("Notificaciones actualizadas");
+    void platformRepository.content.saveNotifications(notifications).catch(() => undefined);
+    trackAudit("admin.notification.update", "notifications", profile.id, "notifications", { total: notifications.length });
   }
 
   function updateSupportTickets(supportTickets: AppMetadata["supportTickets"]) {
@@ -586,6 +752,10 @@ export default function App() {
       supportTickets,
     }));
     trackActivity("Soporte tecnico actualizado");
+    supportTickets.forEach((ticket) => {
+      void platformRepository.support.saveTicket(ticket).catch(() => undefined);
+    });
+    trackAudit("support.ticket.update", "support", profile.id, "support", { total: supportTickets.length });
   }
 
   function updatePlatformMetadata(patch: Partial<AppMetadata>) {
@@ -594,6 +764,8 @@ export default function App() {
       ...patch,
     }));
     trackActivity("Configuracion de plataforma actualizada");
+    void platformRepository.content.saveMetadata({ ...appMetadata, ...patch }).catch(() => undefined);
+    trackAudit("admin.settings.update", "settings", profile.id, "platform");
   }
 
   if (!profile.signedIn) {
@@ -610,6 +782,8 @@ export default function App() {
           releaseChannel={appMetadata.releaseChannel}
           onAccess={accessUser}
           onRegister={registerUser}
+          onLogin={loginUser}
+          onPasswordReset={requestPasswordReset}
         />
       </div>
     );
@@ -751,6 +925,7 @@ export default function App() {
                   };
                 });
                 if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
+                if (pendingSaveDocument) void platformRepository.saves.save(pendingSaveDocument.save).catch(() => undefined);
                 trackActivity(`Partida creada: ${characterName} - ${activeGame.name}`);
                 setScreen(activeGame.id === "fallout4" && options?.mode === "guided" ? "fallout4Campaign" : "home");
               }}
@@ -785,6 +960,8 @@ export default function App() {
               isAdmin={profile.role === "admin"}
               defaultRelayUrl={appMetadata.chatRelayUrl}
               defaultRoom={appMetadata.chatRoom}
+              onLoadMessages={(roomId, channelId) => platformRepository.chat.listMessages(roomId, channelId)}
+              onSendMessage={(message) => platformRepository.chat.sendMessage(message)}
               onBack={() => setScreen("home")}
             />
           )}

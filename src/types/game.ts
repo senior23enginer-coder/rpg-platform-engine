@@ -38,9 +38,9 @@ export type Campaign = {
   };
 };
 
-export type MapNodeType = "start" | "settlement" | "dungeon" | "wilds" | "city" | "quest" | "exit";
+export type MapNodeType = "start" | "settlement" | "dungeon" | "wilds" | "city" | "quest" | "exit" | "location" | "mission" | "hazard" | "resource";
 export type TacticalTerrainType = "plain" | "forest" | "mountain" | "water" | "road" | "city" | "base" | "wall";
-export type TacticalMarkerType = "player" | "enemy" | "objective" | "spawn" | "shop";
+export type TacticalMarkerType = "player" | "enemy" | "objective" | "spawn" | "shop" | "cover" | "loot" | "weather" | "biome" | "unit" | "beast";
 
 export type GameMapNode = {
   id: string;
@@ -51,6 +51,12 @@ export type GameMapNode = {
   description?: string;
   biome?: string;
   danger?: number;
+  coverage?: "none" | "light" | "heavy" | "total";
+  movementCost?: number;
+  missionId?: string;
+  locationId?: string;
+  weatherEffectId?: string;
+  assetRefs?: string[];
   connections: string[];
 };
 
@@ -79,7 +85,18 @@ export type GameMap = {
     y: number;
     type: TacticalMarkerType;
     label: string;
+    coverage?: "none" | "light" | "heavy" | "total";
+    movementCost?: number;
+    missionId?: string;
+    biome?: string;
+    weatherEffect?: string;
+    linkedAssetId?: string;
   }>;
+  missionSheets?: Array<{ id: string; title: string; objective: string; locationId?: string; recommendedLevel?: number; status?: "draft" | "ready" | "linked" }>;
+  locations?: Array<{ id: string; name: string; biome?: string; danger?: number; description?: string }>;
+  weatherEffects?: Array<{ id: string; name: string; visibility?: number; movementModifier?: number; damage?: string; description?: string }>;
+  biomes?: Array<{ id: string; name: string; movementModifier?: number; encounterRisk?: number; description?: string }>;
+  arsenal?: Array<{ id: string; name: string; category: "weapon" | "equipment" | "unit" | "bestiary"; tags?: string[]; description?: string }>;
 };
 
 export type PlayerOption = {

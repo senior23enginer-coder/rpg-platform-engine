@@ -148,14 +148,31 @@ export function SupportScreen({ profile, tickets, isAdmin = false, onChange, onB
               {Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
             </select></label>
           </div>
-          <div className="support-ticket-list">
-            {filteredTickets.map((ticket) => (
-              <button key={ticket.id} className={ticket.id === selectedTicket?.id ? "selected" : ""} onClick={() => setSelectedId(ticket.id)}>
-                <span className={`support-priority priority-${ticket.priority}`} />
-                <strong>{ticket.title}</strong>
-                <small>{ticket.requesterName} - {statusLabels[ticket.status]}</small>
-              </button>
-            ))}
+          <div className="support-ticket-table-wrap">
+            <table className="support-ticket-table">
+              <thead>
+                <tr>
+                  <th>Ticket</th>
+                  <th>Usuario</th>
+                  <th>Categoria</th>
+                  <th>Prioridad</th>
+                  <th>Estado</th>
+                  <th>Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredTickets.map((ticket) => (
+                  <tr key={ticket.id} className={ticket.id === selectedTicket?.id ? "selected" : ""}>
+                    <td><strong>{ticket.title}</strong><small>{ticket.id}</small></td>
+                    <td>{ticket.requesterName}</td>
+                    <td>{categoryLabels[ticket.category]}</td>
+                    <td><span className={`support-priority-label priority-${ticket.priority}`}>{priorityLabels[ticket.priority]}</span></td>
+                    <td><span className="admin-status-pill">{statusLabels[ticket.status]}</span></td>
+                    <td><button onClick={() => setSelectedId(ticket.id)}><MessageCircle size={15} /> Ver</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
             {filteredTickets.length === 0 && <div className="admin-empty-state"><Headphones size={22} /><strong>Sin tickets</strong><span>No hay solicitudes con esos filtros.</span></div>}
           </div>
         </article>

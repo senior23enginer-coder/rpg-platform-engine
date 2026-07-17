@@ -1,7 +1,9 @@
 import { Capacitor } from "@capacitor/core";
 import type { AppMetadata } from "./appMetadataStorage";
 import type { SavedGameDocument } from "./saveGameStorage";
+import type { GameConfig } from "../types/game";
 import type { PlayerProfile } from "../types/profile";
+import type { PlatformAuditEntry, PlatformChatMessage, PlatformCloudConfig, PlatformMapDocument, PlatformSession } from "./platformContracts";
 
 const ROOT_DIR = "RPG Platform Engine";
 const DATABASE_DIR = `${ROOT_DIR}/database`;
@@ -18,10 +20,17 @@ type NativeFileDriver = {
 export type PlatformDatabase = {
   schemaVersion: 1;
   updatedAt: string;
+  mode: "local" | "cloud" | "hybrid";
+  cloud?: PlatformCloudConfig;
   profile?: PlayerProfile;
   users: PlayerProfile[];
   currentUserId?: string;
   metadata?: AppMetadata;
+  games: GameConfig[];
+  maps: PlatformMapDocument[];
+  sessions: PlatformSession[];
+  chatMessages: PlatformChatMessage[];
+  auditLog: PlatformAuditEntry[];
   saveIndex: Array<{
     saveId: string;
     gameId: string;
@@ -198,15 +207,75 @@ export async function savePersistentUsers(users: PlayerProfile[], currentUserId?
   await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
 }
 
+export async function savePersistentGames(games: GameConfig[]) {
+  const current = await loadPersistentDatabase();
+  const nextDatabase = createDatabase({ ...current, games });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
+export async function savePersistentMaps(maps: PlatformMapDocument[]) {
+  const current = await loadPersistentDatabase();
+  const nextDatabase = createDatabase({ ...current, maps });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
+export async function savePersistentSession(session: PlatformSession) {
+  const current = await loadPersistentDatabase();
+  const sessions = [session, ...current.sessions.filter((item) => item.id !== session.id)].slice(0, 50);
+  const nextDatabase = createDatabase({ ...current, sessions, currentUserId: session.userId });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
+export async function revokePersistentSession(sessionId: string) {
+  const current = await loadPersistentDatabase();
+  const now = new Date().toISOString();
+  const nextDatabase = createDatabase({
+    ...current,
+    sessions: current.sessions.map((session) => (session.id === sessionId ? { ...session, revokedAt: now } : session)),
+  });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
+export async function appendPersistentChatMessage(message: PlatformChatMessage) {
+  const current = await loadPersistentDatabase();
+  const nextDatabase = createDatabase({
+    ...current,
+    chatMessages: [message, ...current.chatMessages.filter((item) => item.id !== message.id)].slice(0, 500),
+  });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
+export async function appendPersistentAudit(entry: PlatformAuditEntry) {
+  const current = await loadPersistentDatabase();
+  const nextDatabase = createDatabase({
+    ...current,
+    auditLog: [entry, ...current.auditLog.filter((item) => item.id !== entry.id)].slice(0, 500),
+  });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
 function createDatabase(partial: Partial<PlatformDatabase> = {}): PlatformDatabase {
   const users = partial.users ?? (partial.profile ? [partial.profile] : []);
   return {
     schemaVersion: 1,
     updatedAt: new Date().toISOString(),
+    mode: partial.mode ?? "local",
+    cloud: partial.cloud,
     profile: partial.profile ?? users[0],
     users,
     currentUserId: partial.currentUserId ?? partial.profile?.id ?? users[0]?.id,
     metadata: partial.metadata,
+    games: partial.games ?? [],
+    maps: partial.maps ?? [],
+    sessions: partial.sessions ?? [],
+    chatMessages: partial.chatMessages ?? [],
+    auditLog: partial.auditLog ?? partial.metadata?.auditLog ?? [],
     saveIndex: partial.saveIndex ?? [],
   };
 }
@@ -223,6 +292,13 @@ function normalizeDatabase(database: Partial<PlatformDatabase>): PlatformDatabas
     users: mergedUsers,
     currentUserId: database.currentUserId ?? database.profile?.id ?? mergedUsers[0]?.id,
     metadata: database.metadata,
+    mode: database.mode ?? "local",
+    cloud: database.cloud,
+    games: Array.isArray(database.games) ? database.games : [],
+    maps: Array.isArray(database.maps) ? database.maps : [],
+    sessions: Array.isArray(database.sessions) ? database.sessions : [],
+    chatMessages: Array.isArray(database.chatMessages) ? database.chatMessages : [],
+    auditLog: Array.isArray(database.auditLog) ? database.auditLog : database.metadata?.auditLog ?? [],
     saveIndex: Array.isArray(database.saveIndex) ? database.saveIndex : [],
   });
 }

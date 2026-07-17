@@ -13303,6 +13303,60 @@ svg {
   color: var(--muted-text);
 }
 
+.admin-roadmap-card {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-roadmap-meter {
+  height: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(126, 255, 87, 0.2);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.36);
+}
+
+.admin-roadmap-meter span {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4fcf42, #ffd36b);
+  box-shadow: 0 0 18px rgba(126, 255, 87, 0.28);
+}
+
+.admin-roadmap-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.admin-roadmap-stats span {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(126, 255, 87, 0.12);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.admin-roadmap-stats strong,
+.admin-roadmap-stats small {
+  display: block;
+}
+
+.admin-roadmap-stats strong {
+  color: var(--green);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.admin-roadmap-stats small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
 .admin-module-card {
   display: flex;
   flex-direction: column;
@@ -14627,6 +14681,7 @@ svg {
   .map-editor-layout,
   .map-image-importer,
   .map-meta-grid,
+  .map-library-grid,
   .news-editor-layout,
   .news-action-row,
   .news-form-grid,
@@ -14685,6 +14740,7 @@ svg {
   .map-editor-layout,
   .map-image-importer,
   .map-meta-grid,
+  .map-library-grid,
   .news-editor-stats,
   .news-editor-layout,
   .news-action-row,
@@ -14991,4 +15047,1474 @@ svg {
   }
   .app-frame.screen-home .bottom-grid,
   .bottom-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Final settings fit: keep visual/audio configuration usable on laptop and TV. */
+.app-frame.screen-settings {
+  height: 100dvh !important;
+  min-height: 100dvh;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.app-frame.screen-settings .app-body {
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.app-frame.screen-settings .app-main {
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: calc(100dvh - 118px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding-bottom: 18px !important;
+}
+
+.settings-ref {
+  min-height: 0 !important;
+  height: auto !important;
+  display: block !important;
+  padding: clamp(14px, 1.2vw, 22px) !important;
+  overflow: visible !important;
+}
+
+.settings-ref-head {
+  min-height: 0 !important;
+  margin-bottom: 18px !important;
+  padding: 0 !important;
+}
+
+.settings-ref-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.82fr) !important;
+  grid-template-rows: repeat(7, auto) !important;
+  grid-auto-flow: row !important;
+  align-items: start !important;
+  gap: clamp(12px, 1vw, 18px) !important;
+  overflow: visible !important;
+}
+
+.settings-ref-theme,
+.settings-ref-hud,
+.settings-ref-preview,
+.settings-ref-animated,
+.settings-ref-intensity,
+.settings-ref-track-background,
+.settings-ref-track-combat,
+.settings-ref-sounds,
+.settings-ref-accessibility,
+.settings-ref-language {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.settings-ref-card,
+.settings-ref-preview {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.settings-ref-theme,
+.settings-ref-language {
+  grid-column: 1 !important;
+}
+
+.settings-ref-language { grid-row: 1 !important; }
+.settings-ref-theme { grid-row: 2 / span 2 !important; }
+.settings-ref-animated { grid-column: 1 !important; grid-row: 4 !important; }
+.settings-ref-track-background { grid-column: 1 !important; grid-row: 5 !important; }
+.settings-ref-sounds { grid-column: 1 !important; grid-row: 6 !important; }
+.settings-ref-hud { grid-column: 2 !important; grid-row: 4 !important; }
+.settings-ref-intensity { grid-column: 2 !important; grid-row: 5 !important; }
+.settings-ref-track-combat { grid-column: 2 !important; grid-row: 6 !important; }
+.settings-ref-accessibility { grid-column: 2 !important; grid-row: 7 !important; }
+
+.settings-ref-preview {
+  grid-column: 2 !important;
+  grid-row: 1 / span 3 !important;
+  position: sticky;
+  top: 12px;
+}
+
+.settings-ref-themes {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.settings-ref-theme-option {
+  height: auto !important;
+  min-height: 220px !important;
+}
+
+.settings-ref-control {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.settings-ref-actions {
+  position: static !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(10px, 0.85vw, 14px) !important;
+}
+
+.settings-ref-actions button {
+  min-height: 68px !important;
+  height: auto !important;
+  padding: 12px 16px !important;
+}
+
+@media (min-width: 1700px) {
+  .settings-ref-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr) minmax(330px, 0.68fr) !important;
+    grid-template-rows: repeat(6, auto) !important;
+  }
+
+  .settings-ref-theme,
+  .settings-ref-language {
+    grid-column: 1 !important;
+  }
+
+  .settings-ref-hud,
+  .settings-ref-intensity,
+  .settings-ref-track-combat,
+  .settings-ref-accessibility {
+    grid-column: 2 !important;
+  }
+
+  .settings-ref-language { grid-row: 1 !important; }
+  .settings-ref-theme { grid-row: 2 / span 2 !important; }
+  .settings-ref-animated { grid-column: 1 !important; grid-row: 4 !important; }
+  .settings-ref-track-background { grid-column: 1 !important; grid-row: 5 !important; }
+  .settings-ref-sounds { grid-column: 1 !important; grid-row: 6 !important; }
+  .settings-ref-hud { grid-row: 1 / span 2 !important; }
+  .settings-ref-intensity { grid-row: 3 !important; }
+  .settings-ref-track-combat { grid-row: 4 !important; }
+  .settings-ref-accessibility { grid-row: 5 !important; }
+
+  .settings-ref-preview {
+    grid-column: 3 !important;
+    grid-row: 1 / span 5 !important;
+  }
+}
+
+@media (max-width: 1500px) {
+  .settings-ref-head h2 {
+    font-size: clamp(40px, 4.7vw, 62px) !important;
+  }
+
+  .settings-ref-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .settings-ref-grid,
+  .settings-ref-actions {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: none !important;
+  }
+
+  .settings-ref-language,
+  .settings-ref-theme,
+  .settings-ref-hud,
+  .settings-ref-preview,
+  .settings-ref-animated,
+  .settings-ref-intensity,
+  .settings-ref-track-background,
+  .settings-ref-track-combat,
+  .settings-ref-sounds,
+  .settings-ref-accessibility {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .settings-ref-preview {
+    grid-column: auto !important;
+    grid-row: auto !important;
+    position: static !important;
+  }
+}
+
+/* Final profile fit: stable on laptop and TV with internal scrolling. */
+.app-frame.screen-profile {
+  height: 100dvh !important;
+  min-height: 100dvh;
+  max-height: none !important;
+  overflow: hidden !important;
+}
+
+.app-frame.screen-profile .app-body {
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.app-frame.screen-profile .app-main {
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: calc(100dvh - 118px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding-bottom: 18px !important;
+}
+
+.profile-ref {
+  min-height: 0 !important;
+  height: auto !important;
+  display: block !important;
+  padding: clamp(14px, 1.1vw, 22px) !important;
+  overflow: visible !important;
+}
+
+.profile-ref-heading {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: clamp(14px, 1.1vw, 22px) !important;
+  margin-bottom: clamp(14px, 1.1vw, 20px) !important;
+}
+
+.profile-ref-heading h2 {
+  font-size: clamp(44px, 4vw, 72px) !important;
+  line-height: 0.9 !important;
+}
+
+.profile-terminal-stamp {
+  grid-template-columns: 48px auto !important;
+}
+
+.profile-terminal-stamp svg {
+  width: 46px !important;
+  height: 46px !important;
+}
+
+.profile-ref-hero {
+  min-height: 0 !important;
+  grid-template-columns: 96px minmax(260px, 1fr) repeat(3, minmax(132px, 0.42fr)) !important;
+  gap: clamp(12px, 1vw, 18px) !important;
+  padding: clamp(14px, 1.2vw, 22px) !important;
+  margin-bottom: clamp(14px, 1.1vw, 20px) !important;
+}
+
+.profile-ref-avatar {
+  width: clamp(76px, 5vw, 96px) !important;
+  height: clamp(76px, 5vw, 96px) !important;
+  box-shadow: 0 0 0 7px rgba(126, 255, 87, 0.08), inset 0 0 22px rgba(126, 255, 87, 0.18) !important;
+}
+
+.profile-ref-identity strong {
+  font-size: clamp(28px, 2.2vw, 42px) !important;
+}
+
+.profile-ref-identity span,
+.profile-ref-identity p {
+  margin-top: 8px !important;
+}
+
+.profile-ref-stat {
+  min-height: 92px !important;
+  padding-left: clamp(10px, 0.8vw, 16px) !important;
+}
+
+.profile-ref-stat strong {
+  font-size: clamp(25px, 2vw, 38px) !important;
+}
+
+.profile-ref-grid {
+  display: grid !important;
+  grid-template-columns: minmax(360px, 0.72fr) minmax(0, 1.28fr) !important;
+  align-items: start !important;
+  gap: clamp(14px, 1vw, 18px) !important;
+}
+
+.profile-login-panel,
+.profile-history {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.profile-login-panel h3,
+.profile-history h3 {
+  font-size: clamp(22px, 1.55vw, 30px) !important;
+}
+
+.profile-login-panel > p,
+.profile-history header p {
+  margin-bottom: 16px !important;
+}
+
+.profile-login-panel .form-row {
+  margin-bottom: 10px !important;
+}
+
+.profile-input-shell {
+  min-height: 44px !important;
+}
+
+.profile-input-shell input {
+  min-height: 40px !important;
+}
+
+.avatar-fit-controls {
+  margin-top: 10px !important;
+  display: grid !important;
+  gap: 8px !important;
+}
+
+.profile-remember {
+  margin: 12px 0 16px !important;
+}
+
+.profile-login-panel .inline-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.profile-local-note {
+  margin-top: 16px !important;
+}
+
+.profile-history {
+  overflow: hidden !important;
+}
+
+.profile-history-table {
+  overflow-x: auto !important;
+}
+
+.profile-history-head,
+.profile-history-row {
+  grid-template-columns: minmax(150px, 1fr) minmax(110px, 0.7fr) minmax(150px, 0.8fr) 96px 34px !important;
+  min-width: 680px !important;
+}
+
+@media (min-width: 1700px) {
+  .profile-ref-grid {
+    grid-template-columns: minmax(420px, 0.62fr) minmax(0, 1.38fr) !important;
+  }
+}
+
+@media (max-width: 1500px) {
+  .profile-ref-heading {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  .profile-terminal-stamp {
+    display: none !important;
+  }
+
+  .profile-ref-hero {
+    grid-template-columns: 82px minmax(220px, 1fr) repeat(3, minmax(105px, 0.36fr)) !important;
+  }
+
+  .profile-ref-stat span {
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .profile-ref-heading,
+  .profile-ref-hero,
+  .profile-ref-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profile-ref-stat {
+    border-left: 0 !important;
+    border-top: 1px dashed rgba(233, 184, 74, 0.34) !important;
+  }
+}
+
+/* Settings clean layout: replaces the old mixed grid with a stable editor surface. */
+.settings-clean-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 24vw, 420px) !important;
+  align-items: start !important;
+  gap: clamp(14px, 1vw, 20px) !important;
+}
+
+.settings-clean-main {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: clamp(12px, 0.9vw, 16px) !important;
+}
+
+.settings-clean-two {
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(12px, 0.9vw, 16px) !important;
+}
+
+.settings-clean-layout .settings-ref-card,
+.settings-clean-layout .settings-ref-preview {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.settings-clean-layout .settings-ref-theme {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.settings-clean-layout .settings-ref-themes {
+  height: auto !important;
+  min-height: 0 !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.settings-clean-layout .settings-ref-theme-option {
+  min-height: 188px !important;
+  grid-template-rows: 110px auto auto !important;
+}
+
+.settings-clean-layout .settings-ref-theme-art {
+  min-height: 0 !important;
+  height: 110px !important;
+}
+
+.settings-clean-layout .settings-ref-hud {
+  display: grid !important;
+  grid-template-rows: auto auto auto auto !important;
+  gap: 10px !important;
+}
+
+.settings-clean-layout .settings-ref-hud-preview {
+  min-height: 120px !important;
+}
+
+.settings-clean-layout .settings-ref-control {
+  height: auto !important;
+  min-height: 0 !important;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 0.46fr) !important;
+}
+
+.settings-clean-layout .settings-ref-toggle {
+  justify-self: stretch !important;
+  min-width: 0 !important;
+}
+
+.settings-clean-preview {
+  position: sticky !important;
+  top: 12px !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(220px, auto) auto auto !important;
+  overflow: visible !important;
+}
+
+.settings-clean-preview .settings-ref-preview-image {
+  height: clamp(220px, 30vh, 360px) !important;
+}
+
+.settings-ref-actions {
+  position: static !important;
+  margin-top: clamp(14px, 1vw, 18px) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 1500px) {
+  .settings-clean-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px) !important;
+  }
+
+  .settings-clean-two {
+    grid-template-columns: 1fr !important;
+  }
+
+  .settings-clean-layout .settings-ref-control {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .settings-clean-layout,
+  .settings-clean-two,
+  .settings-ref-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .settings-clean-preview {
+    position: static !important;
+  }
+}
+
+/* TV/admin shell: keep the rail inside the viewport instead of pushing below screen. */
+.app-frame {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+}
+
+.app-body {
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+.app-main {
+  min-height: 0 !important;
+  max-height: calc(100dvh - 118px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.sidebar {
+  min-height: 0 !important;
+  max-height: calc(100dvh - 118px) !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) auto !important;
+}
+
+.sidebar .nav-list {
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  padding-right: 4px !important;
+}
+
+@media (min-width: 1800px) {
+  .app-frame {
+    width: min(100vw - 8px, 1920px) !important;
+    padding: 10px !important;
+    gap: 10px !important;
+    grid-template-rows: 96px minmax(0, 1fr) !important;
+  }
+
+  .topbar {
+    min-height: 88px !important;
+  }
+
+  .topbar-logo strong {
+    font-size: clamp(38px, 2.35vw, 50px) !important;
+    white-space: nowrap !important;
+  }
+
+  .status-cluster {
+    grid-template-columns: 230px 170px 250px 60px 60px !important;
+  }
+
+  .app-body {
+    grid-template-columns: 330px minmax(0, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .nav-item {
+    min-height: 74px !important;
+  }
+}
+
+/* Support desk: table-first workflow with detail panel. */
+.support-layout {
+  grid-template-columns: minmax(640px, 1.25fr) minmax(420px, 0.9fr) !important;
+  align-items: start !important;
+}
+
+.support-list-panel {
+  min-width: 0 !important;
+}
+
+.support-ticket-table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(126, 255, 87, 0.14);
+  border-radius: 8px;
+}
+
+.support-ticket-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.support-ticket-table th,
+.support-ticket-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(126, 255, 87, 0.1);
+  color: #dff7d3;
+  text-align: left;
+}
+
+.support-ticket-table th {
+  color: #a5d77f;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.support-ticket-table tr.selected td,
+.support-ticket-table tr:hover td {
+  background: rgba(126, 255, 87, 0.07);
+}
+
+.support-ticket-table strong,
+.support-ticket-table small {
+  display: block;
+}
+
+.support-ticket-table small {
+  color: #9fb891;
+  margin-top: 3px;
+}
+
+.support-priority-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border: 1px solid rgba(126, 255, 87, 0.25);
+  border-radius: 999px;
+  color: #8fff72;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.support-priority-label.priority-high,
+.support-priority-label.priority-critical {
+  border-color: rgba(255, 145, 112, 0.55);
+  color: #ffad91;
+}
+
+/* Platform settings: organized command center cards. */
+.admin-platform-settings-screen {
+  overflow: visible !important;
+}
+
+.admin-platform-settings-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.75fr) !important;
+  grid-auto-flow: dense !important;
+  gap: 16px !important;
+}
+
+.admin-platform-section:nth-child(2) {
+  grid-column: 1 / -1 !important;
+}
+
+.platform-section-icons,
+.platform-section-audio,
+.platform-section-chat {
+  grid-column: auto !important;
+}
+
+.admin-localized-text-grid {
+  align-items: start !important;
+  gap: 18px !important;
+}
+
+.admin-localized-text-grid section {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(126, 255, 87, 0.14);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* Discord-like chat: make controls usable without the relay being online. */
+.discord-chat-shell {
+  min-height: min(720px, calc(100dvh - 270px)) !important;
+  max-height: none !important;
+  grid-template-columns: 72px minmax(210px, 260px) minmax(0, 1fr) minmax(280px, 340px) !important;
+}
+
+.discord-channel-panel section button {
+  min-height: 42px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.discord-top-actions button,
+.discord-member-panel button {
+  cursor: pointer;
+}
+
+.discord-main-chat footer button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.discord-message-list {
+  min-height: 320px !important;
+}
+
+/* CAD-inspired map editor. */
+.cad-map-editor {
+  background:
+    linear-gradient(180deg, rgba(3, 13, 10, 0.96), rgba(0, 3, 2, 0.98)),
+    var(--terminal-grid) !important;
+}
+
+.cad-ribbon {
+  display: grid;
+  grid-template-columns: auto auto minmax(240px, 1fr) minmax(320px, 1.2fr);
+  gap: 10px;
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px solid rgba(142, 255, 186, 0.18);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.cad-ribbon section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.cad-ribbon small {
+  color: #e9b84a;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cad-ribbon button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-color: rgba(142, 255, 186, 0.24);
+}
+
+.cad-ribbon button.selected {
+  border-color: rgba(126, 255, 87, 0.72);
+  background: rgba(126, 255, 87, 0.12);
+}
+
+.map-library-panel {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid rgba(142, 255, 186, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(126, 255, 87, 0.08), transparent 46%),
+    rgba(0, 0, 0, 0.28);
+}
+
+.map-library-panel header,
+.map-library-panel nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.map-library-panel header > div {
+  display: grid;
+  gap: 4px;
+}
+
+.map-library-panel header strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--amber);
+}
+
+.map-library-panel header small {
+  color: var(--muted-text);
+}
+
+.map-library-panel nav {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-top: 8px;
+  border-top: 1px solid rgba(142, 255, 186, 0.12);
+}
+
+.map-library-panel nav button {
+  min-height: 34px;
+  padding: 0 10px;
+}
+
+.map-library-panel nav button.selected,
+.map-library-grid button:hover {
+  border-color: rgba(142, 255, 186, 0.72);
+  background: rgba(93, 255, 154, 0.12);
+}
+
+.map-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.map-library-grid button {
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  text-align: left;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.map-library-grid span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.map-library-grid strong,
+.map-library-grid small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-library-grid small {
+  color: var(--muted-text);
+  font-size: 0.72rem;
+}
+
+.map-library-grid em {
+  padding: 4px 7px;
+  border: 1px solid rgba(255, 211, 107, 0.28);
+  border-radius: 999px;
+  color: var(--amber);
+  font-size: 0.68rem;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.marker-editor {
+  display: grid;
+  gap: 9px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(142, 255, 186, 0.14);
+}
+
+.marker-editor select {
+  width: 100%;
+}
+
+.cad-ribbon label {
+  min-width: 220px;
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.cad-canvas-frame {
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid rgba(142, 255, 186, 0.22);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(142, 255, 186, 0.05) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(142, 255, 186, 0.05) 1px, transparent 1px),
+    rgba(0, 0, 0, 0.32);
+  background-size: 24px 24px;
+}
+
+.tactical-grid.grid-hidden .tactical-tile::after {
+  opacity: 0;
+}
+
+.tactical-grid.terrain-hidden .tactical-tile::before {
+  opacity: 0 !important;
+}
+
+.cad-status-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cad-status-bar span {
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(142, 255, 186, 0.16);
+  border-radius: 6px;
+  color: #b9dcb1;
+  background: rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1500px) {
+  .support-layout,
+  .admin-platform-settings-grid,
+  .discord-chat-shell,
+  .cad-ribbon {
+    grid-template-columns: 1fr !important;
+  }
+
+  .map-library-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .discord-server-rail {
+    grid-auto-flow: column;
+    grid-template-columns: repeat(4, 56px);
+  }
+
+  .cad-ribbon section {
+    flex-wrap: wrap;
+  }
+}
+
+/* Mobile readiness contract: every screen keeps the Pip-Boy style, but shifts to
+   a single-column app shell with horizontal navigation and contained tables. */
+@media (max-width: 980px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    overscroll-behavior-x: none;
+  }
+
+  .crt-shell,
+  .crt-shell:has(.app-frame.screen-home) {
+    width: 100%;
+    min-height: 100dvh;
+    padding: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .app-frame,
+  .app-frame.screen-home {
+    width: 100% !important;
+    height: calc(100dvh - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+    min-height: 0 !important;
+    padding: 8px !important;
+    gap: 8px !important;
+    border-radius: 12px !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  .topbar,
+  .app-frame.screen-home .topbar {
+    min-height: 0 !important;
+    padding: 8px !important;
+    gap: 8px !important;
+    border-radius: 10px !important;
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+  }
+
+  .topbar-logo,
+  .app-frame.screen-home .topbar-logo {
+    min-width: 0 !important;
+    grid-template-columns: 44px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .topbar-gear {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 10px !important;
+  }
+
+  .topbar-logo strong,
+  .app-frame.screen-home .topbar-logo strong {
+    max-width: 100% !important;
+    font-size: clamp(21px, 7.2vw, 34px) !important;
+    line-height: 0.96 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .topbar-logo > span:not(.topbar-gear),
+  .app-frame.screen-home .topbar-logo > span:not(.topbar-gear) {
+    display: none !important;
+  }
+
+  .status-cluster,
+  .app-frame.screen-home .status-cluster {
+    width: 100% !important;
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: minmax(128px, 42vw) !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding-bottom: 2px !important;
+    scrollbar-width: thin;
+  }
+
+  .status-card,
+  .topbar .profile-card,
+  .app-frame.screen-home .status-card {
+    display: flex !important;
+    min-width: 0 !important;
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 7px 9px !important;
+    border-radius: 9px !important;
+    gap: 8px !important;
+  }
+
+  .status-cluster > .status-card:nth-child(1) { order: 1 !important; }
+  .status-cluster > .version-status-card { order: 2 !important; }
+  .status-cluster > .profile-card { order: 3 !important; }
+  .status-cluster > .notification-center { order: 4 !important; }
+  .status-cluster > .topbar-action-button { order: 5 !important; }
+
+  .status-card small {
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+
+  .status-card strong {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .topbar-action-button,
+  .topbar .square-button,
+  .app-frame.screen-home .topbar .square-button {
+    width: 50px !important;
+    min-width: 50px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    padding: 0 !important;
+    place-self: stretch !important;
+  }
+
+  .notification-popover {
+    position: fixed !important;
+    top: 108px !important;
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    max-height: min(70dvh, 520px) !important;
+    overflow: auto !important;
+    z-index: 30 !important;
+  }
+
+  .app-body,
+  .app-frame.screen-home .app-body,
+  .app-frame.screen-settings .app-body,
+  .app-frame.screen-content .app-body,
+  .app-frame.screen-newGame .app-body,
+  .app-frame.screen-load .app-body,
+  .app-frame.screen-dice .app-body,
+  .app-frame.screen-admin .app-body,
+  .app-frame.screen-adminGames .app-body,
+  .app-frame.screen-adminMaps .app-body,
+  .app-frame.screen-adminUsers .app-body,
+  .app-frame.screen-adminNotifications .app-body,
+  .app-frame.screen-adminNews .app-body,
+  .app-frame.screen-adminSettings .app-body,
+  .app-frame.screen-adminSupport .app-body,
+  .app-frame.screen-support .app-body,
+  .app-frame.screen-chat .app-body,
+  .app-frame.screen-files .app-body,
+  .app-frame.screen-profile .app-body,
+  .app-frame.screen-jsonEditor .app-body {
+    min-height: 0 !important;
+    height: 100% !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar,
+  .app-body .sidebar,
+  .app-frame.screen-home .sidebar {
+    width: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    padding: 8px !important;
+    border-radius: 10px !important;
+    grid-template-rows: 1fr !important;
+    overflow: hidden !important;
+  }
+
+  .sidebar .brand-block,
+  .sidebar .version-row {
+    display: none !important;
+  }
+
+  .sidebar .nav-list,
+  .app-frame.screen-home .nav-list {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: minmax(104px, 30vw) !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 0 2px !important;
+    scrollbar-width: thin;
+  }
+
+  .nav-item,
+  .app-frame.screen-home .nav-item {
+    min-height: 74px !important;
+    height: 74px !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 30px auto !important;
+    justify-items: center !important;
+    align-content: center !important;
+    gap: 6px !important;
+    padding: 8px 6px !important;
+    text-align: center !important;
+  }
+
+  .nav-icon,
+  .app-frame.screen-home .nav-icon {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+  }
+
+  .nav-icon svg,
+  .app-frame.screen-home .nav-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .nav-item strong,
+  .app-frame.screen-home .nav-item strong {
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .nav-item small,
+  .app-frame.screen-home .nav-item small {
+    display: none !important;
+  }
+
+  .app-main,
+  .app-frame.screen-home .app-main,
+  .app-frame.screen-settings .app-main,
+  .app-frame.screen-adminSettings .app-main,
+  .app-frame.screen-newGame .app-main,
+  .app-frame.screen-chat .app-main,
+  .app-frame.screen-support .app-main,
+  .app-frame.screen-adminSupport .app-main,
+  .app-frame.screen-profile .app-main {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: 0 !important;
+  }
+
+  .screen-panel,
+  .admin-screen,
+  .settings-ref,
+  .profile-ref,
+  .support-screen,
+  .chat-screen,
+  .admin-platform-settings-screen {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: clamp(14px, 4vw, 20px) !important;
+    border-radius: 10px !important;
+    overflow: visible !important;
+  }
+
+  .screen-heading,
+  .admin-heading,
+  .profile-ref-heading,
+  .chat-heading {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+
+  .screen-heading h2,
+  .admin-heading h2,
+  .profile-ref-heading h2,
+  .chat-heading h2,
+  .settings-ref-heading h2 {
+    font-size: clamp(34px, 13vw, 58px) !important;
+    line-height: 0.94 !important;
+    letter-spacing: 0 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .screen-heading p,
+  .admin-heading p,
+  .profile-ref-heading p,
+  .chat-heading p {
+    max-width: none !important;
+    font-size: 14px !important;
+  }
+
+  .screen-heading > button,
+  .admin-heading > button,
+  .profile-ref-heading > button,
+  .chat-heading > button {
+    width: 100% !important;
+    min-height: 48px !important;
+    justify-content: center !important;
+  }
+
+  .home-layout,
+  .home-side,
+  .bottom-grid,
+  .admin-dashboard,
+  .admin-layout,
+  .admin-module-grid,
+  .admin-kpi-grid,
+  .admin-control-strip,
+  .admin-data-layout,
+  .admin-user-data-layout,
+  .support-layout,
+  .support-stats,
+  .settings-clean-layout,
+  .settings-clean-two,
+  .admin-platform-settings-grid,
+  .admin-localized-text-grid,
+  .profile-ref-hero,
+  .profile-ref-grid,
+  .discord-chat-shell,
+  .map-editor-layout,
+  .cad-ribbon,
+  .new-game-grid,
+  .app-frame.screen-newGame .new-game-grid,
+  .app-frame.screen-dice .dice-layout-screen {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-roadmap-stats {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-panel {
+    min-height: 360px !important;
+  }
+
+  .hero-copy h2 {
+    font-size: clamp(44px, 16vw, 72px) !important;
+  }
+
+  .hero-tags,
+  .app-frame.screen-home .hero-tags,
+  .admin-game-focus-actions,
+  .admin-user-toolbar,
+  .admin-data-toolbar,
+  .support-toolbar,
+  .settings-ref-actions,
+  .chat-action-row,
+  .chat-compose,
+  .discord-top-actions,
+  .discord-main-chat footer,
+  .app-frame.screen-dice .dice-expression {
+    grid-template-columns: 1fr !important;
+    display: grid !important;
+  }
+
+  .settings-clean-preview,
+  .profile-ref-preview,
+  .support-card,
+  .admin-detail-panel {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .settings-clean-layout .settings-ref-themes {
+    grid-template-columns: 1fr !important;
+  }
+
+  .settings-clean-layout .settings-ref-theme-option {
+    min-height: 168px !important;
+  }
+
+  .settings-clean-layout .settings-ref-control,
+  .admin-form-grid,
+  .admin-user-create,
+  .admin-user-fields,
+  .admin-asset-grid,
+  .admin-content-thumb-grid,
+  .admin-game-status-grid,
+  .support-ticket-meta {
+    grid-template-columns: 1fr !important;
+  }
+
+  .admin-table-wrap,
+  .support-ticket-table-wrap,
+  .profile-history-table,
+  .admin-map-launcher,
+  .cad-canvas-frame {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-data-table,
+  .support-ticket-table,
+  .profile-history-head,
+  .profile-history-row {
+    min-width: 680px !important;
+  }
+
+  .discord-chat-shell {
+    min-height: 640px !important;
+    grid-template-rows: auto auto minmax(360px, 1fr) auto !important;
+  }
+
+  .discord-server-rail {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-auto-columns: 52px !important;
+    overflow-x: auto !important;
+  }
+
+  .discord-channel-panel {
+    min-height: 160px !important;
+  }
+
+  .discord-member-panel {
+    max-height: none !important;
+  }
+
+  .map-editor-layout,
+  .cad-map-editor {
+    min-width: 0 !important;
+  }
+
+  .tactical-grid {
+    transform-origin: top left !important;
+  }
+
+  .cad-status-bar {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .crt-shell,
+  .crt-shell:has(.app-frame.screen-home) {
+    padding: 4px !important;
+  }
+
+  .app-frame,
+  .app-frame.screen-home {
+    height: calc(100dvh - 8px) !important;
+    max-height: calc(100dvh - 8px) !important;
+    padding: 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .topbar-logo,
+  .app-frame.screen-home .topbar-logo {
+    grid-template-columns: 38px minmax(0, 1fr) !important;
+  }
+
+  .topbar-gear {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .topbar-logo strong,
+  .app-frame.screen-home .topbar-logo strong {
+    font-size: clamp(20px, 8.5vw, 30px) !important;
+  }
+
+  .status-cluster,
+  .app-frame.screen-home .status-cluster {
+    grid-auto-columns: minmax(118px, 46vw) !important;
+  }
+
+  .status-card,
+  .topbar .profile-card,
+  .app-frame.screen-home .status-card,
+  .topbar-action-button,
+  .topbar .square-button {
+    height: 46px !important;
+    min-height: 46px !important;
+  }
+
+  .topbar-action-button,
+  .topbar .square-button {
+    width: 46px !important;
+    min-width: 46px !important;
+  }
+
+  .sidebar .nav-list,
+  .app-frame.screen-home .nav-list {
+    grid-auto-columns: 88px !important;
+  }
+
+  .nav-item,
+  .app-frame.screen-home .nav-item {
+    height: 66px !important;
+    min-height: 66px !important;
+    padding: 7px 5px !important;
+  }
+
+  .nav-item strong,
+  .app-frame.screen-home .nav-item strong {
+    font-size: 10px !important;
+  }
+
+  .screen-panel,
+  .admin-screen,
+  .settings-ref,
+  .profile-ref,
+  .support-screen,
+  .chat-screen,
+  .admin-platform-settings-screen {
+    padding: 12px !important;
+  }
+
+  .screen-heading h2,
+  .admin-heading h2,
+  .profile-ref-heading h2,
+  .chat-heading h2,
+  .settings-ref-heading h2 {
+    font-size: clamp(30px, 12vw, 44px) !important;
+  }
+
+  .hero-panel {
+    min-height: 330px !important;
+  }
+
+  .hero-copy h2 {
+    font-size: clamp(38px, 15vw, 58px) !important;
+  }
+
+  .settings-ref-actions {
+    padding-bottom: env(safe-area-inset-bottom, 0) !important;
+  }
+
+  .admin-data-table,
+  .support-ticket-table,
+  .profile-history-head,
+  .profile-history-row {
+    min-width: 620px !important;
+  }
 }

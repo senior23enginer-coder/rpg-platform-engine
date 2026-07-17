@@ -77,58 +77,129 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
         <button onClick={onBack}><ArrowLeft size={18} /> {t(settings.language, "settings.back")}</button>
       </header>
 
-      <div className="settings-ref-grid">
-        <article className="settings-ref-card settings-ref-row-card settings-ref-language">
-          <h3><Monitor size={18} /> {t(settings.language, "settings.language")}</h3>
-          <div className="settings-ref-control">
-            <span>{t(settings.language, "settings.languageHelp")}</span>
-            <select value={settings.language} onChange={(event) => patch({ language: event.target.value as LanguageCode })}>
-              <option value="es">{t(settings.language, "settings.spanish")}</option>
-              <option value="en">{t(settings.language, "settings.english")}</option>
-            </select>
-          </div>
-        </article>
-
-        <article className="settings-ref-card settings-ref-theme">
-          <h3><Monitor size={18} /> {t(settings.language, "settings.theme")}</h3>
-          <div className="settings-ref-themes">
-            {(["dark", "light"] as ThemeMode[]).map((theme) => (
-              <button
-                key={theme}
-                className={`settings-ref-theme-option ${settings.theme === theme ? "selected" : ""}`}
-                onClick={() => patch({ theme })}
-              >
-                <span className={`settings-ref-theme-art ${theme}`} />
-                <strong>{theme === "dark" ? t(settings.language, "settings.dark") : t(settings.language, "settings.light")}</strong>
-                <span className="settings-ref-check">{settings.theme === theme ? <Check size={18} /> : null}</span>
-                <small>{theme === "dark" ? t(settings.language, "settings.darkHint") : t(settings.language, "settings.lightHint")}</small>
-              </button>
-            ))}
-          </div>
-        </article>
-
-        <article className="settings-ref-card settings-ref-hud">
-          <h3><Palette size={18} /> {t(settings.language, "settings.hud")}</h3>
-          <div className="settings-ref-hud-preview">
-            <span className="vault-boy-line" />
-            <div>
-              <span>HP</span>
-              <i />
-              <strong>NE</strong>
+      <div className="settings-clean-layout">
+        <div className="settings-clean-main">
+          <article className="settings-ref-card settings-ref-row-card settings-ref-language">
+            <h3><Monitor size={18} /> {t(settings.language, "settings.language")}</h3>
+            <div className="settings-ref-control">
+              <span>{t(settings.language, "settings.languageHelp")}</span>
+              <select value={settings.language} onChange={(event) => patch({ language: event.target.value as LanguageCode })}>
+                <option value="es">{t(settings.language, "settings.spanish")}</option>
+                <option value="en">{t(settings.language, "settings.english")}</option>
+              </select>
             </div>
-          </div>
-          <select
-            value={settings.hudColor}
-            onChange={(event) => patch({ hudColor: event.target.value as HudColor })}
-          >
-            {hudOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <p>{t(settings.language, "settings.hudHelp")}</p>
-        </article>
+          </article>
 
-        <aside className="settings-ref-preview">
+          <article className="settings-ref-card settings-ref-theme">
+            <h3><Monitor size={18} /> {t(settings.language, "settings.theme")}</h3>
+            <div className="settings-ref-themes">
+              {(["dark", "light"] as ThemeMode[]).map((theme) => (
+                <button
+                  key={theme}
+                  className={`settings-ref-theme-option ${settings.theme === theme ? "selected" : ""}`}
+                  onClick={() => patch({ theme })}
+                >
+                  <span className={`settings-ref-theme-art ${theme}`} />
+                  <strong>{theme === "dark" ? t(settings.language, "settings.dark") : t(settings.language, "settings.light")}</strong>
+                  <span className="settings-ref-check">{settings.theme === theme ? <Check size={18} /> : null}</span>
+                  <small>{theme === "dark" ? t(settings.language, "settings.darkHint") : t(settings.language, "settings.lightHint")}</small>
+                </button>
+              ))}
+            </div>
+          </article>
+
+          <div className="settings-clean-two">
+            <article className="settings-ref-card settings-ref-hud">
+              <h3><Palette size={18} /> {t(settings.language, "settings.hud")}</h3>
+              <div className="settings-ref-hud-preview">
+                <span className="vault-boy-line" />
+                <div>
+                  <span>HP</span>
+                  <i />
+                  <strong>NE</strong>
+                </div>
+              </div>
+              <select
+                value={settings.hudColor}
+                onChange={(event) => patch({ hudColor: event.target.value as HudColor })}
+              >
+                {hudOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+              <p>{t(settings.language, "settings.hudHelp")}</p>
+            </article>
+
+            <article className="settings-ref-card settings-ref-row-card settings-ref-intensity">
+              <h3><Eye size={18} /> {t(settings.language, "settings.intensity")}</h3>
+              <div className="settings-ref-control">
+                <span>{t(settings.language, "settings.intensityHelp")}</span>
+                <select defaultValue="media">
+                  <option value="baja">{t(settings.language, "settings.low")}</option>
+                  <option value="media">{t(settings.language, "settings.medium")}</option>
+                  <option value="alta">{t(settings.language, "settings.high")}</option>
+                </select>
+              </div>
+            </article>
+          </div>
+
+          <div className="settings-clean-two">
+            <article className="settings-ref-card settings-ref-row-card settings-ref-animated">
+              <h3><Zap size={18} /> {t(settings.language, "settings.animated")}</h3>
+              <div className="settings-ref-control">
+                <span>{t(settings.language, "settings.animatedHelp")}</span>
+                <button
+                  className={`settings-ref-toggle ${settings.animatedBackground ? "on" : ""}`}
+                  onClick={() => patch({ animatedBackground: !settings.animatedBackground })}
+                >
+                  {settings.animatedBackground ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
+                </button>
+              </div>
+            </article>
+
+            <article className="settings-ref-card settings-ref-row-card settings-ref-sounds">
+              <h3><Volume2 size={18} /> {t(settings.language, "settings.sounds")}</h3>
+              <div className="settings-ref-control">
+                <span>{t(settings.language, "settings.soundsHelp")}</span>
+                <button className={`settings-ref-toggle ${settings.audioEnabled ? "on" : ""}`} onClick={toggleAudio}>
+                  {settings.audioEnabled ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div className="settings-clean-two">
+            {primaryTracks.map((category) => {
+              const Icon = category.icon;
+              return (
+                <article className={`settings-ref-card settings-ref-track settings-ref-track-${category.id}`} key={category.id}>
+                  <h3><Icon size={18} /> {t(settings.language, category.labelKey)}</h3>
+                  <div className="settings-ref-control">
+                    <span>{t(settings.language, category.helpKey)}</span>
+                    <select
+                      value={settings.tracks[category.id] ?? ""}
+                      onChange={(event) => setTrack(category.id, event.target.value)}
+                    >
+                      {(manifest.tracks[category.id] ?? []).map((track) => (
+                        <option key={track.id} value={track.id}>{track.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <article className="settings-ref-card settings-ref-row-card settings-ref-accessibility">
+            <h3><Zap size={18} /> {t(settings.language, "settings.accessibility")}</h3>
+            <div className="settings-ref-control">
+              <span>{t(settings.language, "settings.accessibilityHelp")}</span>
+              <button className="settings-ref-toggle">{t(settings.language, "status.disabled")}</button>
+            </div>
+          </article>
+        </div>
+
+        <aside className="settings-ref-preview settings-clean-preview">
           <h3><Eye size={18} /> {t(settings.language, "settings.preview")}</h3>
           <div className="settings-ref-preview-image" />
           <p>{t(settings.language, "settings.previewHelp")}</p>
@@ -140,70 +211,6 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
             </div>
           </div>
         </aside>
-
-        <article className="settings-ref-card settings-ref-row-card settings-ref-animated">
-          <h3><Zap size={18} /> {t(settings.language, "settings.animated")}</h3>
-          <div className="settings-ref-control">
-            <span>{t(settings.language, "settings.animatedHelp")}</span>
-            <button
-              className={`settings-ref-toggle ${settings.animatedBackground ? "on" : ""}`}
-              onClick={() => patch({ animatedBackground: !settings.animatedBackground })}
-            >
-              {settings.animatedBackground ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
-            </button>
-          </div>
-        </article>
-
-        <article className="settings-ref-card settings-ref-row-card settings-ref-intensity">
-          <h3><Eye size={18} /> {t(settings.language, "settings.intensity")}</h3>
-          <div className="settings-ref-control">
-            <span>{t(settings.language, "settings.intensityHelp")}</span>
-            <select defaultValue="media">
-              <option value="baja">{t(settings.language, "settings.low")}</option>
-              <option value="media">{t(settings.language, "settings.medium")}</option>
-              <option value="alta">{t(settings.language, "settings.high")}</option>
-            </select>
-          </div>
-        </article>
-
-        {primaryTracks.map((category) => {
-          const Icon = category.icon;
-          return (
-            <article className={`settings-ref-card settings-ref-track settings-ref-track-${category.id}`} key={category.id}>
-              <h3><Icon size={18} /> {t(settings.language, category.labelKey)}</h3>
-              <div className="settings-ref-control">
-                <span>{t(settings.language, category.helpKey)}</span>
-                <select
-                  value={settings.tracks[category.id] ?? ""}
-                  onChange={(event) => setTrack(category.id, event.target.value)}
-                >
-                  {(manifest.tracks[category.id] ?? []).map((track) => (
-                    <option key={track.id} value={track.id}>{track.name}</option>
-                  ))}
-                </select>
-              </div>
-            </article>
-          );
-        })}
-
-        <article className="settings-ref-card settings-ref-row-card settings-ref-sounds">
-          <h3><Volume2 size={18} /> {t(settings.language, "settings.sounds")}</h3>
-          <div className="settings-ref-control">
-            <span>{t(settings.language, "settings.soundsHelp")}</span>
-            <button className={`settings-ref-toggle ${settings.audioEnabled ? "on" : ""}`} onClick={toggleAudio}>
-              {settings.audioEnabled ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
-            </button>
-          </div>
-        </article>
-
-        <article className="settings-ref-card settings-ref-row-card settings-ref-accessibility">
-          <h3><Zap size={18} /> {t(settings.language, "settings.accessibility")}</h3>
-          <div className="settings-ref-control">
-            <span>{t(settings.language, "settings.accessibilityHelp")}</span>
-            <button className="settings-ref-toggle">{t(settings.language, "status.disabled")}</button>
-          </div>
-        </article>
-
       </div>
 
       <footer className="settings-ref-actions">

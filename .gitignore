@@ -4,6 +4,7 @@ vite-dev.*.log
 vite-dev.log
 npm-debug.log*
 test-results/
+data/local-backend/
 *.local
 deploy/foundry-vtt/.env
 deploy/foundry-vtt/data/

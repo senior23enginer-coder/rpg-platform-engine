@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from "react";
-import { ArrowLeft, Eraser, Eye, Flag, Grid3X3, Image as ImageIcon, Map as MapIcon, Plus, Route, SlidersHorizontal, Swords, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BookOpen, Boxes, CloudSun, Crosshair, Eraser, Eye, Flag, Grid3X3, Image as ImageIcon, Layers, Map as MapIcon, MapPinned, Package, Plus, Route, Shield, SlidersHorizontal, Swords, Trash2, Upload, Users } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
 
 type Props = {
@@ -25,10 +25,17 @@ const markerPalette: Array<{ type: TacticalMarkerType; label: string }> = [
   { type: "objective", label: "Objetivo" },
   { type: "spawn", label: "Spawn" },
   { type: "shop", label: "Tienda" },
+  { type: "cover", label: "Cobertura" },
+  { type: "loot", label: "Botin" },
+  { type: "weather", label: "Clima" },
+  { type: "biome", label: "Bioma" },
+  { type: "unit", label: "Unidad" },
+  { type: "beast", label: "Bestiario" },
 ];
 
 type ToolMode = "terrain" | "marker" | "erase";
 type MapEditorView = "list" | "editor";
+type LibraryTab = "mission" | "location" | "weather" | "biome" | "arsenal" | "units" | "bestiary";
 
 const maxImportedImageSide = 2048;
 const maxImportedTiles = 48;
@@ -47,6 +54,41 @@ function createTiles(width: number, height: number, terrain: TacticalTerrainType
     y: Math.floor(index / width),
     terrain,
   }));
+}
+
+function createDefaultMapLibraries(game: GameConfig) {
+  const campaign = game.campaigns[0];
+  return {
+    missionSheets: [
+      {
+        id: `mission_${slugify(campaign?.id ?? "initial")}`,
+        title: campaign?.title ?? "Mision inicial",
+        objective: campaign?.description ?? "Define objetivo principal, condiciones de exito y consecuencias.",
+        locationId: "loc_start",
+        recommendedLevel: 1,
+        status: "draft" as const,
+      },
+    ],
+    locations: [
+      { id: "loc_start", name: "Zona inicial", biome: "Urbano", danger: 1, description: "Punto de entrada de la escena tactica." },
+      { id: "loc_objective", name: "Objetivo principal", biome: "Ruinas", danger: 2, description: "Lugar clave para activar la mision." },
+    ],
+    weatherEffects: [
+      { id: "weather_clear", name: "Despejado", visibility: 100, movementModifier: 0, description: "Sin penalizadores climaticos." },
+      { id: "weather_radstorm", name: "Tormenta radiactiva", visibility: 45, movementModifier: 1, damage: "radiacion menor", description: "Reduce visibilidad y aumenta riesgo ambiental." },
+    ],
+    biomes: [
+      { id: "biome_urban", name: "Urbano", movementModifier: 0, encounterRisk: 2, description: "Cobertura alta, rutas cortas y peligro tactico." },
+      { id: "biome_wasteland", name: "Yermo", movementModifier: 1, encounterRisk: 3, description: "Terreno abierto con exposicion y recursos dispersos." },
+      { id: "biome_ruins", name: "Ruinas", movementModifier: 1, encounterRisk: 4, description: "Cobertura irregular, botin y emboscadas." },
+    ],
+    arsenal: [
+      { id: "weapon_laser_musket", name: "Mosquete laser", category: "weapon" as const, tags: ["energia", "medio alcance"], description: "Arma de energia para encuentros iniciales." },
+      { id: "equipment_stimpak", name: "Estimulante", category: "equipment" as const, tags: ["curacion"], description: "Consumible medico basico." },
+      { id: "unit_minuteman", name: "Miliciano", category: "unit" as const, tags: ["aliado", "rango"], description: "Unidad aliada de apoyo." },
+      { id: "beast_molerat", name: "Rata topo", category: "bestiary" as const, tags: ["bestia", "subterraneo"], description: "Amenaza comun en zonas de ruinas." },
+    ],
+  };
 }
 
 function createDefaultMap(game: GameConfig, index: number): GameMap {
@@ -68,9 +110,10 @@ function createDefaultMap(game: GameConfig, index: number): GameMap {
     nodes: [],
     tiles: createTiles(width, height),
     markers: [
-      { id: `marker_player_${Date.now()}`, x: 1, y: 1, type: "player", label: "Inicio" },
-      { id: `marker_enemy_${Date.now()}`, x: width - 2, y: height - 2, type: "enemy", label: "Rival" },
+      { id: `marker_player_${Date.now()}`, x: 1, y: 1, type: "player", label: "Inicio", movementCost: 1, coverage: "light" },
+      { id: `marker_enemy_${Date.now()}`, x: width - 2, y: height - 2, type: "enemy", label: "Rival", movementCost: 1, coverage: "heavy" },
     ],
+    ...createDefaultMapLibraries(game),
   };
 }
 
@@ -95,11 +138,30 @@ function normalizeTacticalMap(map: GameMap): GameMap {
       terrain: existing.get(`${tile.x}:${tile.y}`) ?? tile.terrain,
     })),
     markers: map.markers ?? [],
+    missionSheets: map.missionSheets ?? [],
+    locations: map.locations ?? [],
+    weatherEffects: map.weatherEffects ?? [],
+    biomes: map.biomes ?? [],
+    arsenal: map.arsenal ?? [],
   };
 }
 
 function ensureMaps(game: GameConfig) {
   return game.maps?.length ? game.maps.map(normalizeTacticalMap) : [createDefaultMap(game, 0)];
+}
+
+function markerGlyph(type: TacticalMarkerType) {
+  if (type === "player") return "P";
+  if (type === "enemy") return "E";
+  if (type === "objective") return "!";
+  if (type === "spawn") return "S";
+  if (type === "shop") return "$";
+  if (type === "cover") return "C";
+  if (type === "loot") return "L";
+  if (type === "weather") return "W";
+  if (type === "biome") return "B";
+  if (type === "unit") return "U";
+  return "X";
 }
 
 export function MapEditor({ game, onChange, onBack }: Props) {
@@ -108,10 +170,19 @@ export function MapEditor({ game, onChange, onBack }: Props) {
   const [view, setView] = useState<MapEditorView>("list");
   const activeMap = maps.find((map) => map.id === activeMapId) ?? maps[0];
   const [toolMode, setToolMode] = useState<ToolMode>("terrain");
+  const [showGrid, setShowGrid] = useState(true);
+  const [showTerrainLayer, setShowTerrainLayer] = useState(true);
+  const [canvasZoom, setCanvasZoom] = useState(1);
   const [terrain, setTerrain] = useState<TacticalTerrainType>("plain");
   const [markerType, setMarkerType] = useState<TacticalMarkerType>("player");
   const [selectedMarkerId, setSelectedMarkerId] = useState(activeMap?.markers?.[0]?.id ?? "");
+  const [libraryTab, setLibraryTab] = useState<LibraryTab>("mission");
   const selectedMarker = activeMap?.markers?.find((marker) => marker.id === selectedMarkerId);
+  const missionSheets = activeMap?.missionSheets?.length ? activeMap.missionSheets : createDefaultMapLibraries(game).missionSheets;
+  const locations = activeMap?.locations?.length ? activeMap.locations : createDefaultMapLibraries(game).locations;
+  const weatherEffects = activeMap?.weatherEffects?.length ? activeMap.weatherEffects : createDefaultMapLibraries(game).weatherEffects;
+  const biomes = activeMap?.biomes?.length ? activeMap.biomes : createDefaultMapLibraries(game).biomes;
+  const arsenal = activeMap?.arsenal?.length ? activeMap.arsenal : createDefaultMapLibraries(game).arsenal;
 
   function emit(nextMaps: GameMap[]) {
     onChange(nextMaps.map(normalizeTacticalMap));
@@ -257,6 +328,55 @@ export function MapEditor({ game, onChange, onBack }: Props) {
     });
   }
 
+  function addLibraryItem(tab: LibraryTab) {
+    const stamp = Date.now();
+    if (tab === "mission") {
+      updateMap(activeMap.id, {
+        missionSheets: [
+          { id: `mission_${stamp}`, title: "Nueva mision", objective: "Define objetivo, escenas, recompensa y consecuencias.", status: "draft" },
+          ...missionSheets,
+        ],
+      });
+    }
+    if (tab === "location") {
+      updateMap(activeMap.id, {
+        locations: [{ id: `loc_${stamp}`, name: "Nueva ubicacion", biome: "Urbano", danger: 1, description: "Describe rutas, cobertura y encuentros." }, ...locations],
+      });
+    }
+    if (tab === "weather") {
+      updateMap(activeMap.id, {
+        weatherEffects: [{ id: `weather_${stamp}`, name: "Nuevo clima", visibility: 80, movementModifier: 0, description: "Efecto ambiental tactico." }, ...weatherEffects],
+      });
+    }
+    if (tab === "biome") {
+      updateMap(activeMap.id, {
+        biomes: [{ id: `biome_${stamp}`, name: "Nuevo bioma", movementModifier: 0, encounterRisk: 1, description: "Reglas de movimiento, riesgo y recursos." }, ...biomes],
+      });
+    }
+    if (tab === "arsenal" || tab === "units" || tab === "bestiary") {
+      const category = tab === "units" ? "unit" : tab === "bestiary" ? "bestiary" : "equipment";
+      updateMap(activeMap.id, {
+        arsenal: [{ id: `${category}_${stamp}`, name: "Nuevo recurso", category, tags: ["custom"], description: "Ficha vinculable a mapa, mision o unidad." }, ...arsenal],
+      });
+    }
+  }
+
+  function applyLibraryToMarker() {
+    if (!selectedMarker) return;
+    const firstMission = missionSheets[0];
+    const firstLocation = locations[0];
+    const firstBiome = biomes[0];
+    const firstWeather = weatherEffects[0];
+    const firstAsset = arsenal[0];
+    updateSelectedMarker({
+      missionId: firstMission?.id,
+      biome: firstBiome?.name,
+      weatherEffect: firstWeather?.name,
+      linkedAssetId: firstAsset?.id,
+      label: firstLocation?.name ?? selectedMarker.label,
+    });
+  }
+
   function removeSelectedMarker() {
     if (!selectedMarker) return;
     const markers = (activeMap.markers ?? []).filter((marker) => marker.id !== selectedMarker.id);
@@ -311,13 +431,38 @@ export function MapEditor({ game, onChange, onBack }: Props) {
   }
 
   return (
-    <article className="admin-card map-editor tactical-map-editor">
+    <article className="admin-card map-editor tactical-map-editor cad-map-editor">
       <div className="admin-panel-title">
         <strong><MapIcon size={18} /> Editor tactico 2D - {activeMap.name}</strong>
         <div className="map-manager-actions">
           <button onClick={() => setView("list")}><ArrowLeft size={15} /> Lista de mapas</button>
           <button onClick={addMap}><Plus size={15} /> Mapa</button>
         </div>
+      </div>
+
+      <div className="cad-ribbon">
+        <section>
+          <small>Herramientas</small>
+          <button className={toolMode === "terrain" ? "selected" : ""} onClick={() => setToolMode("terrain")}><MapIcon size={15} /> Terreno</button>
+          <button className={toolMode === "marker" ? "selected" : ""} onClick={() => setToolMode("marker")}><Flag size={15} /> Marcador</button>
+          <button className={toolMode === "erase" ? "selected" : ""} onClick={() => setToolMode("erase")}><Eraser size={15} /> Borrar</button>
+        </section>
+        <section>
+          <small>Capas</small>
+          <button className={showGrid ? "selected" : ""} onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={15} /> Grilla</button>
+          <button className={showTerrainLayer ? "selected" : ""} onClick={() => setShowTerrainLayer((value) => !value)}><SlidersHorizontal size={15} /> Terreno</button>
+        </section>
+        <section>
+          <small>Vista</small>
+          <label><span>Zoom</span><input type="range" min={0.65} max={1.45} step={0.05} value={canvasZoom} onChange={(event) => setCanvasZoom(Number(event.target.value))} /></label>
+        </section>
+        <section>
+          <small>Bibliotecas</small>
+          <button className={libraryTab === "mission" ? "selected" : ""} onClick={() => setLibraryTab("mission")}><BookOpen size={15} /> Misiones</button>
+          <button className={libraryTab === "location" ? "selected" : ""} onClick={() => setLibraryTab("location")}><MapPinned size={15} /> Ubicaciones</button>
+          <button className={libraryTab === "biome" ? "selected" : ""} onClick={() => setLibraryTab("biome")}><Layers size={15} /> Biomas</button>
+          <button className={libraryTab === "arsenal" ? "selected" : ""} onClick={() => setLibraryTab("arsenal")}><Package size={15} /> Assets</button>
+        </section>
       </div>
 
       <div className="map-editor-layout tactical-layout">
@@ -380,36 +525,105 @@ export function MapEditor({ game, onChange, onBack }: Props) {
             <button onClick={() => activeMap.background && decomposeImage(activeMap.background, activeMap.backgroundSourceName || "Asset manual")}><Grid3X3 size={15} /> Descomponer</button>
           </section>
 
+          <section className="map-library-panel">
+            <header>
+              <div>
+                <strong><BookOpen size={17} /> Biblioteca tactica del mapa</strong>
+                <small>Fichas del tomo: nodos, cobertura, movimiento, misiones, ubicaciones, clima, biomas, armas, equipo, unidades y bestiario.</small>
+              </div>
+              <button onClick={() => addLibraryItem(libraryTab)}><Plus size={15} /> Agregar ficha</button>
+            </header>
+            <nav>
+              <button className={libraryTab === "mission" ? "selected" : ""} onClick={() => setLibraryTab("mission")}><BookOpen size={15} /> Misiones</button>
+              <button className={libraryTab === "location" ? "selected" : ""} onClick={() => setLibraryTab("location")}><MapPinned size={15} /> Ubicaciones</button>
+              <button className={libraryTab === "weather" ? "selected" : ""} onClick={() => setLibraryTab("weather")}><CloudSun size={15} /> Clima</button>
+              <button className={libraryTab === "biome" ? "selected" : ""} onClick={() => setLibraryTab("biome")}><Layers size={15} /> Biomas</button>
+              <button className={libraryTab === "arsenal" ? "selected" : ""} onClick={() => setLibraryTab("arsenal")}><Package size={15} /> Equipo</button>
+              <button className={libraryTab === "units" ? "selected" : ""} onClick={() => setLibraryTab("units")}><Users size={15} /> Unidades</button>
+              <button className={libraryTab === "bestiary" ? "selected" : ""} onClick={() => setLibraryTab("bestiary")}><Crosshair size={15} /> Bestiario</button>
+            </nav>
+            <div className="map-library-grid">
+              {libraryTab === "mission" && missionSheets.map((mission) => (
+                <button key={mission.id} onClick={() => selectedMarker && updateSelectedMarker({ missionId: mission.id, label: mission.title })}>
+                  <BookOpen size={16} />
+                  <span><strong>{mission.title}</strong><small>{mission.objective}</small></span>
+                  <em>{mission.status ?? "draft"}</em>
+                </button>
+              ))}
+              {libraryTab === "location" && locations.map((location) => (
+                <button key={location.id} onClick={() => selectedMarker && updateSelectedMarker({ label: location.name, biome: location.biome })}>
+                  <MapPinned size={16} />
+                  <span><strong>{location.name}</strong><small>{location.description}</small></span>
+                  <em>Riesgo {location.danger ?? 1}</em>
+                </button>
+              ))}
+              {libraryTab === "weather" && weatherEffects.map((weather) => (
+                <button key={weather.id} onClick={() => selectedMarker && updateSelectedMarker({ type: "weather", weatherEffect: weather.name, label: weather.name, movementCost: weather.movementModifier ?? 0 })}>
+                  <CloudSun size={16} />
+                  <span><strong>{weather.name}</strong><small>{weather.description}</small></span>
+                  <em>Vis {weather.visibility ?? 100}%</em>
+                </button>
+              ))}
+              {libraryTab === "biome" && biomes.map((biome) => (
+                <button key={biome.id} onClick={() => selectedMarker && updateSelectedMarker({ type: "biome", biome: biome.name, label: biome.name, movementCost: biome.movementModifier ?? 0 })}>
+                  <Layers size={16} />
+                  <span><strong>{biome.name}</strong><small>{biome.description}</small></span>
+                  <em>Riesgo {biome.encounterRisk ?? 1}</em>
+                </button>
+              ))}
+              {(libraryTab === "arsenal" || libraryTab === "units" || libraryTab === "bestiary") && arsenal
+                .filter((item) => libraryTab === "arsenal" ? item.category === "weapon" || item.category === "equipment" : libraryTab === "units" ? item.category === "unit" : item.category === "bestiary")
+                .map((item) => (
+                  <button key={item.id} onClick={() => selectedMarker && updateSelectedMarker({ linkedAssetId: item.id, label: item.name, type: item.category === "unit" ? "unit" : item.category === "bestiary" ? "beast" : "loot" })}>
+                    {item.category === "weapon" ? <Swords size={16} /> : item.category === "equipment" ? <Boxes size={16} /> : item.category === "unit" ? <Users size={16} /> : <Crosshair size={16} />}
+                    <span><strong>{item.name}</strong><small>{item.description}</small></span>
+                    <em>{item.category}</em>
+                  </button>
+                ))}
+            </div>
+          </section>
+
           <div className="tactical-toolbar">
             <button className={toolMode === "terrain" ? "selected" : ""} onClick={() => setToolMode("terrain")}><MapIcon size={15} /> Terreno</button>
             <button className={toolMode === "marker" ? "selected" : ""} onClick={() => setToolMode("marker")}><Flag size={15} /> Marcador</button>
             <button className={toolMode === "erase" ? "selected" : ""} onClick={() => setToolMode("erase")}><Eraser size={15} /> Borrar</button>
           </div>
 
-          <div
-            className={`tactical-grid ${activeMap.backgroundMode === "image" && activeMap.background ? "map-image-mode" : ""}`}
-            style={{
-              gridTemplateColumns: `repeat(${activeMap.width}, minmax(0, 1fr))`,
-              aspectRatio: `${activeMap.width} / ${activeMap.height}`,
-              "--map-image": activeMap.backgroundMode === "image" && activeMap.background ? `url("${activeMap.background}")` : "none",
-              "--grid-opacity": String(activeMap.gridOpacity ?? 0.55),
-              "--terrain-opacity": String(activeMap.terrainOpacity ?? 0.38),
-              "--marker-scale": String(activeMap.markerScale ?? 1),
-            } as CSSProperties}
-          >
-            {(activeMap.tiles ?? []).map((tile) => {
-              const marker = (activeMap.markers ?? []).find((item) => item.x === tile.x && item.y === tile.y);
-              return (
-                <button
-                  key={`${tile.x}-${tile.y}`}
-                  className={`tactical-tile ${activeMap.backgroundMode === "image" && activeMap.background ? "image-backed" : `terrain-${tile.terrain}`} terrain-overlay-${tile.terrain} ${marker ? `has-marker marker-${marker.type}` : ""}`}
-                  onClick={() => paintCell(tile.x, tile.y)}
-                  title={`${tile.x}, ${tile.y} - ${tile.terrain}`}
-                >
-                  {marker && <span>{marker.type === "player" ? "P" : marker.type === "enemy" ? "E" : marker.type === "objective" ? "!" : marker.type === "spawn" ? "S" : "$"}</span>}
-                </button>
-              );
-            })}
+          <div className="cad-canvas-frame">
+            <div
+              className={`tactical-grid ${activeMap.backgroundMode === "image" && activeMap.background ? "map-image-mode" : ""} ${!showGrid ? "grid-hidden" : ""} ${!showTerrainLayer ? "terrain-hidden" : ""}`}
+              style={{
+                gridTemplateColumns: `repeat(${activeMap.width}, minmax(0, 1fr))`,
+                aspectRatio: `${activeMap.width} / ${activeMap.height}`,
+                transform: `scale(${canvasZoom})`,
+                transformOrigin: "top left",
+                "--map-image": activeMap.backgroundMode === "image" && activeMap.background ? `url("${activeMap.background}")` : "none",
+                "--grid-opacity": String(activeMap.gridOpacity ?? 0.55),
+                "--terrain-opacity": String(activeMap.terrainOpacity ?? 0.38),
+                "--marker-scale": String(activeMap.markerScale ?? 1),
+              } as CSSProperties}
+            >
+              {(activeMap.tiles ?? []).map((tile) => {
+                const marker = (activeMap.markers ?? []).find((item) => item.x === tile.x && item.y === tile.y);
+                return (
+                  <button
+                    key={`${tile.x}-${tile.y}`}
+                    className={`tactical-tile ${activeMap.backgroundMode === "image" && activeMap.background ? "image-backed" : `terrain-${tile.terrain}`} terrain-overlay-${tile.terrain} ${marker ? `has-marker marker-${marker.type}` : ""}`}
+                    onClick={() => paintCell(tile.x, tile.y)}
+                    title={`${tile.x}, ${tile.y} - ${tile.terrain}`}
+                  >
+                    {marker && <span>{markerGlyph(marker.type)}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="cad-status-bar">
+            <span>Modo: {toolMode}</span>
+            <span>Mapa: {activeMap.width} x {activeMap.height}</span>
+            <span>Zoom: {Math.round(canvasZoom * 100)}%</span>
+            <span>Marcadores: {activeMap.markers?.length ?? 0}</span>
           </div>
         </div>
 
@@ -440,10 +654,49 @@ export function MapEditor({ game, onChange, onBack }: Props) {
             <section className="marker-editor">
               <strong>Marcador seleccionado</strong>
               <label><span>Etiqueta</span><input value={selectedMarker.label} onChange={(event) => updateSelectedMarker({ label: event.target.value })} /></label>
+              <label>
+                <span>Cobertura</span>
+                <select value={selectedMarker.coverage ?? "none"} onChange={(event) => updateSelectedMarker({ coverage: event.target.value as NonNullable<typeof selectedMarker.coverage> })}>
+                  <option value="none">Sin cobertura</option>
+                  <option value="light">Ligera</option>
+                  <option value="heavy">Pesada</option>
+                  <option value="total">Total</option>
+                </select>
+              </label>
+              <label><span>Coste movimiento</span><input type="number" min={0} max={8} value={selectedMarker.movementCost ?? 1} onChange={(event) => updateSelectedMarker({ movementCost: Number(event.target.value) || 0 })} /></label>
+              <label>
+                <span>Mision vinculada</span>
+                <select value={selectedMarker.missionId ?? ""} onChange={(event) => updateSelectedMarker({ missionId: event.target.value })}>
+                  <option value="">Sin mision</option>
+                  {missionSheets.map((mission) => <option key={mission.id} value={mission.id}>{mission.title}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Bioma</span>
+                <select value={selectedMarker.biome ?? ""} onChange={(event) => updateSelectedMarker({ biome: event.target.value })}>
+                  <option value="">Sin bioma</option>
+                  {biomes.map((biome) => <option key={biome.id} value={biome.name}>{biome.name}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Clima</span>
+                <select value={selectedMarker.weatherEffect ?? ""} onChange={(event) => updateSelectedMarker({ weatherEffect: event.target.value })}>
+                  <option value="">Sin clima</option>
+                  {weatherEffects.map((weather) => <option key={weather.id} value={weather.name}>{weather.name}</option>)}
+                </select>
+              </label>
+              <label>
+                <span>Ficha asset</span>
+                <select value={selectedMarker.linkedAssetId ?? ""} onChange={(event) => updateSelectedMarker({ linkedAssetId: event.target.value })}>
+                  <option value="">Sin ficha</option>
+                  {arsenal.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+                </select>
+              </label>
               <div className="node-coordinate-grid">
                 <label><span>X</span><input type="number" min={0} max={activeMap.width - 1} value={selectedMarker.x} onChange={(event) => updateSelectedMarker({ x: Number(event.target.value) || 0 })} /></label>
                 <label><span>Y</span><input type="number" min={0} max={activeMap.height - 1} value={selectedMarker.y} onChange={(event) => updateSelectedMarker({ y: Number(event.target.value) || 0 })} /></label>
               </div>
+              <button onClick={applyLibraryToMarker}><Shield size={15} /> Aplicar fichas base</button>
               <button className="danger-button" onClick={removeSelectedMarker}><Trash2 size={15} /> Eliminar marcador</button>
             </section>
           )}

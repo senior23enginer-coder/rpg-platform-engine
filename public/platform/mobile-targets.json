@@ -5,14 +5,34 @@
       "status": "synced",
       "nativeFolder": "android",
       "validation": "npm run android:sync",
-      "responsiveBreakpoints": [1180, 720]
+      "responsiveBreakpoints": [1180, 980, 560],
+      "validatedViewports": [
+        { "name": "small-phone", "width": 390, "height": 844 },
+        { "name": "large-phone", "width": 430, "height": 932 },
+        { "name": "tablet", "width": 834, "height": 1112 }
+      ],
+      "mobileShell": {
+        "topbar": "compact stacked header with horizontal status cards",
+        "navigation": "sidebar becomes horizontal scroll rail",
+        "content": "single-column screens with internal scroll and contained wide tables"
+      }
     },
     "ios": {
       "status": "synced",
       "nativeFolder": "ios",
       "validation": "npm run ios:sync",
       "blockedOnThisMachine": "CocoaPods/xcodebuild are not available on this Windows workspace, so native archive/build still requires macOS/Xcode.",
-      "responsiveBreakpoints": [1180, 720]
+      "responsiveBreakpoints": [1180, 980, 560],
+      "validatedViewports": [
+        { "name": "small-phone", "width": 390, "height": 844 },
+        { "name": "large-phone", "width": 430, "height": 932 },
+        { "name": "tablet", "width": 834, "height": 1112 }
+      ],
+      "mobileShell": {
+        "topbar": "compact stacked header with horizontal status cards",
+        "navigation": "sidebar becomes horizontal scroll rail",
+        "content": "single-column screens with internal scroll and contained wide tables"
+      }
     }
   }
 }

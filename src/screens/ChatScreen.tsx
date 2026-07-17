@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Activity, Circle, Cloud, Hash, MapPin, MessageCircle, Mic, MicOff, Plug, Radio, Send, UserPlus, Users } from "lucide-react";
 import type { PlayerProfile } from "../types/profile";
+import type { PlatformChatMessage } from "../lib/platformContracts";
 
 type Props = {
   profile: PlayerProfile;
   isAdmin?: boolean;
   defaultRelayUrl?: string;
   defaultRoom?: string;
+  onLoadMessages?: (roomId: string, channelId: string) => Promise<PlatformChatMessage[]>;
+  onSendMessage?: (message: PlatformChatMessage) => Promise<PlatformChatMessage>;
   onBack: () => void;
 };
 
@@ -66,12 +69,34 @@ function encodeChunk(chunk: Blob) {
   });
 }
 
-export function ChatScreen({ profile, isAdmin = false, defaultRelayUrl = "http://localhost:8787", defaultRoom = "mesa-rpg", onBack }: Props) {
+function toChatEvent(message: PlatformChatMessage, fallbackName: string): ChatEvent {
+  return {
+    id: message.id,
+    type: message.type === "audio" ? "audio" : message.type === "presence" ? "presence" : "message",
+    userId: message.authorId,
+    userName: message.authorId === fallbackName ? fallbackName : message.authorId,
+    text: message.body,
+    audio: message.audio,
+    mimeType: message.mimeType,
+    createdAt: message.createdAt,
+  };
+}
+
+export function ChatScreen({
+  profile,
+  isAdmin = false,
+  defaultRelayUrl = "http://localhost:8787",
+  defaultRoom = "mesa-rpg",
+  onLoadMessages,
+  onSendMessage,
+  onBack,
+}: Props) {
   const [relayUrl, setRelayUrl] = useState(() => readLocalStorage(relayUrlKey, defaultRelayUrl));
   const [room, setRoom] = useState(() => readLocalStorage(sessionRoomKey, defaultRoom));
   const [activeChannelId, setActiveChannelId] = useState("general");
   const [userLocation, setUserLocation] = useState("Bogota, Colombia");
   const [connected, setConnected] = useState(false);
+  const [cloudStatus, setCloudStatus] = useState<"offline" | "local" | "cloud">("offline");
   const [messages, setMessages] = useState<ChatEvent[]>([]);
   const [message, setMessage] = useState("");
   const [micEnabled, setMicEnabled] = useState(false);
@@ -97,33 +122,79 @@ export function ChatScreen({ profile, isAdmin = false, defaultRelayUrl = "http:/
     writeLocalStorage(sessionRoomKey, room.trim() || defaultRoom);
   }
 
+  function appendLocalEvent(type: ChatEvent["type"], text?: string, audio?: string, mimeType?: string) {
+    const event: ChatEvent = {
+      id: `local_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+      type,
+      userId: profile.id,
+      userName,
+      text,
+      audio,
+      mimeType,
+      createdAt: new Date().toISOString(),
+    };
+    setMessages((current) => [event, ...current].slice(0, 80));
+    return event;
+  }
+
+  useEffect(() => {
+    let active = true;
+    const targetRoom = room.trim() || defaultRoom;
+    if (!onLoadMessages) return;
+    onLoadMessages(targetRoom, activeChannelId)
+      .then((backendMessages) => {
+        if (!active) return;
+        setMessages(backendMessages.map((entry) => toChatEvent(entry, userName)).slice(0, 80));
+        if (backendMessages.length > 0) setCloudStatus("local");
+      })
+      .catch(() => undefined);
+    return () => {
+      active = false;
+    };
+  }, [activeChannelId, defaultRoom, onLoadMessages, room, userName]);
+
   function connect() {
     persistConnection();
     eventSourceRef.current?.close();
+    setConnected(true);
+    setCloudStatus("local");
+    appendLocalEvent("presence", `${userName} entro al canal #${activeChannel.label}.`);
     const targetRoom = encodeURIComponent(room.trim() || defaultRoom);
-    const source = new EventSource(`${normalizedRelay}/events?room=${targetRoom}&userId=${encodeURIComponent(profile.id)}&userName=${encodeURIComponent(userName)}`);
-    source.onopen = () => setConnected(true);
-    source.onerror = () => setConnected(false);
-    source.onmessage = (event) => {
-      try {
-        const payload = JSON.parse(event.data) as ChatEvent;
-        if (payload.type === "audio" && payload.userId !== profile.id && payload.audio) {
-          playRemoteAudio(payload.audio);
-          return;
+    try {
+      const source = new EventSource(`${normalizedRelay}/events?room=${targetRoom}&userId=${encodeURIComponent(profile.id)}&userName=${encodeURIComponent(userName)}`);
+      source.onopen = () => {
+        setConnected(true);
+        setCloudStatus("cloud");
+      };
+      source.onerror = () => {
+        setConnected(true);
+        setCloudStatus("local");
+      };
+      source.onmessage = (event) => {
+        try {
+          const payload = JSON.parse(event.data) as ChatEvent;
+          if (payload.type === "audio" && payload.userId !== profile.id && payload.audio) {
+            playRemoteAudio(payload.audio);
+            return;
+          }
+          setMessages((current) => [payload, ...current].slice(0, 80));
+        } catch {
+          // Ignore malformed relay events.
         }
-        setMessages((current) => [payload, ...current].slice(0, 80));
-      } catch {
-        // Ignore malformed relay events.
-      }
-    };
-    eventSourceRef.current = source;
-    postEvent("presence", `${userName} se conecto.`);
+      };
+      eventSourceRef.current = source;
+      void postEvent("presence", `${userName} se conecto.`);
+    } catch {
+      setCloudStatus("local");
+    }
   }
 
   function disconnect() {
     eventSourceRef.current?.close();
     eventSourceRef.current = null;
     setConnected(false);
+    setCloudStatus("offline");
+    appendLocalEvent("presence", `${userName} salio del canal.`);
     void stopMic();
   }
 
@@ -141,13 +212,34 @@ export function ChatScreen({ profile, isAdmin = false, defaultRelayUrl = "http:/
         audio,
         mimeType,
       }),
-    }).catch(() => setConnected(false));
+    }).catch(() => {
+      setConnected(true);
+      setCloudStatus("local");
+    });
   }
 
   function sendMessage() {
     const text = message.trim();
     if (!text) return;
     setMessage("");
+    const localEvent = appendLocalEvent("message", text);
+    if (onSendMessage) {
+      void onSendMessage({
+        id: localEvent.id,
+        roomId: room.trim() || defaultRoom,
+        channelId: activeChannelId,
+        authorId: profile.id,
+        body: text,
+        type: "message",
+        createdAt: localEvent.createdAt,
+      })
+        .then((saved) => {
+          setMessages((current) => [toChatEvent(saved, userName), ...current.filter((entry) => entry.id !== localEvent.id && entry.id !== saved.id)].slice(0, 80));
+          setConnected(true);
+          setCloudStatus("local");
+        })
+        .catch(() => undefined);
+    }
     void postEvent("message", text);
   }
 
@@ -238,7 +330,7 @@ export function ChatScreen({ profile, isAdmin = false, defaultRelayUrl = "http:/
           <header>
             <div>
               <strong><Hash size={18} /> {activeChannel.label}</strong>
-              <span>{messages.length} eventos - {connected ? "online" : "offline"}</span>
+              <span>{messages.length} eventos - {cloudStatus === "cloud" ? "cloud" : cloudStatus === "local" ? "modo local" : "offline"}</span>
             </div>
             <div className="discord-top-actions">
               <button className="green-button" onClick={connect}><Plug size={16} /> Conectar cloud</button>
@@ -279,7 +371,7 @@ export function ChatScreen({ profile, isAdmin = false, defaultRelayUrl = "http:/
           <section className="discord-card">
             <div className="admin-panel-title compact">
               <strong><Cloud size={18} /> Conexion cloud</strong>
-              <span className={connected ? "admin-status-pill" : "admin-status-pill amber"}>{connected ? "Online" : "Offline"}</span>
+              <span className={cloudStatus === "cloud" ? "admin-status-pill" : "admin-status-pill amber"}>{cloudStatus === "cloud" ? "Cloud" : cloudStatus === "local" ? "Local" : "Offline"}</span>
             </div>
             {isAdmin ? (
               <>

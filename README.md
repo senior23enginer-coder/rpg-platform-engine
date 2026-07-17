@@ -25,6 +25,21 @@ Esta versión está pensada para que la app pueda:
 - conservar UI web precisa con HTML/CSS/React;
 - replicar el estilo visual de launcher/Pip-Boy de las imágenes de referencia.
 
+## Roadmap de cierre
+
+La lista completa de pendientes de producto vive en:
+
+- `docs/PLATFORM_COMPLETION_ROADMAP.md`
+- `public/platform/completion-roadmap.json`
+
+El roadmap cubre responsive, backend, seguridad, administrador de juegos, mapas, noticias, notificaciones, usuarios, soporte, chat cloud, configuracion, Fallout 4/tomos, juegos nuevos, guardados, dashboards, mobile, pruebas y limpieza tecnica.
+
+Para validar que el inventario no pierda ningun modulo critico:
+
+```bash
+npm run test:roadmap
+```
+
 ## Estructura de juegos
 
 ```txt
@@ -44,8 +59,31 @@ public/games/fallout3/
 ```bash
 npm install
 npm run dev
+npm run backend:local
 npm run tauri:dev
 npm run tauri:build
+```
+
+## Ambiente local completo
+
+Para trabajar sin simular cloud, levanta el backend local y el frontend:
+
+```bash
+npm run backend:local
+npm run dev
+```
+
+El flujo local, permisos, backups y validaciones estan documentados en:
+
+- `docs/local-development.md`
+
+Validacion recomendada:
+
+```bash
+npm run test:backend
+npm run test:security
+npm run test:critical
+npm run build
 ```
 
 Para móvil, después de configurar Android Studio/Xcode:

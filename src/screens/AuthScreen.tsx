@@ -23,6 +23,7 @@ import {
   X,
 } from "lucide-react";
 import { gameHeroVars } from "../lib/gameLibrary";
+import { createPasswordHash, redactPasswordFields, verifyPassword } from "../lib/authSecurity";
 import type { AppNewsEntry } from "../lib/appMetadataStorage";
 import type { GameConfig } from "../types/game";
 import type { PlayerProfile } from "../types/profile";
@@ -36,7 +37,9 @@ type Props = {
   appVersion?: string;
   releaseChannel?: string;
   onAccess: (profile: PlayerProfile) => void;
-  onRegister: (account: { email: string; username: string; password: string; role?: "user" | "admin" }) => void;
+  onRegister: (account: { email: string; username: string; password?: string; passwordHash?: string; role?: "user" | "admin" }) => void;
+  onLogin?: (credentials: { usernameOrEmail: string; password: string; remember: boolean }) => Promise<PlayerProfile | undefined>;
+  onPasswordReset?: (usernameOrEmail: string) => Promise<void>;
 };
 
 type AuthMode = "login" | "register";
@@ -116,7 +119,7 @@ function publicNews(items: NewsItem[]) {
     .sort((left, right) => new Date(right.publishedAt ?? right.date ?? 0).getTime() - new Date(left.publishedAt ?? left.date ?? 0).getTime());
 }
 
-export function AuthScreen({ profile, users, games, news = [], platformName = "RPG Platform Engine", appVersion = "0.10-1625", releaseChannel = "Pre-release", onAccess, onRegister }: Props) {
+export function AuthScreen({ profile, users, games, news = [], platformName = "RPG Platform Engine", appVersion = "0.10-1625", releaseChannel = "Pre-release", onAccess, onRegister, onLogin, onPasswordReset }: Props) {
   const rememberedLogin = readLocalStorage(rememberedLoginKey);
   const [mode, setMode] = useState<AuthMode>("login");
   const [emailOrUser, setEmailOrUser] = useState(rememberedLogin || "");
@@ -170,8 +173,7 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
       ];
 
   const loginAccount = availableUsers.find((user) => matchesAccount(user, emailOrUser));
-  const passwordRequired = Boolean(loginAccount?.password);
-  const loginMatchesProfile = Boolean(loginAccount && (!passwordRequired || password === loginAccount.password));
+  const passwordRequired = Boolean(loginAccount?.password || loginAccount?.passwordHash);
   const loginReady = emailOrUser.trim().length > 0 && password.trim().length > 0;
   const accountAlreadyExists = availableUsers.some((user) => matchesAccount(user, email) || matchesAccount(user, username));
   const registerReady =
@@ -205,14 +207,14 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
     });
   }
 
-  function submit() {
+  async function submit() {
     if (mode === "register") {
       if (!canEnter) {
         setAuthMessage("Completa correo, usuario y una contrasena valida.");
         return;
       }
       if (remember) writeLocalStorage(rememberedLoginKey, username.trim() || email.trim());
-      onRegister({ email: email.trim(), username: username.trim(), password });
+      onRegister({ email: email.trim(), username: username.trim(), passwordHash: await createPasswordHash(password) });
       return;
     }
 
@@ -220,15 +222,32 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
       setAuthMessage("Escribe tu usuario y contrasena.");
       return;
     }
+    if (loginAccount?.blocked) {
+      setAuthMessage("Esta cuenta esta bloqueada. Contacta soporte.");
+      return;
+    }
+    if (onLogin) {
+      const backendProfile = await onLogin({ usernameOrEmail: emailOrUser.trim(), password, remember });
+      if (backendProfile) {
+        setAuthMessage("");
+        accessProfile(backendProfile);
+        return;
+      }
+    }
+    const loginMatchesProfile = Boolean(loginAccount && (await verifyPassword(password, loginAccount.passwordHash, loginAccount.password)));
     if (!loginAccount || !loginMatchesProfile) {
       setAuthMessage("Usuario o contrasena incorrectos.");
       return;
     }
     setAuthMessage("");
+    if (!loginAccount.passwordHash && loginAccount.password) {
+      accessProfile(redactPasswordFields(loginAccount, await createPasswordHash(password)));
+      return;
+    }
     accessProfile(loginAccount);
   }
 
-  function socialAccess(provider: "google" | "facebook" | "github") {
+  async function socialAccess(provider: "google" | "facebook" | "github") {
     const usernameByProvider = {
       google: "google_demo",
       facebook: "facebook_demo",
@@ -244,14 +263,19 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
     onRegister({
       email: `${usernameFromProvider}@rpg.local`,
       username: usernameFromProvider,
-      password: `${provider}123`,
+      passwordHash: await createPasswordHash(`${provider}123`),
     });
   }
 
-  function recoverPassword() {
+  async function recoverPassword() {
     const target = recoveryEmail.trim() || emailOrUser.trim();
     if (!target) {
       setRecoveryMessage("Escribe el correo o usuario de la cuenta.");
+      return;
+    }
+    if (onPasswordReset) {
+      await onPasswordReset(target);
+      setRecoveryMessage("Solicitud registrada en el backend local. Un administrador puede revisar auditoria y soporte.");
       return;
     }
 

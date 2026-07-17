@@ -35,6 +35,7 @@ import type { Campaign, ContentItem, GameConfig } from "../types/game";
 import type { AppNewsEntry, AppNotificationEntry, AppSupportTicket } from "../lib/appMetadataStorage";
 import type { PlayerProfile } from "../types/profile";
 import { resolveUserAsset } from "../lib/userLibrary";
+import { getPlatformRoadmapSummary } from "../lib/platformRoadmap";
 import { MapEditor } from "./MapEditor";
 import { NewsEditor } from "./NewsEditor";
 import { NotificationEditor } from "./NotificationEditor";
@@ -194,6 +195,7 @@ export function AdminScreen({
     );
   }, [gameSearch, games]);
   const selectedUser = users.find((user) => user.id === selectedUserId) ?? filteredUsers[0] ?? users[0];
+  const roadmapSummary = useMemo(() => getPlatformRoadmapSummary(), []);
   const adminReadiness = Math.round(
     (((totals.enabledGames > 0 ? 1 : 0) +
       (totals.campaigns > 0 ? 1 : 0) +
@@ -478,6 +480,26 @@ export function AdminScreen({
               <span><Newspaper size={16} /> {publishedNews} noticias publicadas</span>
               <span><Bell size={16} /> {scheduledNotifications} notificaciones programadas</span>
               <span><AlertTriangle size={16} /> {urgentSupportTickets} tickets urgentes</span>
+            </div>
+          </article>
+
+          <article className="admin-card admin-roadmap-card">
+            <div className="admin-panel-title compact">
+              <strong><SlidersHorizontal size={18} /> Roadmap de plataforma</strong>
+              <span className="admin-status-pill amber">{roadmapSummary.completion}% completo</span>
+            </div>
+            <div className="admin-roadmap-meter">
+              <span style={{ width: `${roadmapSummary.completion}%` }} />
+            </div>
+            <div className="admin-roadmap-stats">
+              <span><strong>{roadmapSummary.total}</strong><small>areas totales</small></span>
+              <span><strong>{roadmapSummary.inProgress.length}</strong><small>en progreso</small></span>
+              <span><strong>{roadmapSummary.criticalOpen.length}</strong><small>criticas abiertas</small></span>
+            </div>
+            <div className="admin-ops-list">
+              {roadmapSummary.nextCritical.map((area) => (
+                <span key={area.id}><AlertTriangle size={16} /> {area.title}</span>
+              ))}
             </div>
           </article>
 

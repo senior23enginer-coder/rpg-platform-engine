@@ -38,7 +38,6 @@ const items: Array<{ id: Screen; labelKey: Parameters<typeof t>[1]; hintKey: Par
   { id: "newGame", labelKey: "nav.newGame", hintKey: "nav.newGameHint", icon: <Plus /> },
   { id: "load", labelKey: "nav.load", hintKey: "nav.loadHint", icon: <Archive /> },
   { id: "dice", labelKey: "nav.dice", hintKey: "nav.diceHint", icon: <Dice5 /> },
-  { id: "rules", labelKey: "nav.rules", hintKey: "nav.rulesHint", icon: <ScrollText /> },
   { id: "chat", labelKey: "nav.chat", hintKey: "nav.chatHint", icon: <MessageCircle /> },
   { id: "support", labelKey: "nav.support", hintKey: "nav.supportHint", icon: <Headphones /> },
   { id: "settings", labelKey: "nav.settings", hintKey: "nav.settingsHint", icon: <Settings /> },

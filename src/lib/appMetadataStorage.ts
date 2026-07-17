@@ -59,6 +59,16 @@ export type AppSupportTicket = {
   }>;
 };
 
+export type AppAuditEntry = {
+  id: string;
+  action: string;
+  actorId: string;
+  targetId?: string;
+  module: "auth" | "users" | "games" | "maps" | "news" | "notifications" | "support" | "chat" | "saves" | "settings";
+  createdAt: string;
+  metadata?: Record<string, string | number | boolean | undefined>;
+};
+
 export type AppMetadata = {
   version: string;
   platformName: string;
@@ -67,12 +77,20 @@ export type AppMetadata = {
   localizedText: Record<"es" | "en", { platformTitle: string; tagline: string; loginSubtitle: string }>;
   platformIcons: Record<string, string>;
   platformAudio: Record<string, string>;
+  cloud: {
+    provider: "local" | "local-http" | "disabled" | "custom" | "firebase" | "supabase" | "websocket";
+    endpoint: string;
+    realtimeEndpoint?: string;
+    storageBucket?: string;
+    region?: string;
+  };
   chatRelayUrl: string;
   chatRoom: string;
   recentActivity: AppActivityEntry[];
   news: AppNewsEntry[];
   notifications: AppNotificationEntry[];
   supportTickets: AppSupportTicket[];
+  auditLog: AppAuditEntry[];
 };
 
 const APP_METADATA_KEY = "rpg-platform.app-metadata.v1";
@@ -104,12 +122,19 @@ const defaultMetadata: AppMetadata = {
     ambientDefault: "/audio/fallout-4-main-theme.mp3",
     combatDefault: "/audio/combat-ready.mp3",
   },
-  chatRelayUrl: "https://cloud.rpg-platform.local/realtime",
+  cloud: {
+    provider: "local-http",
+    endpoint: "http://127.0.0.1:8787/api",
+    realtimeEndpoint: "http://127.0.0.1:8787/realtime",
+    region: "local",
+  },
+  chatRelayUrl: "http://127.0.0.1:8787/realtime",
   chatRoom: "mesa-rpg",
   recentActivity: [],
   news: [],
   notifications: [],
   supportTickets: [],
+  auditLog: [],
 };
 
 export function normalizeMetadata(metadata: Partial<AppMetadata>): AppMetadata {
@@ -124,6 +149,7 @@ export function normalizeMetadata(metadata: Partial<AppMetadata>): AppMetadata {
     },
     platformIcons: { ...defaultMetadata.platformIcons, ...(metadata.platformIcons ?? {}) },
     platformAudio: { ...defaultMetadata.platformAudio, ...(metadata.platformAudio ?? {}) },
+    cloud: { ...defaultMetadata.cloud, ...(metadata.cloud ?? {}) },
     chatRelayUrl: metadata.chatRelayUrl || defaultMetadata.chatRelayUrl,
     chatRoom: metadata.chatRoom || defaultMetadata.chatRoom,
     recentActivity: Array.isArray(metadata.recentActivity) ? metadata.recentActivity : [],
@@ -156,6 +182,12 @@ export function normalizeMetadata(metadata: Partial<AppMetadata>): AppMetadata {
           messages: Array.isArray(ticket.messages) ? ticket.messages : [],
         }))
       : [],
+    auditLog: Array.isArray(metadata.auditLog)
+      ? metadata.auditLog.map((entry) => ({
+          ...entry,
+          createdAt: entry.createdAt ?? new Date().toISOString(),
+        }))
+      : [],
   };
 }
 
@@ -177,6 +209,14 @@ export function createActivity(label: string): AppActivityEntry {
   return {
     id: `activity_${Date.now()}`,
     label,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+export function createAuditEntry(entry: Omit<AppAuditEntry, "id" | "createdAt">): AppAuditEntry {
+  return {
+    ...entry,
+    id: `audit_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
     createdAt: new Date().toISOString(),
   };
 }

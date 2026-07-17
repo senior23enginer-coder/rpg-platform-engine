@@ -128,6 +128,10 @@ export type PlayerProfile = {
   role?: "user" | "admin";
   gender?: string;
   password?: string;
+  passwordHash?: string;
+  passwordUpdatedAt?: string;
+  blocked?: boolean;
+  permissions?: Record<string, boolean>;
   level: number;
   basePath?: string;
   profilePath?: string;

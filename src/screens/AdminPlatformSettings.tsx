@@ -48,13 +48,13 @@ export function AdminPlatformSettings({ metadata, onChange, onBack }: Props) {
       <div className="screen-heading admin-heading">
         <div>
           <h2><Settings size={34} /> Configuracion de plataforma</h2>
-          <p>Control global de textos, idiomas, iconos, audios, version y conexion LAN.</p>
+          <p>Control global de identidad, textos, idiomas, iconos, audios, chat cloud y experiencia visual.</p>
         </div>
         <button onClick={onBack}>Volver</button>
       </div>
 
       <div className="admin-platform-settings-grid">
-        <article className="admin-card admin-platform-section">
+        <article className="admin-card admin-platform-section platform-section-identity">
           <div className="admin-panel-title">
             <strong><Type size={18} /> Identidad y version</strong>
             <span className="admin-status-pill">{metadata.releaseChannel}</span>
@@ -63,6 +63,7 @@ export function AdminPlatformSettings({ metadata, onChange, onBack }: Props) {
             <label><span>Nombre de la plataforma</span><input value={metadata.platformName} onChange={(event) => onChange({ platformName: event.target.value })} /></label>
             <label><span>Version admin</span><input value={metadata.version} onChange={(event) => onChange({ version: event.target.value })} /></label>
             <label><span>Canal</span><input value={metadata.releaseChannel} onChange={(event) => onChange({ releaseChannel: event.target.value })} /></label>
+            <label><span>Nombre corto launcher</span><input value={metadata.platformIcons.shortName ?? "RPG Engine"} onChange={(event) => updateIcon("shortName", event.target.value)} /></label>
           </div>
         </article>
 
@@ -94,18 +95,21 @@ export function AdminPlatformSettings({ metadata, onChange, onBack }: Props) {
           </div>
         </article>
 
-        <article className="admin-card admin-platform-section">
+        <article className="admin-card admin-platform-section platform-section-icons">
           <div className="admin-panel-title">
             <strong><Image size={18} /> Iconos e imagenes del sistema</strong>
           </div>
           <div className="admin-form-grid">
             <label><span>Logo plataforma</span><input value={metadata.platformIcons.logo ?? ""} onChange={(event) => updateIcon("logo", event.target.value)} /></label>
             <label><span>Icono pestana</span><input value={metadata.platformIcons.favicon ?? ""} onChange={(event) => updateIcon("favicon", event.target.value)} /></label>
+            <label><span>Icono mobile</span><input value={metadata.platformIcons.mobile ?? "/platform/vault-boy-icon-192.png"} onChange={(event) => updateIcon("mobile", event.target.value)} /></label>
             <label><span>Icono notificacion</span><input value={metadata.platformIcons.notification ?? ""} onChange={(event) => updateIcon("notification", event.target.value)} /></label>
+            <label><span>Fondo login</span><input value={metadata.platformIcons.loginHero ?? "/platform/wasteland-hero.png"} onChange={(event) => updateIcon("loginHero", event.target.value)} /></label>
+            <label><span>Fondo dashboard</span><input value={metadata.platformIcons.dashboardHero ?? "/platform/wasteland-hero.png"} onChange={(event) => updateIcon("dashboardHero", event.target.value)} /></label>
           </div>
         </article>
 
-        <article className="admin-card admin-platform-section">
+        <article className="admin-card admin-platform-section platform-section-audio">
           <div className="admin-panel-title">
             <strong><Music size={18} /> Audios globales</strong>
           </div>
@@ -113,10 +117,11 @@ export function AdminPlatformSettings({ metadata, onChange, onBack }: Props) {
             <label><span>Login principal</span><input value={metadata.platformAudio.loginMain ?? ""} onChange={(event) => updateAudio("loginMain", event.target.value)} /></label>
             <label><span>Audio por defecto</span><input value={metadata.platformAudio.ambientDefault ?? ""} onChange={(event) => updateAudio("ambientDefault", event.target.value)} /></label>
             <label><span>Combate por defecto</span><input value={metadata.platformAudio.combatDefault ?? ""} onChange={(event) => updateAudio("combatDefault", event.target.value)} /></label>
+            <label><span>Click UI</span><input value={metadata.platformAudio.uiClick ?? ""} onChange={(event) => updateAudio("uiClick", event.target.value)} /></label>
           </div>
         </article>
 
-        <article className="admin-card admin-platform-section">
+        <article className="admin-card admin-platform-section platform-section-chat">
           <div className="admin-panel-title">
             <strong><MessageCircle size={18} /> Chat cloud</strong>
             <Bell size={18} />
@@ -124,6 +129,8 @@ export function AdminPlatformSettings({ metadata, onChange, onBack }: Props) {
           <div className="admin-form-grid">
             <label><span>Endpoint cloud por defecto</span><input value={metadata.chatRelayUrl} onChange={(event) => onChange({ chatRelayUrl: event.target.value })} /></label>
             <label><span>Sala por defecto</span><input value={metadata.chatRoom} onChange={(event) => onChange({ chatRoom: event.target.value })} /></label>
+            <label><span>Proveedor realtime</span><input value={metadata.platformIcons.realtimeProvider ?? "cloud-relay"} onChange={(event) => updateIcon("realtimeProvider", event.target.value)} /></label>
+            <label><span>Modo conexion usuario</span><input value={metadata.platformIcons.userConnectionMode ?? "automatico"} onChange={(event) => updateIcon("userConnectionMode", event.target.value)} /></label>
           </div>
           <p className="admin-platform-help">El administrador define el endpoint cloud. Los usuarios solo entran a la sala, sin IP local ni configuracion LAN.</p>
         </article>
