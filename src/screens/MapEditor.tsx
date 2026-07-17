@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from "react";
-import { ArrowLeft, BookOpen, Boxes, CloudSun, Crosshair, Eraser, Eye, Flag, Grid3X3, Image as ImageIcon, Layers, Map as MapIcon, MapPinned, Package, Plus, Route, Shield, SlidersHorizontal, Swords, Trash2, Upload, Users } from "lucide-react";
+import { ArrowLeft, BookOpen, Boxes, CloudSun, Copy, Crosshair, Eraser, Eye, FilePlus2, Flag, FolderOpen, Grid3X3, Image as ImageIcon, Layers, Map as MapIcon, MapPinned, MousePointer2, Package, Plus, Redo2, Route, Save, Shield, SlidersHorizontal, Swords, Trash2, Undo2, Upload, Users } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
+import { buildFallout4TomeMapLibrary, createFallout4LocationMaps } from "../lib/fallout4TomeCatalog";
 
 type Props = {
   game: GameConfig;
@@ -37,6 +38,16 @@ type ToolMode = "terrain" | "marker" | "erase";
 type MapEditorView = "list" | "editor";
 type LibraryTab = "mission" | "location" | "weather" | "biome" | "arsenal" | "units" | "bestiary";
 
+const editorMenus = ["Archivo", "Editar", "Vista", "Capas", "Escenario", "Herramientas", "Avanzado", "Modulos", "Ventana", "Ayuda"];
+
+const resourceTree = [
+  { title: "Terreno", items: ["Texturas", "Altura", "Cobertura", "Coste movimiento"] },
+  { title: "Escenario", items: ["Misiones", "Ubicaciones", "Eventos", "Rutas"] },
+  { title: "Reglas", items: ["Biomas", "Clima", "Peligro", "Encuentros"] },
+  { title: "Objetos", items: ["Armas", "Equipamiento", "Botin", "Interactivos"] },
+  { title: "Actores", items: ["Unidades", "Bestiario", "NPCs", "Facciones"] },
+];
+
 const maxImportedImageSide = 2048;
 const maxImportedTiles = 48;
 
@@ -57,6 +68,17 @@ function createTiles(width: number, height: number, terrain: TacticalTerrainType
 }
 
 function createDefaultMapLibraries(game: GameConfig) {
+  const tomeLibrary = buildFallout4TomeMapLibrary(game);
+  if (tomeLibrary) {
+    return {
+      missionSheets: tomeLibrary.missionSheets ?? [],
+      locations: tomeLibrary.locations ?? [],
+      weatherEffects: tomeLibrary.weatherEffects ?? [],
+      biomes: tomeLibrary.biomes ?? [],
+      arsenal: tomeLibrary.arsenal ?? [],
+    };
+  }
+
   const campaign = game.campaigns[0];
   return {
     missionSheets: [
@@ -147,7 +169,10 @@ function normalizeTacticalMap(map: GameMap): GameMap {
 }
 
 function ensureMaps(game: GameConfig) {
-  return game.maps?.length ? game.maps.map(normalizeTacticalMap) : [createDefaultMap(game, 0)];
+  if (game.maps?.length) return game.maps.map(normalizeTacticalMap);
+  const tomeLocationMaps = createFallout4LocationMaps(game);
+  if (tomeLocationMaps.length) return tomeLocationMaps.map(normalizeTacticalMap);
+  return [createDefaultMap(game, 0)];
 }
 
 function markerGlyph(type: TacticalMarkerType) {
@@ -183,6 +208,7 @@ export function MapEditor({ game, onChange, onBack }: Props) {
   const weatherEffects = activeMap?.weatherEffects?.length ? activeMap.weatherEffects : createDefaultMapLibraries(game).weatherEffects;
   const biomes = activeMap?.biomes?.length ? activeMap.biomes : createDefaultMapLibraries(game).biomes;
   const arsenal = activeMap?.arsenal?.length ? activeMap.arsenal : createDefaultMapLibraries(game).arsenal;
+  const tomeLibrary = buildFallout4TomeMapLibrary(game);
 
   function emit(nextMaps: GameMap[]) {
     onChange(nextMaps.map(normalizeTacticalMap));
@@ -440,6 +466,41 @@ export function MapEditor({ game, onChange, onBack }: Props) {
         </div>
       </div>
 
+      <div className="world-editor-menubar">
+        {editorMenus.map((menu) => <button key={menu}>{menu}</button>)}
+      </div>
+
+      <div className="world-editor-toolbar" aria-label="Herramientas rapidas del editor">
+        <button title="Nuevo mapa" onClick={addMap}><FilePlus2 size={16} /></button>
+        <button title="Abrir lista" onClick={() => setView("list")}><FolderOpen size={16} /></button>
+        <button title="Guardar cambios"><Save size={16} /></button>
+        <span />
+        <button title="Deshacer"><Undo2 size={16} /></button>
+        <button title="Rehacer"><Redo2 size={16} /></button>
+        <button title="Duplicar seleccion"><Copy size={16} /></button>
+        <span />
+        <button className={toolMode === "terrain" ? "selected" : ""} title="Pintar terreno" onClick={() => setToolMode("terrain")}><MapIcon size={16} /></button>
+        <button className={toolMode === "marker" ? "selected" : ""} title="Colocar marcador" onClick={() => setToolMode("marker")}><Flag size={16} /></button>
+        <button className={toolMode === "erase" ? "selected" : ""} title="Borrar" onClick={() => setToolMode("erase")}><Eraser size={16} /></button>
+        <span />
+        <button className={showGrid ? "selected" : ""} title="Mostrar grilla" onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={16} /></button>
+        <button className={showTerrainLayer ? "selected" : ""} title="Mostrar capa de terreno" onClick={() => setShowTerrainLayer((value) => !value)}><Layers size={16} /></button>
+        <button title="Selector"><MousePointer2 size={16} /></button>
+      </div>
+
+      {tomeLibrary && (
+        <div className="tome-coverage-strip">
+          <span><BookOpen size={15} /> {tomeLibrary.counts.missions ?? missionSheets.length} misiones</span>
+          <span><MapPinned size={15} /> {tomeLibrary.counts.locations ?? locations.length} ubicaciones/mapas</span>
+          <span><Crosshair size={15} /> {tomeLibrary.counts.bestiary ?? 0} bestiario</span>
+          <span><Swords size={15} /> {tomeLibrary.counts.weapons ?? 0} armas</span>
+          <span><Package size={15} /> {tomeLibrary.counts.equipment ?? 0} equipo/objetos</span>
+          <span><Shield size={15} /> {tomeLibrary.counts.settlements ?? 0} asentamientos</span>
+          <span><Users size={15} /> {tomeLibrary.counts.factions ?? 0} facciones</span>
+          <span><Boxes size={15} /> {tomeLibrary.counts.collectibles ?? 0} coleccionables</span>
+        </div>
+      )}
+
       <div className="cad-ribbon">
         <section>
           <small>Herramientas</small>
@@ -466,7 +527,45 @@ export function MapEditor({ game, onChange, onBack }: Props) {
       </div>
 
       <div className="map-editor-layout tactical-layout">
-        <aside className="map-list">
+        <aside className="map-list world-editor-left-panel">
+          <section className="world-minimap-panel">
+            <strong><MapIcon size={15} /> Minimap</strong>
+            <div className="world-minimap" style={{ aspectRatio: `${activeMap.width} / ${activeMap.height}` } as CSSProperties}>
+              {(activeMap.markers ?? []).map((marker) => (
+                <i
+                  key={marker.id}
+                  className={`marker-${marker.type}`}
+                  style={{ left: `${(marker.x / Math.max(1, activeMap.width - 1)) * 100}%`, top: `${(marker.y / Math.max(1, activeMap.height - 1)) * 100}%` }}
+                />
+              ))}
+            </div>
+            <label><input type="checkbox" checked={showGrid} onChange={() => setShowGrid((value) => !value)} /> Mostrar grilla</label>
+            <label><input type="checkbox" checked={showTerrainLayer} onChange={() => setShowTerrainLayer((value) => !value)} /> Mostrar terreno</label>
+          </section>
+
+          <section className="world-camera-panel">
+            <label><span>Distancia</span><input type="number" value={Math.round(canvasZoom * 400)} onChange={(event) => setCanvasZoom(Math.max(0.65, Math.min(1.45, Number(event.target.value) / 400 || canvasZoom)))} /></label>
+            <label><span>Rotacion</span><input type="number" value={0} readOnly /></label>
+            <label><span>Luz</span><select defaultValue="noon"><option value="noon">Mediodia</option><option value="dusk">Atardecer</option><option value="night">Noche</option></select></label>
+          </section>
+
+          <section className="world-resource-tree">
+            {resourceTree.map((group) => (
+              <details key={group.title} open>
+                <summary>{group.title}</summary>
+                {group.items.map((item) => <button key={item}>{item}</button>)}
+              </details>
+            ))}
+            {tomeLibrary && (
+              <div className="world-tome-source">
+                <strong>Fuente tomos Fallout 4</strong>
+                <small>TOMO 01-10 integrados como fichas jugables para mapa/campana.</small>
+              </div>
+            )}
+          </section>
+
+          <section className="world-map-list-panel">
+            <strong><Route size={15} /> Mapas</strong>
           {maps.map((map) => (
             <button
               key={map.id}
@@ -480,6 +579,7 @@ export function MapEditor({ game, onChange, onBack }: Props) {
               <span><strong>{map.name}</strong><small>{map.width}x{map.height} tiles</small></span>
             </button>
           ))}
+          </section>
           <div className="map-format-note">
             <strong>Formato tactico 2D</strong>
             <small>Tiles, terreno, coste de movimiento y marcadores para combate tactico.</small>
