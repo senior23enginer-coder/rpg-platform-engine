@@ -1,0 +1,102 @@
+{
+  "id": "fallout4-2d20-core-library",
+  "gameId": "fallout4",
+  "title": "Biblioteca Fallout 4 2d20",
+  "version": "Iteraciones 5.1 / 5.6 / 6.3",
+  "usage": "Fuente principal de reglas de Fallout 4 y base mecanica reusable para otros juegos de la plataforma.",
+  "sharedMechanics": [
+    "2d20",
+    "acciones por AP",
+    "combate tactico por nodos",
+    "exploracion",
+    "inventario",
+    "clima",
+    "dia y noche",
+    "supervivencia",
+    "facciones",
+    "misiones",
+    "asentamientos"
+  ],
+  "books": [
+    {
+      "id": "tomo-01",
+      "number": 1,
+      "title": "Reglas core",
+      "category": "core",
+      "summary": "Base jugable: personajes, SPECIAL, AP, nodos, combate, inventario, equipo, clima, IA y minicampana.",
+      "path": "tomo-01-reglas-core.txt"
+    },
+    {
+      "id": "tomo-02",
+      "number": 2,
+      "title": "Misiones, campana y contratos",
+      "category": "missions",
+      "summary": "Campana, misiones secundarias, facciones, contratos libres, decisiones y consecuencias.",
+      "path": "tomo-02-misiones.txt"
+    },
+    {
+      "id": "tomo-03",
+      "number": 3,
+      "title": "Bestiario, NPCs, companeros e IA",
+      "category": "actors",
+      "summary": "Enemigos, criaturas, NPC, companeros, conducta tactica y fichas operativas.",
+      "path": "tomo-03-bestiario-npcs-ia.txt"
+    },
+    {
+      "id": "tomo-04",
+      "number": 4,
+      "title": "Armas, municion y mods",
+      "category": "equipment",
+      "summary": "Armas completas, municion, modificaciones, variantes y valores extendidos.",
+      "path": "tomo-04-armas-municion-mods.txt"
+    },
+    {
+      "id": "tomo-05",
+      "number": 5,
+      "title": "Armaduras, equipo y servoarmadura",
+      "category": "equipment",
+      "summary": "Armaduras, ropa, equipo, servoarmaduras, piezas y proteccion.",
+      "path": "tomo-05-armaduras-equipo-servoarmadura.txt"
+    },
+    {
+      "id": "tomo-06",
+      "number": 6,
+      "title": "Atlas de ubicaciones, biomas y mapas",
+      "category": "atlas",
+      "summary": "Ubicaciones, rutas, submapas, biomas, clima, ciclos, lectura tactica y atlas del mundo.",
+      "path": "tomo-06-atlas-ubicaciones-clima.txt"
+    },
+    {
+      "id": "tomo-07",
+      "number": 7,
+      "title": "Asentamientos, produccion y economia",
+      "category": "settlements",
+      "summary": "Asentamientos avanzados, produccion, defensa, economia local y gestion.",
+      "path": "tomo-07-asentamientos-economia.txt"
+    },
+    {
+      "id": "tomo-08",
+      "number": 8,
+      "title": "Facciones, reputacion y politica",
+      "category": "factions",
+      "summary": "Facciones, reputacion, relaciones politicas, consecuencias y control territorial.",
+      "path": "tomo-08-facciones-reputacion.txt"
+    },
+    {
+      "id": "tomo-09",
+      "number": 9,
+      "title": "Coleccionables y objetos unicos",
+      "category": "loot",
+      "summary": "Coleccionables, notas, holocintas, llaves, objetos unicos y recompensas especiales.",
+      "path": "tomo-09-coleccionables-objetos-unicos.txt"
+    },
+    {
+      "id": "tomo-10",
+      "number": 10,
+      "title": "Supervivencia, clima y ciclos",
+      "category": "survival",
+      "summary": "Hambre, sed, sueno, enfermedad, desgaste, campamento, clima severo, dia/noche y ciclos.",
+      "path": "tomo-10-supervivencia-clima-ciclos.txt"
+    }
+  ]
+}

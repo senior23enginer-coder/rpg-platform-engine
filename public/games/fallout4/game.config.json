@@ -36,6 +36,13 @@
   },
   "characterSheet": "characters/characters.json",
   "rules": "rules/rules.json",
+  "rulesLibrary": "rules/tomes/tomes.manifest.json",
+  "businessRules": "rules/integrated/business-rules.json",
+  "sourceMap": "rules/integrated/source-map.json",
+  "baseMechanics": {
+    "source": "fallout4-2d20-core-library",
+    "description": "Estos tomos son la base mecanica de Fallout 4 y sirven como plantilla comun para otros juegos 2d20 de la plataforma."
+  },
   "maxPlayers": 4,
   "playerOptions": [
     {

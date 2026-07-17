@@ -64,6 +64,9 @@ export type GameMap = {
   background?: string;
   backgroundMode?: "none" | "image";
   backgroundSourceName?: string;
+  gridOpacity?: number;
+  terrainOpacity?: number;
+  markerScale?: number;
   nodes: GameMapNode[];
   tiles?: Array<{
     x: number;
@@ -181,6 +184,13 @@ export type GameConfig = {
   };
   characterSheet?: string;
   rules?: string;
+  rulesLibrary?: string;
+  businessRules?: string;
+  sourceMap?: string;
+  baseMechanics?: {
+    source: string;
+    description?: string;
+  };
   templates?: string;
   newGame?: string;
   maps?: GameMap[];

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Bell, CalendarClock, CheckCircle2, Clock3, Filter, Plus, Search, Send, Smartphone, Trash2, Zap } from "lucide-react";
+import { Archive, Bell, CalendarClock, CheckCircle2, Clock3, Eye, Filter, Plus, Search, Send, Smartphone, Trash2, Zap } from "lucide-react";
 import type { AppNotificationEntry } from "../lib/appMetadataStorage";
 import type { GameConfig } from "../types/game";
 
@@ -21,7 +21,9 @@ function createNotification(gameId?: string): AppNotificationEntry {
     channel: "system",
     priority: "normal",
     status: "draft",
-    target: "all",
+    target: "platform",
+    targetGroup: "",
+    targetUserId: "",
     gameId,
     actionLabel: "Abrir",
     actionUrl: "",
@@ -49,34 +51,34 @@ function isActive(entry: AppNotificationEntry) {
 }
 
 export function NotificationEditor({ notifications, games, onChange }: Props) {
+  const activeGames = games.filter((game) => game.enabled !== false);
   const [selectedId, setSelectedId] = useState(notifications[0]?.id ?? "");
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<NotificationStatus | "all">("all");
   const [platformFilter, setPlatformFilter] = useState<AppNotificationEntry["platform"] | "all">("all");
+  const [detailOpen, setDetailOpen] = useState(false);
   const selected = notifications.find((entry) => entry.id === selectedId) ?? notifications[0];
+  const locked = selected ? selected.status === "sent" || selected.status === "archived" : false;
 
-  const sorted = useMemo(
-    () =>
-      [...notifications].sort(
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return [...notifications]
+      .sort(
         (left, right) =>
           new Date(right.sentAt ?? right.scheduledAt ?? right.createdAt).getTime() -
           new Date(left.sentAt ?? left.scheduledAt ?? left.createdAt).getTime()
-      ),
-    [notifications]
-  );
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return sorted.filter((entry) => {
-      const matchesStatus = statusFilter === "all" || entry.status === statusFilter;
-      const matchesPlatform = platformFilter === "all" || entry.platform === platformFilter;
-      const matchesQuery =
-        !query ||
-        [entry.title, entry.message, entry.channel, entry.target, entry.gameId]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(query));
-      return matchesStatus && matchesPlatform && matchesQuery;
-    });
-  }, [platformFilter, search, sorted, statusFilter]);
+      )
+      .filter((entry) => {
+        const matchesStatus = statusFilter === "all" || entry.status === statusFilter;
+        const matchesPlatform = platformFilter === "all" || entry.platform === platformFilter;
+        const matchesQuery =
+          !query ||
+          [entry.title, entry.message, entry.channel, entry.target, entry.gameId]
+            .filter(Boolean)
+            .some((value) => String(value).toLowerCase().includes(query));
+        return matchesStatus && matchesPlatform && matchesQuery;
+      });
+  }, [notifications, platformFilter, search, statusFilter]);
 
   const stats = useMemo(
     () =>
@@ -92,43 +94,48 @@ export function NotificationEditor({ notifications, games, onChange }: Props) {
   );
 
   function updateNotification(id: string, patch: Partial<AppNotificationEntry>) {
-    onChange(
-      notifications.map((entry) =>
-        entry.id === id ? { ...entry, ...patch, updatedAt: new Date().toISOString() } : entry
-      )
-    );
+    if (locked) return;
+    onChange(notifications.map((entry) => (entry.id === id ? { ...entry, ...patch, updatedAt: new Date().toISOString() } : entry)));
   }
 
   function addNotification() {
-    const next = createNotification(games[0]?.id);
+    const next = createNotification(activeGames[0]?.id);
     onChange([next, ...notifications]);
     setSelectedId(next.id);
+    setDetailOpen(true);
   }
 
   function deleteNotification(id: string) {
     const next = notifications.filter((entry) => entry.id !== id);
     onChange(next);
     setSelectedId(next[0]?.id ?? "");
+    setDetailOpen(false);
   }
 
   function setStatus(status: NotificationStatus) {
     if (!selected) return;
     const now = new Date().toISOString();
-    updateNotification(selected.id, {
-      status,
-      sentAt: status === "sent" ? now : selected.sentAt,
-      scheduledAt: status === "scheduled" ? selected.scheduledAt || now : selected.scheduledAt,
-    });
+    onChange(notifications.map((entry) =>
+      entry.id === selected.id
+        ? {
+            ...entry,
+            status,
+            sentAt: status === "sent" ? now : entry.sentAt,
+            scheduledAt: status === "scheduled" ? entry.scheduledAt || now : entry.scheduledAt,
+            updatedAt: now,
+          }
+        : entry
+    ));
   }
 
   return (
-    <article className="admin-card notification-editor">
+    <article className="admin-card admin-data-manager notification-editor">
       <div className="admin-panel-title notification-heading">
         <div>
           <strong><Bell size={18} /> Notificaciones Android/iPhone</strong>
-          <p>Programa avisos, segmenta destinatarios y revisa la vista previa movil antes de enviar.</p>
+          <p>Gestiona avisos, filtros, programacion, envio, borrador, archivo y eliminacion.</p>
         </div>
-        <button className="green-button" onClick={addNotification}><Plus size={15} /> Notificacion</button>
+        <button className="green-button" onClick={addNotification}><Plus size={15} /> Crear notificacion</button>
       </div>
 
       <div className="notification-stats">
@@ -138,11 +145,8 @@ export function NotificationEditor({ notifications, games, onChange }: Props) {
         <span><CheckCircle2 size={18} /><strong>{stats.archived}</strong><small>Archivadas</small></span>
       </div>
 
-      <div className="notification-toolbar">
-        <label>
-          <Search size={17} />
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar titulo, mensaje, canal o juego" />
-        </label>
+      <div className="admin-data-toolbar">
+        <label><Search size={17} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar titulo, mensaje, canal o juego" /></label>
         <label>
           <Filter size={17} />
           <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value as NotificationStatus | "all")}>
@@ -164,82 +168,99 @@ export function NotificationEditor({ notifications, games, onChange }: Props) {
         </label>
       </div>
 
-      <div className="notification-layout">
-        <aside className="notification-list">
-          <small>{filtered.length} resultados</small>
-          {filtered.map((entry) => (
-            <button key={entry.id} className={entry.id === selected?.id ? "selected" : ""} onClick={() => setSelectedId(entry.id)}>
-              <Bell size={16} />
-              <span><strong>{entry.title}</strong><small>{entry.platform} - {entry.status} - {entry.target}</small></span>
-            </button>
-          ))}
-          {filtered.length === 0 && <div className="notification-empty-mini">Sin resultados</div>}
-        </aside>
+      <div className={`admin-data-layout ${detailOpen ? "detail-open" : ""}`}>
+        <section className="admin-table-wrap">
+          <table className="admin-data-table">
+            <thead>
+              <tr>
+                <th>Titulo</th>
+                <th>Plataforma</th>
+                <th>Destino</th>
+                <th>Estado</th>
+                <th>Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((entry) => (
+                <tr key={entry.id} className={entry.id === selected?.id ? "selected" : ""}>
+                  <td><strong>{entry.title}</strong><small>{entry.message}</small></td>
+                  <td>{entry.platform}</td>
+                  <td>{entry.target === "group" ? entry.targetGroup || "grupo" : entry.target === "user" ? entry.targetUserId || "usuario" : entry.target}</td>
+                  <td><span className={`admin-status-pill status-${entry.status}`}>{entry.status}</span></td>
+                  <td><button onClick={() => { setSelectedId(entry.id); setDetailOpen(true); }}><Eye size={15} /> Ver</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {filtered.length === 0 && <div className="admin-empty-state"><Search size={20} /><strong>Sin notificaciones</strong><span>Cambia los filtros o crea una notificacion.</span></div>}
+        </section>
 
-        {selected ? (
-          <>
-            <div className="notification-form">
-              <div className="notification-selected-summary">
-                <span><strong>{selected.status}</strong><small>Estado</small></span>
-                <span><strong>{selected.priority}</strong><small>Prioridad</small></span>
-                <span><strong>{selected.platform}</strong><small>Plataforma</small></span>
-              </div>
+        {selected && detailOpen ? (
+          <aside className="admin-detail-panel notification-detail-grid">
+            <div className="notification-action-row">
+              <button className={selected.status === "draft" ? "selected" : ""} onClick={() => setStatus("draft")}>Borrador</button>
+              <button className={selected.status === "scheduled" ? "selected" : ""} onClick={() => setStatus("scheduled")}><CalendarClock size={15} /> Programar</button>
+              <button className={selected.status === "sent" ? "selected" : ""} onClick={() => setStatus("sent")}><Send size={15} /> Enviar</button>
+              <button className={selected.status === "archived" ? "selected" : ""} onClick={() => setStatus("archived")}><Archive size={15} /> Archivar</button>
+              <button className="danger-button" onClick={() => deleteNotification(selected.id)}><Trash2 size={15} /> Eliminar</button>
+            </div>
+            {locked && <span className="admin-lock-note">Esta notificacion ya fue enviada o archivada. Solo puedes cambiar estado o eliminarla.</span>}
 
-              <div className="notification-action-row">
-                <button className={selected.status === "draft" ? "selected" : ""} onClick={() => setStatus("draft")}>Borrador</button>
-                <button className={selected.status === "scheduled" ? "selected" : ""} onClick={() => setStatus("scheduled")}><CalendarClock size={15} /> Programar</button>
-                <button className={selected.status === "sent" ? "selected" : ""} onClick={() => setStatus("sent")}><Send size={15} /> Enviar</button>
-                <button className={selected.status === "archived" ? "selected" : ""} onClick={() => setStatus("archived")}>Archivar</button>
-                <button className="danger-button" onClick={() => deleteNotification(selected.id)}><Trash2 size={15} /> Eliminar</button>
-              </div>
-
+            <div className="notification-grid">
+              <label><span>Plataforma</span>
+                <select disabled={locked} value={selected.platform} onChange={(event) => updateNotification(selected.id, { platform: event.target.value as AppNotificationEntry["platform"] })}>
+                  <option value="both">Android + iPhone</option>
+                  <option value="android">Android</option>
+                  <option value="ios">iPhone</option>
+                </select>
+              </label>
+              <label><span>Canal</span>
+                <select disabled={locked} value={selected.channel} onChange={(event) => updateNotification(selected.id, { channel: event.target.value as AppNotificationEntry["channel"] })}>
+                  <option value="system">Sistema</option>
+                  <option value="news">Noticias</option>
+                  <option value="game">Juego</option>
+                  <option value="security">Seguridad</option>
+                  <option value="event">Evento</option>
+                </select>
+              </label>
+              <label><span>Prioridad</span>
+                <select disabled={locked} value={selected.priority} onChange={(event) => updateNotification(selected.id, { priority: event.target.value as AppNotificationEntry["priority"] })}>
+                  <option value="low">Baja</option>
+                  <option value="normal">Normal</option>
+                  <option value="high">Alta</option>
+                </select>
+              </label>
+              <label><span>Destino</span>
+                <select disabled={locked} value={selected.target} onChange={(event) => updateNotification(selected.id, { target: event.target.value as AppNotificationEntry["target"] })}>
+                  <option value="platform">Toda la plataforma</option>
+                  <option value="all">Todos los usuarios</option>
+                  <option value="users">Tipo usuario normal</option>
+                  <option value="admins">Tipo administrador</option>
+                  <option value="group">Grupo especifico</option>
+                  <option value="user">Usuario especifico</option>
+                </select>
+              </label>
+            </div>
+            {(selected.target === "group" || selected.target === "user") && (
               <div className="notification-grid">
-                <label><span>Plataforma</span>
-                  <select value={selected.platform} onChange={(event) => updateNotification(selected.id, { platform: event.target.value as AppNotificationEntry["platform"] })}>
-                    <option value="both">Android + iPhone</option>
-                    <option value="android">Android</option>
-                    <option value="ios">iPhone</option>
-                  </select>
-                </label>
-                <label><span>Canal</span>
-                  <select value={selected.channel} onChange={(event) => updateNotification(selected.id, { channel: event.target.value as AppNotificationEntry["channel"] })}>
-                    <option value="system">Sistema</option>
-                    <option value="news">Noticias</option>
-                    <option value="game">Juego</option>
-                    <option value="security">Seguridad</option>
-                    <option value="event">Evento</option>
-                  </select>
-                </label>
-                <label><span>Prioridad</span>
-                  <select value={selected.priority} onChange={(event) => updateNotification(selected.id, { priority: event.target.value as AppNotificationEntry["priority"] })}>
-                    <option value="low">Baja</option>
-                    <option value="normal">Normal</option>
-                    <option value="high">Alta</option>
-                  </select>
-                </label>
-                <label><span>Destino</span>
-                  <select value={selected.target} onChange={(event) => updateNotification(selected.id, { target: event.target.value as AppNotificationEntry["target"] })}>
-                    <option value="all">Todos</option>
-                    <option value="users">Usuarios</option>
-                    <option value="admins">Admins</option>
-                  </select>
-                </label>
+                <label><span>Grupo</span><input disabled={locked || selected.target !== "group"} value={selected.targetGroup ?? ""} onChange={(event) => updateNotification(selected.id, { targetGroup: event.target.value })} placeholder="operadores, beta, moderadores" /></label>
+                <label><span>ID usuario</span><input disabled={locked || selected.target !== "user"} value={selected.targetUserId ?? ""} onChange={(event) => updateNotification(selected.id, { targetUserId: event.target.value })} placeholder="admin-local" /></label>
               </div>
+            )}
 
-              <label><span>Titulo</span><input value={selected.title} onChange={(event) => updateNotification(selected.id, { title: event.target.value })} /></label>
-              <label><span>Mensaje</span><textarea value={selected.message} onChange={(event) => updateNotification(selected.id, { message: event.target.value })} /></label>
+            <label><span>Titulo</span><input disabled={locked} value={selected.title} onChange={(event) => updateNotification(selected.id, { title: event.target.value })} /></label>
+            <label><span>Mensaje</span><textarea disabled={locked} value={selected.message} onChange={(event) => updateNotification(selected.id, { message: event.target.value })} /></label>
 
-              <div className="notification-grid">
-                <label><span>Juego</span>
-                  <select value={selected.gameId ?? ""} onChange={(event) => updateNotification(selected.id, { gameId: event.target.value || undefined })}>
-                    <option value="">Plataforma</option>
-                    {games.map((game) => <option key={game.id} value={game.id}>{game.name}</option>)}
-                  </select>
-                </label>
-                <label><span>Programada</span><input type="datetime-local" value={toDateTimeInput(selected.scheduledAt)} onChange={(event) => updateNotification(selected.id, { scheduledAt: fromDateTimeInput(event.target.value), status: "scheduled" })} /></label>
-                <label><span>Boton</span><input value={selected.actionLabel ?? ""} onChange={(event) => updateNotification(selected.id, { actionLabel: event.target.value })} /></label>
-                <label><span>URL/accion</span><input value={selected.actionUrl ?? ""} onChange={(event) => updateNotification(selected.id, { actionUrl: event.target.value })} /></label>
-              </div>
+            <div className="notification-grid">
+              <label><span>Juego activo</span>
+                <select disabled={locked} value={selected.gameId ?? ""} onChange={(event) => updateNotification(selected.id, { gameId: event.target.value || undefined })}>
+                  <option value="">Plataforma</option>
+                  {activeGames.map((game) => <option key={game.id} value={game.id}>{game.name}</option>)}
+                </select>
+              </label>
+              <label><span>Programada</span><input disabled={locked} type="datetime-local" value={toDateTimeInput(selected.scheduledAt)} onChange={(event) => updateNotification(selected.id, { scheduledAt: fromDateTimeInput(event.target.value), status: "scheduled" })} /></label>
+              <label><span>Boton</span><input disabled={locked} value={selected.actionLabel ?? ""} onChange={(event) => updateNotification(selected.id, { actionLabel: event.target.value })} /></label>
+              <label><span>URL/accion</span><input disabled={locked} value={selected.actionUrl ?? ""} onChange={(event) => updateNotification(selected.id, { actionUrl: event.target.value })} /></label>
             </div>
 
             <aside className="notification-preview-stack">
@@ -259,7 +280,7 @@ export function NotificationEditor({ notifications, games, onChange }: Props) {
                 </section>
               </div>
             </aside>
-          </>
+          </aside>
         ) : (
           <div className="news-empty">
             <Bell size={34} />

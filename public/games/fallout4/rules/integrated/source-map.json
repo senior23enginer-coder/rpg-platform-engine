@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-07-17T04:28:58.000Z",
+  "sourceMap": [
+    {
+      "tomeId": "tomo-01",
+      "number": 1,
+      "domain": "core",
+      "sourcePath": "rules/tomes/tomo-01-reglas-core.txt",
+      "indexedHeadings": 27,
+      "indexedTables": 621,
+      "runtimeTargets": [
+        "rules/rules.json",
+        "characters/characters.json",
+        "setup/new-game.config.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-02",
+      "number": 2,
+      "domain": "missions",
+      "sourcePath": "rules/tomes/tomo-02-misiones.txt",
+      "indexedHeadings": 448,
+      "indexedTables": 9626,
+      "runtimeTargets": [
+        "missions/missions.json",
+        "missions/mission-details.json",
+        "missions/mission-polish.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-03",
+      "number": 3,
+      "domain": "actors",
+      "sourcePath": "rules/tomes/tomo-03-bestiario-npcs-ia.txt",
+      "indexedHeadings": 4101,
+      "indexedTables": 212,
+      "runtimeTargets": [
+        "bestiary/bestiary.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-04",
+      "number": 4,
+      "domain": "weapons",
+      "sourcePath": "rules/tomes/tomo-04-armas-municion-mods.txt",
+      "indexedHeadings": 1268,
+      "indexedTables": 409,
+      "runtimeTargets": [
+        "templates/templates.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-05",
+      "number": 5,
+      "domain": "equipment",
+      "sourcePath": "rules/tomes/tomo-05-armaduras-equipo-servoarmadura.txt",
+      "indexedHeadings": 900,
+      "indexedTables": 174,
+      "runtimeTargets": [
+        "templates/templates.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-06",
+      "number": 6,
+      "domain": "atlas",
+      "sourcePath": "rules/tomes/tomo-06-atlas-ubicaciones-clima.txt",
+      "indexedHeadings": 619,
+      "indexedTables": 17268,
+      "runtimeTargets": [
+        "locations/location-events.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-07",
+      "number": 7,
+      "domain": "settlements",
+      "sourcePath": "rules/tomes/tomo-07-asentamientos-economia.txt",
+      "indexedHeadings": 90,
+      "indexedTables": 218,
+      "runtimeTargets": [
+        "features/asentamientos/config.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-08",
+      "number": 8,
+      "domain": "factions",
+      "sourcePath": "rules/tomes/tomo-08-facciones-reputacion.txt",
+      "indexedHeadings": 47,
+      "indexedTables": 117,
+      "runtimeTargets": [
+        "features/facciones/config.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-09",
+      "number": 9,
+      "domain": "collectibles",
+      "sourcePath": "rules/tomes/tomo-09-coleccionables-objetos-unicos.txt",
+      "indexedHeadings": 22,
+      "indexedTables": 796,
+      "runtimeTargets": [
+        "locations/location-events.json",
+        "templates/templates.json"
+      ]
+    },
+    {
+      "tomeId": "tomo-10",
+      "number": 10,
+      "domain": "survival",
+      "sourcePath": "rules/tomes/tomo-10-supervivencia-clima-ciclos.txt",
+      "indexedHeadings": 222,
+      "indexedTables": 3765,
+      "runtimeTargets": [
+        "features/supervivencia/config.json",
+        "rules/rules.json"
+      ]
+    }
+  ]
+}

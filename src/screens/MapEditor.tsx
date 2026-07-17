@@ -1,10 +1,11 @@
 import { useState, type CSSProperties } from "react";
-import { Eraser, Flag, Grid3X3, Image as ImageIcon, Map as MapIcon, Plus, Route, Swords, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, Eraser, Eye, Flag, Grid3X3, Image as ImageIcon, Map as MapIcon, Plus, Route, SlidersHorizontal, Swords, Trash2, Upload } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
 
 type Props = {
   game: GameConfig;
   onChange: (maps: GameMap[]) => void;
+  onBack?: () => void;
 };
 
 const terrainPalette: Array<{ type: TacticalTerrainType; label: string; move: string }> = [
@@ -27,6 +28,10 @@ const markerPalette: Array<{ type: TacticalMarkerType; label: string }> = [
 ];
 
 type ToolMode = "terrain" | "marker" | "erase";
+type MapEditorView = "list" | "editor";
+
+const maxImportedImageSide = 2048;
+const maxImportedTiles = 48;
 
 function slugify(value: string) {
   return value
@@ -57,6 +62,9 @@ function createDefaultMap(game: GameConfig, index: number): GameMap {
     height,
     tileSize: 48,
     backgroundMode: "none",
+    gridOpacity: 0.55,
+    terrainOpacity: 0.38,
+    markerScale: 1,
     nodes: [],
     tiles: createTiles(width, height),
     markers: [
@@ -78,6 +86,9 @@ function normalizeTacticalMap(map: GameMap): GameMap {
     background: map.background ?? "",
     backgroundMode: map.backgroundMode ?? (map.background ? "image" : "none"),
     backgroundSourceName: map.backgroundSourceName,
+    gridOpacity: map.gridOpacity ?? 0.55,
+    terrainOpacity: map.terrainOpacity ?? 0.38,
+    markerScale: map.markerScale ?? 1,
     nodes: map.nodes ?? [],
     tiles: createTiles(width, height).map((tile) => ({
       ...tile,
@@ -91,9 +102,10 @@ function ensureMaps(game: GameConfig) {
   return game.maps?.length ? game.maps.map(normalizeTacticalMap) : [createDefaultMap(game, 0)];
 }
 
-export function MapEditor({ game, onChange }: Props) {
+export function MapEditor({ game, onChange, onBack }: Props) {
   const maps = ensureMaps(game);
   const [activeMapId, setActiveMapId] = useState(maps[0]?.id ?? "");
+  const [view, setView] = useState<MapEditorView>("list");
   const activeMap = maps.find((map) => map.id === activeMapId) ?? maps[0];
   const [toolMode, setToolMode] = useState<ToolMode>("terrain");
   const [terrain, setTerrain] = useState<TacticalTerrainType>("plain");
@@ -114,6 +126,7 @@ export function MapEditor({ game, onChange }: Props) {
     emit([next, ...maps]);
     setActiveMapId(next.id);
     setSelectedMarkerId(next.markers?.[0]?.id ?? "");
+    setView("editor");
   }
 
   function resizeMap(width: number, height: number) {
@@ -138,8 +151,8 @@ export function MapEditor({ game, onChange }: Props) {
     const image = new window.Image();
     image.onload = () => {
       const tileSize = Math.max(16, activeMap.tileSize ?? 48);
-      const width = Math.max(4, Math.round(image.naturalWidth / tileSize));
-      const height = Math.max(4, Math.round(image.naturalHeight / tileSize));
+      const width = Math.min(maxImportedTiles, Math.max(4, Math.round(image.naturalWidth / tileSize)));
+      const height = Math.min(maxImportedTiles, Math.max(4, Math.round(image.naturalHeight / tileSize)));
       updateMap(activeMap.id, {
         background: source,
         backgroundMode: "image",
@@ -150,28 +163,54 @@ export function MapEditor({ game, onChange }: Props) {
         markers: (activeMap.markers ?? []).filter((marker) => marker.x < width && marker.y < height),
       });
     };
+    image.onerror = () => window.alert("No se pudo cargar la imagen. Usa PNG/JPG/WebP valido o una ruta publica accesible.");
     image.src = source;
   }
 
-  function loadImageFile(file?: File) {
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const source = typeof reader.result === "string" ? reader.result : "";
-      if (source) decomposeImage(source, file.name);
-    };
-    reader.readAsDataURL(file);
+  function optimizeImageFile(file: File) {
+    return new Promise<{ source: string; name: string }>((resolve, reject) => {
+      if (file.size > 12 * 1024 * 1024) {
+        reject(new Error("La imagen es demasiado pesada. Usa una imagen menor a 12 MB."));
+        return;
+      }
+
+      const objectUrl = URL.createObjectURL(file);
+      const image = new window.Image();
+      image.onload = () => {
+        try {
+          const scale = Math.min(1, maxImportedImageSide / Math.max(image.naturalWidth, image.naturalHeight));
+          const width = Math.max(1, Math.round(image.naturalWidth * scale));
+          const height = Math.max(1, Math.round(image.naturalHeight * scale));
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const context = canvas.getContext("2d");
+          if (!context) throw new Error("Canvas no disponible.");
+          context.drawImage(image, 0, 0, width, height);
+          const source = canvas.toDataURL("image/webp", 0.78);
+          URL.revokeObjectURL(objectUrl);
+          resolve({ source, name: `${file.name} (${width}x${height})` });
+        } catch (error) {
+          URL.revokeObjectURL(objectUrl);
+          reject(error);
+        }
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("No se pudo leer la imagen."));
+      };
+      image.src = objectUrl;
+    });
   }
 
-  function tileImageStyle(x: number, y: number) {
-    if (!activeMap.background || activeMap.backgroundMode !== "image") return undefined;
-    const xPosition = activeMap.width <= 1 ? 0 : (x / (activeMap.width - 1)) * 100;
-    const yPosition = activeMap.height <= 1 ? 0 : (y / (activeMap.height - 1)) * 100;
-    return {
-      "--tile-image": `url("${activeMap.background}")`,
-      "--tile-bg-size": `${activeMap.width * 100}% ${activeMap.height * 100}%`,
-      "--tile-bg-position": `${xPosition}% ${yPosition}%`,
-    } as CSSProperties;
+  async function loadImageFile(file?: File) {
+    if (!file) return;
+    try {
+      const optimized = await optimizeImageFile(file);
+      decomposeImage(optimized.source, optimized.name);
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : "No se pudo cargar la imagen.");
+    }
   }
 
   function paintCell(x: number, y: number) {
@@ -225,11 +264,60 @@ export function MapEditor({ game, onChange }: Props) {
     setSelectedMarkerId(markers[0]?.id ?? "");
   }
 
+  if (view === "list") {
+    return (
+      <article className="admin-card map-editor map-manager-screen">
+        <div className="admin-panel-title">
+          <div>
+            <strong><MapIcon size={18} /> Mapas de {game.name}</strong>
+            <p>Lista mapas existentes, crea nuevos mapas y abre el editor tactico en una pantalla aparte.</p>
+          </div>
+          <div className="map-manager-actions">
+            {onBack && <button onClick={onBack}><ArrowLeft size={15} /> Juegos</button>}
+            <button className="green-button" onClick={addMap}><Plus size={15} /> Crear mapa</button>
+          </div>
+        </div>
+
+        <section className="admin-table-wrap">
+          <table className="admin-data-table">
+            <thead>
+              <tr>
+                <th>Mapa</th>
+                <th>Tamano</th>
+                <th>Imagen</th>
+                <th>Marcadores</th>
+                <th>Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {maps.map((map) => (
+                <tr key={map.id} className={map.id === activeMap.id ? "selected" : ""}>
+                  <td><strong>{map.name}</strong><small>{map.id}</small></td>
+                  <td>{map.width} x {map.height}</td>
+                  <td>{map.background ? map.backgroundSourceName || "Imagen cargada" : "Sin imagen"}</td>
+                  <td>{map.markers?.length ?? 0}</td>
+                  <td>
+                    <button onClick={() => { setActiveMapId(map.id); setSelectedMarkerId(map.markers?.[0]?.id ?? ""); setView("editor"); }}>
+                      <Eye size={15} /> Abrir editor
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </article>
+    );
+  }
+
   return (
     <article className="admin-card map-editor tactical-map-editor">
       <div className="admin-panel-title">
-        <strong><MapIcon size={18} /> Editor tactico 2D</strong>
-        <button onClick={addMap}><Plus size={15} /> Mapa</button>
+        <strong><MapIcon size={18} /> Editor tactico 2D - {activeMap.name}</strong>
+        <div className="map-manager-actions">
+          <button onClick={() => setView("list")}><ArrowLeft size={15} /> Lista de mapas</button>
+          <button onClick={addMap}><Plus size={15} /> Mapa</button>
+        </div>
       </div>
 
       <div className="map-editor-layout tactical-layout">
@@ -260,6 +348,13 @@ export function MapEditor({ game, onChange }: Props) {
             <label><span>Ancho tiles</span><input type="number" min={4} max={40} value={activeMap.width} onChange={(event) => resizeMap(Number(event.target.value) || activeMap.width, activeMap.height)} /></label>
             <label><span>Alto tiles</span><input type="number" min={4} max={30} value={activeMap.height} onChange={(event) => resizeMap(activeMap.width, Number(event.target.value) || activeMap.height)} /></label>
           </div>
+
+          <section className="map-personalization">
+            <strong><SlidersHorizontal size={16} /> Personalizacion visual</strong>
+            <label><span>Opacidad grilla</span><input type="range" min={0} max={1} step={0.05} value={activeMap.gridOpacity ?? 0.55} onChange={(event) => updateMap(activeMap.id, { gridOpacity: Number(event.target.value) })} /></label>
+            <label><span>Opacidad terreno</span><input type="range" min={0} max={1} step={0.05} value={activeMap.terrainOpacity ?? 0.38} onChange={(event) => updateMap(activeMap.id, { terrainOpacity: Number(event.target.value) })} /></label>
+            <label><span>Tamano marcadores</span><input type="range" min={0.65} max={1.55} step={0.05} value={activeMap.markerScale ?? 1} onChange={(event) => updateMap(activeMap.id, { markerScale: Number(event.target.value) })} /></label>
+          </section>
 
           <section className="map-image-importer">
             <div>
@@ -296,7 +391,11 @@ export function MapEditor({ game, onChange }: Props) {
             style={{
               gridTemplateColumns: `repeat(${activeMap.width}, minmax(0, 1fr))`,
               aspectRatio: `${activeMap.width} / ${activeMap.height}`,
-            }}
+              "--map-image": activeMap.backgroundMode === "image" && activeMap.background ? `url("${activeMap.background}")` : "none",
+              "--grid-opacity": String(activeMap.gridOpacity ?? 0.55),
+              "--terrain-opacity": String(activeMap.terrainOpacity ?? 0.38),
+              "--marker-scale": String(activeMap.markerScale ?? 1),
+            } as CSSProperties}
           >
             {(activeMap.tiles ?? []).map((tile) => {
               const marker = (activeMap.markers ?? []).find((item) => item.x === tile.x && item.y === tile.y);
@@ -304,7 +403,6 @@ export function MapEditor({ game, onChange }: Props) {
                 <button
                   key={`${tile.x}-${tile.y}`}
                   className={`tactical-tile ${activeMap.backgroundMode === "image" && activeMap.background ? "image-backed" : `terrain-${tile.terrain}`} terrain-overlay-${tile.terrain} ${marker ? `has-marker marker-${marker.type}` : ""}`}
-                  style={tileImageStyle(tile.x, tile.y)}
                   onClick={() => paintCell(tile.x, tile.y)}
                   title={`${tile.x}, ${tile.y} - ${tile.terrain}`}
                 >

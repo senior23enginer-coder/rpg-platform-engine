@@ -3,7 +3,9 @@ import "./styles/app.css";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from "./components/TopBar";
 import { AdminScreen } from "./screens/AdminScreen";
+import { AdminPlatformSettings } from "./screens/AdminPlatformSettings";
 import { AuthScreen } from "./screens/AuthScreen";
+import { ChatScreen } from "./screens/ChatScreen";
 import { ContentScreen } from "./screens/ContentScreen";
 import { DiceScreen } from "./screens/DiceScreen";
 import { FilesScreen } from "./screens/FilesScreen";
@@ -15,11 +17,12 @@ import { NewGameScreen } from "./screens/NewGameScreen";
 import { ProfileScreen } from "./screens/ProfileScreen";
 import { RulesScreen } from "./screens/RulesScreen";
 import { SettingsScreen } from "./screens/SettingsScreen";
+import { SupportScreen } from "./screens/SupportScreen";
 import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig, GameJsonFile } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, PlayerSave, UserSettings } from "./types/profile";
 import { createActivity, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
-import type { AppNewsEntry, AppNotificationEntry } from "./lib/appMetadataStorage";
+import type { AppMetadata, AppNewsEntry, AppNotificationEntry } from "./lib/appMetadataStorage";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGameJsonFiles, loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { loadBundledUserProfiles } from "./lib/userLibrary";
@@ -47,8 +50,34 @@ import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
 const bundledGames = loadBundledGames();
 const loginFallout4MainTheme = "/games/fallout4/audio/sounds/fallout_4_soundtrack_score/01%20Fallout%204%20Main%20Theme.mp3";
-const adminScreens = ["admin", "adminGames", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
+const adminScreens = ["admin", "adminSettings", "adminSupport", "adminGames", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
 const disabledGamesKey = "rpg-platform.disabled-games.v1";
+const sessionScreenKey = "rpg-platform.session-screen.v1";
+const sessionDurationMs = 8 * 60 * 60 * 1000;
+const screens = [
+  "home",
+  "library",
+  "newGame",
+  "fallout4Campaign",
+  "load",
+  "dice",
+  "chat",
+  "support",
+  "settings",
+  "admin",
+  "adminSettings",
+  "adminSupport",
+  "adminGames",
+  "adminMaps",
+  "adminUsers",
+  "adminNotifications",
+  "adminNews",
+  "rules",
+  "files",
+  "content",
+  "profile",
+  "jsonEditor",
+] as const satisfies readonly Screen[];
 const Fallout4CampaignScreen = lazy(() =>
   import("./screens/Fallout4CampaignScreen").then((module) => ({ default: module.Fallout4CampaignScreen }))
 );
@@ -68,8 +97,35 @@ function enforceFixedUserRole(profile: PlayerProfile) {
   return profile;
 }
 
-function requireLogin(profile: PlayerProfile) {
-  return { ...enforceFixedUserRole(profile), signedIn: false };
+function isScreen(value: string): value is Screen {
+  return (screens as readonly string[]).includes(value);
+}
+
+function isSessionFresh(profile: PlayerProfile) {
+  if (!profile.signedIn) return false;
+  const sessionDate = profile.lastActivityAt ?? profile.lastLoginAt;
+  if (!sessionDate) return false;
+  const sessionTime = new Date(sessionDate).getTime();
+  return !Number.isNaN(sessionTime) && Date.now() - sessionTime < sessionDurationMs;
+}
+
+function restoreSession(profile: PlayerProfile) {
+  const enforcedProfile = enforceFixedUserRole(profile);
+  return isSessionFresh(enforcedProfile) ? enforcedProfile : { ...enforcedProfile, signedIn: false };
+}
+
+function loadSessionScreen() {
+  try {
+    const stored = window.localStorage.getItem(sessionScreenKey);
+    return stored && isScreen(stored) ? stored : "home";
+  } catch {
+    return "home";
+  }
+}
+
+function sanitizeScreenForProfile(nextScreen: Screen, profile: PlayerProfile) {
+  if (isAdminScreen(nextScreen) && profile.role !== "admin") return "home";
+  return nextScreen;
 }
 
 function isAdminScreen(screen: Screen) {
@@ -99,16 +155,18 @@ function applyDisabledGames(games: GameConfig[], disabledIds: string[]) {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>("home");
+  const [screen, setScreen] = useState<Screen>(() => loadSessionScreen());
   const [disabledGameIds, setDisabledGameIds] = useState<string[]>(() => loadDisabledGameIds());
   const [games, setGames] = useState<GameConfig[]>(() => applyDisabledGames(bundledGames, loadDisabledGameIds()));
   const [gameJsonFiles, setGameJsonFiles] = useState<GameJsonFile[]>(bundledGameJsonFiles);
-  const [profile, setProfile] = useState<PlayerProfile>(() => requireLogin(loadProfile(bundledGames)));
+  const [profile, setProfile] = useState<PlayerProfile>(() => restoreSession(loadProfile(bundledGames)));
   const [users, setUsers] = useState<PlayerProfile[]>(() => bundledUsers.map((user) => normalizeProfile(user, bundledGames)));
   const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
   const [storageReady, setStorageReady] = useState(false);
   const hasHydratedStorage = useRef(false);
+  const hasRefreshedSession = useRef(false);
+  const lastActivityScreen = useRef(screen);
 
   const visibleGames = profile.role === "admin" ? games : games.filter((game) => !disabledGameIds.includes(game.id));
   const activeGame = visibleGames.find((game) => game.id === profile.activeGameId) ?? visibleGames[0] ?? games[0];
@@ -150,11 +208,15 @@ export default function App() {
         } else if (normalizedProfile) {
           setUsers([normalizedProfile]);
         }
-        if (normalizedProfile) setProfile(requireLogin(normalizedProfile));
+        if (normalizedProfile) setProfile(restoreSession(normalizedProfile));
         if (nativeMetadata) setAppMetadata(normalizeMetadata(nativeMetadata));
       })
       .finally(() => setStorageReady(true));
   }, []);
+
+  useEffect(() => {
+    setScreen((currentScreen) => sanitizeScreenForProfile(currentScreen, profile));
+  }, [profile.role]);
 
   useEffect(() => {
     if (!storageReady) return;
@@ -166,6 +228,35 @@ export default function App() {
       return currentUsers.map((user, index) => (index === existingIndex ? normalizedProfile : user));
     });
   }, [profile, storageReady]);
+
+  useEffect(() => {
+    if (!storageReady || !profile.signedIn) return;
+    try {
+      window.localStorage.setItem(sessionScreenKey, sanitizeScreenForProfile(screen, profile));
+    } catch {
+      // Local storage can be unavailable in some native shells.
+    }
+  }, [profile, screen, storageReady]);
+
+  useEffect(() => {
+    if (!storageReady || !profile.signedIn || hasRefreshedSession.current) return;
+    hasRefreshedSession.current = true;
+    setProfile((current) => ({ ...current, lastActivityAt: new Date().toISOString() }));
+  }, [profile.signedIn, storageReady]);
+
+  useEffect(() => {
+    if (!profile.signedIn) return;
+    const interval = window.setInterval(() => {
+      setProfile((current) => (isSessionFresh(current) ? current : { ...current, signedIn: false }));
+    }, 60000);
+    return () => window.clearInterval(interval);
+  }, [profile.signedIn]);
+
+  useEffect(() => {
+    if (!storageReady || !profile.signedIn || lastActivityScreen.current === screen) return;
+    lastActivityScreen.current = screen;
+    setProfile((current) => ({ ...current, lastActivityAt: new Date().toISOString() }));
+  }, [profile.signedIn, screen, storageReady]);
 
   useEffect(() => {
     if (!storageReady) return;
@@ -301,8 +392,9 @@ export default function App() {
   }
 
   function accessUser(nextProfile: PlayerProfile) {
-    setProfile(enforceFixedUserRole(nextProfile));
-    setScreen("home");
+    const enforcedProfile = enforceFixedUserRole(nextProfile);
+    setProfile(enforcedProfile);
+    setScreen(enforcedProfile.role === "admin" ? "admin" : "home");
   }
 
   function loadSave(saveId: string) {
@@ -379,6 +471,12 @@ export default function App() {
 
   function signOut() {
     setProfile((current) => ({ ...current, signedIn: false, lastActivityAt: new Date().toISOString() }));
+    try {
+      window.localStorage.removeItem(sessionScreenKey);
+    } catch {
+      // Local storage can be unavailable in some native shells.
+    }
+    setScreen("home");
     trackActivity("Sesion cerrada");
   }
 
@@ -482,6 +580,22 @@ export default function App() {
     trackActivity("Notificaciones actualizadas");
   }
 
+  function updateSupportTickets(supportTickets: AppMetadata["supportTickets"]) {
+    setAppMetadata((current) => ({
+      ...current,
+      supportTickets,
+    }));
+    trackActivity("Soporte tecnico actualizado");
+  }
+
+  function updatePlatformMetadata(patch: Partial<AppMetadata>) {
+    setAppMetadata((current) => ({
+      ...current,
+      ...patch,
+    }));
+    trackActivity("Configuracion de plataforma actualizada");
+  }
+
   if (!profile.signedIn) {
     return (
       <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
@@ -491,6 +605,9 @@ export default function App() {
           users={users}
           games={games}
           news={visibleNews}
+          platformName={appMetadata.platformName}
+          appVersion={appMetadata.version}
+          releaseChannel={appMetadata.releaseChannel}
           onAccess={accessUser}
           onRegister={registerUser}
         />
@@ -504,16 +621,20 @@ export default function App() {
       <div className={`app-frame screen-${screen}`}>
         <TopBar
           profile={profile}
+          platformName={appMetadata.platformName}
+          appVersion={appMetadata.version}
           assetOverrides={profile.settings.assetOverrides}
           notifications={appMetadata.notifications}
           onProfile={() => setScreen("profile")}
-          onSettings={() => setScreen("settings")}
+          onSettings={() => setScreen(profile.role === "admin" ? "adminSettings" : "settings")}
         />
 
         <div className="app-body">
           <Sidebar
             active={screen}
             appVersion={appMetadata.version}
+            platformName={appMetadata.platformName}
+            releaseChannel={appMetadata.releaseChannel}
             assetOverrides={profile.settings.assetOverrides}
             isAdmin={profile.role === "admin"}
             language={profile.settings.language}
@@ -658,6 +779,31 @@ export default function App() {
           )}
 
           {screen === "dice" && <DiceScreen game={activeGame} />}
+          {screen === "chat" && (
+            <ChatScreen
+              profile={profile}
+              isAdmin={profile.role === "admin"}
+              defaultRelayUrl={appMetadata.chatRelayUrl}
+              defaultRoom={appMetadata.chatRoom}
+              onBack={() => setScreen("home")}
+            />
+          )}
+          {(screen === "support" || (screen === "adminSupport" && profile.role === "admin")) && (
+            <SupportScreen
+              profile={profile}
+              tickets={appMetadata.supportTickets}
+              isAdmin={profile.role === "admin"}
+              onChange={updateSupportTickets}
+              onBack={() => setScreen(profile.role === "admin" ? "admin" : "home")}
+            />
+          )}
+          {screen === "adminSettings" && profile.role === "admin" && (
+            <AdminPlatformSettings
+              metadata={appMetadata}
+              onChange={updatePlatformMetadata}
+              onBack={() => setScreen("admin")}
+            />
+          )}
           {screen === "settings" && (
             <SettingsScreen
               manifest={activeAudioManifest}
@@ -666,7 +812,7 @@ export default function App() {
               onBack={() => setScreen("home")}
             />
           )}
-          {isAdminScreen(screen) && profile.role === "admin" && (
+          {isAdminScreen(screen) && screen !== "adminSettings" && screen !== "adminSupport" && profile.role === "admin" && (
             <AdminScreen
               module={adminModuleForScreen(screen)}
               games={games}
@@ -675,7 +821,8 @@ export default function App() {
               activeUserId={profile.id}
               news={appMetadata.news}
               notifications={appMetadata.notifications}
-              onSelectGame={(gameId) => selectGame(gameId, "admin")}
+              supportTickets={appMetadata.supportTickets}
+              onSelectGame={(gameId) => selectGame(gameId, screen)}
               onUpdateGame={updateGame}
               onUpdateGames={updateGames}
               onAddGame={createNewGame}
@@ -700,7 +847,7 @@ export default function App() {
               onSelectRecommended={(gameId) => selectGame(gameId, "content")}
             />
           )}
-          {screen === "rules" && <RulesScreen onBack={() => setScreen("home")} />}
+          {screen === "rules" && <RulesScreen game={activeGame} onBack={() => setScreen("home")} />}
           {screen === "files" && (
             <FilesScreen
               games={games}

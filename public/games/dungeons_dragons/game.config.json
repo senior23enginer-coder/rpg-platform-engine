@@ -1,0 +1,78 @@
+{
+  "id": "dungeons_dragons",
+  "name": "Dungeons & Dragons",
+  "short": "D&D",
+  "description": "Fantasia heroica para campanas de exploracion, mazmorras, magia, facciones y combate tactico.",
+  "category": "RPG de fantasia",
+  "tags": ["dnd", "fantasy", "dungeons", "dragons", "magic", "party"],
+  "enabled": true,
+  "rulesLibrary": "/games/fallout4/rules/tomes/tomes.manifest.json",
+  "businessRules": "/games/fallout4/rules/integrated/business-rules.json",
+  "sourceMap": "/games/fallout4/rules/integrated/source-map.json",
+  "baseMechanics": {
+    "source": "fallout4-2d20-core-library",
+    "description": "Usa la biblioteca Fallout 4 2d20 como base de AP, nodos, exploracion, misiones y estructura tactica, adaptada a fantasia."
+  },
+  "maxPlayers": 6,
+  "modes": {
+    "free": true,
+    "survival": false
+  },
+  "playerOptions": [
+    { "value": 1, "label": "1 jugador", "mode": "Solitario" },
+    { "value": 2, "label": "2 jugadores", "mode": "Duo" },
+    { "value": 3, "label": "3 jugadores", "mode": "Grupo" },
+    { "value": 4, "label": "4 jugadores", "mode": "Grupo" }
+  ],
+  "assets": {
+    "hero": "/platform/wasteland-hero.png",
+    "generatedHero": "/platform/uiux-copied/rec-skyrim.png",
+    "homeHero": "/platform/uiux-copied/rec-skyrim.png",
+    "worldPreview": "/platform/uiux-copied/campaign-thumb.png",
+    "campaignImage": "/platform/uiux-copied/campaign-thumb.png",
+    "cover": "/platform/uiux-copied/rec-skyrim.png",
+    "diceCatalog": "/platform/uiux-copied/dice-set.png"
+  },
+  "campaigns": [
+    {
+      "id": "lost_mine",
+      "title": "La mina perdida",
+      "implemented": false,
+      "description": "Plantilla inicial para viajes, encuentros, mazmorras y decisiones de grupo.",
+      "simulation": {
+        "style": "guided",
+        "route": ["Taberna inicial", "Camino de escolta", "Emboscada", "Mazmorra", "Jefe final"],
+        "interface": "tactical"
+      }
+    }
+  ],
+  "maps": [
+    {
+      "id": "map_dnd_start",
+      "name": "Mapa - Campamento inicial",
+      "width": 16,
+      "height": 12,
+      "tileSize": 48,
+      "terrain": {},
+      "markers": [],
+      "nodes": []
+    }
+  ],
+  "newGameSetup": {
+    "labels": {
+      "defaultCharacterName": "Aventurero",
+      "species": "Heroe de fantasia",
+      "quote": "El dado decide, pero la mesa cuenta la historia.",
+      "system": "D20 tactico"
+    }
+  },
+  "content": {
+    "dlc": [],
+    "features": [
+      { "id": "classes", "name": "Clases", "description": "Guerrero, mago, clerigo, picaro y arquetipos.", "enabled": true },
+      { "id": "spells", "name": "Magia", "description": "Conjuros, espacios y efectos por nivel.", "enabled": true },
+      { "id": "dungeons", "name": "Mazmorras", "description": "Exploracion por salas, trampas y encuentros.", "enabled": true }
+    ],
+    "extras": []
+  }
+}

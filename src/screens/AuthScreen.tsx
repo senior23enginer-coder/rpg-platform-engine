@@ -4,15 +4,19 @@ import {
   Activity,
   AlertCircle,
   Box,
+  Check,
   CheckSquare,
   Cloud,
   Eye,
   Gamepad2,
   Github,
+  Headphones,
+  Square,
   Lock,
   LogIn,
   Mail,
   Monitor,
+  Send,
   Settings,
   User,
   UserPlus,
@@ -28,6 +32,9 @@ type Props = {
   users: PlayerProfile[];
   games: GameConfig[];
   news?: AppNewsEntry[];
+  platformName?: string;
+  appVersion?: string;
+  releaseChannel?: string;
   onAccess: (profile: PlayerProfile) => void;
   onRegister: (account: { email: string; username: string; password: string; role?: "user" | "admin" }) => void;
 };
@@ -109,7 +116,7 @@ function publicNews(items: NewsItem[]) {
     .sort((left, right) => new Date(right.publishedAt ?? right.date ?? 0).getTime() - new Date(left.publishedAt ?? left.date ?? 0).getTime());
 }
 
-export function AuthScreen({ profile, users, games, news = [], onAccess, onRegister }: Props) {
+export function AuthScreen({ profile, users, games, news = [], platformName = "RPG Platform Engine", appVersion = "0.10-1625", releaseChannel = "Pre-release", onAccess, onRegister }: Props) {
   const rememberedLogin = readLocalStorage(rememberedLoginKey);
   const [mode, setMode] = useState<AuthMode>("login");
   const [emailOrUser, setEmailOrUser] = useState(rememberedLogin || "");
@@ -121,27 +128,23 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryMessage, setRecoveryMessage] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
   const [showAllNews, setShowAllNews] = useState(false);
+  const [showPublicSettings, setShowPublicSettings] = useState(false);
+  const [showSupportChat, setShowSupportChat] = useState(false);
+  const [supportMessage, setSupportMessage] = useState("");
+  const [supportMessages, setSupportMessages] = useState<Array<{ id: string; author: "Sistema" | "Visitante"; body: string; createdAt: string }>>([
+    {
+      id: "support_welcome",
+      author: "Sistema",
+      body: "Soporte publico disponible. Describe tu problema y un operador podra ayudarte antes de iniciar sesion.",
+      createdAt: new Date().toISOString(),
+    },
+  ]);
+  const [isOnline, setIsOnline] = useState(() => (typeof navigator === "undefined" ? true : navigator.onLine));
   const [remember, setRemember] = useState(Boolean(rememberedLogin));
   const [newsOptIn, setNewsOptIn] = useState(true);
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-
-  useEffect(() => {
-    let active = true;
-    fetch("/platform/news/news.json")
-      .then((response) => (response.ok ? response.json() : undefined))
-      .then((payload) => {
-        if (!active) return;
-        setNewsItems(Array.isArray(payload?.items) ? payload.items : []);
-      })
-      .catch(() => {
-        if (active) setNewsItems([]);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const availableUsers = users.length ? users : [profile];
   const selectedGame = useMemo(() => {
@@ -153,10 +156,9 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
     );
   }, [games, profile.activeGameId]);
   const heroStyle = selectedGame ? (gameHeroVars(selectedGame) as CSSProperties) : undefined;
-  const managedNews = publicNews(news);
-  const mergedNews = publicNews([...managedNews, ...newsItems]);
-  const fallbackNews = mergedNews.length
-    ? mergedNews
+  const managedNews = publicNews(news).slice(0, 5);
+  const fallbackNews = managedNews.length
+    ? managedNews
     : [
         {
           id: "fallback-news",
@@ -170,7 +172,7 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
   const loginAccount = availableUsers.find((user) => matchesAccount(user, emailOrUser));
   const passwordRequired = Boolean(loginAccount?.password);
   const loginMatchesProfile = Boolean(loginAccount && (!passwordRequired || password === loginAccount.password));
-  const loginReady = emailOrUser.trim().length > 0 && (!passwordRequired || password.trim().length > 0) && loginMatchesProfile;
+  const loginReady = emailOrUser.trim().length > 0 && password.trim().length > 0;
   const accountAlreadyExists = availableUsers.some((user) => matchesAccount(user, email) || matchesAccount(user, username));
   const registerReady =
     email.trim().length > 0 &&
@@ -179,6 +181,16 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
     password === confirmPassword &&
     !accountAlreadyExists;
   const canEnter = mode === "login" ? loginReady : registerReady;
+
+  useEffect(() => {
+    const updateOnlineState = () => setIsOnline(navigator.onLine);
+    window.addEventListener("online", updateOnlineState);
+    window.addEventListener("offline", updateOnlineState);
+    return () => {
+      window.removeEventListener("online", updateOnlineState);
+      window.removeEventListener("offline", updateOnlineState);
+    };
+  }, []);
 
   function accessProfile(account: PlayerProfile) {
     const now = new Date().toISOString();
@@ -194,14 +206,26 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
   }
 
   function submit() {
-    if (!canEnter) return;
     if (mode === "register") {
+      if (!canEnter) {
+        setAuthMessage("Completa correo, usuario y una contrasena valida.");
+        return;
+      }
       if (remember) writeLocalStorage(rememberedLoginKey, username.trim() || email.trim());
       onRegister({ email: email.trim(), username: username.trim(), password });
       return;
     }
 
-    if (loginAccount) accessProfile(loginAccount);
+    if (!emailOrUser.trim() || !password.trim()) {
+      setAuthMessage("Escribe tu usuario y contrasena.");
+      return;
+    }
+    if (!loginAccount || !loginMatchesProfile) {
+      setAuthMessage("Usuario o contrasena incorrectos.");
+      return;
+    }
+    setAuthMessage("");
+    accessProfile(loginAccount);
   }
 
   function socialAccess(provider: "google" | "facebook" | "github") {
@@ -243,14 +267,33 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
     const body = encodeURIComponent(
       `Usa este codigo para restablecer tu contrasena: ${resetCode}\n\nEnlace local: ${resetLink}\n\nPor seguridad no enviamos tu contrasena actual.`
     );
-    onAccess({
-      ...matchedProfile,
-      signedIn: false,
-      passwordResetCode: resetCode,
-      lastPasswordResetRequestAt: new Date().toISOString(),
-    });
+    writeLocalStorage(`rpg-platform.password-reset.${matchedProfile.id}`, JSON.stringify({
+      code: resetCode,
+      requestedAt: new Date().toISOString(),
+    }));
     window.location.href = `mailto:${matchedProfile.email || target}?subject=${subject}&body=${body}`;
     setRecoveryMessage(`Codigo generado: ${resetCode}. Se preparo el correo de restablecimiento.`);
+  }
+
+  function sendSupportMessage() {
+    const body = supportMessage.trim();
+    if (!body) return;
+    setSupportMessages((current) => [
+      ...current,
+      {
+        id: `support_guest_${Date.now()}`,
+        author: "Visitante",
+        body,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: `support_auto_${Date.now()}`,
+        author: "Sistema",
+        body: "Mensaje recibido. Mantente en esta pantalla o inicia sesion si ya tienes cuenta.",
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+    setSupportMessage("");
   }
 
   return (
@@ -258,13 +301,13 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
       <header className="auth-topbar">
         <div className="auth-brand">
           <Settings size={52} />
-          <strong>RPG Platform Engine</strong>
+          <strong>{platformName}</strong>
           <span>Tu universo. Tu historia. Tu aventura.</span>
         </div>
         <div className="auth-status auth-status-public">
-          <span><Monitor size={24} /><small>Estado del sistema</small><strong>Todo en orden</strong></span>
-          <span><Activity size={24} /><small>Audio ambiental</small><strong>Activado</strong></span>
-          <button type="button" aria-label="Configuracion"><Settings size={22} /></button>
+          <span><Monitor size={24} /><small>Estado del sistema</small><strong>{isOnline ? "Conexion" : "Sin conexion"}</strong></span>
+          <span className="auth-version-status"><i /> <small>Version</small><strong>{appVersion}</strong></span>
+          <button type="button" aria-label="Configuracion" title="Configuracion" onClick={() => setShowPublicSettings(true)}><Settings size={22} /></button>
         </div>
       </header>
 
@@ -278,7 +321,7 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
               <strong>Noticias</strong>
               <button type="button" onClick={() => setShowAllNews(true)}>Ver todas</button>
             </header>
-            {fallbackNews.slice(0, 3).map((item) => (
+            {fallbackNews.slice(0, 5).map((item) => (
               <div key={item.id}>
                 <img src={newsImage(item, games)} alt="" />
                 <span><strong>{item.title}</strong><small>{item.summary}</small></span>
@@ -317,10 +360,17 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
                     <span>Contrasena</span>
                     <div><Lock size={18} /><input type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ingresa tu contrasena" /><button type="button" className="auth-eye-button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Ocultar contrasena" : "Ver contrasena"}><Eye size={18} /></button></div>
                   </label>
-                  <button type="button" className={`auth-check ${remember ? "checked" : ""}`} onClick={() => setRemember((value) => !value)}>
-                    <CheckSquare size={18} /> Recordarme
+                  <button
+                    type="button"
+                    className={`auth-check ${remember ? "checked" : ""}`}
+                    onClick={() => setRemember((value) => !value)}
+                    aria-pressed={remember}
+                  >
+                    <span className="auth-checkbox-icon">{remember ? <Check size={16} /> : <Square size={16} />}</span>
+                    Recordarme
                   </button>
-                  <button className="auth-submit" type="submit" disabled={!canEnter}><LogIn size={22} /> Iniciar sesion</button>
+                  {authMessage && <strong className="auth-message">{authMessage}</strong>}
+                  <button className="auth-submit" type="submit"><LogIn size={22} /> Iniciar sesion</button>
                   <button type="button" className="auth-link" onClick={() => setShowRecovery(true)}>Olvidaste tu contrasena?</button>
                 </>
               ) : (
@@ -364,6 +414,11 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
                   {mode === "login" ? "Registrate ahora" : "Inicia sesion"}
                 </button>
               </p>
+
+              <button type="button" className="auth-support-entry" onClick={() => setShowSupportChat(true)}>
+                <Headphones size={20} />
+                Soporte por chat sin iniciar sesion
+              </button>
             </form>
 
             <aside className="auth-benefits">
@@ -377,14 +432,6 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
         </section>
       </main>
 
-      <footer className="auth-footer">
-        <span><Settings size={20} /> Version 1.6.0</span>
-        <span><i /> Estable</span>
-        <span><Monitor size={20} /> Launcher actualizado</span>
-        <span><Activity size={20} /> Servicios en linea</span>
-        <button type="button" onClick={submit} disabled={!canEnter}><Settings size={30} /> Entrar</button>
-      </footer>
-
       {showRecovery && (
         <div className="modal-backdrop">
           <article className="app-modal auth-recovery-modal">
@@ -397,6 +444,52 @@ export function AuthScreen({ profile, users, games, news = [], onAccess, onRegis
             </label>
             {recoveryMessage && <strong>{recoveryMessage}</strong>}
             <button className="green-button" type="button" onClick={recoverPassword}>Enviar correo</button>
+          </article>
+        </div>
+      )}
+
+      {showPublicSettings && (
+        <div className="modal-backdrop">
+          <article className="app-modal auth-public-settings-modal">
+            <button className="modal-close" type="button" onClick={() => setShowPublicSettings(false)}><X size={18} /></button>
+            <h3><Settings size={22} /> Configuracion</h3>
+            <div className="auth-public-settings-grid">
+              <span><small>Plataforma</small><strong>{platformName}</strong></span>
+              <span><small>Version</small><strong>{appVersion}</strong></span>
+              <span><small>Canal</small><strong>{releaseChannel}</strong></span>
+              <span><small>Estado</small><strong>{isOnline ? "Conexion" : "Sin conexion"}</strong></span>
+            </div>
+            <button className="green-button" type="button" onClick={() => setShowPublicSettings(false)}>Cerrar</button>
+          </article>
+        </div>
+      )}
+
+      {showSupportChat && (
+        <div className="modal-backdrop">
+          <article className="app-modal auth-support-chat-modal">
+            <button className="modal-close" type="button" onClick={() => setShowSupportChat(false)}><X size={18} /></button>
+            <h3><Headphones size={22} /> Soporte por chat</h3>
+            <p>Usa este canal si no puedes iniciar sesion o no puedes crear un ticket.</p>
+            <div className="auth-support-chat-log">
+              {supportMessages.map((message) => (
+                <section key={message.id} className={message.author === "Visitante" ? "guest" : ""}>
+                  <strong>{message.author}</strong>
+                  <p>{message.body}</p>
+                  <small>{new Intl.DateTimeFormat("es", { hour: "2-digit", minute: "2-digit" }).format(new Date(message.createdAt))}</small>
+                </section>
+              ))}
+            </div>
+            <div className="auth-support-chat-input">
+              <input
+                value={supportMessage}
+                onChange={(event) => setSupportMessage(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") sendSupportMessage();
+                }}
+                placeholder="Escribe tu solicitud de soporte..."
+              />
+              <button type="button" className="green-button" onClick={sendSupportMessage}><Send size={18} /> Enviar</button>
+            </div>
           </article>
         </div>
       )}

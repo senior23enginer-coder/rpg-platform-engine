@@ -1,0 +1,966 @@
+TOMO 01 — REGLAS CORE
+Iteración 6.3 — Reestructura limpia sin textos es y reglas de impacto corporal
+Sistema: Wargame táctico + TTRPG + RPG por turnos + 2d20
+
+======================================================================
+ALCANCE DEL TOMO 01
+======================================================================
+
+El Tomo 01 contiene las reglas base para jugar una partida completa sin consultar constantemente los demás tomos. Sus reglas permiten crear personaje, mover por nodos, combatir, explorar, gestionar AP, ganar experiencia, usar equipo básico, administrar inventario, resolver escenas en ciudades y jugar una minicampaña introductoria.
+
+El Tomo 01 no reemplaza los tomos especializados. Cuando una mesa necesite detalle completo, se consulta el tomo correspondiente:
+
+| Tomo | Contenido especializado |
+|---:|---|
+| 02 | Misiones completas, etapas, decisiones y consecuencias. |
+| 03 | Enemigos, criaturas, NPC, compañeros e IA detallada. |
+| 04 | Armas completas, munición, mods, variantes y valores extendidos. |
+| 05 | Armaduras, ropa, equipo, servoarmaduras y piezas completas. |
+| 06 | Ubicaciones, mapas, nodos, submapas, rutas, biomas y atlas. |
+| 07 | Asentamientos avanzados, producción, defensa y economía. |
+| 08 | Facciones, reputación y política del mundo. |
+| 09 | Coleccionables, notas, holocintas, llaves y objetos únicos. |
+| 10 | Supervivencia avanzada, clima severo, hambre, sed, enfermedad y desgaste. |
+
+======================================================================
+INDICE REESTRUCTURADO DEL TOMO 01
+======================================================================
+
+| Capítulo | Nombre | Función |
+|---:|---|---|
+| 1 | Concepto del sistema | Define la mezcla wargame + TTRPG + RPG por turnos + 2d20. |
+| 2 | Modos de juego | Campaña, Libre y Supervivencia opcional. |
+| 3 | Personajes, SPECIAL y estadísticas base | Atributos, PV, AP, defensa, carga y creación. |
+| 4 | Perks, habilidades, experiencia y niveles | Activación de perks, XP, subida de nivel y punto de nivel. |
+| 5 | Turnos, AP y categorías de acciones | Movimiento, Combate y Exploración. |
+| 6 | Nodos, mapamundi, ubicaciones y movimiento | Mapamundi, rutas, submapas, nodos y exploración por AP. |
+| 7 | Combate táctico por nodos | Ataque, cobertura, línea de visión, alcance, daño y partes del cuerpo. |
+| 8 | Inventario, peso, munición y chapas | Carga, equipo, munición, economía y gestión rápida. |
+| 9 | Equipo, protección y servoarmadura core | Piezas corporales, armadura, servoarmadura y daño a equipo. |
+| 10 | Exploración, ciudades, tiendas y asentamientos core | Ciudades seguras, tiendas, nodos sociales y asentamientos básicos. |
+| 11 | IA enemiga base | Movimiento y decisiones de enemigos por tipo. |
+| 12 | Clima, estados y efectos negativos | Efectos por clima, combate, objetos y condiciones. |
+| 13 | Minicampaña introductoria | Estructura pulida para jugar una aventura corta. |
+| 14 | Fichas rápidas básicas | Armas, equipo, curación y objetos generales para iniciar partida. |
+| 15 | Glosario y tablas maestras | Conceptos principales y consulta rápida. |
+
+======================================================================
+CAPITULO 1 — CONCEPTO DEL SISTEMA
+======================================================================
+
+Este juego adapta la experiencia de Fallout 4 a mesa como una combinación de:
+
+| Capa | Qué aporta |
+|---|---|
+| Wargame táctico | Posición, nodos, cobertura, línea de visión, alcance, control de zona y daño por partes. |
+| TTRPG | Diálogo, narración, decisiones, facciones, consecuencias, libertad y exploración narrativa. |
+| RPG por turnos | AP, acciones, perks, experiencia, niveles, inventario, equipo y progresión. |
+| 2d20 | Tiradas SPECIAL + habilidad, dificultad, éxitos, Momentum y riesgo. |
+
+Regla madre:
+Todo personaje, NPC, criatura, robot o enemigo ocupa un nodo cuando la escena requiere precisión táctica.
+Moverse, atacar, explorar, interactuar, cubrirse o usar equipo consume AP cuando existe presión, peligro,
+combate, sigilo, exploración activa o turno estructurado.
+
+Cuando no existe peligro, presión o consecuencia importante, el Director o el modo sin GM puede resolver
+la escena de forma narrativa sin exigir AP por cada paso.
+
+======================================================================
+CAPITULO 2 — MODOS DE JUEGO
+======================================================================
+
+| Modo | Qué representa | Uso de AP |
+|---|---|---|
+| Campaña | Historia principal adaptada, protagonistas de Vault 111 y facciones base. | AP activo en combate, exploración, persecución, sigilo y escenas con presión. |
+| Modo Libre | Supervivientes propios, campaña emergente, contratos, rutas y asentamientos. | AP activo cuando el mundo se juega por nodos o hay riesgo. |
+| Supervivencia opcional | Añade hambre, sed, sueño, enfermedad, clima severo, peso duro y desgaste. | AP igual que los modos anteriores, pero con más consecuencias por ruta y clima. |
+
+Regla parcial de cruce:
+El Tomo 01 permite jugar cualquiera de los modos de forma básica. Si la mesa quiere detalle completo de
+supervivencia, asentamientos, armas, armaduras, enemigos o ubicaciones, se consulta el tomo especializado.
+
+======================================================================
+CAPITULO 3 — PERSONAJES, SPECIAL Y ESTADISTICAS BASE
+======================================================================
+
+Todo personaje jugador y humanoide importante usa:
+
+| Estadística | Uso |
+|---|---|
+| SPECIAL | Base de tiradas y progresión. |
+| PV | Salud general. |
+| AP | Puntos de Acción para actuar por turno. |
+| DEF / DR | Defensa física contra balas, golpes, mordidas y fragmentos. |
+| ER | Defensa energética contra láser, plasma y electricidad. |
+| RR | Resistencia a radiación. |
+| Carga | Peso máximo antes de penalizaciones. |
+| Equipo equipado | Piezas de protección, armas, herramientas y objetos activos. |
+| Inventario | Objetos transportados, munición, chapas y recursos. |
+
+======================================================================
+CAPITULO 4 — PERKS, HABILIDADES, EXPERIENCIA Y NIVELES
+======================================================================
+
+4.1 Tipos de perks
+
+| Tipo de perk | Cómo funciona | Consume AP |
+|---|---|---|
+| Pasivo | Siempre está activo si cumple requisito. | No. |
+| Activo | El jugador decide usarlo durante una acción. | Sí, si modifica una acción o crea una acción especial. |
+| Reacción | Se activa ante un disparador: recibir daño, esquivar, oportunidad, detectar, resistir. | Puede consumir AP, reacción o uso limitado. |
+| Mejora de acción | Reduce coste, baja dificultad, suma daño, mejora alcance o agrega efecto. | Consume el AP de la acción modificada. |
+| Perk de escena | Afecta viaje, comercio, diálogo, asentamiento, crafteo o exploración larga. | Normalmente no usa AP de combate; usa escena/tiempo. |
+
+4.2 Activación de perks
+
+| Caso | Regla |
+|---|---|
+| Perk pasivo | Aplicar automáticamente si el personaje cumple requisito. |
+| Perk activo en combate | Declarar antes de tirar, pagar AP si aplica y resolver efecto. |
+| Perk de exploración | Declarar durante revisión, búsqueda, hackeo, ganzúa, rastreo o interacción. |
+| Perk de reacción | Activar cuando ocurre el disparador. Si hay duda, el Director decide antes de tirar daño. |
+| Perk con usos limitados | Marcar uso por combate, escena, día o descanso según ficha. |
+
+4.3 Experiencia
+
+La experiencia se gana por objetivos, exploración, combate, negociación, descubrimientos y consecuencias.
+No se recomienda dar XP solo por matar; el sistema premia resolver escenas.
+
+| Fuente de XP | XP sugerida |
+|---|---:|
+| Descubrimiento menor, pista, ruta segura | 10-25 XP |
+| Superar obstáculo, hackeo, cerradura, trampa o peligro | 25-50 XP |
+| Combate menor o amenaza baja | 25-75 XP |
+| Combate medio o escena peligrosa | 75-150 XP |
+| Objetivo de misión completado | 100-300 XP |
+| Misión completa | 300-800 XP |
+| Decisión narrativa importante | 100-500 XP |
+| Resolver escena sin violencia cuando era posible | 50-250 XP |
+| Defender asentamiento o ciudad | 150-600 XP |
+
+4.4 XP necesaria para subir de nivel
+
+Regla base propuesta para I6.1:
+
+| Nivel nuevo | XP total necesaria |
+|---:|---:|
+| 2 | 200 |
+| 3 | 500 |
+| 4 | 900 |
+| 5 | 1400 |
+| 6 | 2000 |
+| 7 | 2700 |
+| 8 | 3500 |
+| 9 | 4400 |
+| 10 | 5400 |
+
+Formula opcional para niveles superiores:
+XP total para siguiente nivel = XP actual de nivel anterior + (Nivel nuevo x 100).
+
+4.5 Punto de nivel
+
+Al subir de nivel, el personaje gana 1 punto de nivel.
+
+| Uso del punto de nivel | Regla |
+|---|---|
+| Subir SPECIAL | Aumenta 1 atributo en +1, sin pasar el máximo permitido por etapa de campaña. |
+| Comprar perk nuevo | Debe cumplir requisito SPECIAL/nivel si existe. |
+| Subir rango de perk | Debe tener rango anterior y cumplir requisito. |
+| Guardar punto | Permitido si la mesa quiere comprar perk más adelante. |
+
+Regla central:
+Un punto de nivel se gasta en SPECIAL o perk/rango de perk, no en ambos.
+
+4.6 Tabla completa de perks Fallout 4 por rango
+
+Regla de uso:
+- Un perk puede ser pasivo, activo o de reacción.
+- Si es pasivo, no consume AP: modifica tiradas, daño, defensa, carga, economía o exploración.
+- Si es activo, consume AP según la acción asociada.
+- Si es reacción, se activa cuando ocurre la condición indicada por el Director/Juego sin GM.
+- Si un perk modifica armas, armaduras, asentamientos o servoarmadura, el Tomo 01 da la regla básica y el tomo especializado conserva el detalle completo.
+
+| SPECIAL | Perk Fallout 4 | Requisito | Rangos adaptados a mesa |
+|---|---|---|---|
+| STR | Iron Fist | STR 1 | R1: mejora ataque sin armas; R2: más daño sin armas; R3: posibilidad de desarmar; R4: mayor daño/efecto; R5: posibilidad de paralizar o dejar fuera de combate. |
+| STR | Big Leagues | STR 2 | R1: mejora melee; R2: más daño melee; R3: posibilidad de desarmar; R4: daño superior y golpe en área limitada; R5: daño máximo melee y efectos críticos. |
+| STR | Armorer | STR 3 | R1: mods básicos de armadura; R2: mods intermedios; R3: mods avanzados; R4: mods superiores. Detalle Tomo 05. |
+| STR | Blacksmith | STR 4 | R1: mods básicos melee; R2: mods avanzados; R3: mods superiores melee. Detalle Tomo 04. |
+| STR | Heavy Gunner | STR 5 | R1: mejora armas pesadas; R2: más daño; R3: mejor control; R4: efectos de stagger/ruptura; R5: dominio pesado. |
+| STR | Strong Back | STR 6 | R1: +25 carga; R2: +50 carga total; R3: puede gastar AP para moverse sobrecargado; R4: menos penalización por sobrecarga; R5: correr/sprint sobrecargado si mesa lo permite. |
+| STR | Steady Aim | STR 7 | R1: mejora disparo desde cadera; R2: mejora adicional; R3: control superior si se usa versión extendida. |
+| STR | Basher | STR 8 | R1: golpe con arma mejora; R2: más daño; R3: puede incapacitar/desarmar; R4: golpe brutal con arma. |
+| STR | Rooted | STR 9 | R1: si está quieto gana defensa melee; R2: más daño melee quieto; R3: resistencia superior mientras mantiene posición. |
+| STR | Pain Train | STR 10 | R1: con servoarmadura embiste; R2: más daño/derribo; R3: embestida devastadora. |
+| PER | Pickpocket | PER 1 | R1: roba objetos comunes; R2: roba mejores objetos; R3: roba armas/equipo con riesgo; R4: puede plantar objetos peligrosos según escena. |
+| PER | Rifleman | PER 2 | R1: mejora rifles no automáticos; R2: más daño/penetración; R3: mayor precisión; R4: daño alto; R5: máximo dominio de rifle. |
+| PER | Awareness | PER 3 | R1: identifica defensas/resistencias; R2: identifica debilidades tácticas y estado local. |
+| PER | Locksmith | PER 4 | R1: cerraduras básicas; R2: avanzadas; R3: expertas; R4: maestras y menos riesgo de romper ganzúa. |
+| PER | Demolition Expert | PER 5 | R1: mejora explosivos; R2: mayor daño/área; R3: trayectoria o manejo superior; R4: máxima eficacia explosiva. |
+| PER | Night Person | PER 6 | R1: bonus nocturno a INT/PER; R2: mayor bonus; R3: visión nocturna/lectura mejorada si se usa versión extendida. |
+| PER | Refractor | PER 7 | R1: +ER menor; R2: +ER; R3: +ER alto; R4: +ER superior; R5: máxima resistencia energética. |
+| PER | Sniper | PER 8 | R1: mejor control con miras; R2: mejor precisión/derribo; R3: ataques a distancia largos más fiables. |
+| PER | Penetrator | PER 9 | R1: puede atacar partes cubiertas con penalización; R2: reduce más la penalización contra cobertura. |
+| PER | Concentrated Fire | PER 10 | R1: ataques repetidos a mismo objetivo mejoran; R2: mejora acumulada; R3: precisión/daño superior por concentración. |
+| END | Toughness | END 1 | R1: +DR; R2: +DR; R3: +DR alto; R4: +DR superior; R5: máxima resistencia física. |
+| END | Lead Belly | END 2 | R1: menos radiación al comer/beber; R2: reducción mayor; R3: casi ignora radiación por comida/agua común. |
+| END | Life Giver | END 3 | R1: +PV máximo; R2: +PV adicional; R3: regeneración lenta fuera de combate según mesa. |
+| END | Chem Resistant | END 4 | R1: menor riesgo de adicción; R2: inmunidad o reducción fuerte de adicción a chems. |
+| END | Aquaboy/Aquagirl | END 5 | R1: respirar bajo agua y evitar radiación acuática; R2: sigilo/movimiento mejorado en agua. |
+| END | Rad Resistant | END 6 | R1: +RR; R2: +RR mayor; R3: +RR alto; R4: resistencia extrema si se usa versión extendida. |
+| END | Adamantium Skeleton | END 7 | R1: reduce daño local a extremidades; R2: reduce mucho; R3: evita mutilación/daño severo de extremidades común. |
+| END | Cannibal | END 8 | R1: comer cadáver humanoide cura; R2: cura más; R3: puede curar más tipos/recuperar mejor con riesgo social. |
+| END | Ghoulish | END 9 | R1: radiación cura lentamente; R2: cura más; R3: ghouls pueden volverse neutrales; R4: mejor control si se usa versión extendida. |
+| END | Solar Powered | END 10 | R1: bonus diurno; R2: mejor recuperación bajo sol; R3: regeneración/limpieza rad diurna superior. |
+| CAR | Cap Collector | CAR 1 | R1: mejores precios; R2: mejores ventas/compras; R3: puede invertir o mejorar tiendas según asentamiento. |
+| CAR | Lady Killer / Black Widow | CAR 2 | R1: bonus social/daño contra sexo opuesto; R2: mayor efecto; R3: intimidación/encanto superior. |
+| CAR | Lone Wanderer | CAR 3 | R1: menos daño sin compañero humano; R2: más carga; R3: más daño/eficiencia; R4: AP o defensa adicional según versión. |
+| CAR | Attack Dog | CAR 4 | R1: perro puede sujetar; R2: mejora su control; R3: mejora defensa/daño; R4: bonificación extendida si aplica. |
+| CAR | Animal Friend | CAR 5 | R1: pacificar animales; R2: ordenar/mandar; R3: incitar/dirigir animal. |
+| CAR | Local Leader | CAR 6 | R1: rutas de suministro; R2: tiendas/estaciones avanzadas en asentamientos. |
+| CAR | Party Boy/Girl | CAR 7 | R1: no adicción al alcohol; R2: bonus mejorado; R3: beneficios fuertes al beber. |
+| CAR | Inspirational | CAR 8 | R1: compañero causa más daño/no hiere aliado; R2: compañero resiste más; R3: compañero carga más o mejora soporte. |
+| CAR | Wasteland Whisperer | CAR 9 | R1: pacificar criaturas; R2: ordenar; R3: incitar/dirigir criatura. |
+| CAR | Intimidation | CAR 10 | R1: pacificar humano; R2: ordenar; R3: incitar/dirigir humano. |
+| INT | V.A.N.S. | INT 1 | R1: revela ruta u objetivo; R2: mejora orientación/precisión de navegación si se usa versión extendida. |
+| INT | Medic | INT 2 | R1: Stimpak/RadAway mejores; R2: curación superior; R3: tratamiento avanzado; R4: máximo efecto médico core. |
+| INT | Gun Nut | INT 3 | R1: mods básicos de armas; R2: intermedios; R3: avanzados; R4: superiores. Detalle Tomo 04. |
+| INT | Hacker | INT 4 | R1: terminal básica; R2: avanzada; R3: experta; R4: maestra y menor bloqueo. |
+| INT | Scrapper | INT 5 | R1: obtiene mejores materiales al desguazar; R2: materiales raros; R3: rastreo/recuperación avanzada si aplica. |
+| INT | Science! | INT 6 | R1: mods tecnológicos básicos; R2: intermedios; R3: avanzados; R4: superiores. |
+| INT | Chemist | INT 7 | R1: chems duran más; R2: duración mayor; R3: duración alta; R4: duración máxima. |
+| INT | Robotics Expert | INT 8 | R1: hackea robot desactivándolo; R2: ordena robot; R3: incita/controla robot avanzado. |
+| INT | Nuclear Physicist | INT 9 | R1: núcleos duran más; R2: más duración/daño rad; R3: puede expulsar núcleo/uso avanzado. |
+| INT | Nerd Rage! | INT 10 | R1: al quedar bajo de PV ralentiza/bonifica daño/defensa; R2: mejora; R3: máximo efecto. |
+| AGI | Gunslinger | AGI 1 | R1: mejora pistolas no automáticas; R2: más daño/alcance; R3: desarme o precisión; R4: daño alto; R5: dominio máximo pistola. |
+| AGI | Commando | AGI 2 | R1: mejora automáticas; R2: más daño; R3: mejor control; R4: stagger/ruptura; R5: dominio automático. |
+| AGI | Sneak | AGI 3 | R1: más difícil de detectar; R2: evita trampas/ruido; R3: sigilo superior; R4: correr/sigilo mejor; R5: casi invisible en condiciones correctas. |
+| AGI | Mister Sandman | AGI 4 | R1: ataques dormidos/silenciados mejores; R2: más daño; R3: daño sigiloso silenciado superior. |
+| AGI | Action Boy/Girl | AGI 5 | R1: regenera AP más rápido; R2: mejor regeneración; R3: recuperación superior si aplica. |
+| AGI | Moving Target | AGI 6 | R1: defensa al correr; R2: más defensa; R3: menor coste AP al moverse rápido si aplica. |
+| AGI | Ninja | AGI 7 | R1: daño sigilo melee/distancia; R2: más daño; R3: daño sigiloso máximo. |
+| AGI | Quick Hands | AGI 8 | R1: recarga más rápida; R2: no cuesta AP extra en VATS/turno; R3: cambio/recarga superior si aplica. |
+| AGI | Blitz | AGI 9 | R1: melee puede cerrar distancia; R2: mayor alcance/daño por distancia. |
+| AGI | Gun Fu | AGI 10 | R1: encadena objetivos; R2: más daño a siguientes objetivos; R3: críticos/daño superior en cadena. |
+| LCK | Fortune Finder | LCK 1 | R1: más chapas en contenedores; R2: más hallazgos; R3: gran aumento; R4: posibilidad de lluvia de chapas/bonus especial. |
+| LCK | Scrounger | LCK 2 | R1: más munición; R2: más cantidad/variedad; R3: munición rara; R4: máximo hallazgo de munición. |
+| LCK | Bloody Mess | LCK 3 | R1: más daño general; R2: más daño; R3: daño alto; R4: explosión/gore/efecto de cadena si aplica. |
+| LCK | Mysterious Stranger | LCK 4 | R1: aparece ocasionalmente; R2: más probabilidad; R3: más daño/probabilidad; R4: efecto superior si aplica. |
+| LCK | Idiot Savant | LCK 5 | R1: XP aleatoria extra; R2: mayor probabilidad; R3: cadena de XP/bono temporal. |
+| LCK | Better Criticals | LCK 6 | R1: críticos hacen más daño; R2: más daño crítico; R3: daño crítico máximo. |
+| LCK | Critical Banker | LCK 7 | R1: almacena 1 crítico; R2: almacena más; R3: probabilidad de no gastar crítico; R4: reserva superior si aplica. |
+| LCK | Grim Reaper’s Sprint | LCK 8 | R1: matar puede recuperar AP; R2: mayor recuperación; R3: recuperación alta/total según escena. |
+| LCK | Four Leaf Clover | LCK 9 | R1: cada impacto puede cargar crítico; R2: mayor probabilidad; R3: alta probabilidad; R4: probabilidad máxima. |
+| LCK | Ricochet | LCK 10 | R1: disparos enemigos pueden rebotar; R2: más probabilidad; R3: rebote puede matar/activar efecto fuerte. |
+
+======================================================================
+CAPITULO 5 — TURNOS, AP Y CATEGORIAS DE ACCIONES
+======================================================================
+
+5.1 Categorías oficiales
+
+Desde I6.1 solo existen tres categorías maestras de acción:
+
+| Categoría | Qué cubre | Ejemplos |
+|---|---|---|
+| Movimiento | Desplazarse o cambiar posición en el entorno. | Moverse a nodo, correr, saltar, subir, bajar, trepar, sigilo, huir. |
+| Combate | Atacar, defender, usar armas, cubrirse, granadas y habilidades ofensivas. | Disparar, golpear, atacar sin armas, cobertura, granada, apuntar, perk de combate. |
+| Exploración | Descubrir, registrar, usar herramientas, interactuar, curar, reparar, recargar o manipular el mundo. | Revisar entorno, loot, cerradura, hackeo, leer nota, recargar, Stimpak, reparar robot. |
+
+Las acciones antes llamadas tareas quedan absorbidas por Exploración/Interacción.
+
+5.2 Tabla maestra de AP
+
+| Tipo de acción | Coste AP recomendado | Ejemplo |
+|---|---:|---|
+| Movimiento mínimo | 1 AP | Cambiar posición dentro del nodo. |
+| Movimiento normal | 1 AP | Moverse a 1 nodo conectado normal. |
+| Movimiento difícil | 2 AP | Escombros, puerta pesada, subir/bajar escalera. |
+| Movimiento rápido | 3 AP | Moverse a 2 nodos conectados de forma controlada. |
+| Carrera | 4 AP | Correr hasta 2 nodos, genera ruido/exposición. |
+| Exploración simple | 1-2 AP | Mirar, escuchar, leer nota, interactuar simple. |
+| Exploración media | 2-3 AP | Buscar loot, revisar entorno, usar objeto, recargar. |
+| Exploración compleja | 4-5 AP | Hackear, reparar, abrir cerradura difícil, desactivar trampa. |
+| Ataque ligero | 3 AP | Pistola, arma ligera, melee básico. |
+| Ataque medio | 4 AP | Rifle, granada, melee pesado. |
+| Ataque pesado | 5 AP | Arma pesada, acción peligrosa o ataque fuerte. |
+| Acción prolongada | Escena | Reparación grande, construcción, cirugía, viaje seguro. |
+
+5.3 Acciones de movimiento
+
+| Acción de movimiento | Coste AP | Tirada común | Uso táctico |
+|---|---:|---|---|
+| Moverse a 1 nodo conectado | 1 AP | No, salvo riesgo | Movimiento básico dentro del submapa. |
+| Moverse a 2 nodos conectados | 3 AP | AGI + Atletismo si hay presión | Avance rápido controlado. |
+| Correr hasta 2 nodos | 4 AP | AGI + Atletismo si hay obstáculo/persecución | Genera ruido y exposición; rompe sigilo normal. |
+| Cambiar posición dentro del mismo nodo | 1 AP | No | Asomarse, girar, acercarse a cobertura, cambiar ángulo. |
+| Entrar a nodo conectado difícil | 2 AP | Según terreno | Escombros, barro, muebles, puerta pesada, ruina. |
+| Saltar obstáculo bajo | 2 AP | AGI + Atletismo | Valla baja, mueble, barricada baja, ventana rota. |
+| Trepar obstáculo alto | 3 AP o más | STR/AGI + Atletismo | Muro, contenedor, techo bajo, ruina elevada. |
+| Subir escalera | 2 AP | No, salvo presión | Cambia a nodo superior o elevado. |
+| Bajar escalera | 2 AP | No, salvo presión | Cambia a nodo inferior. |
+| Subir por cuerda/tubería | 3 AP | STR + Atletismo | Acceso vertical difícil. |
+| Bajar con cuidado | 2 AP | AGI + Atletismo si hay riesgo | Reduce ruido o daño de caída. |
+| Moverse en sigilo 1 nodo | 2 AP | AGI + Sigilo | Movimiento silencioso. |
+| Arrastrarse / cuerpo a tierra | 2 AP | AGI + Sigilo si hay vigilancia | Movimiento lento con menor exposición. |
+| Retirada defensiva | 2 AP | AGI + Atletismo si está trabado | Retrocede sin regalar posición. |
+| Huir de la zona | 4 AP o escena | AGI + Atletismo | Sale de combate si hay ruta válida. |
+| Entrar/salir de ubicación por nodo de ruta | 2 AP base o escena | Variable | Conecta submapa con mapamundi o ubicación externa. |
+
+5.4 Acciones de combate
+
+| Acción de combate | Coste AP | Tirada común | Alcance / condición |
+|---|---:|---|---|
+| Atacar a distancia con arma ligera | 3 AP | PER + Armas pequeñas | Según arma. |
+| Atacar a distancia con arma media | 4 AP | PER + Armas pequeñas/Energía | Según arma. |
+| Atacar a distancia con arma pesada | 5 AP | STR/PER + Armas pesadas | Según arma. |
+| Atacar cuerpo a cuerpo | 3 AP | STR + Cuerpo a cuerpo | Mismo nodo. |
+| Atacar sin armas | 2-3 AP | STR/AGI + Pelea | Mismo nodo. |
+| Golpear con el arma | 3 AP | STR + Cuerpo a cuerpo | Mismo nodo; arma como objeto contundente. |
+| Ataque cuerpo a cuerpo pesado | 4 AP | STR + Cuerpo a cuerpo | Mismo nodo; puede derribar. |
+| Apuntar | 2 AP | PER si hay presión | Mejora precisión o reduce dificultad. |
+| Tomar cobertura | 1 AP | No | Requiere cobertura válida en nodo. |
+| Salir de cobertura | 1 AP | No | Permite moverse o ganar ángulo. |
+| Disparar desde cobertura | Coste del arma | PER + arma | Mantiene protección parcial. |
+| Cambiar ángulo de tiro | 1 AP | No | Mejora línea de visión dentro del nodo. |
+| Fuego de supresión | 4-5 AP | PER + Armas automáticas/pesadas | Controla nodo o conexión. |
+| Preparar emboscada | 3 AP | AGI + Sigilo / PER + arma | Se activa si enemigo entra al nodo vigilado. |
+| Lanzar granada/molotov | 4 AP | AGI/PER + Explosivos | Nodo objetivo + área si aplica. |
+| Colocar mina | 4 AP | PER/AGI + Explosivos | Nodo actual o adyacente. |
+| Usar habilidad/perk de combate | Variable | Según perk | Ataque especial, VATS, crítico, golpe potente, disparo preciso. |
+| Defender posición | 2-3 AP | END/STR + Atletismo si hay presión | Mantiene nodo, bloquea paso o resiste avance. |
+| Empujar enemigo | 3 AP | STR + Atletismo | Mismo nodo; puede moverlo a nodo conectado. |
+| Derribar enemigo | 4 AP | STR/AGI + Combate | Mismo nodo; enemigo pierde posición/AP. |
+| Ataque de oportunidad | Reacción/regla especial | Según arma | Si enemigo abandona nodo trabado. |
+
+5.5 Acciones de exploración
+
+| Acción de exploración | Coste AP | Tirada común | Nodo recomendado | Resultado posible |
+|---|---:|---|---|---|
+| Revisar entorno | 1-2 AP | PER + Supervivencia | Cualquier nodo | Detecta rutas, enemigos visibles, ruido, peligro o pistas. |
+| Buscar loot | 2-3 AP | PER + Supervivencia | Exploración/recurso | Chatarra, munición, comida, medicina, pista o nada. |
+| Registrar a fondo | 4 AP o escena | PER/INT + Supervivencia | Exploración | Hallazgos ocultos, alijos, contenedores secretos. |
+| Buscar alijo oculto | 3-4 AP | PER + Supervivencia | Exploración/cobertura/recurso | Bolsa, caja, compartimento, escondite. |
+| Buscar materiales | 2-3 AP | PER/INT + Supervivencia | Ruinas, taller, basura, chatarra | Materiales comunes o piezas. |
+| Buscar recursos naturales | 2-3 AP | PER + Supervivencia | Rural, bosque, costa, pantano | Agua, comida, plantas, rastros, caza. |
+| Rastrear huellas | 2 AP | PER + Supervivencia | Exterior, polvo, barro, nieve, bosque | Sigue criaturas, NPC o patrullas. |
+| Escuchar actividad | 1 AP | PER + Supervivencia | Cualquier nodo | Detecta enemigos detrás de puertas o muros. |
+| Observar nodo lejano | 2 AP | PER + Observación/Supervivencia | Exterior o línea abierta | Mira actividad a distancia. |
+| Usar binoculares | 2 AP | PER + Observación | Exterior, techo, colina, ventana abierta | Permite observar nodos lejanos si hay línea de visión. |
+| Inspeccionar cadáver | 2 AP | PER/INT + Medicina/Supervivencia | Exploración/narrativo | Causa de muerte, loot, pista. |
+| Leer nota | 1 AP | No | Narrativo/exploración | Información o pista. |
+| Escuchar holocinta | 1-2 AP | No | Narrativo/exploración | Historia, pista o misión. |
+| Activar objeto de misión | 1-3 AP | Según escena | Narrativo/interacción | Avanza objetivo. |
+| Recargar arma sencilla | 2 AP | No | Cualquier nodo | Recarga arma común. |
+| Recargar arma pesada/compleja | 3 AP | No o STR/INT si hay presión | Cualquier nodo | Recarga arma pesada/energía. |
+| Cambiar arma/equipo | 1 AP | No | Cualquier nodo | Saca/guarda equipo. |
+| Usar objeto de salud | 3 AP | No, salvo interrupción | Cualquier nodo | Stimpak, venda, RadAway, antídoto. |
+| Curar a aliado | 3-5 AP | INT + Medicina | Mismo nodo o adyacente | Cura, estabiliza, aplica tratamiento. |
+| Abrir cerradura | 3 AP o más | PER + Ganzúa | Puerta/caja/baúl/caja fuerte | Abre acceso o contenedor. |
+| Forzar puerta | 3-5 AP | STR + Atletismo | Puerta/barrera | Abre con ruido o daña objeto. |
+| Hackear ordenador/terminal | 4 AP o más | INT + Ciencia | Terminal/ordenador | Datos, puerta, torreta, sistema. |
+| Desactivar trampa | 3-4 AP | PER/AGI + Explosivos/Reparación | Nodo peligroso | Evita daño o recupera componentes. |
+| Reparar arma/equipo simple | 3-5 AP | INT + Reparación | Herramienta/taller/cobertura segura | Quita penalización o restaura uso básico. |
+| Reparar compañero robot | 4-6 AP | INT + Robótica/Reparación | Mismo nodo | Restaura movilidad, arma o sistema. |
+| Reparar servoarmadura | 4-6 AP o escena | INT + Reparación/Ciencia | Taller o escena segura | Repara pieza o sistema. |
+| Construir barricada simple | 4-6 AP o escena | INT/STR + Reparación | Recurso/asentamiento | Crea cobertura o bloqueo. |
+| Colocar trampa simple | 4 AP | PER/INT + Explosivos/Reparación | Nodo válido | Prepara peligro para enemigos. |
+
+======================================================================
+CAPITULO 6 — NODOS, MAPAMUNDI, UBICACIONES Y MOVIMIENTO
+======================================================================
+
+6.1 Escalas de mapa
+
+| Escala | Qué representa | Ejemplo |
+|---|---|---|
+| Mapamundi | Red grande de ubicaciones conectadas. | Vault 111 -> Sanctuary -> Concord. |
+| Ubicación | Mapa jugable de un lugar. | Sanctuary Hills, Red Rocket, Concord. |
+| Submapa interno | División táctica dentro de una ubicación. | Casa, pasillo, cuarto, taller, calle, museo. |
+| Nodo | Punto táctico ocupable o recorrible. | Puerta, árbol, auto, pasillo, contenedor, cuarto, terminal. |
+
+6.2 Regla de ubicación explorable
+
+Cada ubicación explorable tiene un submapa con nodos.
+Una ubicación controlada, ciudad segura o asentamiento gestionado no exige AP para caminar normalmente.
+Vuelve a consumir AP si ocurre combate, ataque, sigilo, infiltración, persecución, exploración activa o evento.
+
+| Estado de ubicación | AP para recorrer | Ejemplo |
+|---|---|---|
+| Explorable | Sí | Concord hostil, Vault desconocido, ruina nueva. |
+| Controlada | No en recorrido normal | Sanctuary limpiada. |
+| Asentamiento | No en gestión normal | Construir, comerciar, producir recursos. |
+| Asentamiento atacado | Sí | Defensa por nodos. |
+| Ciudad segura | No en movimiento social | Diamond City en calma. |
+| Ciudad en conflicto | Sí | Ataque, infiltración, persecución. |
+| Ruta segura | No o escena | Camino despejado y conocido. |
+| Ruta peligrosa | Sí o evento | Emboscada, clima, patrulla, criatura. |
+
+6.3 Tipos de nodos
+
+| Tipo de nodo | Función | Ejemplos |
+|---|---|---|
+| Movimiento | Conecta puntos del mapa. | Calle, pasillo, cruce, camino. |
+| Cobertura | Permite protección parcial o total. | Auto, muro, árbol, chatarra, caja. |
+| Exploración | Permite buscar información o recursos. | Cuarto, cadáver, alijo, contenedor. |
+| Interacción | Tiene objeto usable. | Terminal, puerta, generador, palanca. |
+| Combate | Tiene valor táctico. | Esquina, ventana, cruce, barricada. |
+| Elevación | Modifica visión/ángulo/alcance, no es cobertura por sí misma. | Techo, balcón, escalera, pasarela. |
+| Entrada/salida | Conecta con ruta, mapa o submapa. | Puerta, túnel, salida norte. |
+| Peligro | Contiene amenaza. | Mina, fuego, gas, radiación, suelo roto. |
+| Recurso | Contiene recurso útil. | Cama, agua, taller, fogata, cultivo. |
+| Narrativo | Activa escena o misión. | Holocinta, NPC clave, objeto de misión. |
+
+Un nodo puede tener varios tipos.
+
+======================================================================
+CAPITULO 7 — COMBATE TACTICO POR NODOS
+======================================================================
+
+7.1 Secuencia de ataque
+
+| Paso | Acción |
+|---:|---|
+| 1 | Declarar atacante, arma, objetivo y nodo objetivo. |
+| 2 | Contar distancia en nodos. |
+| 3 | Confirmar línea de visión. |
+| 4 | Confirmar alcance del arma. |
+| 5 | Determinar si el defensor tiene cobertura válida. |
+| 6 | Tirar SPECIAL + habilidad contra dificultad. |
+| 7 | Si impacta, determinar parte del cuerpo afectada. |
+| 8 | Calcular daño bruto. |
+| 9 | Restar cobertura aplicable, defensa de equipo y resistencias. |
+| 10 | Aplicar daño final a PV y efecto local de parte del cuerpo. |
+| 11 | Aplicar ruido, estados, sangrado, derribo o reacción enemiga. |
+
+7.2 Cobertura, defensa y distancia
+
+La cobertura no es armadura. Protege porque bloquea, reduce o dificulta la línea de tiro.
+La elevación no es cobertura; es condición táctica de ángulo, visión y alcance.
+
+| Tipo de cobertura | Ejemplos | DEF a 1 nodo | DEF a 2 nodos | DEF a 3 nodos | DEF a 4+ nodos | Notas |
+|---|---|---:|---:|---:|---:|---|
+| Sin cobertura | Calle abierta, plaza, pasillo limpio | +0 | +0 | +0 | +0 | No protege. |
+| Ligera | Árbol delgado, puerta rota, caja pequeña, mueble débil, cerca baja | +1 | +1 | +2 | +2 | Débil de cerca; útil a distancia. |
+| Media | Auto abandonado, muro bajo, mostrador, pila de cajas, chatarra compacta | +1 | +2 | +3 | +3 | Defensa estándar. |
+| Pesada | Contenedor, muro grueso, barricada sólida, esquina, columna grande | +2 | +3 | +4 | +4 | Muy fuerte contra disparo frontal. |
+| Total | Pared completa, interior cerrado, esquina sin línea directa, puerta sólida | Bloquea | Bloquea | Bloquea | Bloquea | No hay ataque directo salvo flanqueo, destrucción, apertura o explosivo. |
+| Destructible | Puerta, madera, caja, barricada débil, auto dañado | Según material | Según material | Según material | Según material | Usa ligera/media/pesada pero puede romperse. |
+| Peligrosa | Auto con combustible, barril, generador, reactor, tanque | +1 a +3 | +1 a +3 | +1 a +3 | +1 a +3 | Protege, pero puede explotar o causar efecto. |
+
+7.3 Flanqueo y elevación
+
+| Situación | Efecto |
+|---|---|
+| Ataque frontal | Aplica cobertura completa. |
+| Ataque lateral parcial | Reduce cobertura en 1 DEF. |
+| Retaguardia o flanqueo claro | Niega cobertura ligera/media. |
+| Cobertura total flanqueada | Deja de bloquear si aparece línea clara. |
+| Ataque desde elevación con buen ángulo | Reduce cobertura en 1 DEF si la ficción lo permite. |
+
+7.4 Cobertura contra tipos de ataque
+
+| Ataque | Cómo interactúa con cobertura |
+|---|---|
+| Balístico directo | Aplica cobertura si está entre atacante y defensor. |
+| Energía directa | Aplica cobertura; algunos efectos pueden dañar cobertura si el arma lo indica. |
+| Cuerpo a cuerpo | La cobertura solo importa si impide entrar al mismo nodo o bloquea paso. |
+| Escopeta a 1 nodo | Cobertura ligera no basta si hay línea clara; cobertura media/pesada sí aplica. |
+| Explosivo | Apunta a nodo; cobertura frontal puede no proteger si el explosivo cae dentro o detrás. |
+| Molotov/fuego | Cobertura no inflamable protege mejor; cobertura inflamable puede prenderse. |
+| Gas/radiación | La cobertura física no protege salvo sellado, máscara, servoarmadura o refugio. |
+
+Regla:
+Una cobertura destructible tiene DEF mientras existe. Si recibe daño acumulado igual o superior a sus PV de cobertura, baja un grado o se destruye.
+
+| Cobertura destructible | Cobertura equivalente | PV cobertura | Al destruirse | Notas |
+|---|---|---:|---|---|
+| Caja pequeña / mueble débil | Ligera | 6 PV | Desaparece | Rompible con disparos, melee o explosivo menor. |
+| Puerta de madera / cerca simple | Ligera | 8 PV | Se abre/rompe | Puede seguir como obstáculo narrativo. |
+| Barricada improvisada | Media | 14 PV | Baja a ligera o se rompe | Hecha con tablas, basura o muebles. |
+| Pila de cajas / chatarra suelta | Media | 16 PV | Baja a ligera | Puede dejar loot o terreno difícil. |
+| Auto abandonado muy dañado | Media | 22 PV | Baja a peligrosa o arde | Si tiene combustible puede explotar. |
+| Auto abandonado completo | Media/Pesada | 30 PV | Baja a media o peligrosa | Buen nodo de cobertura urbana. |
+| Contenedor metálico delgado | Pesada | 36 PV | Baja a media | Armas pesadas/explosivos lo dañan mejor. |
+| Muro de ladrillo parcial | Pesada | 42 PV | Abre línea parcial | Puede crear escombros. |
+| Barricada sólida / saco de arena | Pesada | 45 PV | Baja a media | Difícil de destruir con armas ligeras. |
+| Generador / barril / tanque peligroso | Peligrosa | 12-30 PV | Explota o libera efecto | Usar tabla de peligro de escena. |
+
+Reglas de daño a cobertura:
+
+| Ataque | Efecto contra cobertura |
+|---|---|
+| Arma ligera | Daño normal solo si la ficción permite dañar el material. |
+| Arma media/rifle | Daño normal contra madera, muebles, puertas y chatarra ligera. |
+| Arma pesada | Daño completo contra casi toda cobertura destructible. |
+| Explosivo | Daño completo al nodo de cobertura; puede afectar nodos adyacentes. |
+| Fuego/molotov | Daña materiales inflamables; poco efectivo contra metal o piedra. |
+| Melee | Solo contra cobertura cercana y material razonable. |
+
+7.6 Cálculo de daño
+
+Formula core:
+Daño final = Daño bruto del arma + bonos - DEF de cobertura aplicable - DEF/Resistencia de pieza equipada - reducción por perk/estado.
+
+Reglas:
+- El daño final nunca baja de 0.
+- Si impacta pero el daño final es 0, puede causar ruido, presión, pérdida de cobertura, retroceso o daño superficial si la escena lo justifica.
+- Primero se aplica cobertura contra el impacto; si el ataque supera la ficción de la cobertura, se aplica defensa de equipo.
+
+7.7 Tipos de defensa
+
+| Defensa | Protege contra |
+|---|---|
+| DEF física / DR | Balas, golpes, mordidas, fragmentos, melee. |
+| DEF energética / ER | Láser, plasma, electricidad, energía. |
+| DEF radiación / RR | Radiación, armas rad, ambiente radiactivo. |
+| DEF explosiva | Explosivos, granadas, minas, misiles. |
+| Cobertura | Ataques a distancia bloqueados por objeto/posición. |
+
+7.8 Partes del cuerpo humanoide
+
+Todo humanoide estándar tiene seis partes de cuerpo. Estas partes se usan para saber qué pieza de armadura protege, qué efecto local puede aparecer y qué acciones quedan afectadas.
+
+| 1d6 | Parte | Protección asociada | Acciones afectadas si queda dañada |
+|---:|---|---|---|
+| 1 | Cabeza | Casco, máscara, capucha reforzada, pieza de cabeza. | Percepción, puntería, habla, visión, concentración. |
+| 2 | Torso | Pechera, ropa reforzada, pieza de torso. | PV principal, respiración, resistencia, sangrado, estabilidad. |
+| 3 | Brazo izquierdo | Brazo izquierdo de armadura, guante, manga reforzada. | Armas a dos manos, bloqueo, herramientas, recarga, fuerza aplicada. |
+| 4 | Brazo derecho | Brazo derecho de armadura, guante, manga reforzada. | Ataque, puntería, recarga, hackeo manual, melee, uso de herramientas. |
+| 5 | Pierna izquierda | Pierna izquierda de armadura, bota, rodillera. | Movimiento, correr, saltar, sigilo, equilibrio, trepar. |
+| 6 | Pierna derecha | Pierna derecha de armadura, bota, rodillera. | Movimiento, correr, saltar, sigilo, equilibrio, trepar. |
+
+7.9 Determinación de parte impactada
+
+La parte impactada se define después de confirmar que el ataque impacta. La tirada 2d20 no determina la parte del cuerpo; el 2d20 determina si el ataque acierta y con cuántos éxitos. La parte se determina con posición, visibilidad, cobertura, tipo de ataque o una tirada 1d6.
+
+| Situación | Cómo se determina la parte impactada |
+|---|---|
+| Ataque normal sin apuntar | Tirar 1d6 en la tabla de partes del cuerpo. |
+| Ataque apuntado | El atacante declara la parte antes de tirar. Aumenta la dificultad en +1 o exige una condición favorable de línea de visión. |
+| Ataque con Momentum | Si el ataque impacta y genera Momentum suficiente, el atacante puede elegir una parte visible en lugar de tirar 1d6. |
+| Objetivo en cobertura parcial | Solo pueden impactarse partes visibles. Si el 1d6 marca una parte cubierta, se repite la tirada entre partes visibles o el ataque golpea la cobertura. |
+| Objetivo en cobertura total | No hay parte impactada porque no existe línea de ataque directa. Se debe flanquear, destruir la cobertura, abrir una ruta o usar área/explosivo. |
+| Ataque desde elevación | Puede permitir elegir entre partes superiores visibles: cabeza, torso o brazos, si la línea de visión lo permite. |
+| Ataque cuerpo a cuerpo | Normalmente impacta torso o extremidad. El atacante puede elegir parte visible con +1 dificultad. |
+| Ataque por la espalda | Puede elegir torso o una extremidad visible si el objetivo no puede defenderse o no detectó el ataque. |
+| Explosivo o área | Impacta el nodo. El objetivo recibe daño en torso y una parte aleatoria adicional si el daño final es relevante. |
+| Fuego, gas o radiación | No siempre usa parte concreta; puede afectar torso/sistema general salvo que una pieza o máscara proteja. |
+| Robot, criatura o enemigo no humanoide | Usa la tabla equivalente del Tomo 03. Si no existe, usar: cabeza/sensor, núcleo/torso, apéndices/armas, patas/movilidad. |
+
+7.10 Tabla de partes visibles según cobertura
+
+| Cobertura del objetivo | Partes normalmente visibles |
+|---|---|
+| Sin cobertura | Todas las partes pueden ser impactadas. |
+| Cobertura ligera | Cabeza, torso parcial, brazos o piernas según objeto. |
+| Cobertura media | Cabeza, brazos y parte superior del torso suelen ser visibles. Piernas pueden quedar cubiertas. |
+| Cobertura pesada | Normalmente solo cabeza, brazo de disparo o una parte expuesta. |
+| Cobertura total | Ninguna parte visible para ataque directo. |
+| Cuerpo a tierra | Cabeza, brazos y torso parcial; piernas menos expuestas si hay obstáculo. |
+| Elevación del atacante | Puede revelar cabeza, torso y brazos detrás de coberturas bajas. |
+| Flanqueo claro | La cobertura puede dejar de proteger la parte que antes estaba cubierta. |
+
+7.11 Estados por daño local
+
+| Daño final en una parte | Estado local | Efecto de juego |
+|---:|---|---|
+| 1-2 | Rasguño / golpe menor | Sin penalización mecánica estable; puede dejar marca narrativa. |
+| 3-5 | Herida | +1 dificultad a acciones que usen esa parte hasta recibir curación básica o descanso seguro. |
+| 6-8 | Parte dañada | +1 AP para acciones que dependan de esa parte o +1 dificultad, según la acción. |
+| 9+ | Parte crítica temporal | La parte pierde función durante la escena o hasta curación avanzada; puede causar caída, desarme, sangrado o incapacidad temporal. |
+
+7.12 Daño con equipo
+
+| Caso | Cómo se calcula |
+|---|---|
+| Sin equipo en la parte | Solo resta cobertura, perks o resistencia general si aplica; la parte recibe el daño restante. |
+| Con ropa ligera | Resta la DEF de la prenda si cubre esa parte. |
+| Con armadura por pieza | Resta la DEF de la pieza correspondiente: cabeza, torso, brazo izquierdo, brazo derecho, pierna izquierda o pierna derecha. |
+| Con servoarmadura | Resta la DEF de la pieza de servoarmadura; la pieza puede recibir daño antes que el piloto. |
+| Cobertura + armadura | Primero se aplica cobertura contra el ataque; si el ataque pasa, se aplica la defensa de la pieza impactada. |
+| Ataque apuntado a parte sin protección | Ignora piezas que no cubren esa parte. |
+
+Ejemplo:
+Un raider dispara desde 2 nodos con rifle de tubo. Daño bruto 7. El jugador está en cobertura media a 2 nodos (+2 DEF) y lleva pechera con DEF física 2. La parte afectada es torso.
+Daño final = 7 - 2 cobertura - 2 pechera = 3 PV. El torso recibe una herida.
+
+7.13 Alcance de armas por nodos
+
+| Tipo de ataque | Alcance en nodos | Ejemplos | Notas |
+|---|---:|---|---|
+| Sin armas | 0 | Puño, patada, garra, mordida | Requiere mismo nodo. |
+| Cuerpo a cuerpo corto | 0 | Cuchillo, machete, porra | Mismo nodo. |
+| Cuerpo a cuerpo largo | 0-1 | Lanza, garra enorme, arma improvisada larga | Solo si arma/criatura lo permite. |
+| Escopeta corta | 1 | Recortada, doble cañón cercana | Fuerte cerca; pierde eficacia lejos. |
+| Pistola | 1-2 | 10mm, pistola de tubo | Interiores y calles cortas. |
+| Subfusil/automática corta | 1-2 | Subfusil, pistola automática | Puede usar supresión. |
+| Rifle corto/láser común | 2-3 | Rifle de tubo, rifle láser | Rango medio estándar. |
+| Rifle largo | 3 | Rifle de combate, rifle de caza | Bueno en calles abiertas. |
+| Francotirador | 4+ | Rifle francotirador | Requiere línea clara. |
+| Arma pesada | 2-4+ | Minigun, lanzamisiles, Fat Man según escena | Pesada, ruidosa, peligrosa. |
+| Granada/explosivo lanzado | 1-2 | Granada, molotov | Nodo objetivo + área si aplica. |
+| Mina | Nodo colocado | Mina, trampa explosiva | Se activa al entrar/interactuar. |
+| Lanzallamas/cono | 1 | Lanzallamas | Nodo objetivo y conexión si aplica. |
+| Torreta | 2-4 | Torreta, robot fijo | Depende de línea de visión y montaje. |
+
+======================================================================
+CAPITULO 8 — INVENTARIO, PESO, MUNICION Y CHAPAS
+======================================================================
+
+8.1 Inventario
+
+El inventario se divide en:
+
+| Zona de inventario | Qué contiene |
+|---|---|
+| Equipo equipado | Armas listas, armadura puesta, ropa, casco, herramientas a mano. |
+| Mochila / carga | Objetos transportados pero no listos. |
+| Bolsillos rápidos | Objetos de acceso inmediato: Stimpak, RadAway, granada, munición. |
+| Chatarra / materiales | Recursos para reparar, construir o comerciar. |
+| Munición | Balas, células, cartuchos, misiles, núcleos. |
+| Chapas | Moneda; no pesan salvo regla opcional. |
+
+8.2 Peso y carga
+
+Regla base:
+La carga máxima depende de STR y equipo. Si la mesa no quiere cálculo duro, usar tres estados.
+
+| Estado de carga | Condición | Efecto |
+|---|---|---|
+| Ligera | Carga cómoda | Sin penalización. |
+| Pesada | Mucho equipo, armas o chatarra | +1 dificultad a correr, sigilo, trepar o nadar; puede reducir AP en escenas largas. |
+| Sobrecargada | Excede capacidad razonable | No puede correr; movimiento difícil cuesta +1 AP; sigilo casi imposible. |
+
+8.3 Munición
+
+| Regla | Aplicación |
+|---|---|
+| Disparo simple | Consume 1 munición del tipo correcto. |
+| Ráfaga corta | Consume 3 municiones o unidad equivalente. Puede mejorar daño/supresión. |
+| Ráfaga larga / automática | Consume 5+ municiones; fuerte ruido y posible desperdicio. |
+| Recarga sencilla | 2 AP. |
+| Recarga pesada/compleja | 3 AP. |
+| Sin munición | No puede disparar salvo arma alternativa, melee o acción de buscar/cambiar equipo. |
+| Munición rara | Debe controlarse por tipo: energía, misil, mini nuke, núcleos, etc. |
+
+8.4 Chapas
+
+Las chapas se ganan por:
+
+| Fuente | Chapas sugeridas |
+|---|---:|
+| Loot menor | 1-10 |
+| Contenedor común | 5-25 |
+| Saqueador/enemigo humano | 5-40 |
+| Recompensa pequeña | 25-100 |
+| Trabajo local | 50-200 |
+| Misión completa | 100-500+ |
+| Venta de armas/equipo | Según valor y tienda. |
+| Comercio de chatarra | Bajo, salvo materiales raros. |
+
+Regla:
+Las chapas son recompensa económica, no sustituyen XP. Una misión puede dar XP, chapas, reputación, acceso a tienda, aliado o asentamiento.
+
+Unidad usada:
+- UP = unidad de peso del sistema, equivalente a la lectura de peso usada por armas, armaduras, munición y objetos.
+- Capacidad máxima core = 200 + STR x 10 UP.
+
+| STR | Capacidad máxima UP | Carga ligera | Carga media | Carga pesada | Sobrecarga |
+|---:|---:|---|---|---|---|
+| 1 | 210 | 0-105 | 106-168 | 169-210 | 211+ |
+| 2 | 220 | 0-110 | 111-176 | 177-220 | 221+ |
+| 3 | 230 | 0-115 | 116-184 | 185-230 | 231+ |
+| 4 | 240 | 0-120 | 121-192 | 193-240 | 241+ |
+| 5 | 250 | 0-125 | 126-200 | 201-250 | 251+ |
+| 6 | 260 | 0-130 | 131-208 | 209-260 | 261+ |
+| 7 | 270 | 0-135 | 136-216 | 217-270 | 271+ |
+| 8 | 280 | 0-140 | 141-224 | 225-280 | 281+ |
+| 9 | 290 | 0-145 | 146-232 | 233-290 | 291+ |
+| 10 | 300 | 0-150 | 151-240 | 241-300 | 301+ |
+
+Penalizaciones por peso:
+
+| Estado de carga | Efecto core |
+|---|---|
+| Carga ligera | Sin penalización. |
+| Carga media | Sin penalización normal; puede afectar sigilo si la escena lo justifica. |
+| Carga pesada | +1 dificultad a sigilo, trepar, saltar, nadar o correr largas distancias. |
+| Sobrecarga | No puede correr; moverse 1 nodo cuesta +1 AP; viaje por ruta puede exigir descanso o descarga. |
+| Sobrecarga extrema | El Director/Juego sin GM puede exigir abandonar objetos, usar compañero, servoarmadura, carro, asentamiento o ruta segura. |
+
+Cruces:
+- Perk Strong Back modifica estos límites.
+- Servoarmadura puede aumentar carga efectiva.
+- Compañeros, caravanas, asentamientos y contenedores seguros permiten mover carga sin llevarla encima.
+
+======================================================================
+CAPITULO 9 — EQUIPO, PROTECCION Y SERVOARMADURA CORE
+======================================================================
+
+9.1 Piezas equipables
+
+| Parte | Equipo posible | Protege |
+|---|---|---|
+| Cabeza | Casco, gorra reforzada, máscara, visor | Cabeza. |
+| Torso | Pechera, ropa reforzada, chaleco, armadura | Torso. |
+| Brazo izquierdo | Brazalete, hombrera, pieza de brazo | Brazo izquierdo. |
+| Brazo derecho | Brazalete, hombrera, pieza de brazo | Brazo derecho. |
+| Pierna izquierda | Greba, rodillera, pieza de pierna | Pierna izquierda. |
+| Pierna derecha | Greba, rodillera, pieza de pierna | Pierna derecha. |
+
+9.2 Servoarmadura core
+
+La servoarmadura usa piezas equivalentes: casco, torso, brazo izquierdo, brazo derecho, pierna izquierda y pierna derecha.
+
+Regla core:
+- Requiere armazón y núcleo.
+- Aumenta protección y carga.
+- Genera ruido y mantenimiento.
+- Puede recibir daño por pieza.
+- Si una pieza se rompe, pierde protección o función.
+- El detalle completo pertenece al Tomo 05.
+
+======================================================================
+CAPITULO 10 — EXPLORACION, CIUDADES, TIENDAS Y ASENTAMIENTOS CORE
+======================================================================
+
+10.1 Ciudades
+
+| Estado de ciudad | Cómo se juega | AP |
+|---|---|---|
+| Ciudad segura | Opciones sociales: tiendas, NPC, servicios, misiones. | No se cobra por caminar normal. |
+| Ciudad restringida | Guardias, zonas cerradas, reputación, permisos. | AP solo en sigilo/infiltración/presión. |
+| Ciudad en conflicto | Ataque, persecución, combate, toque de queda. | Se activa mapa por nodos y AP. |
+
+10.2 Tiendas disponibles core
+
+| Tienda | Qué ofrece |
+|---|---|
+| Armas | Armas comunes, munición, reparación básica. |
+| Armaduras | Piezas, ropa reforzada, cascos, protección. |
+| Médico | Curación, Stimpaks, RadAway, antibióticos si Supervivencia. |
+| Comida/bebida | Agua, comida, alcohol, ingredientes. |
+| General | Chatarra, herramientas, objetos varios. |
+| Taller/asentamiento | Materiales, planos simples, reparaciones. |
+| Comerciante ambulante | Inventario variable según ruta. |
+
+10.3 Asentamientos básicos
+
+| Mecánica | Regla core |
+|---|---|
+| Control | Un asentamiento controlado no consume AP para gestión normal. |
+| Ataque | Si es atacado, se reactiva como mapa táctico por nodos. |
+| Recursos | Agua, comida, camas, defensa, energía y materiales. |
+| Población | Colonos consumen recursos y pueden producir/trabajar. |
+| Defensa | Torretas, barricadas, guardias y rutas de ataque. |
+| Construcción | Requiere materiales, tiempo y estación/taller. |
+| Comercio | Puede generar tiendas o ingresos si se desarrolla. |
+
+10.4 Estaciones de trabajo core
+
+| Estación | Uso core |
+|---|---|
+| Armas | Reparar arma común, limpiar, cambiar pieza simple. |
+| Armaduras | Reparar piezas, reforzar cuero/metal. |
+| Servoarmadura | Instalar núcleo, reparar pieza, calibrar. |
+| Química | Crear objetos médicos/químicos simples si hay receta/materiales. |
+| Cocina | Cocinar carne, hervir agua, preparar comida. |
+| Robot | Reparar robot simple o compañero robot si la mesa lo permite. |
+
+10.5 Recursos de asentamiento
+
+| Recurso | Cómo se genera |
+|---|---|
+| Agua | Bomba, purificador, fuente, comercio. |
+| Comida | Cultivos, caza, pesca, comercio. |
+| Energía | Generador, batería, núcleo, línea eléctrica. |
+| Defensa | Colonos armados, torretas, muros, trampas. |
+| Camas | Construcción y espacio seguro. |
+| Materiales | Chatarra, rutas, comercio, misiones. |
+| Chapas | Tiendas, caravanas, contratos, excedentes. |
+
+======================================================================
+CAPITULO 11 — IA ENEMIGA BASE
+======================================================================
+
+11.1 Plantilla de IA
+
+Cada enemigo importante debería tener esta ficha base. El Tomo 03 desarrolla valores completos.
+
+| Campo IA | Uso |
+|---|---|
+| Prioridad | Qué intenta lograr primero. |
+| Movimiento | Cómo se desplaza por nodos. |
+| Uso de cobertura | Si busca, ignora o destruye cobertura. |
+| Ataque preferido | Melee, distancia, granada, emboscada, supresión. |
+| Distancia ideal | 0, 1, 2, 3 o 4+ nodos. |
+| Reacción al daño | Avanza, retrocede, se cubre, huye, enloquece. |
+| Reacción al flanqueo | Cambia nodo, ataca, retrocede, ignora. |
+| Moral / huida | Si puede rendirse, huir o luchar hasta morir. |
+| Nodo favorito | Cobertura, elevación, oscuridad, agua, pasillo, puerta, etc. |
+
+11.2 Comportamiento por tipo
+
+| Tipo | Movimiento | Cobertura | Ataque | Moral |
+|---|---|---|---|---|
+| Raider | Flanquea, se cubre, busca ventaja. | Alta | Disparo, granada, melee oportunista. | Puede huir si pierde ventaja. |
+| Gunner | Táctico, controla líneas. | Alta | Disparo disciplinado, supresión. | Moral media/alta. |
+| Necrófago salvaje | Ruta corta al objetivo. | Nula | Cuerpo a cuerpo en masa. | No huye normalmente. |
+| Supermutante | Avance agresivo. | Media/baja | Armas pesadas, melee, presión. | Baja huida; alta agresión. |
+| Robot | Movimiento lógico por línea de visión. | Variable | Energía, torreta, pulso, melee mecánico. | No huye salvo protocolo. |
+| Criatura animal | Usa terreno natural. | Baja | Mordida, salto, emboscada. | Huye si herida según especie. |
+| Mirelurk | Usa agua/orilla y caparazón. | Natural | Emboscada, pinza, carga. | Defiende territorio. |
+| Francotirador | Busca elevación y distancia. | Alta | Disparo largo. | Reposiciona si es flanqueado. |
+
+======================================================================
+CAPITULO 12 — CLIMA, ESTADOS Y EFECTOS NEGATIVOS
+======================================================================
+
+12.1 Clima core y efectos tácticos
+
+Esta tabla funciona en Campaña y Modo Libre. Efectos severos completos van al Tomo 10.
+
+| Clima | Ventaja posible | Desventaja posible | Efecto sobre armas/equipo |
+|---|---|---|---|
+| Soleado/despejado | Buena visibilidad. | Exposición en campo abierto. | Sin cambio. |
+| Nublado | Menos brillo, mejor sigilo leve. | Menor contraste a distancia. | Sin cambio. |
+| Lluvia ligera | Borra rastros viejos, oculta ruido leve. | +1 dificultad a disparos de 3+ nodos si hay mala visión. | Molotov/lanzallamas reducen daño en 10-25% si el objetivo o zona está mojada. |
+| Niebla ligera | Facilita ocultarse. | +1 dificultad a ataques a 3+ nodos. | Binoculares/observación lejana limitados. |
+| Viento fuerte | Puede cubrir ruido. | +1 dificultad a granadas/proyectiles a 2+ nodos si aplica. | Fuego puede propagarse o desviarse según escena. |
+| Polvo/ceniza | Oculta movimiento. | +1 dificultad a PER visual y disparos largos. | Puede ensuciar armas/equipo en escenas largas. |
+| Nieve ligera | Huellas visibles. | Visión lejana reducida. | Frío real solo si Supervivencia/Tomo 10. |
+| Tormenta radiactiva especial | Presión narrativa fuerte. | Buscar refugio se vuelve prioridad. | Radiación completa se resuelve con Tomo 10. |
+
+12.2 Efectos negativos por combate
+
+| Estado | Origen | Efecto core |
+|---|---|---|
+| Sangrado | Corte, bala, crítico, explosivo | Pierde PV por turno/escena hasta curar o vendar. |
+| Aturdido | Golpe cabeza, explosión, shock | Pierde acción, AP o aumenta dificultad temporal. |
+| Derribado | Explosión, empujón, golpe fuerte | Debe levantarse; moverse cuesta más. |
+| Parte dañada | Daño local 6+ | Penaliza acciones con esa parte. |
+| Quemadura | Fuego, molotov, lanzallamas | Daño continuo o penalización hasta apagar/tratar. |
+| Envenenado | Criatura, químico, comida | Daño/penalización hasta antídoto o tratamiento. |
+| Desorientado | Shock, droga, explosión | Penaliza PER/INT o línea de acción. |
+
+12.3 Efectos negativos por objetos
+
+| Objeto/causa | Efecto posible |
+|---|---|
+| Droga/chem | Adicción, bajón, penalización posterior. |
+| Alcohol | Penaliza precisión, mejora resistencia social según escena. |
+| Comida contaminada | Radiación/enfermedad si Supervivencia. |
+| Agua sucia | Radiación leve; sed si Supervivencia. |
+| RadAway | Reduce radiación; puede causar fatiga si Supervivencia. |
+| Sobrecarga de peso | Penaliza movimiento, sigilo y AP en rutas largas. |
+
+======================================================================
+Nombre definitivo de minicampaña:
+Campo de Entrenamiento Garvey
+
+Subtítulo:
+Cinco lecciones para sobrevivir en la Commonwealth
+
+Uso:
+Minicampaña tutorial del Tomo 01 para enseñar movimiento por nodos, AP, cobertura, exploración, combate, loot, diálogo, defensa corta y recompensas.
+
+Sinopsis definitiva:
+Preston Garvey necesita comprobar si el grupo puede sobrevivir fuera de una zona segura. La misión empieza como entrenamiento, pero pronto se convierte en una emergencia real: una ruta cercana ha sido saqueada, una casa abandonada esconde señales de supervivientes, y un pequeño grupo hostil usa las ruinas como punto de emboscada. El grupo deberá rastrear, explorar, combatir y decidir si protege a los necesitados o se queda solo con el botín.
+
+Misiones definitivas:
+
+| Código | Nombre definitivo | Tipo | Regla que enseña |
+|---|---|---|---|
+| CG-01 | Primer recorrido | Movimiento | Nodos, ruta directa, ruta alternativa y gasto AP. |
+| CG-02 | La casa saqueada | Exploración | Revisar entorno, loot, cerradura, alijo y pista. |
+| CG-03 | Ruido en la ruta | Combate | Distancia por nodos, cobertura, daño local y enemigos menores. |
+| CG-04 | La decisión de Garvey | Social/narrativa | Diálogo, recompensa, reputación, ayuda o egoísmo. |
+| CG-05 | Defensa del punto seguro | Defensa táctica | Preparar cobertura, resistir ataque, IA enemiga y final. |
+
+Ubicaciones definitivas de la minicampaña:
+
+| Código | Ubicación | Tipo | Uso táctico |
+|---|---|---|---|
+| CG-U01 | Punto seguro Garvey | Asentamiento temporal/tutorial | Inicio, curación básica, briefing y recompensa. |
+| CG-U02 | Ruta polvorienta | Ruta explorable | Movimiento, clima leve, rastreo y emboscada. |
+| CG-U03 | Casa saqueada | Submapa interior | Loot, cerradura, alijo, nota y posible trampa. |
+| CG-U04 | Cruce de chatarra | Combate/cobertura | Autos, cajas, flanqueo, distancia y línea de visión. |
+| CG-U05 | Barricada final | Defensa | Cobertura destructible, granada, retirada y victoria. |
+
+Recompensas core:
+
+| Resultado | Recompensa sugerida |
+|---|---|
+| Completar CG-01 | XP baja + conocimiento de ruta. |
+| Completar CG-02 | Loot menor + pista + posible ganzúa o munición. |
+| Completar CG-03 | XP de combate + arma básica o munición. |
+| Completar CG-04 ayudando | Reputación local + chapas moderadas. |
+| Completar CG-04 cobrando | Más chapas, menor reputación. |
+| Completar CG-05 | XP final + acceso a punto seguro + recompensa Garvey. |
+
+======================================================================
+CAPITULO 14 — FICHAS RAPIDAS BASICAS
+======================================================================
+
+Estas fichas son core rápido. No reemplazan Tomo 04 ni Tomo 05.
+
+14.1 Armas rápidas del Tomo 01
+Regla:
+Esta tabla solo contiene armas rápidas del Tomo 01. El daño numérico se toma del Tomo 04 como referencia core. Las armas completas, mods, variantes, legendarias, precios amplios y balance fino permanecen en Tomo 04.
+
+| Arma rápida Tomo 01 | Tipo | Daño final core tomado del Tomo 04 | Munición | AP ataque Tomo 01 | Alcance nodos Tomo 01 | Nota core |
+|---|---|---:|---|---:|---:|---|
+| 10mm Pistol | Pistola balística | 18 físico | 10mm | 3 AP | 1-2 | Pistola inicial versátil. |
+| Pipe Pistol | Pistola improvisada | 13 físico | .38 | 3 AP | 1-2 | Muy común y barata. |
+| Pipe Rifle | Rifle improvisado | 13 físico | .38 | 4 AP | 2-3 | Pipe gun convertida a rifle. |
+| Pipe Bolt-Action Rifle | Rifle cerrojo improvisado | 34 físico | .308 | 4 AP | 3 | Sniper económico temprano. |
+| Double-Barrel Shotgun | Escopeta | 45 físico/pellets | Shell | 4 AP | 1 | Brutal a corta distancia; 2 tiros. |
+| Combat Shotgun | Escopeta semiauto | 50 físico/pellets | Shell | 4 AP | 1-2 | Fuerte en interiores. |
+| Hunting Rifle | Rifle cerrojo | 37 físico | .308 | 4 AP | 3 | Rifle clásico de largo alcance. |
+| Combat Rifle | Rifle | 33 físico | .45 | 4 AP | 2-3 | Rifle general fiable. |
+| Láser Pistol | Pistola energía | 24 energía | Fusion cell | 3 AP | 1-2 | Pistola de energía común. |
+| Láser Rifle | Rifle energía | 24 energía | Fusion cell | 4 AP | 2-3 | Energía fiable y modificable. |
+| Láser Musket | Rifle energía Minutemen | 30 energía por crank ref. | Fusion cell | 4 AP o más | 3 | Arma Minutemen; puede requerir carga. |
+| Baseball Bat | Melee contundente | 25 físico | No usa | 3 AP | 0 | Mismo nodo. |
+| Combat Knife | Melee filo | 15 físico | No usa | 3 AP | 0 | Sigilo y ataques rápidos. |
+| Machete | Melee filo | 20 físico | No usa | 3 AP | 0 | Arma melee común. |
+| Fragmentation grenade | Explosivo arrojadizo | 150 físico/área | Consumible | 4 AP | 1-2 | Nodo objetivo; fuego amigo posible. |
+| Molotov cocktail | Fuego arrojadizo | 150 fuego/área ref. | Consumible | 4 AP | 1-2 | Fuego/área; afectado por lluvia y entorno. |
+
+14.2 Curación y objetos básicos
+
+| Objeto | Uso | AP |
+|---|---|---:|
+| Stimpak | Recupera PV / estabiliza herida simple. | 3 |
+| Venda | Controla sangrado leve/medio. | 2-3 |
+| RadAway | Reduce radiación. | 3 o escena |
+| Rad-X | Prevención/radiación. | 2 |
+| Agua purificada | Recuperación básica / sed si Supervivencia. | 2 |
+| Comida simple | Recuperación menor / hambre si Supervivencia. | 2 |
+| Herramienta básica | Reparación, abrir, cortar, ajustar. | Variable |
+| Ganzúa | Abrir cerraduras. | Según acción |
+| Linterna/Pip-Boy luz | Iluminar nodo cercano. | 1 |
+
+======================================================================
+CAPITULO 15 — GLOSARIO Y TABLAS MAESTRAS
+======================================================================
+
+Glosario mínimo:
+
+| Término | Definición |
+|---|---|
+| AP | Puntos de Acción. Recurso para actuar en turno. |
+| Nodo | Punto táctico del mapa ocupable o recorrible. |
+| Submapa | Red de nodos dentro de una ubicación. |
+| Ubicación | Punto grande del mundo: ciudad, ruina, vault, asentamiento, ruta o edificio. |
+| Mapamundi | Red de ubicaciones conectadas por rutas. |
+| Cobertura | Objeto o posición que dificulta, reduce o bloquea ataques. |
+| Elevación | Condición de altura; da ángulo, visión o alcance, pero no cobertura automática. |
+| Línea de visión | Condición que permite ver y atacar desde un nodo a otro. |
+| Parte del cuerpo | Zona impactada por un ataque: cabeza, torso, brazo izquierdo, brazo derecho, pierna izquierda o pierna derecha. |
+| Perk | Ventaja o habilidad especial obtenida por progresión. |
+| Momentum | Éxitos sobrantes después de superar la dificultad de una tirada 2d20. |
+| Daño bruto | Daño base del arma antes de restar cobertura, armadura o resistencias. |
+| Daño final | Daño que queda después de aplicar cobertura, defensa de pieza, resistencias y bonos/reducciones. |
+

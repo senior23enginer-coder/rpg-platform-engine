@@ -4,11 +4,14 @@ import {
   BookOpen,
   Dice5,
   Folder,
+  Headphones,
   Home,
   LogOut,
   Map,
+  MessageCircle,
   Newspaper,
   Plus,
+  ScrollText,
   Settings,
   ShieldCheck,
   UserCog,
@@ -20,6 +23,8 @@ import type { LanguageCode } from "../types/profile";
 type Props = {
   active: Screen;
   appVersion: string;
+  platformName?: string;
+  releaseChannel?: string;
   assetOverrides?: Record<string, string>;
   isAdmin?: boolean;
   language?: LanguageCode;
@@ -33,6 +38,9 @@ const items: Array<{ id: Screen; labelKey: Parameters<typeof t>[1]; hintKey: Par
   { id: "newGame", labelKey: "nav.newGame", hintKey: "nav.newGameHint", icon: <Plus /> },
   { id: "load", labelKey: "nav.load", hintKey: "nav.loadHint", icon: <Archive /> },
   { id: "dice", labelKey: "nav.dice", hintKey: "nav.diceHint", icon: <Dice5 /> },
+  { id: "rules", labelKey: "nav.rules", hintKey: "nav.rulesHint", icon: <ScrollText /> },
+  { id: "chat", labelKey: "nav.chat", hintKey: "nav.chatHint", icon: <MessageCircle /> },
+  { id: "support", labelKey: "nav.support", hintKey: "nav.supportHint", icon: <Headphones /> },
   { id: "settings", labelKey: "nav.settings", hintKey: "nav.settingsHint", icon: <Settings /> },
   { id: "files", labelKey: "nav.files", hintKey: "nav.filesHint", icon: <Folder /> },
 ];
@@ -44,7 +52,10 @@ const adminItems: Array<{ id: Screen; labelKey: Parameters<typeof t>[1]; hintKey
   { id: "adminUsers", labelKey: "nav.adminUsers", hintKey: "nav.adminUsersHint", icon: <UserCog /> },
   { id: "adminNotifications", labelKey: "nav.adminNotifications", hintKey: "nav.adminNotificationsHint", icon: <Bell /> },
   { id: "adminNews", labelKey: "nav.adminNews", hintKey: "nav.adminNewsHint", icon: <Newspaper /> },
-  { id: "settings", labelKey: "nav.settings", hintKey: "nav.settingsHint", icon: <Settings /> },
+  { id: "rules", labelKey: "nav.rules", hintKey: "nav.rulesHint", icon: <ScrollText /> },
+  { id: "adminSupport", labelKey: "nav.adminSupport", hintKey: "nav.adminSupportHint", icon: <Headphones /> },
+  { id: "chat", labelKey: "nav.chat", hintKey: "nav.chatHint", icon: <MessageCircle /> },
+  { id: "adminSettings", labelKey: "nav.settings", hintKey: "nav.adminSettingsHint", icon: <Settings /> },
 ];
 
 const uiuxIconByScreen: Partial<Record<Screen | "exit", string>> = {
@@ -53,7 +64,11 @@ const uiuxIconByScreen: Partial<Record<Screen | "exit", string>> = {
   newGame: "/platform/uiux-icons/newGame.png",
   load: "/platform/uiux-icons/load.png",
   dice: "/platform/uiux-icons/dice.png",
+  rules: "/platform/uiux-icons/rules.png",
+  chat: "/platform/uiux-icons/files.png",
+  support: "/platform/uiux-icons/files.png",
   settings: "/platform/uiux-icons/settings.png",
+  adminSettings: "/platform/uiux-icons/settings.png",
   files: "/platform/uiux-icons/files.png",
   admin: "/platform/uiux-icons/settings.png",
   adminGames: "/platform/uiux-icons/library.png",
@@ -61,11 +76,12 @@ const uiuxIconByScreen: Partial<Record<Screen | "exit", string>> = {
   adminUsers: "/platform/uiux-icons/settings.png",
   adminNotifications: "/platform/uiux-icons/settings.png",
   adminNews: "/platform/uiux-icons/files.png",
+  adminSupport: "/platform/uiux-icons/files.png",
   exit: "/platform/uiux-icons/exit.png",
 };
 
-export function Sidebar({ active, appVersion, assetOverrides, isAdmin = false, language = "es", onChange, onExit }: Props) {
-  const useUiuxRail = active === "settings";
+export function Sidebar({ active, appVersion, platformName = "RPG Platform Engine", releaseChannel = "Estable", assetOverrides, isAdmin = false, language = "es", onChange, onExit }: Props) {
+  const useUiuxRail = false;
   const visibleItems = isAdmin ? adminItems : items;
 
   return (
@@ -75,7 +91,7 @@ export function Sidebar({ active, appVersion, assetOverrides, isAdmin = false, l
           {useUiuxRail ? <img src={assetOverrides?.["platform.logo"] ?? "/platform/uiux-icons/brand-gear.png"} alt="" /> : <Settings size={40} />}
         </div>
         <div>
-          <h1>RPG Platform Engine</h1>
+          <h1>{platformName}</h1>
           <p>{t(language, "brand.shortTagline")}</p>
         </div>
       </div>
@@ -109,8 +125,8 @@ export function Sidebar({ active, appVersion, assetOverrides, isAdmin = false, l
       </nav>
 
       <div className="version-row">
-        <span>{t(language, "nav.version")} {appVersion}</span>
-        <span className="stable-dot">{t(language, "nav.stable")}</span>
+        <span>{releaseChannel} {appVersion}</span>
+        <span className="stable-dot">{releaseChannel}</span>
       </div>
     </aside>
   );

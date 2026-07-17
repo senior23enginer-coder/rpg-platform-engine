@@ -10,6 +10,8 @@ import {
   FolderKanban,
   Gamepad2,
   Globe2,
+  Headphones,
+  Eye,
   Image,
   KeyRound,
   LockKeyhole,
@@ -30,8 +32,9 @@ import {
   Users,
 } from "lucide-react";
 import type { Campaign, ContentItem, GameConfig } from "../types/game";
-import type { AppNewsEntry, AppNotificationEntry } from "../lib/appMetadataStorage";
+import type { AppNewsEntry, AppNotificationEntry, AppSupportTicket } from "../lib/appMetadataStorage";
 import type { PlayerProfile } from "../types/profile";
+import { resolveUserAsset } from "../lib/userLibrary";
 import { MapEditor } from "./MapEditor";
 import { NewsEditor } from "./NewsEditor";
 import { NotificationEditor } from "./NotificationEditor";
@@ -44,6 +47,7 @@ type Props = {
   activeUserId: string;
   news: AppNewsEntry[];
   notifications: AppNotificationEntry[];
+  supportTickets: AppSupportTicket[];
   onSelectGame: (gameId: string) => void;
   onUpdateGame: (game: GameConfig) => void;
   onUpdateGames: (games: GameConfig[]) => void;
@@ -121,6 +125,7 @@ export function AdminScreen({
   activeUserId,
   news,
   notifications,
+  supportTickets,
   onSelectGame,
   onUpdateGame,
   onUpdateGames,
@@ -134,6 +139,11 @@ export function AdminScreen({
   const [userDraft, setUserDraft] = useState({ username: "", email: "", password: "", role: "user" as "user" | "admin" });
   const [userSearch, setUserSearch] = useState("");
   const [userRoleFilter, setUserRoleFilter] = useState<"all" | "admin" | "user">("all");
+  const [selectedUserId, setSelectedUserId] = useState(activeUserId);
+  const [userEditorMode, setUserEditorMode] = useState<"list" | "create" | "edit">("list");
+  const [gameSearch, setGameSearch] = useState("");
+  const [gameEditorOpen, setGameEditorOpen] = useState(false);
+  const [mapEditorOpen, setMapEditorOpen] = useState(false);
   const totals = useMemo(() => {
     const campaigns = games.reduce((sum, game) => sum + game.campaigns.length, 0);
     const content = games.reduce((sum, game) => sum + Object.values(game.content).flat().length, 0);
@@ -157,6 +167,10 @@ export function AdminScreen({
   const gamesWithoutCampaigns = games.filter((game) => game.campaigns.length === 0).length;
   const adminUsers = users.filter((user) => user.role === "admin").length;
   const operatorUsers = users.length - adminUsers;
+  const connectedUsers = users.filter((user) => user.signedIn || user.id === activeUserId).length;
+  const usersInGame = users.filter((user) => user.saves.length > 0 || user.history.length > 0).length;
+  const openSupportTickets = supportTickets.filter((ticket) => !["resolved", "closed"].includes(ticket.status)).length;
+  const urgentSupportTickets = supportTickets.filter((ticket) => ticket.priority === "high" || ticket.priority === "critical").length;
   const filteredUsers = useMemo(() => {
     const query = userSearch.trim().toLowerCase();
     return users.filter((user) => {
@@ -170,6 +184,16 @@ export function AdminScreen({
       return matchesRole && matchesQuery;
     });
   }, [userRoleFilter, userSearch, users]);
+  const filteredGames = useMemo(() => {
+    const query = gameSearch.trim().toLowerCase();
+    if (!query) return games;
+    return games.filter((game) =>
+      [game.name, game.short, game.id, game.category]
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(query))
+    );
+  }, [gameSearch, games]);
+  const selectedUser = users.find((user) => user.id === selectedUserId) ?? filteredUsers[0] ?? users[0];
   const adminReadiness = Math.round(
     (((totals.enabledGames > 0 ? 1 : 0) +
       (totals.campaigns > 0 ? 1 : 0) +
@@ -225,6 +249,14 @@ export function AdminScreen({
       meta: `${publishedNews} publicadas / ${scheduledNews} agenda`,
       status: news.length > 0 ? "Contenido activo" : "Sin publicaciones",
     },
+    {
+      icon: <Headphones size={26} />,
+      label: "Soporte tecnico",
+      description: "Gestiona tickets, asistencia por chat, prioridades y seguimiento operativo.",
+      metric: `${openSupportTickets}`,
+      meta: `${urgentSupportTickets} urgentes`,
+      status: openSupportTickets > 0 ? "Atencion requerida" : "Sin pendientes",
+    },
   ];
   const showOverview = module === "overview";
   const showGames = module === "games";
@@ -232,13 +264,45 @@ export function AdminScreen({
   const showUsers = module === "users";
   const showNotifications = module === "notifications";
   const showNews = module === "news";
-  const showGameSelector = showGames || showMaps;
+  const showGameSelector = false;
+  const moduleHeader = {
+    overview: {
+      icon: <ShieldCheck size={34} />,
+      title: "Panel administrador",
+      subtitle: "Centro de mando para juegos, mapas, usuarios, noticias y notificaciones.",
+    },
+    games: {
+      icon: <BookOpen size={34} />,
+      title: "Editar juegos",
+      subtitle: "Selecciona un juego y edita su configuracion, imagenes, campanas y contenido.",
+    },
+    maps: {
+      icon: <Map size={34} />,
+      title: "Editor de mapas",
+      subtitle: "Carga imagenes, descompone grillas y ajusta mapas tacticos comunes.",
+    },
+    users: {
+      icon: <Users size={34} />,
+      title: "Usuarios y accesos",
+      subtitle: "Administra cuentas, roles, correos y credenciales locales.",
+    },
+    notifications: {
+      icon: <Bell size={34} />,
+      title: "Notificaciones",
+      subtitle: "Crea avisos Android/iPhone, programa envios y segmenta destinatarios.",
+    },
+    news: {
+      icon: <Newspaper size={34} />,
+      title: "Noticias y actualizaciones",
+      subtitle: "Gestiona publicaciones que alimentan el sistema de noticias.",
+    },
+  }[module];
 
   if (!activeGame) {
     return (
       <section className="screen-panel admin-screen">
         <div className="screen-heading admin-heading">
-          <h2>Modo administrador</h2>
+          <h2>{moduleHeader.icon} {moduleHeader.title}</h2>
           <p>No hay juegos cargados para administrar.</p>
         </div>
         <button className="green-button" onClick={onAddGame}><Plus size={16} /> Crear primer juego</button>
@@ -339,7 +403,18 @@ export function AdminScreen({
       level: userDraft.role === "admin" ? 99 : 1,
     };
     onUpdateUsers([nextUser, ...users]);
+    setSelectedUserId(nextUser.id);
+    setUserEditorMode("edit");
     setUserDraft({ username: "", email: "", password: "", role: "user" });
+  }
+
+  function formatDate(value?: string) {
+    if (!value) return "Sin registro";
+    return new Date(value).toLocaleString();
+  }
+
+  function resolveGameName(gameId?: string) {
+    return games.find((game) => game.id === gameId)?.name ?? gameId ?? "Sin juego";
   }
 
   function toggleGameEnabled(gameId: string) {
@@ -350,7 +425,8 @@ export function AdminScreen({
     <section className="screen-panel admin-screen">
       <div className="screen-heading admin-heading">
         <div>
-          <h2><ShieldCheck size={34} /> Modo administrador</h2>
+          <h2>{moduleHeader.icon} {moduleHeader.title}</h2>
+          <p>{moduleHeader.subtitle}</p>
         </div>
         <button onClick={onBack}>Volver</button>
       </div>
@@ -361,7 +437,7 @@ export function AdminScreen({
             <div>
               <small>Centro de mando</small>
               <strong>{adminReadiness}% listo</strong>
-              <p>Resumen operativo de biblioteca, mapas, usuarios, noticias y avisos programados.</p>
+              <p>Resumen operativo de biblioteca, mapas, usuarios, tickets, noticias y avisos programados.</p>
             </div>
             <div className="admin-command-ring" aria-label={`${adminReadiness}% de preparacion`}>
               <span>{adminReadiness}</span>
@@ -383,13 +459,25 @@ export function AdminScreen({
 
           <article className="admin-card admin-ops-card">
             <div className="admin-panel-title compact">
-              <strong><CalendarClock size={18} /> Cola editorial</strong>
-              <span className="admin-status-pill amber">{scheduledNews + scheduledNotifications}</span>
+              <strong><Users size={18} /> Usuarios y sesiones</strong>
+              <span className="admin-status-pill">{connectedUsers} conectados</span>
+            </div>
+            <div className="admin-ops-list">
+              <span><Activity size={16} /> {connectedUsers} usuarios conectados ahora</span>
+              <span><Gamepad2 size={16} /> {usersInGame} usuarios en partida o sesion</span>
+              <span><Headphones size={16} /> {openSupportTickets} tickets de soporte abiertos</span>
+            </div>
+          </article>
+
+          <article className="admin-card admin-ops-card admin-support-ops-card">
+            <div className="admin-panel-title compact">
+              <strong><CalendarClock size={18} /> Cola operativa</strong>
+              <span className="admin-status-pill amber">{scheduledNews + scheduledNotifications + openSupportTickets}</span>
             </div>
             <div className="admin-ops-list">
               <span><Newspaper size={16} /> {publishedNews} noticias publicadas</span>
               <span><Bell size={16} /> {scheduledNotifications} notificaciones programadas</span>
-              <span><AlertTriangle size={16} /> {gamesWithoutCampaigns} juegos sin campana</span>
+              <span><AlertTriangle size={16} /> {urgentSupportTickets} tickets urgentes</span>
             </div>
           </article>
 
@@ -422,10 +510,22 @@ export function AdminScreen({
       <div className={`admin-layout ${showGameSelector ? "" : "admin-layout-single"}`}>
         {showGameSelector && <aside className="admin-game-list">
           <div className="admin-panel-title">
-            <strong>Gestor de juegos</strong>
+            <strong>Juegos disponibles</strong>
             <button className="green-button" onClick={onAddGame}><Plus size={15} /> Nuevo</button>
           </div>
-          {games.map((game) => (
+          <label className="admin-game-search">
+            <Search size={16} />
+            <input value={gameSearch} onChange={(event) => setGameSearch(event.target.value)} placeholder="Buscar juego" />
+          </label>
+          <label className="admin-game-select">
+            <span>Juego activo</span>
+            <select value={activeGame.id} onChange={(event) => onSelectGame(event.target.value)}>
+              {games.map((game) => (
+                <option key={game.id} value={game.id}>{game.name}</option>
+              ))}
+            </select>
+          </label>
+          {filteredGames.map((game) => (
             <article
               key={game.id}
               className={`admin-game-manager-card ${game.id === activeGame.id ? "selected" : ""} ${game.enabled === false ? "disabled" : ""}`}
@@ -441,12 +541,77 @@ export function AdminScreen({
               </button>
             </article>
           ))}
+          {filteredGames.length === 0 && <div className="admin-empty-state"><Search size={18} /><strong>Sin juegos</strong><span>Cambia la busqueda.</span></div>}
         </aside>}
 
         <div className="admin-workbench">
-          {showGames && <article className="admin-card admin-game-manager-summary">
+          {showGames && <article className="admin-card admin-data-manager admin-game-table-manager">
             <div className="admin-panel-title">
-              <strong><BookOpen size={18} /> Administrador de biblioteca</strong>
+              <div>
+                <strong><BookOpen size={18} /> Juegos disponibles</strong>
+                <p>Filtra, selecciona y carga el editor del juego que quieres configurar.</p>
+              </div>
+              <button className="green-button" onClick={() => { onAddGame(); setGameEditorOpen(true); }}><Plus size={15} /> Crear juego</button>
+            </div>
+            <div className="admin-data-toolbar">
+              <label><Search size={17} /><input value={gameSearch} onChange={(event) => setGameSearch(event.target.value)} placeholder="Buscar juego, sigla, categoria o ID" /></label>
+              <label>
+                <SlidersHorizontal size={17} />
+                <select value="all" onChange={() => undefined}>
+                  <option value="all">Todos los juegos</option>
+                </select>
+              </label>
+            </div>
+            <section className="admin-table-wrap">
+              <table className="admin-data-table">
+                <thead>
+                  <tr>
+                    <th>Juego</th>
+                    <th>Categoria</th>
+                    <th>Campanas</th>
+                    <th>Estado</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredGames.map((game) => (
+                    <tr key={game.id} className={game.id === activeGame.id && gameEditorOpen ? "selected" : ""}>
+                      <td><strong>{game.name}</strong><small>{game.short} - {game.id}</small></td>
+                      <td>{game.category || "Sin categoria"}</td>
+                      <td>{game.campaigns.length}</td>
+                      <td><span className={game.enabled === false ? "admin-status-pill amber" : "admin-status-pill"}>{game.enabled === false ? "Inactivo" : "Activo"}</span></td>
+                      <td className="admin-row-actions">
+                        <button onClick={() => { onSelectGame(game.id); setGameEditorOpen(true); }}><Eye size={15} /> Ver</button>
+                        <button onClick={() => toggleGameEnabled(game.id)}>{game.enabled === false ? <ToggleLeft size={15} /> : <ToggleRight size={15} />}{game.enabled === false ? "Activar" : "Desactivar"}</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {filteredGames.length === 0 && <div className="admin-empty-state"><Search size={20} /><strong>Sin juegos</strong><span>Cambia los filtros o crea un juego.</span></div>}
+            </section>
+          </article>}
+
+          {showGames && gameEditorOpen && <article className="admin-card admin-game-focus">
+            <div>
+              <small>Juego seleccionado</small>
+              <h3>{activeGame.name}</h3>
+              <p>{activeGame.description}</p>
+            </div>
+            <div className="admin-game-focus-actions">
+              <span className={activeGame.enabled === false ? "admin-status-pill amber" : "admin-status-pill"}>
+                {activeGame.enabled === false ? "Inactivo" : "Activo"}
+              </span>
+              <button className={activeGame.enabled === false ? "" : "selected"} onClick={() => toggleGameEnabled(activeGame.id)}>
+                {activeGame.enabled === false ? <ToggleLeft size={17} /> : <ToggleRight size={17} />}
+                {activeGame.enabled === false ? "Activar juego" : "Desactivar juego"}
+              </button>
+            </div>
+          </article>}
+
+          {showGames && gameEditorOpen && <article className="admin-card admin-game-manager-summary">
+            <div className="admin-panel-title">
+              <strong><BookOpen size={18} /> Estado de biblioteca</strong>
               <button className="green-button" onClick={onAddGame}><Plus size={15} /> Crear juego nuevo</button>
             </div>
             <div className="admin-game-status-grid">
@@ -457,7 +622,7 @@ export function AdminScreen({
             <p>Los juegos desactivados quedan ocultos para usuarios normales. El administrador puede seguir viendolos y editandolos desde este panel.</p>
           </article>}
 
-          {showGames && <article className="admin-card admin-game-editor">
+          {showGames && gameEditorOpen && <article className="admin-card admin-game-editor">
             <div className="admin-panel-title">
               <strong>Configuracion del juego</strong>
               <CheckCircle2 size={18} />
@@ -474,7 +639,7 @@ export function AdminScreen({
             </label>
           </article>}
 
-          {showGames && <article className="admin-card admin-game-media-editor">
+          {showGames && gameEditorOpen && <article className="admin-card admin-game-media-editor">
             <div className="admin-panel-title">
               <strong><Image size={18} /> Editor visual de textos e imagenes</strong>
               <FileText size={18} />
@@ -524,7 +689,7 @@ export function AdminScreen({
             </div>
           </article>}
 
-          {showGames && <article className="admin-card">
+          {showGames && gameEditorOpen && <article className="admin-card">
             <div className="admin-panel-title">
               <strong>Campanas y mapas</strong>
               <button onClick={addCampaign}><Plus size={15} /> Campana</button>
@@ -556,16 +721,54 @@ export function AdminScreen({
             </div>
           </article>}
 
-          {showMaps && <MapEditor
+          {showMaps && !mapEditorOpen && <article className="admin-card admin-data-manager admin-map-launcher">
+            <div className="admin-panel-title">
+              <div>
+                <strong><Map size={18} /> Juegos activos con mapas</strong>
+                <p>Selecciona un juego activo y carga su editor tactico 2D.</p>
+              </div>
+            </div>
+            <section className="admin-table-wrap">
+              <table className="admin-data-table">
+                <thead>
+                  <tr>
+                    <th>Juego</th>
+                    <th>Campanas</th>
+                    <th>Mapas</th>
+                    <th>Estado</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {games.filter((game) => game.enabled !== false).map((game) => (
+                    <tr key={game.id} className={game.id === activeGame.id ? "selected" : ""}>
+                      <td><strong>{game.name}</strong><small>{game.id}</small></td>
+                      <td>{game.campaigns.length}</td>
+                      <td>{game.maps?.length ?? 0}</td>
+                      <td><span className="admin-status-pill">Activo</span></td>
+                      <td>
+                        <button onClick={() => { onSelectGame(game.id); setMapEditorOpen(true); }}>
+                          <Map size={15} /> Cargar editor de mapas
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
+          </article>}
+
+          {showMaps && mapEditorOpen && <MapEditor
             game={activeGame}
             onChange={(maps) => updateActiveGame({ maps })}
+            onBack={() => setMapEditorOpen(false)}
           />}
 
           {showNews && <NewsEditor news={news} games={games} onChange={onUpdateNews} />}
 
           {showNotifications && <NotificationEditor notifications={notifications} games={games} onChange={onUpdateNotifications} />}
 
-          {showGames && <article className="admin-card">
+          {showGames && gameEditorOpen && <article className="admin-card">
             <div className="admin-panel-title">
               <strong>Contenido y DLC</strong>
               <Save size={18} />
@@ -589,13 +792,13 @@ export function AdminScreen({
             ))}
           </article>}
 
-          {showUsers && <article className="admin-card">
+          {showUsers && userEditorMode === "list" && <article className="admin-card admin-data-manager">
             <div className="admin-panel-title admin-users-heading">
               <div>
                 <strong><Users size={18} /> Usuarios y accesos</strong>
-                <p>Gestiona cuentas locales, roles y credenciales desde un panel filtrable.</p>
+                <p>Gestiona cuentas locales con tabla, filtros y una pantalla dedicada por usuario.</p>
               </div>
-              <span className="admin-status-pill">{filteredUsers.length} visibles</span>
+              <button className="green-button" onClick={() => setUserEditorMode("create")}><Plus size={15} /> Crear usuario</button>
             </div>
 
             <div className="admin-user-stats">
@@ -605,16 +808,12 @@ export function AdminScreen({
               <span><KeyRound size={18} /><strong>{activeUserId}</strong><small>Sesion activa</small></span>
             </div>
 
-            <div className="admin-user-toolbar">
-              <label className="admin-user-search">
+            <div className="admin-data-toolbar admin-user-toolbar">
+              <label>
                 <Search size={18} />
-                <input
-                  value={userSearch}
-                  onChange={(event) => setUserSearch(event.target.value)}
-                  placeholder="Buscar por usuario, correo o ID"
-                />
+                <input value={userSearch} onChange={(event) => setUserSearch(event.target.value)} placeholder="Buscar por usuario, correo o ID" />
               </label>
-              <label className="admin-user-filter">
+              <label>
                 <SlidersHorizontal size={18} />
                 <select value={userRoleFilter} onChange={(event) => setUserRoleFilter(event.target.value as "all" | "admin" | "user")}>
                   <option value="all">Todos los roles</option>
@@ -624,51 +823,32 @@ export function AdminScreen({
               </label>
             </div>
 
-            <section className="admin-user-create-panel">
-              <div className="admin-panel-title compact">
-                <strong><UserPlus size={18} /> Crear cuenta</strong>
-                <button className="green-button" onClick={createUser}><Plus size={15} /> Crear</button>
-              </div>
-              <div className="admin-user-create">
-                <label><span>Usuario</span><input placeholder="nuevo-operador" value={userDraft.username} onChange={(event) => setUserDraft((draft) => ({ ...draft, username: event.target.value }))} /></label>
-                <label><span>Correo</span><input placeholder="usuario@rpg.local" value={userDraft.email} onChange={(event) => setUserDraft((draft) => ({ ...draft, email: event.target.value }))} /></label>
-                <label><span>Contrasena</span><input placeholder="clave inicial" value={userDraft.password} onChange={(event) => setUserDraft((draft) => ({ ...draft, password: event.target.value }))} /></label>
-                <label><span>Rol</span><select value={userDraft.role} onChange={(event) => setUserDraft((draft) => ({ ...draft, role: event.target.value as "user" | "admin" }))}>
-                  <option value="user">Usuario</option>
-                  <option value="admin">Administrador</option>
-                </select></label>
-              </div>
-            </section>
-
-            <div className="admin-user-list">
-              {filteredUsers.map((user) => {
-                const role = user.role ?? "user";
-                const initials = (user.username || user.name || user.id).slice(0, 2).toUpperCase();
-                return (
-                  <section key={user.id} className={`admin-user-row ${role === "admin" ? "admin-role" : ""}`}>
-                    <div className="admin-user-avatar">{initials}</div>
-                    <div className="admin-user-fields">
-                      <label><span>Usuario</span><input value={user.username ?? ""} onChange={(event) => updateUser(user.id, { username: event.target.value, name: event.target.value || user.name })} /></label>
-                      <label><span><Mail size={13} /> Correo</span><input value={user.email ?? ""} onChange={(event) => updateUser(user.id, { email: event.target.value })} /></label>
-                      <label><span><LockKeyhole size={13} /> Contrasena</span><input value={user.password ?? ""} onChange={(event) => updateUser(user.id, { password: event.target.value })} /></label>
-                      <label><span>Rol</span><select value={role} onChange={(event) => updateUser(user.id, { role: event.target.value as "user" | "admin" })}>
-                        <option value="user">Usuario</option>
-                        <option value="admin">Administrador</option>
-                      </select></label>
-                    </div>
-                    <div className="admin-user-actions">
-                      <small>{user.id === activeUserId ? "Sesion activa" : user.id}</small>
-                      <button
-                        disabled={user.id === activeUserId}
-                        className={role === "admin" ? "selected" : ""}
-                        onClick={() => updateUser(user.id, { role: role === "admin" ? "user" : "admin" })}
-                      >
-                        {role === "admin" ? "Admin" : "Usuario"}
-                      </button>
-                    </div>
-                  </section>
-                );
-              })}
+            <section className="admin-table-wrap">
+              <table className="admin-data-table admin-user-table">
+                <thead>
+                  <tr>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Ultima sesion</th>
+                    <th>Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user) => {
+                    const role = user.role ?? "user";
+                    return (
+                      <tr key={user.id}>
+                        <td><strong>{user.username || user.name || user.id}</strong><small>{user.id}</small></td>
+                        <td>{user.email}</td>
+                        <td><span className={`admin-status-pill ${role === "admin" ? "status-published" : ""}`}>{role === "admin" ? "Administrador" : "Usuario"}</span></td>
+                        <td>{user.id === activeUserId ? "Sesion activa" : formatDate(user.lastLoginAt)}</td>
+                        <td><button onClick={() => { setSelectedUserId(user.id); setUserEditorMode("edit"); }}><Eye size={15} /> Ver</button></td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
               {filteredUsers.length === 0 && (
                 <div className="admin-empty-state">
                   <Search size={20} />
@@ -676,8 +856,140 @@ export function AdminScreen({
                   <span>Cambia el filtro o busca otro usuario.</span>
                 </div>
               )}
-            </div>
+            </section>
           </article>}
+
+          {showUsers && userEditorMode === "create" && (
+            <article className="admin-card admin-user-profile-screen">
+              <div className="admin-panel-title">
+                <div>
+                  <strong><UserPlus size={18} /> Crear usuario</strong>
+                  <p>Formulario completo para registrar un nuevo operador local.</p>
+                </div>
+                <button onClick={() => setUserEditorMode("list")}>Volver a usuarios</button>
+              </div>
+              <div className="admin-user-profile-layout">
+                <section className="admin-user-profile-summary">
+                  <div className="admin-user-avatar large">NU</div>
+                  <strong>Nuevo usuario</strong>
+                  <span className="admin-status-pill amber">Sin crear</span>
+                </section>
+                <section className="admin-user-profile-form">
+                  <div className="admin-form-grid">
+                    <label><span>Usuario</span><input placeholder="nuevo-operador" value={userDraft.username} onChange={(event) => setUserDraft((draft) => ({ ...draft, username: event.target.value }))} /></label>
+                    <label><span>Correo</span><input placeholder="usuario@rpg.local" value={userDraft.email} onChange={(event) => setUserDraft((draft) => ({ ...draft, email: event.target.value }))} /></label>
+                    <label><span>Contrasena</span><input placeholder="clave inicial" value={userDraft.password} onChange={(event) => setUserDraft((draft) => ({ ...draft, password: event.target.value }))} /></label>
+                    <label><span>Rol</span><select value={userDraft.role} onChange={(event) => setUserDraft((draft) => ({ ...draft, role: event.target.value as "user" | "admin" }))}>
+                      <option value="user">Usuario</option>
+                      <option value="admin">Administrador</option>
+                    </select></label>
+                  </div>
+                  <button className="green-button" onClick={createUser}><Plus size={15} /> Crear usuario</button>
+                </section>
+              </div>
+            </article>
+          )}
+
+          {showUsers && selectedUser && userEditorMode === "edit" && (
+            <article className="admin-card admin-user-profile-screen">
+              <div className="admin-panel-title">
+                <div>
+                  <strong><UserCog size={18} /> Usuario: {selectedUser.username || selectedUser.name || selectedUser.id}</strong>
+                  <p>Perfil, acceso, ultima sesion, imagen y actividad de juegos.</p>
+                </div>
+                <button onClick={() => setUserEditorMode("list")}>Volver a usuarios</button>
+              </div>
+              <div className="admin-user-profile-layout">
+                <section className="admin-user-profile-summary">
+                  <div className="admin-user-avatar large">
+                    {resolveUserAsset(selectedUser, selectedUser.avatar) ? (
+                      <img
+                        src={resolveUserAsset(selectedUser, selectedUser.avatar)}
+                        alt=""
+                        style={{
+                          objectPosition: `${selectedUser.avatarFit?.x ?? 50}% ${selectedUser.avatarFit?.y ?? 50}%`,
+                          transform: `scale(${selectedUser.avatarFit?.scale ?? 1})`,
+                        }}
+                      />
+                    ) : (
+                      (selectedUser.username || selectedUser.name || selectedUser.id).slice(0, 2).toUpperCase()
+                    )}
+                  </div>
+                  <strong>{selectedUser.name}</strong>
+                  <span className="admin-status-pill">{selectedUser.id === activeUserId ? "Sesion activa" : selectedUser.id}</span>
+                  <small>Ultima sesion: {formatDate(selectedUser.lastLoginAt)}</small>
+                  <small>Actividad: {formatDate(selectedUser.lastActivityAt)}</small>
+                  <small>Juegos iniciados: {selectedUser.gameProfilesStarted}</small>
+                  <small>Campanas completadas: {selectedUser.completedCampaigns}</small>
+                </section>
+
+                <section className="admin-user-profile-form">
+                  <div className="admin-form-grid">
+                    <label><span>ID</span><input value={selectedUser.id} disabled /></label>
+                    <label><span>Usuario</span><input value={selectedUser.username ?? ""} onChange={(event) => updateUser(selectedUser.id, { username: event.target.value, name: event.target.value || selectedUser.name })} /></label>
+                    <label><span>Nombre visible</span><input value={selectedUser.name ?? ""} onChange={(event) => updateUser(selectedUser.id, { name: event.target.value })} /></label>
+                    <label><span><Mail size={13} /> Correo</span><input value={selectedUser.email ?? ""} onChange={(event) => updateUser(selectedUser.id, { email: event.target.value })} /></label>
+                    <label><span><LockKeyhole size={13} /> Contrasena</span><input value={selectedUser.password ?? ""} onChange={(event) => updateUser(selectedUser.id, { password: event.target.value })} /></label>
+                    <label><span>Genero</span><input value={selectedUser.gender ?? ""} onChange={(event) => updateUser(selectedUser.id, { gender: event.target.value })} /></label>
+                    <label><span>Nivel</span><input type="number" min={1} value={selectedUser.level} onChange={(event) => updateUser(selectedUser.id, { level: Number(event.target.value) || 1 })} /></label>
+                    <label><span>Juego activo</span><select value={selectedUser.activeGameId} onChange={(event) => updateUser(selectedUser.id, { activeGameId: event.target.value })}>
+                      {games.map((game) => <option key={game.id} value={game.id}>{game.name}</option>)}
+                    </select></label>
+                    <label><span>Rol</span><select value={selectedUser.role ?? "user"} disabled={selectedUser.id === activeUserId} onChange={(event) => updateUser(selectedUser.id, { role: event.target.value as "user" | "admin" })}>
+                      <option value="user">Usuario</option>
+                      <option value="admin">Administrador</option>
+                    </select></label>
+                    <label><span>Imagen de perfil</span><input value={selectedUser.avatar ?? ""} onChange={(event) => updateUser(selectedUser.id, { avatar: event.target.value })} /></label>
+                    <label><span>Base path</span><input value={selectedUser.basePath ?? ""} onChange={(event) => updateUser(selectedUser.id, { basePath: event.target.value })} /></label>
+                    <label><span>Perfil JSON</span><input value={selectedUser.profilePath ?? ""} onChange={(event) => updateUser(selectedUser.id, { profilePath: event.target.value })} /></label>
+                  </div>
+                  <div className="admin-user-date-grid">
+                    <span><CalendarClock size={16} /><strong>Ultima sesion</strong><small>{formatDate(selectedUser.lastLoginAt)}</small></span>
+                    <span><CalendarClock size={16} /><strong>Sesion previa</strong><small>{formatDate(selectedUser.previousLastLoginAt)}</small></span>
+                    <span><Activity size={16} /><strong>Actividad</strong><small>{formatDate(selectedUser.lastActivityAt)}</small></span>
+                    <span><Gamepad2 size={16} /><strong>Guardados</strong><small>{selectedUser.saves.length}</small></span>
+                  </div>
+                  <button
+                    disabled={selectedUser.id === activeUserId}
+                    className={(selectedUser.role ?? "user") === "admin" ? "selected" : ""}
+                    onClick={() => updateUser(selectedUser.id, { role: (selectedUser.role ?? "user") === "admin" ? "user" : "admin" })}
+                  >
+                    {(selectedUser.role ?? "user") === "admin" ? "Cambiar a usuario" : "Cambiar a admin"}
+                  </button>
+                </section>
+              </div>
+
+              <section className="admin-user-history-panel">
+                <div className="admin-panel-title compact">
+                  <strong><Gamepad2 size={18} /> Historia de juegos</strong>
+                  <span>{selectedUser.history.length} registros</span>
+                </div>
+                <table className="admin-data-table">
+                  <thead>
+                    <tr>
+                      <th>Juego</th>
+                      <th>Sesiones</th>
+                      <th>Campana activa</th>
+                      <th>Guardado activo</th>
+                      <th>Ultima partida</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedUser.history.map((entry) => (
+                      <tr key={`${selectedUser.id}-${entry.gameId}`}>
+                        <td><strong>{resolveGameName(entry.gameId)}</strong><small>{entry.gameId}</small></td>
+                        <td>{entry.sessions}</td>
+                        <td>{entry.activeCampaignId ?? "Sin campana"}</td>
+                        <td>{entry.activeSaveId ?? "Sin guardado"}</td>
+                        <td>{formatDate(entry.lastPlayedAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {selectedUser.history.length === 0 && <div className="admin-empty-state"><Gamepad2 size={20} /><strong>Sin historial</strong><span>Este usuario aun no tiene partidas registradas.</span></div>}
+              </section>
+            </article>
+          )}
         </div>
       </div>
     </section>
