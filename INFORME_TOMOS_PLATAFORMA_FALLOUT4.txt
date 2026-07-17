@@ -1,0 +1,913 @@
+INFORME COMPLETO - TOMOS CORE-BOOK VS PLATAFORMA FALLOUT 4
+Fecha de revision: 2026-06-23
+Proyecto: RPG Platform Engine
+Juego revisado: Fallout 4 base
+Ruta base del juego: public/games/fallout4
+Ruta de tomos: core-book
+
+============================================================
+1. RESUMEN EJECUTIVO
+============================================================
+
+Este informe compara los 10 tomos del core-book contra lo que la plataforma
+hace actualmente a nivel jugable para Fallout 4 base. El objetivo no es comparar
+UX, archivos o apariencia visual, sino revisar el core del juego: reglas,
+misiones, combate, exploracion, ubicaciones, facciones, asentamientos,
+coleccionables, supervivencia y progresion.
+
+Estado general:
+
+- La plataforma ya tiene los 10 tomos trazados como estructura jugable.
+- El juego ya funciona como adaptacion textual por turnos de Fallout 4 base.
+- Las misiones, ubicaciones, bestiario, armas, equipo, facciones,
+  asentamientos y coleccionables estan cargados.
+- La plataforma ya guarda progreso, estado de campana, AP, misiones,
+  ubicaciones visitadas, enemigos, loot, reputacion, asentamientos,
+  supervivencia e inventario.
+
+Pero hay una diferencia importante:
+
+La plataforma esta en estado "runtime funcional / abstracto", no todavia en
+estado "simulacion exacta cerrada de cada regla de cada tomo".
+
+Eso significa que el juego corre y respeta la estructura de los tomos, pero
+varios elementos aun estan simplificados:
+
+- muchas reglas existen como hooks;
+- algunas recompensas se aplican de forma general;
+- algunas condiciones no bloquean de manera estricta;
+- varias fichas existen como catalogo, pero no como entidad viva completa;
+- muchas ubicaciones tienen mapa interno jugable, pero no todas han sido
+  revisadas manualmente con detalle unico;
+- algunos sistemas avanzados estan presentes en forma base, no en forma final.
+
+============================================================
+2. COBERTURA ACTUAL DETECTADA
+============================================================
+
+Datos actuales de cobertura del juego Fallout 4 base:
+
+- Tomos registrados: 10
+- Plantillas jugables base: 7
+- Misiones: 216
+- Etapas de mision: 1.640
+- Misiones con runtime especifico: 216
+- Misiones con runtime generico: 0
+- NPC/contactos detectados desde misiones: 454
+- Enemigos de mision detectados: 77
+- Objetos requeridos detectados: 77
+- Ubicaciones Tomo 6: 558
+- Ubicaciones con mapa interno jugable: 558
+- Bestiario: 213
+- Armas: 95
+- Equipo/armaduras: 288
+- Asentamientos: 36
+- Facciones: 10
+- Coleccionables: 618
+- Habilidades core: 20
+- Companeros: 13
+- Semillas de modo libre: 10
+
+Sistemas runtime actuales por tomo:
+
+- Tomo 01: AP, 2d20, dificultad, momentum, ruido, ruleState, persistencia.
+- Tomo 02: missionRuntime, etapas jugables, desbloqueo, completado.
+- Tomo 03: enemigos persistentes, HP escalado, rondas de combate, loot.
+- Tomo 04: arma equipada, catalogo de armas, loot de armas.
+- Tomo 05: equipo equipado, defensa basica, hook de armadura.
+- Tomo 06: ubicacion mundial, mapa interno por ubicacion, movimiento por AP.
+- Tomo 07: asentamientos, comida, agua, camas, defensa, rutas.
+- Tomo 08: reputacion de facciones, consecuencias de mision como hook.
+- Tomo 09: descubrimiento de coleccionables, terminales/notas/llaves.
+- Tomo 10: hambre, sed, sueno, enfermedad, radiacion, fatiga.
+
+============================================================
+3. CRITERIO DE LECTURA
+============================================================
+
+Cada tomo se revisa con cuatro categorias:
+
+1. Adaptado:
+   Lo que la plataforma ya usa realmente durante la partida.
+
+2. Parcial:
+   Lo que existe como dato, hook o mecanica simplificada, pero todavia no esta
+   cerrado con toda la precision del tomo.
+
+3. No adaptado completo:
+   Lo que el tomo define, pero la plataforma aun no simula completamente.
+
+4. Mejora recomendada:
+   Que deberia cambiarse o ampliarse para acercar la plataforma al tomo.
+
+============================================================
+4. TOMO 01 - REGLAS CORE
+============================================================
+
+Rol del tomo:
+
+El Tomo 01 gobierna las reglas base del juego: AP, turnos, accion por zonas,
+2d20, dificultad, Momentum, SPECIAL, habilidades, combate, progresion,
+economia, creacion de personaje, campana, modo libre, companeros, inventario,
+carga, estados y reglas base de asentamientos/facciones/supervivencia.
+
+Adaptado por la plataforma:
+
+- Sistema de turnos.
+- Puntos de Accion/AP.
+- Acciones que consumen AP.
+- Tiradas tipo 2d20.
+- Dificultad.
+- Exitos y fallos.
+- Momentum.
+- Complicaciones por fallo o ruido.
+- Combate textual por turnos.
+- Dano basico.
+- Defensa basica.
+- Estado persistente de reglas.
+- Estado de campana guardado.
+- Progreso de mision.
+- Inventario base.
+- XP basica.
+- Equipo equipado.
+- Arma equipada.
+- Supervivencia basica.
+- Asentamientos/facciones como hooks.
+- Modo campana como estructura.
+- Modo libre como plantilla.
+
+Parcial:
+
+- AP existe, pero no siempre se deriva estrictamente de "AP maximos = 6 + AGI"
+  para un personaje activo completo.
+- SPECIAL existe en la configuracion y en la idea de personaje, pero no gobierna
+  todas las tiradas de forma estricta.
+- Las habilidades existen como catalogo, pero no todas estan conectadas a cada
+  accion posible.
+- Momentum existe, pero no tiene todos los usos tacticos posibles del tomo.
+- La economia existe como estado y hooks, pero no como sistema completo de
+  precios, trueque, escasez y comerciantes.
+- Los perks existen como bonos abstractos: dano, defensa, dificultad, AP.
+- El combate existe, pero con formulas simplificadas.
+- El inventario existe, pero no calcula todavia carga/peso exacto.
+
+No adaptado completo:
+
+- Formula completa de PV por personaje.
+- Formula completa de carga.
+- Iniciativa fina por AGI y carga.
+- Estados detallados: sangrado, quemado, irradiado avanzado, drogado,
+  adiccion, sobrecarga, moribundo, mutilacion, enfermedad compleja.
+- Todos los perks con todos sus rangos.
+- VATS tactico completo por partes del cuerpo.
+- Criticos completamente fieles a cada perk/arma/estado.
+- Reglas completas de muerte y recuperacion.
+- Economia completa.
+- Comercio por CAR + Trueque.
+- Reparacion, degradacion y mantenimiento integrados al core.
+- Companeros con afinidad y reaccion.
+- Modo libre con generador completo.
+
+Diferencia principal:
+
+El Tomo 01 es un sistema de mesa completo. La plataforma implementa el esqueleto
+jugable del sistema, pero todavia usa calculos abstractos para dano, defensa,
+perks, carga, economia y algunos estados.
+
+Mejoras recomendadas:
+
+- Crear una hoja runtime de personaje completa: SPECIAL, habilidades, PV, AP,
+  carga, defensa, perks, estados, inventario y economia.
+- Conectar cada accion a atributo + habilidad.
+- Reemplazar formulas abstractas de dano/defensa por formulas del tomo.
+- Implementar todos los perks como efectos mecanicos.
+- Activar carga real por peso de inventario/equipo.
+- Crear estados persistentes detallados.
+- Separar acciones basicas, acciones tacticas, acciones sociales, acciones de
+  terminal, acciones de exploracion y acciones de supervivencia.
+
+============================================================
+5. TOMO 02 - MISIONES
+============================================================
+
+Rol del tomo:
+
+El Tomo 02 contiene campana, misiones principales, secundarias, facciones,
+radiant, contratos, modo libre, activadores, objetivos, contactos, NPCs,
+enemigos, objetos requeridos, cierres, recompensas, desbloqueos y rutas por
+fallo.
+
+Adaptado por la plataforma:
+
+- 216 misiones cargadas.
+- 1.640 etapas de mision extraidas.
+- 216 misiones con runtime especifico.
+- 0 misiones con runtime generico.
+- MissionRuntime persistente.
+- Mision activa.
+- Etapa activa.
+- Completado de etapas.
+- Desbloqueo de misiones.
+- Progreso guardado.
+- NPC/contactos detectados.
+- Enemigos de mision detectados.
+- Objetos requeridos detectados.
+- Tipos de mision detectados: campana, secundaria, faccion, radiant, atlas,
+  cortada/reconstruida.
+- Recompensa base conectada a XP/inventario/hook.
+- Mision inicial Out of Time conectada a Vault 111, Sanctuary, Red Rocket y
+  Concord.
+
+Parcial:
+
+- Las etapas se juegan una por una, pero el ocultamiento de etapas futuras no
+  es todavia estricto en todas las misiones.
+- Los prerequisitos existen como dato, pero no siempre bloquean la mision.
+- Los objetos requeridos se detectan, pero no siempre bloquean la etapa.
+- Los NPCs se detectan, pero no todos existen como entidades vivas completas.
+- Los enemigos se detectan, pero no siempre respetan cantidad exacta por numero
+  de jugadores.
+- Las recompensas se aplican parcialmente.
+- Las misiones radiant existen, pero no son radiant completas.
+- Las rutas por fallo estan reconocidas como necesidad, pero no personalizadas
+  mision por mision.
+
+No adaptado completo:
+
+- Activadores exactos de cada mision.
+- Prerequisitos estrictos.
+- Cierre exacto por mision.
+- Ruta alternativa si falla el contacto.
+- Ruta por muerte/desaparicion de NPC.
+- Notas/terminales/holocintas como reemplazo automatico.
+- Consecuencias politicas completas.
+- Recompensas descompuestas en XP/caps/objeto/reputacion/acceso.
+- Radiant real con cooldown, repeticion, ubicacion variable, recompensa
+  escalada y enemigo variable.
+- Contratos libres generados completamente.
+- Separacion fina entre entrada local/atlas y mision jugable real cuando el tomo
+  lo indica.
+
+Diferencia principal:
+
+El Tomo 02 define misiones como fichas narrativas y mecanicas completas. La
+plataforma ya convirtio todas las misiones en runtime jugable, pero aun falta
+que cada mision sea una maquina de estados exacta con prerequisitos, fallos,
+consecuencias, recompensas, rutas alternativas y dependencias reales.
+
+Mejoras recomendadas:
+
+- Convertir cada mision en state machine:
+  prerequisito -> activacion -> etapa actual -> resolucion -> recompensa ->
+  consecuencia -> desbloqueo.
+- Bloquear etapas si falta objeto requerido.
+- Instanciar NPCs como actores persistentes.
+- Aplicar enemigos/cantidades segun numero de jugadores.
+- Descomponer todas las recompensas.
+- Implementar rutas por fallo.
+- Implementar radiant real.
+- Revisar nombres/traducciones heredadas.
+
+============================================================
+6. TOMO 03 - BESTIARIO, NPC Y COMPANEROS
+============================================================
+
+Rol del tomo:
+
+El Tomo 03 define enemigos, criaturas, NPCs, companeros, amenaza, escalado por
+jugadores, duracion esperada de combate, AP enemigo, balance, marcas de amenaza
+y comportamiento tactico.
+
+Adaptado por la plataforma:
+
+- 213 entradas de bestiario cargadas.
+- Enemigos asociados a ubicaciones.
+- Enemigos asociados a algunas misiones.
+- HP persistente por enemigo.
+- Combate textual por turnos.
+- Dano al enemigo.
+- Dano recibido.
+- Loot al derrotar.
+- Escalado basico de amenaza.
+- Lectura de amenaza para describir dificultad.
+
+Parcial:
+
+- Los enemigos tienen HP escalado, pero no necesariamente PV exactos del tomo.
+- La amenaza se usa, pero no siempre con duracion esperada exacta.
+- La composicion de encuentros es generada o asociada, no siempre manual.
+- Los companeros existen en catalogo, pero no como aliados completos.
+- Los NPCs de mision existen como referencias, no como entidades completas.
+
+No adaptado completo:
+
+- AP exacto de cada enemigo.
+- Ataques especiales.
+- Resistencias fisicas/energia/radiacion.
+- IA por tipo: humano, robot, criatura, ghoul, supermutante, jefe.
+- Oleadas.
+- Lideres.
+- Jefes unicos.
+- Escalado exacto por 1, 2, 3 y 4 jugadores.
+- Balance por duracion ideal.
+- Marcas REQUIERE_BALANCE_PV/DANO/DEFENSA/AMENAZA activas.
+- Companeros con afinidad, perk, inventario, dialogo y reaccion.
+- NPCs civiles persistentes.
+
+Diferencia principal:
+
+El bestiario ya alimenta combate, pero todavia no es una simulacion completa de
+fichas enemigas. Funciona como base de amenaza y HP, no como IA tactica completa.
+
+Mejoras recomendadas:
+
+- Crear ficha runtime de enemigo: PV, AP, defensa, resistencias, ataque,
+  comportamiento, loot, faccion y amenaza.
+- Separar NPC civil, enemigo, criatura, robot, jefe y companero.
+- Implementar escalado por numero de jugadores.
+- Crear comportamiento tactico por familia de enemigo.
+- Convertir companeros en actores aliados persistentes.
+
+============================================================
+7. TOMO 04 - ARMAS
+============================================================
+
+Rol del tomo:
+
+El Tomo 04 define armas, municion, dano, rasgos, obtencion, etapa de juego,
+balance ofensivo, coste AP, mods y relacion con enemigos/armaduras.
+
+Adaptado por la plataforma:
+
+- 95 armas cargadas.
+- Arma equipada.
+- Armas como loot/catalogo.
+- Dano de arma incluido en combate.
+- Municion guardada de forma basica.
+- Hooks para mods.
+- Cambio de loadout.
+
+Parcial:
+
+- El dano usa formula abstracta.
+- El arma influye, pero no siempre con estadistica exacta.
+- La municion existe, pero no todo calibre/coste esta cerrado.
+- Los mods existen como idea, no como sistema completo.
+- La etapa del arma existe en el tomo, pero no bloquea totalmente el acceso.
+
+No adaptado completo:
+
+- Dano exacto por arma.
+- Coste AP exacto.
+- Rango exacto.
+- Calibre exacto.
+- Recarga por arma.
+- Capacidad de cargador.
+- Rasgos especiales.
+- Mods de armas.
+- Silenciadores.
+- Mirillas.
+- Cañones.
+- Culatas.
+- Armas legendarias.
+- Explosivos completos.
+- Balance ofensivo por etapa.
+- Disponibilidad de municion por campana/libre/supervivencia.
+
+Diferencia principal:
+
+Las armas existen y funcionan, pero como modificadores generales de combate. El
+Tomo 04 requiere que cada arma sea una ficha tactica propia.
+
+Mejoras recomendadas:
+
+- Crear ficha runtime de arma: dano, AP, rango, municion, cargador, recarga,
+  rasgos, mods, etapa y rareza.
+- Hacer que cada disparo gaste municion exacta.
+- Aplicar AP por arma.
+- Activar mods con requisitos de perk/material.
+- Clasificar armas por etapa de campana.
+
+============================================================
+8. TOMO 05 - ARMADURAS Y EQUIPO
+============================================================
+
+Rol del tomo:
+
+El Tomo 05 contiene armaduras, ropa, piezas, servoarmaduras, resistencias,
+defensa, carga, peso, ruido, mods, desgaste, mantenimiento y balance defensivo.
+
+Adaptado por la plataforma:
+
+- 288 entradas de equipo cargadas.
+- Equipo/armadura equipable.
+- Defensa basica aplicada.
+- Hook de armadura en combate.
+- Servoarmadura registrada como feature.
+- Cambio de equipo guardado.
+
+Parcial:
+
+- La defensa se calcula de forma abstracta.
+- No todas las resistencias estan separadas.
+- El peso/carga todavia no gobierna por completo el movimiento.
+- Servoarmadura existe como plantilla, no como sistema detallado.
+- Los mods de equipo existen como hook.
+
+No adaptado completo:
+
+- DR, ER y RR exactos.
+- Peso exacto.
+- Ruido por armadura.
+- Penalizacion social.
+- Mantenimiento.
+- Reparacion.
+- Mods de armadura.
+- Piezas individuales.
+- Servoarmadura por partes.
+- Nucleos de fusion.
+- Consumo de energia.
+- Rotura.
+- Regla anti-inmortalidad completa.
+- Progresion defensiva exacta por etapa.
+
+Diferencia principal:
+
+El equipo ya modifica la partida, pero no con la precision defensiva del tomo.
+La servoarmadura todavia no es un subsistema completo.
+
+Mejoras recomendadas:
+
+- Separar ropa, armadura ligera, media, pesada, accesorios y servoarmadura.
+- Implementar defensa fisica, energia y radiacion.
+- Activar peso/carga/ruido.
+- Implementar nucleos y piezas de servoarmadura.
+- Conectar mods a perks/materiales.
+- Aplicar desgaste y reparacion.
+
+============================================================
+9. TOMO 06 - ATLAS DE UBICACIONES, BIOMAS Y MAPAS
+============================================================
+
+Rol del tomo:
+
+El Tomo 06 define el mapa mundo de Fallout 4 base. Cada ubicacion es una
+posicion en el mapa mundial y cada ubicacion tiene su propio mapa interno
+explorable. Incluye subzonas internas, rutas, biomas, clima, riesgo, enemigos,
+loot, puntos de descanso, salidas y lectura tactica.
+
+Adaptado por la plataforma:
+
+- 558 ubicaciones cargadas.
+- 558 ubicaciones con mapa interno jugable.
+- Cada ubicacion funciona como posicion del mapa mundo.
+- Cada ubicacion tiene subzonas internas.
+- Movimiento interno consume AP.
+- Ubicacion actual persistente.
+- Subzona actual persistente.
+- Ubicaciones visitadas persistentes.
+- Subzonas completadas persistentes.
+- Enemigos asociados.
+- Loot asociado.
+- Coleccionables cruzados.
+- Riesgo/bioma.
+- Ruta inicial Vault 111 -> Sanctuary Hills -> Red Rocket -> Concord.
+- Se corrigio el concepto: ya no debe tratarse como un unico mapa grande; cada
+  ubicacion del mundo tiene su propio mapa interno.
+
+Parcial:
+
+- Todas las ubicaciones tienen mapa interno, pero muchas dependen de generacion
+  determinista/fallback.
+- No todas las ubicaciones han sido revisadas manualmente contra cada detalle
+  del tomo.
+- Las rutas entre ubicaciones existen, pero no toda la red mundial esta validada
+  manualmente.
+- Las subzonas internas existen, pero no todas tienen eventos unicos cerrados.
+- El riesgo se usa, pero no siempre con clima/hora/bioma completos.
+
+No adaptado completo:
+
+- Mapas internos manuales para las 558 ubicaciones.
+- Puertas especificas.
+- Cerraduras especificas.
+- Terminales especificas.
+- Trampas especificas.
+- Rutas de retirada por ubicacion.
+- NPCs estaticos por ubicacion.
+- Eventos unicos.
+- Alijos especificos por subzona.
+- Cobertura y posicionamiento tactico fino.
+- Exploracion cautelosa/normal/rapida con todas sus consecuencias.
+- Ruido por ubicacion con reaccion unica.
+- Clima y hora con modificadores completos.
+
+Diferencia principal:
+
+La estructura correcta ya esta: ubicacion mundial + mapa interno. Lo que falta
+es el refinamiento manual de cada mapa interno para que cada ubicacion se sienta
+unica y no solo funcional.
+
+Mejoras recomendadas:
+
+- Revisar ubicacion por ubicacion.
+- Para cada ubicacion definir:
+  entrada, mapa interno, subzonas, rutas, salidas, puertas, cerraduras,
+  terminales, enemigos, loot, coleccionables, trampas, descanso, faccion,
+  clima, ruido y eventos unicos.
+- Mantener estrictamente el concepto:
+  una ubicacion = una posicion del mapa mundo;
+  cada ubicacion = un mapa interno explorable.
+- No crear microzonas inventadas que no existan en el tomo.
+
+============================================================
+10. TOMO 07 - ASENTAMIENTOS
+============================================================
+
+Rol del tomo:
+
+El Tomo 07 define asentamientos, poblacion, comida, agua, camas, defensa,
+construccion, rutas, economia, eventos, campamentos y relacion con
+supervivencia/modo libre.
+
+Adaptado por la plataforma:
+
+- 36 asentamientos cargados.
+- Estado de asentamiento persistente.
+- Poblacion.
+- Comida.
+- Agua.
+- Camas.
+- Defensa.
+- Accion de mejora.
+- Rutas como hook.
+- Relacion con faccion/reputacion.
+
+Parcial:
+
+- La mejora de asentamiento es general.
+- Los recursos existen como numeros, pero no producen ciclo completo.
+- No hay construccion pieza por pieza.
+- Los ataques a asentamientos estan como plantilla/extra, no como sistema vivo.
+- La relacion con supervivencia existe, pero no con todos los detalles.
+
+No adaptado completo:
+
+- Workshop completo.
+- Construccion detallada.
+- Reclutamiento.
+- Felicidad.
+- Produccion diaria.
+- Defensas automatizadas.
+- Tiendas.
+- Rutas de suministro reales.
+- Ataques raider.
+- Enfermedad.
+- Sabotaje.
+- Caravanas.
+- Economia local.
+- Eventos de asentamiento.
+- Campamento vs asentamiento con reglas completas.
+
+Diferencia principal:
+
+Los asentamientos existen y pueden mejorar, pero aun no son un sistema de
+gestion vivo como plantea el tomo.
+
+Mejoras recomendadas:
+
+- Crear ciclo de asentamiento por dia/bloque.
+- Hacer que comida/agua/camas/defensa afecten supervivencia.
+- Activar ataques y eventos.
+- Implementar rutas de suministro.
+- Crear construccion por categorias.
+- Conectar facciones con control/hostilidad del asentamiento.
+
+============================================================
+11. TOMO 08 - FACCIONES
+============================================================
+
+Rol del tomo:
+
+El Tomo 08 define politica, reputacion, facciones, territorios, contratos,
+hostilidad, aliados, enemigos, castigos, recompensas y consecuencias.
+
+Adaptado por la plataforma:
+
+- 10 facciones cargadas.
+- Reputacion persistente.
+- Hook de consecuencia de mision.
+- Faccion activa.
+- Incremento basico de reputacion.
+- Relacion con asentamientos.
+- Relacion con misiones como estructura.
+
+Parcial:
+
+- La reputacion funciona, pero de forma simple.
+- Hostilidad existe como concepto, no como matriz completa.
+- Los contratos existen como plantilla, no como generador completo.
+- Las decisiones de mision todavia no reescriben la politica del mundo.
+
+No adaptado completo:
+
+- Aliados/enemigos exactos.
+- Territorios controlados.
+- Patrullas.
+- Bloqueo de acceso.
+- Tributos.
+- Ataques por reputacion baja.
+- Recompensas de faccion.
+- Castigos de faccion.
+- Contratos libres por faccion.
+- Guerra entre facciones.
+- Ramas excluyentes de campana.
+- Reaccion por ruido/alarma.
+
+Diferencia principal:
+
+La plataforma tiene reputacion, pero no una simulacion politica completa.
+
+Mejoras recomendadas:
+
+- Crear matriz de faccion:
+  reputacion, hostilidad, aliados, enemigos, territorio, contratos, recompensa,
+  castigo, acceso y reaccion por ruido.
+- Hacer que cada mision modifique facciones.
+- Hacer que ubicaciones controladas por faccion reaccionen al jugador.
+- Implementar contratos por faccion para modo libre.
+
+============================================================
+12. TOMO 09 - COLECCIONABLES
+============================================================
+
+Rol del tomo:
+
+El Tomo 09 define cabezones, revistas, terminales, notas, holocintas, llaves,
+objetos unicos, pistas, contrasenas, registros y uso jugable de coleccionables.
+
+Adaptado por la plataforma:
+
+- 618 coleccionables cargados.
+- Coleccionables asociados a ubicacion.
+- Coleccionables asociados a subzona cuando existe dato.
+- Descubrimiento persistente.
+- Registro en guardado.
+- Terminales/notas/holocintas/llaves como categorias.
+- Cruce con ubicaciones del Tomo 6.
+
+Parcial:
+
+- Muchos coleccionables se descubren, pero no todos tienen efecto mecanico.
+- Algunos funcionan como lore o loot.
+- Llaves/pistas no siempre abren rutas reales.
+- Terminales no siempre tienen opciones interactivas.
+
+No adaptado completo:
+
+- Terminales con menus.
+- Contrasenas.
+- Holocintas que desbloquean misiones.
+- Notas que activan rutas por fallo.
+- Llaves que abren puertas especificas.
+- Revistas con perk/bonus permanente.
+- Cabezones con incremento de atributo/habilidad.
+- Objetos unicos con consecuencia.
+- Validacion fina de nombres oficiales pendientes.
+
+Diferencia principal:
+
+El sistema de coleccionables ya descubre y guarda, pero todavia no todos los
+coleccionables son herramientas jugables.
+
+Mejoras recomendadas:
+
+- Clasificar cada coleccionable por uso:
+  lore, pista, llave, mision, recompensa, perk, acceso, contrasena, comercio.
+- Conectar llaves con puertas.
+- Conectar terminales con rutas, seguridad, loot o misiones.
+- Aplicar revistas/cabezones como bonificaciones permanentes.
+- Hacer que notas/holocintas puedan reemplazar NPCs o activar rutas por fallo.
+
+============================================================
+13. TOMO 10 - MODO SUPERVIVENCIA
+============================================================
+
+Rol del tomo:
+
+El Tomo 10 define hambre, sed, sueno, enfermedad, clima avanzado, campamento,
+desgaste, radiacion, caza, pesca, cocina, medicina ambiental, transporte,
+biomas, peso, descanso y eventos de supervivencia.
+
+Adaptado por la plataforma:
+
+- Hambre.
+- Sed.
+- Sueno.
+- Enfermedad.
+- Radiacion.
+- Fatiga.
+- Penalizacion basica por supervivencia.
+- Descanso.
+- Consumo de suministros.
+- Estado persistente.
+- Integracion basica con dificultad.
+
+Parcial:
+
+- Supervivencia modifica dificultad, pero no controla todo el bucle.
+- No se aplica todavia revision completa cada 6/12 turnos.
+- Clima y bioma existen, pero no con todos sus efectos.
+- Descanso no diferencia completamente cama, asentamiento, campamento o zona
+  insegura.
+
+No adaptado completo:
+
+- Clima avanzado.
+- Estaciones.
+- Campamento.
+- Caza.
+- Pesca.
+- Cocina.
+- Agua contaminada.
+- Enfermedades detalladas.
+- Radiacion por turno/zona.
+- Hipotermia.
+- Calor extremo.
+- Transporte: caballo, moto, combustible, mantenimiento.
+- Carga avanzada.
+- Descanso segun seguridad.
+- Medicina ambiental.
+- Desgaste de equipo.
+- Revision de municion/recurso por bloque.
+
+Diferencia principal:
+
+Supervivencia existe como capa basica, pero el Tomo 10 es mucho mas profundo.
+Todavia falta convertirlo en un reloj constante que presione la partida.
+
+Mejoras recomendadas:
+
+- Activar revision cada 6 y 12 turnos.
+- Aplicar hambre, sed, fatiga, carga, municion, enfermedad y radiacion por
+  bloque.
+- Conectar bioma/clima con dificultad.
+- Implementar campamento.
+- Implementar descanso segun lugar.
+- Activar transporte opcional.
+- Conectar asentamientos seguros con recuperacion real.
+
+============================================================
+14. ADAPTACIONES NO CANONICAS DE PLATAFORMA
+============================================================
+
+Estos elementos no vienen de los tomos. Son necesarios para operar la plataforma
+digital:
+
+- Login.
+- Registro.
+- Usuarios demo.
+- Usuario normal/admin.
+- Biblioteca de juegos.
+- Editor JSON.
+- Configuracion visual/audio.
+- Noticias.
+- Perfil de sesion.
+- Cierre de sesion.
+- Sistema de guardado tecnico.
+- Android/iOS.
+- Responsive web/mobile.
+- Estructura public/games.
+- game.config.json.
+- Plantillas DLC/features/extras.
+- Assets generados o locales.
+- Reportes de cobertura.
+- Scripts de generacion.
+- Scripts de pruebas.
+
+Estos elementos no alteran el canon jugable de Fallout 4. Son capa tecnica.
+
+============================================================
+15. DIFERENCIAS CRITICAS POR PRIORIDAD
+============================================================
+
+Prioridad 1 - Core matematico:
+
+- Personaje completo.
+- SPECIAL + habilidad en cada tirada.
+- AP = 6 + AGI.
+- PV, defensa, carga, estados y perks exactos.
+- Dano/defensa/criticos mas fieles al tomo.
+
+Prioridad 2 - Misiones completas:
+
+- Cada mision como maquina de estados.
+- Prerequisitos reales.
+- Objetos requeridos que bloquean/desbloquean.
+- NPCs persistentes.
+- Rutas por fallo.
+- Recompensas descompuestas.
+- Consecuencias de faccion/asentamiento.
+
+Prioridad 3 - Ubicaciones:
+
+- Revisar manualmente las 558 ubicaciones.
+- Mantener: ubicacion mundial + mapa interno.
+- Cada mapa interno con subzonas, rutas, enemigos, loot, puertas, terminales y
+  eventos especificos.
+
+Prioridad 4 - Combate:
+
+- Enemigos con AP, resistencias, ataques y comportamiento.
+- Armas con AP, municion, rango, recarga y mods.
+- Armaduras con DR/ER/RR, peso, ruido y mantenimiento.
+
+Prioridad 5 - Coleccionables:
+
+- Terminales interactivas.
+- Llaves funcionales.
+- Notas/holocintas que desbloquean rutas.
+- Revistas/cabezones con bonificacion.
+
+Prioridad 6 - Sistemas vivos:
+
+- Asentamientos con ciclo diario.
+- Facciones con politica y hostilidad.
+- Supervivencia con reloj de desgaste.
+- Radiant con repeticion procedural.
+
+============================================================
+16. QUE ESTA BIEN ADAPTADO
+============================================================
+
+La plataforma adapto correctamente:
+
+- La estructura general de Fallout 4 base.
+- La existencia de los 10 tomos.
+- La separacion por carpetas/configuracion.
+- El juego textual por turnos.
+- La campana base.
+- Las 216 misiones.
+- Las 1.640 etapas.
+- Las 558 ubicaciones.
+- El concepto correcto de Tomo 6:
+  cada ubicacion es una posicion del mapa mundo y tiene mapa interno propio.
+- El bestiario como fuente de enemigos.
+- Armas/equipo como catalogos equipables.
+- Asentamientos/facciones/supervivencia como sistemas persistentes base.
+- Coleccionables como descubrimientos guardables.
+- Guardado separado de configuracion.
+
+============================================================
+17. QUE NO DEBE CAMBIARSE
+============================================================
+
+No volver al mapa isometrico visual.
+
+El juego debe seguir siendo textual, por turnos, con UI moderna y seguimiento
+claro en pantalla.
+
+No tratar el Tomo 6 como un unico mapa grande.
+
+No inventar microzonas ajenas al tomo.
+
+No mezclar DLC con Fallout 4 base salvo cuando el usuario active plantillas DLC.
+
+No cargar juegos que no tengan carpeta en public/games con game.config.json.
+
+No convertir entradas tecnicas de plataforma en contenido canon.
+
+============================================================
+18. CONCLUSION FINAL
+============================================================
+
+La plataforma ya convirtio los 10 tomos en una base jugable real para Fallout 4:
+hay misiones, ubicaciones, combate, AP, 2d20, enemigos, loot, guardado,
+asentamientos, facciones, supervivencia y coleccionables.
+
+Sin embargo, la adaptacion aun no esta cerrada al 100% en precision mecanica.
+La mayor parte del contenido esta presente como catalogo, runtime o hook, pero
+varios sistemas todavia deben pasar de "funcional" a "exacto".
+
+El objetivo siguiente no debe ser agregar mas contenido inventado. El objetivo
+debe ser profundizar lo que ya existe:
+
+- reglas exactas del Tomo 1;
+- misiones estado por estado del Tomo 2;
+- enemigos reales del Tomo 3;
+- armas exactas del Tomo 4;
+- armaduras exactas del Tomo 5;
+- mapas internos revisados del Tomo 6;
+- asentamientos vivos del Tomo 7;
+- facciones politicas del Tomo 8;
+- coleccionables funcionales del Tomo 9;
+- supervivencia completa del Tomo 10.
+
+Estado resumido:
+
+- Cobertura de contenido: alta.
+- Jugabilidad base: funcional.
+- Persistencia: funcional.
+- Fidelidad mecanica exacta: parcial.
+- Trabajo pendiente principal: convertir hooks/catalogos en reglas especificas.
+
