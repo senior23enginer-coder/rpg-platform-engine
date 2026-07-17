@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import "./styles/app.css";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from "./components/TopBar";
+import { AdminScreen } from "./screens/AdminScreen";
 import { AuthScreen } from "./screens/AuthScreen";
 import { ContentScreen } from "./screens/ContentScreen";
 import { DiceScreen } from "./screens/DiceScreen";
@@ -18,6 +19,7 @@ import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig, GameJsonFile } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, PlayerSave, UserSettings } from "./types/profile";
 import { createActivity, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
+import type { AppNewsEntry, AppNotificationEntry } from "./lib/appMetadataStorage";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
 import { loadBundledGameJsonFiles, loadBundledGames, loadGameAudioManifest, normalizeGameConfig } from "./lib/gameLibrary";
 import { loadBundledUserProfiles } from "./lib/userLibrary";
@@ -30,6 +32,7 @@ import {
   savePersistentGameDocument,
   savePersistentMetadata,
   savePersistentProfile,
+  savePersistentUsers,
 } from "./lib/storageAdapter";
 import {
   getActiveCampaign,
@@ -43,6 +46,9 @@ import {
 import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
 const bundledGames = loadBundledGames();
+const loginFallout4MainTheme = "/games/fallout4/audio/sounds/fallout_4_soundtrack_score/01%20Fallout%204%20Main%20Theme.mp3";
+const adminScreens = ["admin", "adminGames", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
+const disabledGamesKey = "rpg-platform.disabled-games.v1";
 const Fallout4CampaignScreen = lazy(() =>
   import("./screens/Fallout4CampaignScreen").then((module) => ({ default: module.Fallout4CampaignScreen }))
 );
@@ -55,29 +61,75 @@ function upsertHistoryEntry(history: GameHistoryEntry[], entry: GameHistoryEntry
   return history.map((item) => (item.gameId === entry.gameId ? { ...item, ...entry } : item));
 }
 
+function enforceFixedUserRole(profile: PlayerProfile) {
+  if (profile.id === "operador-local" || profile.id === "invitado-local") {
+    return { ...profile, role: "user" as const };
+  }
+  return profile;
+}
+
+function requireLogin(profile: PlayerProfile) {
+  return { ...enforceFixedUserRole(profile), signedIn: false };
+}
+
+function isAdminScreen(screen: Screen) {
+  return (adminScreens as readonly string[]).includes(screen);
+}
+
+function adminModuleForScreen(screen: Screen) {
+  if (screen === "adminGames") return "games";
+  if (screen === "adminMaps") return "maps";
+  if (screen === "adminUsers") return "users";
+  if (screen === "adminNotifications") return "notifications";
+  if (screen === "adminNews") return "news";
+  return "overview";
+}
+
+function loadDisabledGameIds() {
+  try {
+    const raw = window.localStorage.getItem(disabledGamesKey);
+    return raw ? (JSON.parse(raw) as string[]) : bundledGames.filter((game) => game.enabled === false).map((game) => game.id);
+  } catch {
+    return bundledGames.filter((game) => game.enabled === false).map((game) => game.id);
+  }
+}
+
+function applyDisabledGames(games: GameConfig[], disabledIds: string[]) {
+  return games.map((game) => ({ ...game, enabled: disabledIds.includes(game.id) ? false : game.enabled ?? true }));
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
-  const [games, setGames] = useState<GameConfig[]>(bundledGames);
+  const [disabledGameIds, setDisabledGameIds] = useState<string[]>(() => loadDisabledGameIds());
+  const [games, setGames] = useState<GameConfig[]>(() => applyDisabledGames(bundledGames, loadDisabledGameIds()));
   const [gameJsonFiles, setGameJsonFiles] = useState<GameJsonFile[]>(bundledGameJsonFiles);
-  const [profile, setProfile] = useState<PlayerProfile>(() => loadProfile(bundledGames));
+  const [profile, setProfile] = useState<PlayerProfile>(() => requireLogin(loadProfile(bundledGames)));
   const [users, setUsers] = useState<PlayerProfile[]>(() => bundledUsers.map((user) => normalizeProfile(user, bundledGames)));
   const [appMetadata, setAppMetadata] = useState(() => loadAppMetadata());
   const [activeAudioManifest, setActiveAudioManifest] = useState<AudioManifest>(seedAudioManifest);
   const [storageReady, setStorageReady] = useState(false);
   const hasHydratedStorage = useRef(false);
 
-  const activeGame = games.find((game) => game.id === profile.activeGameId) ?? games[0];
+  const visibleGames = profile.role === "admin" ? games : games.filter((game) => !disabledGameIds.includes(game.id));
+  const activeGame = visibleGames.find((game) => game.id === profile.activeGameId) ?? visibleGames[0] ?? games[0];
   const activeGameSaves = getGameSaves(profile, activeGame.id);
   const activeSave = getActiveSave(profile, activeGame.id);
   const activeCampaign = getActiveCampaign(activeGame, profile);
 
   const recommendedGames = useMemo(() => {
-    const pool = games.filter((game) => game.id !== activeGame.id);
+    const pool = visibleGames.filter((game) => game.id !== activeGame.id);
     return [...pool].sort(() => Math.random() - 0.5).slice(0, 3);
-  }, [activeGame.id, games]);
-  const hideTopBar = screen === "newGame" || screen === "load";
-
+  }, [activeGame.id, visibleGames]);
+  const visibleNews = useMemo(
+    () =>
+      appMetadata.news
+        .filter((entry) => (entry.status ?? "published") === "published")
+        .filter((entry) => new Date(entry.publishedAt).getTime() <= Date.now())
+        .sort((left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime()),
+    [appMetadata.news]
+  );
   useEffect(() => {
+    document.documentElement.lang = profile.settings.language;
     document.documentElement.dataset.theme = profile.settings.theme;
     document.documentElement.dataset.hud = profile.settings.hudColor;
     setMusicVolume(profile.settings.volumes.music * profile.settings.volumes.master);
@@ -90,7 +142,7 @@ export default function App() {
     Promise.all([loadNativeProfile(), loadNativeMetadata(), loadPersistentUsers()])
       .then(([nativeProfile, nativeMetadata, persistedUsers]) => {
         const normalizedUsers = [...persistedUsers, ...bundledUsers]
-          .map((user) => normalizeProfile(user, bundledGames))
+          .map((user) => enforceFixedUserRole(normalizeProfile(user, bundledGames)))
           .filter((user, index, array) => array.findIndex((item) => item.id === user.id) === index);
         const normalizedProfile = nativeProfile ? normalizeProfile(nativeProfile, bundledGames) : undefined;
         if (normalizedUsers.length > 0) {
@@ -98,7 +150,7 @@ export default function App() {
         } else if (normalizedProfile) {
           setUsers([normalizedProfile]);
         }
-        if (normalizedProfile) setProfile(normalizedProfile);
+        if (normalizedProfile) setProfile(requireLogin(normalizedProfile));
         if (nativeMetadata) setAppMetadata(normalizeMetadata(nativeMetadata));
       })
       .finally(() => setStorageReady(true));
@@ -108,7 +160,7 @@ export default function App() {
     if (!storageReady) return;
     void savePersistentProfile(profile);
     setUsers((currentUsers) => {
-      const normalizedProfile = normalizeProfile(profile, bundledGames);
+      const normalizedProfile = enforceFixedUserRole(normalizeProfile(profile, bundledGames));
       const existingIndex = currentUsers.findIndex((user) => user.id === normalizedProfile.id);
       if (existingIndex < 0) return [normalizedProfile, ...currentUsers];
       return currentUsers.map((user, index) => (index === existingIndex ? normalizedProfile : user));
@@ -121,6 +173,11 @@ export default function App() {
   }, [appMetadata, storageReady]);
 
   useEffect(() => {
+    if (!storageReady) return;
+    void savePersistentUsers(users, profile.id);
+  }, [profile.id, storageReady, users]);
+
+  useEffect(() => {
     let active = true;
     loadGameAudioManifest(activeGame).then((manifest) => {
       if (active) setActiveAudioManifest(manifest);
@@ -131,6 +188,11 @@ export default function App() {
   }, [activeGame]);
 
   useEffect(() => {
+    if (!profile.signedIn) {
+      playTrack(loginFallout4MainTheme, "background");
+      return;
+    }
+
     if (!profile.settings.audioEnabled) {
       stopAudio();
       return;
@@ -140,7 +202,7 @@ export default function App() {
       (item) => item.id === profile.settings.tracks.background
     );
     playTrack(track?.path, "background");
-  }, [activeAudioManifest, profile.settings.audioEnabled, profile.settings.tracks.background]);
+  }, [activeAudioManifest, profile.settings.audioEnabled, profile.settings.tracks.background, profile.signedIn]);
 
   useEffect(() => {
     if (screen !== "fallout4Campaign" || !activeSave) return;
@@ -180,6 +242,7 @@ export default function App() {
   }
 
   function selectGame(gameId: string, nextScreen: Screen = "newGame") {
+    if (profile.role !== "admin" && disabledGameIds.includes(gameId)) return;
     const now = new Date().toISOString();
     try {
       window.localStorage.setItem("rpg-platform.last-game-id", gameId);
@@ -234,6 +297,12 @@ export default function App() {
 
     setUsers((currentUsers) => [newProfile, ...currentUsers]);
     setProfile(newProfile);
+    setScreen("home");
+  }
+
+  function accessUser(nextProfile: PlayerProfile) {
+    setProfile(enforceFixedUserRole(nextProfile));
+    setScreen("home");
   }
 
   function loadSave(saveId: string) {
@@ -321,6 +390,7 @@ export default function App() {
       short: "NEW",
       description: "Configura la descripcion de tu nuevo modulo RPG.",
       tags: ["custom"],
+      enabled: true,
       templateFuture: true,
       campaigns: [
         {
@@ -356,11 +426,74 @@ export default function App() {
     setScreen("jsonEditor");
   }
 
+  function updateGame(updatedGame: GameConfig) {
+    const previousId = games.some((game) => game.id === updatedGame.id) ? updatedGame.id : activeGame.id;
+    setGames((currentGames) =>
+      currentGames.map((game) => (game.id === previousId ? normalizeGameConfig(updatedGame) : game))
+    );
+    if (updatedGame.id !== previousId) {
+      setProfile((current) => ({
+        ...current,
+        activeGameId: updatedGame.id,
+        history: current.history.map((entry) =>
+          entry.gameId === previousId ? { ...entry, gameId: updatedGame.id } : entry
+        ),
+        saves: current.saves.map((save) =>
+          save.gameId === previousId ? { ...save, gameId: updatedGame.id } : save
+        ),
+      }));
+    }
+    trackActivity(`Config admin actualizada: ${updatedGame.name}`);
+  }
+
+  function updateGames(nextGames: GameConfig[]) {
+    const nextDisabledIds = nextGames.filter((game) => game.enabled === false).map((game) => game.id);
+    setDisabledGameIds(nextDisabledIds);
+    try {
+      window.localStorage.setItem(disabledGamesKey, JSON.stringify(nextDisabledIds));
+    } catch {
+      // Local storage can be unavailable in restricted webviews.
+    }
+    setGames(applyDisabledGames(nextGames.map((game) => normalizeGameConfig(game)), nextDisabledIds));
+    trackActivity("Gestor de juegos actualizado");
+  }
+
+  function updateUsers(nextUsers: PlayerProfile[]) {
+    const normalizedUsers = nextUsers.map((user) => enforceFixedUserRole(normalizeProfile(user, games)));
+    setUsers(normalizedUsers);
+    const activeUser = normalizedUsers.find((user) => user.id === profile.id);
+    if (activeUser) setProfile((current) => ({ ...activeUser, signedIn: current.signedIn }));
+    trackActivity("Usuarios y accesos actualizados");
+  }
+
+  function updateNews(news: AppNewsEntry[]) {
+    setAppMetadata((current) => ({
+      ...current,
+      news,
+    }));
+    trackActivity("Noticias actualizadas");
+  }
+
+  function updateNotifications(notifications: AppNotificationEntry[]) {
+    setAppMetadata((current) => ({
+      ...current,
+      notifications,
+    }));
+    trackActivity("Notificaciones actualizadas");
+  }
+
   if (!profile.signedIn) {
     return (
       <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
         <div className="animated-bg" />
-        <AuthScreen profile={profile} users={users} games={games} onAccess={setProfile} onRegister={registerUser} />
+        <AuthScreen
+          profile={profile}
+          users={users}
+          games={games}
+          news={visibleNews}
+          onAccess={accessUser}
+          onRegister={registerUser}
+        />
       </div>
     );
   }
@@ -369,20 +502,21 @@ export default function App() {
     <div className={`crt-shell theme-${profile.settings.theme} hud-${profile.settings.hudColor}`}>
       <div className="animated-bg" />
       <div className={`app-frame screen-${screen}`}>
-          {!hideTopBar && (
-            <TopBar
-              profile={profile}
-              assetOverrides={profile.settings.assetOverrides}
-              onProfile={() => setScreen("profile")}
-              onSettings={() => setScreen("settings")}
-            />
-          )}
+        <TopBar
+          profile={profile}
+          assetOverrides={profile.settings.assetOverrides}
+          notifications={appMetadata.notifications}
+          onProfile={() => setScreen("profile")}
+          onSettings={() => setScreen("settings")}
+        />
 
         <div className="app-body">
           <Sidebar
             active={screen}
             appVersion={appMetadata.version}
             assetOverrides={profile.settings.assetOverrides}
+            isAdmin={profile.role === "admin"}
+            language={profile.settings.language}
             onChange={setScreen}
             onExit={signOut}
           />
@@ -395,7 +529,7 @@ export default function App() {
               save={activeSave}
               saves={activeGameSaves}
               recentActivity={appMetadata.recentActivity}
-              news={appMetadata.news}
+              news={visibleNews}
               recommended={recommendedGames}
               onContinue={continueGame}
               onDice={() => setScreen("dice")}
@@ -406,7 +540,7 @@ export default function App() {
 
           {screen === "library" && (
             <LibraryScreen
-              games={games}
+              games={visibleGames}
               activeId={activeGame.id}
               onSelect={(gameId) => selectGame(gameId, "newGame")}
               onConfigure={(gameId) => selectGame(gameId, "content")}
@@ -530,6 +664,40 @@ export default function App() {
               settings={profile.settings}
               onChange={updateSettings}
               onBack={() => setScreen("home")}
+            />
+          )}
+          {isAdminScreen(screen) && profile.role === "admin" && (
+            <AdminScreen
+              module={adminModuleForScreen(screen)}
+              games={games}
+              users={users}
+              activeGameId={activeGame.id}
+              activeUserId={profile.id}
+              news={appMetadata.news}
+              notifications={appMetadata.notifications}
+              onSelectGame={(gameId) => selectGame(gameId, "admin")}
+              onUpdateGame={updateGame}
+              onUpdateGames={updateGames}
+              onAddGame={createNewGame}
+              onUpdateUsers={updateUsers}
+              onUpdateNews={updateNews}
+              onUpdateNotifications={updateNotifications}
+              onBack={() => setScreen("home")}
+            />
+          )}
+          {isAdminScreen(screen) && profile.role !== "admin" && (
+            <HomeScreen
+              game={activeGame}
+              campaign={activeCampaign}
+              save={activeSave}
+              saves={activeGameSaves}
+              recentActivity={appMetadata.recentActivity}
+              news={visibleNews}
+              recommended={recommendedGames}
+              onContinue={continueGame}
+              onDice={() => setScreen("dice")}
+              onDetails={() => setScreen("content")}
+              onSelectRecommended={(gameId) => selectGame(gameId, "content")}
             />
           )}
           {screen === "rules" && <RulesScreen onBack={() => setScreen("home")} />}

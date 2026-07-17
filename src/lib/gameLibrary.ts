@@ -177,6 +177,7 @@ export function normalizeGameConfig(game: GameConfig, configPath?: string): Game
   return {
     ...game,
     id,
+    enabled: game.enabled ?? true,
     basePath,
     configPath: configPath ? normalizePublicPath(configPath) : game.configPath ?? `${basePath}/game.config.json`,
     content: {

@@ -1,5 +1,6 @@
 export type ThemeMode = "dark" | "light";
 export type HudColor = "green" | "amber" | "blue" | "red" | "purple";
+export type LanguageCode = "es" | "en";
 
 export type TrackSelection = {
   background?: string;
@@ -11,10 +12,12 @@ export type TrackSelection = {
 };
 
 export type UserSettings = {
+  language: LanguageCode;
   theme: ThemeMode;
   hudColor: HudColor;
   animatedBackground: boolean;
   audioEnabled: boolean;
+  audioPreferenceSaved?: boolean;
   assetOverrides?: Record<string, string>;
   tracks: TrackSelection;
   volumes: {

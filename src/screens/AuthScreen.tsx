@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { gameHeroVars } from "../lib/gameLibrary";
+import type { AppNewsEntry } from "../lib/appMetadataStorage";
 import type { GameConfig } from "../types/game";
 import type { PlayerProfile } from "../types/profile";
 
@@ -26,6 +27,7 @@ type Props = {
   profile: PlayerProfile;
   users: PlayerProfile[];
   games: GameConfig[];
+  news?: AppNewsEntry[];
   onAccess: (profile: PlayerProfile) => void;
   onRegister: (account: { email: string; username: string; password: string; role?: "user" | "admin" }) => void;
 };
@@ -35,7 +37,7 @@ type AuthMode = "login" | "register";
 type NewsItem = {
   id: string;
   title: string;
-  summary: string;
+  summary?: string;
   date?: string;
   publishedAt?: string;
   gameId?: string;
@@ -96,7 +98,18 @@ function newsDate(item: NewsItem) {
   }
 }
 
-export function AuthScreen({ profile, users, games, onAccess, onRegister }: Props) {
+function publicNews(items: NewsItem[]) {
+  return items
+    .filter((item) => {
+      const status = "status" in item ? String((item as NewsItem & { status?: string }).status ?? "published") : "published";
+      const rawDate = item.publishedAt ?? item.date;
+      const publishTime = rawDate ? new Date(rawDate).getTime() : 0;
+      return status === "published" && (!rawDate || publishTime <= Date.now());
+    })
+    .sort((left, right) => new Date(right.publishedAt ?? right.date ?? 0).getTime() - new Date(left.publishedAt ?? left.date ?? 0).getTime());
+}
+
+export function AuthScreen({ profile, users, games, news = [], onAccess, onRegister }: Props) {
   const rememberedLogin = readLocalStorage(rememberedLoginKey);
   const [mode, setMode] = useState<AuthMode>("login");
   const [emailOrUser, setEmailOrUser] = useState(rememberedLogin || "");
@@ -104,6 +117,8 @@ export function AuthScreen({ profile, users, games, onAccess, onRegister }: Prop
   const [username, setUsername] = useState(profile.username ?? "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryMessage, setRecoveryMessage] = useState("");
   const [showRecovery, setShowRecovery] = useState(false);
@@ -138,8 +153,10 @@ export function AuthScreen({ profile, users, games, onAccess, onRegister }: Prop
     );
   }, [games, profile.activeGameId]);
   const heroStyle = selectedGame ? (gameHeroVars(selectedGame) as CSSProperties) : undefined;
-  const fallbackNews = newsItems.length
-    ? newsItems
+  const managedNews = publicNews(news);
+  const mergedNews = publicNews([...managedNews, ...newsItems]);
+  const fallbackNews = mergedNews.length
+    ? mergedNews
     : [
         {
           id: "fallback-news",
@@ -298,7 +315,7 @@ export function AuthScreen({ profile, users, games, onAccess, onRegister }: Prop
                   </label>
                   <label>
                     <span>Contrasena</span>
-                    <div><Lock size={18} /><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ingresa tu contrasena" /><Eye size={18} /></div>
+                    <div><Lock size={18} /><input type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Ingresa tu contrasena" /><button type="button" className="auth-eye-button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Ocultar contrasena" : "Ver contrasena"}><Eye size={18} /></button></div>
                   </label>
                   <button type="button" className={`auth-check ${remember ? "checked" : ""}`} onClick={() => setRemember((value) => !value)}>
                     <CheckSquare size={18} /> Recordarme
@@ -319,12 +336,12 @@ export function AuthScreen({ profile, users, games, onAccess, onRegister }: Prop
                   </label>
                   <label>
                     <span>Contrasena</span>
-                    <div><Lock size={18} /><input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Crea una contrasena" /><Eye size={18} /></div>
+                    <div><Lock size={18} /><input type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Crea una contrasena" /><button type="button" className="auth-eye-button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Ocultar contrasena" : "Ver contrasena"}><Eye size={18} /></button></div>
                     <small>Minimo 4 caracteres. Luego se cambia a validacion real.</small>
                   </label>
                   <label>
                     <span>Confirmar contrasena</span>
-                    <div><Lock size={18} /><input type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Confirma tu contrasena" /><Eye size={18} /></div>
+                    <div><Lock size={18} /><input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Confirma tu contrasena" /><button type="button" className="auth-eye-button" onClick={() => setShowConfirmPassword((value) => !value)} aria-label={showConfirmPassword ? "Ocultar confirmacion" : "Ver confirmacion"}><Eye size={18} /></button></div>
                   </label>
                   <button type="button" className="auth-check checked"><CheckSquare size={18} /> Acepto terminos y condiciones</button>
                   <button type="button" className={`auth-check ${newsOptIn ? "checked" : ""}`} onClick={() => setNewsOptIn((value) => !value)}>

@@ -27,6 +27,7 @@ export function LibraryScreen({ games, activeId, onSelect, onConfigure, onCreate
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const visible = games.filter((game) => {
+      if (game.enabled === false) return false;
       if (installedOnly && game.templateFuture) return false;
       if (!q) return true;
 

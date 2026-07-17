@@ -38,6 +38,47 @@ export type Campaign = {
   };
 };
 
+export type MapNodeType = "start" | "settlement" | "dungeon" | "wilds" | "city" | "quest" | "exit";
+export type TacticalTerrainType = "plain" | "forest" | "mountain" | "water" | "road" | "city" | "base" | "wall";
+export type TacticalMarkerType = "player" | "enemy" | "objective" | "spawn" | "shop";
+
+export type GameMapNode = {
+  id: string;
+  name: string;
+  type: MapNodeType;
+  x: number;
+  y: number;
+  description?: string;
+  biome?: string;
+  danger?: number;
+  connections: string[];
+};
+
+export type GameMap = {
+  id: string;
+  name: string;
+  description?: string;
+  width: number;
+  height: number;
+  tileSize?: number;
+  background?: string;
+  backgroundMode?: "none" | "image";
+  backgroundSourceName?: string;
+  nodes: GameMapNode[];
+  tiles?: Array<{
+    x: number;
+    y: number;
+    terrain: TacticalTerrainType;
+  }>;
+  markers?: Array<{
+    id: string;
+    x: number;
+    y: number;
+    type: TacticalMarkerType;
+    label: string;
+  }>;
+};
+
 export type PlayerOption = {
   value: number;
   label: string;
@@ -117,6 +158,7 @@ export type GameConfig = {
   cover?: string;
   configPath?: string;
   tags?: string[];
+  enabled?: boolean;
   templateFuture?: boolean;
   basePath?: string;
   maxPlayers?: number;
@@ -141,6 +183,7 @@ export type GameConfig = {
   rules?: string;
   templates?: string;
   newGame?: string;
+  maps?: GameMap[];
   newGameSetup?: NewGameSetupConfig;
   campaigns: Campaign[];
   content: {

@@ -185,6 +185,19 @@ export async function loadPersistentUsers() {
   return database.users;
 }
 
+export async function savePersistentUsers(users: PlayerProfile[], currentUserId?: string) {
+  const current = await loadPersistentDatabase();
+  const nextDatabase = createDatabase({
+    ...current,
+    users,
+    profile: users.find((user) => user.id === (currentUserId ?? current.currentUserId)) ?? current.profile ?? users[0],
+    currentUserId: currentUserId ?? current.currentUserId ?? users[0]?.id,
+  });
+
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+}
+
 function createDatabase(partial: Partial<PlatformDatabase> = {}): PlatformDatabase {
   const users = partial.users ?? (partial.profile ? [partial.profile] : []);
   return {

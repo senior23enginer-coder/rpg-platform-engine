@@ -5,10 +5,12 @@ import { loadBundledUserProfiles } from "./userLibrary";
 const PROFILE_KEY = "rpg-platform.player-profile.v5";
 
 export const defaultSettings: UserSettings = {
+  language: "es",
   theme: "dark",
   hudColor: "green",
   animatedBackground: true,
-  audioEnabled: false,
+  audioEnabled: true,
+  audioPreferenceSaved: false,
   assetOverrides: {},
   tracks: {
     background: "01_fallout_4_main_theme",
@@ -139,6 +141,8 @@ export function normalizeProfile(profile: PlayerProfile, games: GameConfig[], fa
     settings: {
       ...defaultSettings,
       ...profile.settings,
+      audioEnabled: profile.settings?.audioPreferenceSaved ? profile.settings.audioEnabled : defaultSettings.audioEnabled,
+      audioPreferenceSaved: profile.settings?.audioPreferenceSaved ?? defaultSettings.audioPreferenceSaved,
       tracks: { ...defaultSettings.tracks, ...profile.settings?.tracks },
       volumes: { ...defaultSettings.volumes, ...profile.settings?.volumes },
     },

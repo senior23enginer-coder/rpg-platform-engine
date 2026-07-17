@@ -2,7 +2,8 @@ import { ArrowLeft, Check, Eye, Image, Monitor, Palette, RotateCcw, Save, Speake
 import { useState } from "react";
 import { playTrack, stopAudio, type TrackCategory } from "../lib/audioEngine";
 import type { AudioManifest } from "../types/game";
-import type { HudColor, ThemeMode, UserSettings } from "../types/profile";
+import type { HudColor, LanguageCode, ThemeMode, UserSettings } from "../types/profile";
+import { t } from "../lib/i18n";
 
 type Props = {
   manifest: AudioManifest;
@@ -11,9 +12,9 @@ type Props = {
   onBack: () => void;
 };
 
-const primaryTracks: Array<{ id: TrackCategory; label: string; help: string; icon: typeof Speaker }> = [
-  { id: "background", label: "Pista principal", help: "Musica ambiental en exploracion y menus.", icon: Speaker },
-  { id: "combat", label: "Pista de combate", help: "Musica intensa durante combates.", icon: Swords },
+const primaryTracks: Array<{ id: TrackCategory; labelKey: Parameters<typeof t>[1]; helpKey: Parameters<typeof t>[1]; icon: typeof Speaker }> = [
+  { id: "background", labelKey: "settings.backgroundTrack", helpKey: "settings.backgroundTrackHelp", icon: Speaker },
+  { id: "combat", labelKey: "settings.combatTrack", helpKey: "settings.combatTrackHelp", icon: Swords },
 ];
 
 const hudOptions: Array<{ value: HudColor; label: string }> = [
@@ -47,7 +48,7 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
 
   function toggleAudio() {
     const enabled = !settings.audioEnabled;
-    patch({ audioEnabled: enabled });
+    patch({ audioEnabled: enabled, audioPreferenceSaved: true });
     if (!enabled) {
       stopAudio();
       return;
@@ -70,15 +71,26 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
     <section className="settings-ref">
       <header className="settings-ref-head">
         <div>
-          <h2>Configuracion visual y audio</h2>
-          <p>Personaliza fondo, color del HUD, musica, combate, clicks y animaciones.</p>
+          <h2>{t(settings.language, "settings.title")}</h2>
+          <p>{t(settings.language, "settings.subtitle")}</p>
         </div>
-        <button onClick={onBack}><ArrowLeft size={18} /> Volver</button>
+        <button onClick={onBack}><ArrowLeft size={18} /> {t(settings.language, "settings.back")}</button>
       </header>
 
       <div className="settings-ref-grid">
+        <article className="settings-ref-card settings-ref-row-card settings-ref-language">
+          <h3><Monitor size={18} /> {t(settings.language, "settings.language")}</h3>
+          <div className="settings-ref-control">
+            <span>{t(settings.language, "settings.languageHelp")}</span>
+            <select value={settings.language} onChange={(event) => patch({ language: event.target.value as LanguageCode })}>
+              <option value="es">{t(settings.language, "settings.spanish")}</option>
+              <option value="en">{t(settings.language, "settings.english")}</option>
+            </select>
+          </div>
+        </article>
+
         <article className="settings-ref-card settings-ref-theme">
-          <h3><Monitor size={18} /> Tema de fondo</h3>
+          <h3><Monitor size={18} /> {t(settings.language, "settings.theme")}</h3>
           <div className="settings-ref-themes">
             {(["dark", "light"] as ThemeMode[]).map((theme) => (
               <button
@@ -87,16 +99,16 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
                 onClick={() => patch({ theme })}
               >
                 <span className={`settings-ref-theme-art ${theme}`} />
-                <strong>{theme === "dark" ? "Fondo negro" : "Fondo blanco"}</strong>
+                <strong>{theme === "dark" ? t(settings.language, "settings.dark") : t(settings.language, "settings.light")}</strong>
                 <span className="settings-ref-check">{settings.theme === theme ? <Check size={18} /> : null}</span>
-                <small>{theme === "dark" ? "Yermo / terminal." : "Lectura clara."}</small>
+                <small>{theme === "dark" ? t(settings.language, "settings.darkHint") : t(settings.language, "settings.lightHint")}</small>
               </button>
             ))}
           </div>
         </article>
 
         <article className="settings-ref-card settings-ref-hud">
-          <h3><Palette size={18} /> Color HUD principal</h3>
+          <h3><Palette size={18} /> {t(settings.language, "settings.hud")}</h3>
           <div className="settings-ref-hud-preview">
             <span className="vault-boy-line" />
             <div>
@@ -113,43 +125,43 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </select>
-          <p>Color caracteristico del terminal Pip-Boy.</p>
+          <p>{t(settings.language, "settings.hudHelp")}</p>
         </article>
 
         <aside className="settings-ref-preview">
-          <h3><Eye size={18} /> Vista previa actual</h3>
+          <h3><Eye size={18} /> {t(settings.language, "settings.preview")}</h3>
           <div className="settings-ref-preview-image" />
-          <p>Asi se vera el HUD y fondo con tu configuracion actual durante el juego.</p>
+          <p>{t(settings.language, "settings.previewHelp")}</p>
           <div className="settings-ref-tip">
             <Zap size={32} />
             <div>
-              <strong>Consejo</strong>
-              <p>Un fondo animado con intensidad media ofrece un equilibrio ideal entre inmersion y rendimiento.</p>
+              <strong>{t(settings.language, "settings.tip")}</strong>
+              <p>{t(settings.language, "settings.tipText")}</p>
             </div>
           </div>
         </aside>
 
         <article className="settings-ref-card settings-ref-row-card settings-ref-animated">
-          <h3><Zap size={18} /> Fondo animado</h3>
+          <h3><Zap size={18} /> {t(settings.language, "settings.animated")}</h3>
           <div className="settings-ref-control">
-            <span>Movimiento ambiental del menu y pantallas.</span>
+            <span>{t(settings.language, "settings.animatedHelp")}</span>
             <button
               className={`settings-ref-toggle ${settings.animatedBackground ? "on" : ""}`}
               onClick={() => patch({ animatedBackground: !settings.animatedBackground })}
             >
-              {settings.animatedBackground ? "Activado" : "Desactivado"}
+              {settings.animatedBackground ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
             </button>
           </div>
         </article>
 
         <article className="settings-ref-card settings-ref-row-card settings-ref-intensity">
-          <h3><Eye size={18} /> Intensidad visual</h3>
+          <h3><Eye size={18} /> {t(settings.language, "settings.intensity")}</h3>
           <div className="settings-ref-control">
-            <span>Ajusta la intensidad de efectos y brillo general.</span>
+            <span>{t(settings.language, "settings.intensityHelp")}</span>
             <select defaultValue="media">
-              <option value="baja">Baja</option>
-              <option value="media">Media</option>
-              <option value="alta">Alta</option>
+              <option value="baja">{t(settings.language, "settings.low")}</option>
+              <option value="media">{t(settings.language, "settings.medium")}</option>
+              <option value="alta">{t(settings.language, "settings.high")}</option>
             </select>
           </div>
         </article>
@@ -158,9 +170,9 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           const Icon = category.icon;
           return (
             <article className={`settings-ref-card settings-ref-track settings-ref-track-${category.id}`} key={category.id}>
-              <h3><Icon size={18} /> {category.label}</h3>
+              <h3><Icon size={18} /> {t(settings.language, category.labelKey)}</h3>
               <div className="settings-ref-control">
-                <span>{category.help}</span>
+                <span>{t(settings.language, category.helpKey)}</span>
                 <select
                   value={settings.tracks[category.id] ?? ""}
                   onChange={(event) => setTrack(category.id, event.target.value)}
@@ -175,20 +187,20 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
         })}
 
         <article className="settings-ref-card settings-ref-row-card settings-ref-sounds">
-          <h3><Volume2 size={18} /> Sonidos</h3>
+          <h3><Volume2 size={18} /> {t(settings.language, "settings.sounds")}</h3>
           <div className="settings-ref-control">
-            <span>Clicks de interfaz y sonido ambiental de fondo.</span>
+            <span>{t(settings.language, "settings.soundsHelp")}</span>
             <button className={`settings-ref-toggle ${settings.audioEnabled ? "on" : ""}`} onClick={toggleAudio}>
-              {settings.audioEnabled ? "Activado" : "Desactivado"}
+              {settings.audioEnabled ? t(settings.language, "status.enabled") : t(settings.language, "status.disabled")}
             </button>
           </div>
         </article>
 
         <article className="settings-ref-card settings-ref-row-card settings-ref-accessibility">
-          <h3><Zap size={18} /> Accesibilidad</h3>
+          <h3><Zap size={18} /> {t(settings.language, "settings.accessibility")}</h3>
           <div className="settings-ref-control">
-            <span>Reducir animaciones para moviles o comodidad visual.</span>
-            <button className="settings-ref-toggle">Desactivado</button>
+            <span>{t(settings.language, "settings.accessibilityHelp")}</span>
+            <button className="settings-ref-toggle">{t(settings.language, "status.disabled")}</button>
           </div>
         </article>
 
@@ -202,19 +214,19 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
           }}
         >
           <Target size={22} />
-          <span><strong>Probar combate</strong><small>Vista previa en combate</small></span>
+          <span><strong>{t(settings.language, "settings.testCombat")}</strong><small>{t(settings.language, "settings.testCombatHelp")}</small></span>
         </button>
         <button onClick={() => patch({ theme: "dark", hudColor: "green", animatedBackground: true })}>
           <RotateCcw size={22} />
-          <span><strong>Restaurar apariencia</strong><small>Volver a valores predeterminados</small></span>
+          <span><strong>{t(settings.language, "settings.restore")}</strong><small>{t(settings.language, "settings.restoreHelp")}</small></span>
         </button>
         <button className="green-button" onClick={() => onChange(settings)}>
           <Save size={22} />
-          <span><strong>Guardar personalizacion</strong><small>Aplicar y guardar cambios</small></span>
+          <span><strong>{t(settings.language, "settings.save")}</strong><small>{t(settings.language, "settings.saveHelp")}</small></span>
         </button>
         <button onClick={() => setAssetModalOpen(true)}>
           <Image size={22} />
-          <span><strong>Editar imagenes</strong><small>Paths de iconos y fondos</small></span>
+          <span><strong>{t(settings.language, "settings.editImages")}</strong><small>{t(settings.language, "settings.editImagesHelp")}</small></span>
         </button>
       </footer>
 
@@ -222,8 +234,8 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
         <div className="modal-backdrop">
           <article className="app-modal asset-path-modal">
             <button className="modal-close" onClick={() => setAssetModalOpen(false)}><X size={18} /></button>
-            <h3><Image size={22} /> Editor de paths visuales</h3>
-            <p>Cambia rutas de imagenes o iconos desde configuracion. Usa paths publicos como /platform/uiux-icons/home.png.</p>
+            <h3><Image size={22} /> {t(settings.language, "settings.pathsTitle")}</h3>
+            <p>{t(settings.language, "settings.pathsHelp")}</p>
             {[
               ["platform.logo", "/platform/uiux-icons/brand-gear.png"],
               ["topbar.logo", "/platform/uiux-icons/brand-gear.png"],
@@ -242,7 +254,7 @@ export function SettingsScreen({ manifest, settings, onChange, onBack }: Props) 
                 </label>
               );
             })}
-            <button className="green-button" onClick={saveAssetPaths}>Guardar paths</button>
+            <button className="green-button" onClick={saveAssetPaths}>{t(settings.language, "settings.savePaths")}</button>
           </article>
         </div>
       )}

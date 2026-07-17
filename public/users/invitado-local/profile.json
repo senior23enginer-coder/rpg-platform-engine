@@ -25,7 +25,8 @@
     "theme": "dark",
     "hudColor": "green",
     "animatedBackground": true,
-    "audioEnabled": false,
+    "audioEnabled": true,
+    "audioPreferenceSaved": false,
     "tracks": {
       "background": "01_fallout_4_main_theme",
       "combat": "06_combat_ready",
