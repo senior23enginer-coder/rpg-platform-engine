@@ -10,6 +10,7 @@
     "generate:fallout4-mission-details": "node scripts/generate-fallout4-mission-details.mjs",
     "generate:fallout4-runtime-depth": "node scripts/generate-fallout4-runtime-depth.mjs",
     "generate:fallout4-final-runtime": "node scripts/generate-fallout4-final-runtime.mjs",
+    "generate:fallout4-playable-content": "node scripts/generate-fallout4-playable-content.mjs",
     "integrate:fallout4-tomes": "node scripts/integrate-fallout4-tomes.mjs",
     "backend:local": "node scripts/local-backend.mjs",
     "test:backend": "node scripts/test-local-backend.mjs",

@@ -1,6 +1,12 @@
-import type { GameConfig, GameMap } from "../types/game";
+import type { GameConfig, GameMap, TacticalTerrainType } from "../types/game";
 
 const tomeCatalogModules = import.meta.glob("/public/games/*/templates/templates.json", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+
+const playableContentModules = import.meta.glob("/public/games/*/runtime/playable-editor-index.json", {
   eager: true,
   query: "?raw",
   import: "default",
@@ -33,6 +39,57 @@ type TomeCatalogItem = {
   activation?: string;
   execution?: string;
   completion?: string;
+  stages?: unknown[];
+  linkedLocationIds?: string[];
+};
+
+type PlayableLocationMap = {
+  id: string;
+  locationId: string;
+  name: string;
+  sourceTomes?: string[];
+  width: number;
+  height: number;
+  tileSize?: number;
+  terrain?: string;
+  biome?: string;
+  category?: string;
+  risk?: string | number;
+  settlement?: boolean;
+  description?: string;
+  subzones?: Array<{ name?: string; role?: string }>;
+  events?: Array<{ id: string; subzone?: string; type?: string; apCost?: number; rule?: string }>;
+  subzoneCount?: number;
+  eventCount?: number;
+  enemyCount?: number;
+  collectibleCount?: number;
+  missionCount?: number;
+  enemies?: string[];
+  collectibles?: TomeCatalogItem[];
+  missions?: Array<{ id: string; name: string; stages?: number }>;
+  markers?: NonNullable<GameMap["markers"]>;
+  tiles?: NonNullable<GameMap["tiles"]>;
+};
+
+type PlayableContent = {
+  counts?: Record<string, number>;
+  tomeMatrix?: Array<{ id: string; role?: string; runtimeSystems?: string[]; editorSurfaces?: string[]; catalogCounts?: Record<string, number> }>;
+  rules?: {
+    nodeTypes?: Array<{ id: string; label: string; marker?: string; use?: string; apCost?: number; defense?: number; sourceTomes?: string[] }>;
+    weatherEffects?: Array<{ id: string; name: string; visibility?: number; movementModifier?: number; damage?: string; survival?: string[] }>;
+    biomes?: Array<{ id: string; name: string; movementModifier?: number; encounterRisk?: number; useInMap?: string; terrain?: string }>;
+  };
+  catalogs?: {
+    missions?: Array<TomeCatalogItem & { stages?: unknown[]; linkedLocationIds?: string[]; rewards?: string[]; requiredItems?: unknown[]; enemies?: unknown[]; npcs?: unknown[] }>;
+    locations?: TomeCatalogItem[];
+    locationMaps?: PlayableLocationMap[];
+    bestiary?: TomeCatalogItem[];
+    weapons?: TomeCatalogItem[];
+    equipment?: TomeCatalogItem[];
+    settlements?: TomeCatalogItem[];
+    factions?: TomeCatalogItem[];
+    collectibles?: TomeCatalogItem[];
+  };
 };
 
 type TomeTemplates = {
@@ -54,6 +111,9 @@ export type Fallout4TomeMapLibrary = Pick<GameMap, "missionSheets" | "locations"
   counts: Record<string, number>;
   factions: Array<{ id: string; name: string; description?: string }>;
   settlements: Array<{ id: string; name: string; description?: string }>;
+  tomeMatrix: NonNullable<PlayableContent["tomeMatrix"]>;
+  nodeTypes: NonNullable<PlayableContent["rules"]>["nodeTypes"];
+  locationMaps: PlayableLocationMap[];
 };
 
 function normalizePublicPath(path: string) {
@@ -72,6 +132,18 @@ function readTemplates(game: GameConfig): TomeTemplates | undefined {
   }
 }
 
+function readPlayableContent(game: GameConfig): PlayableContent | undefined {
+  const basePath = game.basePath ?? `/games/${game.id}`;
+  const expectedPath = `${basePath}/runtime/playable-editor-index.json`;
+  const entry = Object.entries(playableContentModules).find(([path]) => normalizePublicPath(path) === expectedPath);
+  if (!entry) return undefined;
+  try {
+    return JSON.parse(String(entry[1])) as PlayableContent;
+  } catch {
+    return undefined;
+  }
+}
+
 function riskToDanger(risk?: string | number) {
   if (typeof risk === "number") return Math.max(1, Math.min(5, Math.round(risk)));
   const value = String(risk ?? "").toLowerCase();
@@ -79,6 +151,11 @@ function riskToDanger(risk?: string | number) {
   if (value.includes("medio")) return 2;
   if (value.includes("bajo")) return 1;
   return 3;
+}
+
+function toTerrain(value?: string): TacticalTerrainType {
+  const allowed: TacticalTerrainType[] = ["plain", "forest", "mountain", "water", "road", "city", "base", "wall"];
+  return allowed.includes(value as TacticalTerrainType) ? value as TacticalTerrainType : "plain";
 }
 
 function uniqById<T extends { id: string }>(items: T[]) {
@@ -89,7 +166,8 @@ function uniqById<T extends { id: string }>(items: T[]) {
 
 export function buildFallout4TomeMapLibrary(game: GameConfig): Fallout4TomeMapLibrary | undefined {
   const templates = readTemplates(game);
-  const catalogs = templates?.catalogs;
+  const playable = readPlayableContent(game);
+  const catalogs = playable?.catalogs ?? templates?.catalogs;
   if (!catalogs) return undefined;
 
   const locations = uniqById([
@@ -125,13 +203,28 @@ export function buildFallout4TomeMapLibrary(game: GameConfig): Fallout4TomeMapLi
   const missionSheets = (catalogs.missions ?? []).map((mission) => ({
     id: mission.id ?? mission.name ?? "mission",
     title: mission.name ?? mission.originalName ?? mission.id ?? "Mision",
-    objective: [mission.activation, mission.execution, mission.completion, mission.useInPlay].filter(Boolean).join(" | ") || "Mision extraida de TOMO 02.",
+    objective:
+      [
+        mission.activation,
+        mission.execution,
+        mission.completion,
+        mission.useInPlay,
+        Array.isArray(mission.stages) ? `${mission.stages.length} etapas jugables` : "",
+        Array.isArray(mission.linkedLocationIds) ? `${mission.linkedLocationIds.length} ubicaciones vinculadas` : "",
+      ].filter(Boolean).join(" | ") || "Mision extraida de TOMO 02.",
     locationId: mission.locationId,
     recommendedLevel: mission.type === "main" ? 1 : 2,
     status: "ready" as const,
   }));
 
-  const weatherEffects = [
+  const weatherEffects = playable?.rules?.weatherEffects?.map((weather) => ({
+    id: weather.id,
+    name: weather.name,
+    visibility: weather.visibility,
+    movementModifier: weather.movementModifier,
+    damage: weather.damage ?? weather.survival?.join(", "),
+    description: weather.survival?.length ? `TOMO 10: ${weather.survival.join(", ")}.` : "Clima aplicable a mapa/campana.",
+  })) ?? [
     { id: "weather_clear", name: "Despejado", visibility: 100, movementModifier: 0, description: "Condicion base sin penalizadores." },
     { id: "weather_radstorm", name: "Tormenta radiactiva", visibility: 45, movementModifier: 1, damage: "radiacion", description: "TOMO 10: clima hostil, radiacion y visibilidad limitada." },
     { id: "weather_rain", name: "Lluvia acida", visibility: 65, movementModifier: 1, damage: "desgaste", description: "TOMO 10: afecta movimiento, equipo y rastreo." },
@@ -177,19 +270,71 @@ export function buildFallout4TomeMapLibrary(game: GameConfig): Fallout4TomeMapLi
   ];
 
   return {
-    counts: templates.counts ?? {},
+    counts: playable?.counts ?? templates?.counts ?? {},
     missionSheets,
     locations,
     weatherEffects,
-    biomes,
+    biomes: playable?.rules?.biomes?.map((biome) => ({
+      id: biome.id,
+      name: biome.name,
+      movementModifier: biome.movementModifier,
+      encounterRisk: biome.encounterRisk,
+      description: biome.useInMap ?? `Bioma extraido del atlas/tomos para ${biome.name}.`,
+    })) ?? biomes,
     arsenal: uniqById(arsenal),
     settlements: (catalogs.settlements ?? []).map((item) => ({ id: item.id ?? item.name ?? "settlement", name: item.name ?? item.id ?? "Asentamiento", description: item.unlock ?? item.useInPlay })),
     factions: (catalogs.factions ?? []).map((item) => ({ id: item.id ?? item.name ?? "faction", name: item.name ?? item.id ?? "Faccion", description: item.useInPlay })),
+    tomeMatrix: playable?.tomeMatrix ?? [],
+    nodeTypes: playable?.rules?.nodeTypes ?? [],
+    locationMaps: playable?.catalogs?.locationMaps ?? [],
   };
 }
 
 export function createFallout4LocationMaps(game: GameConfig): GameMap[] {
   const library = buildFallout4TomeMapLibrary(game);
+  if (library?.locationMaps?.length) {
+    return library.locationMaps.map((map, index) => ({
+      id: map.id,
+      name: map.name,
+      description: map.description,
+      width: map.width,
+      height: map.height,
+      tileSize: map.tileSize ?? 48,
+      backgroundMode: "none",
+      gridOpacity: 0.55,
+      terrainOpacity: 0.38,
+      markerScale: 1,
+      nodes: [
+        {
+          id: `node_${map.locationId}`,
+          name: map.name.replace(/^Mapa - /, ""),
+          type: map.settlement ? "settlement" : "location",
+          x: 1,
+          y: 1,
+          biome: map.biome,
+          danger: riskToDanger(map.risk),
+          locationId: map.locationId,
+          missionId: map.missions?.[0]?.id,
+          movementCost: map.settlement ? 1 : 2,
+          coverage: map.category?.toLowerCase().includes("vault") || map.biome?.toLowerCase().includes("urbano") ? "heavy" : "light",
+          connections: [],
+        },
+      ],
+      tiles: map.tiles?.length
+        ? map.tiles
+        : Array.from({ length: map.width * map.height }, (_, tileIndex) => ({
+          x: tileIndex % map.width,
+          y: Math.floor(tileIndex / map.width),
+          terrain: toTerrain(map.terrain),
+        })),
+      markers: map.markers?.map((marker) => ({ ...marker, missionId: marker.missionId ?? map.missions?.[0]?.id })) ?? [],
+      missionSheets: library.missionSheets,
+      locations: library.locations,
+      weatherEffects: library.weatherEffects,
+      biomes: library.biomes,
+      arsenal: library.arsenal,
+    }));
+  }
   if (!library?.locations?.length) return [];
   return library.locations.map((location, index) => {
     const width = 14;

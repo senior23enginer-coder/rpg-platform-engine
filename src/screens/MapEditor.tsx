@@ -36,7 +36,7 @@ const markerPalette: Array<{ type: TacticalMarkerType; label: string }> = [
 
 type ToolMode = "terrain" | "marker" | "erase";
 type MapEditorView = "list" | "editor";
-type LibraryTab = "mission" | "location" | "weather" | "biome" | "arsenal" | "units" | "bestiary";
+type LibraryTab = "mission" | "location" | "weather" | "biome" | "nodes" | "arsenal" | "units" | "bestiary";
 
 const editorMenus = ["Archivo", "Editar", "Vista", "Capas", "Escenario", "Herramientas", "Avanzado", "Modulos", "Ventana", "Ayuda"];
 
@@ -209,6 +209,8 @@ export function MapEditor({ game, onChange, onBack }: Props) {
   const biomes = activeMap?.biomes?.length ? activeMap.biomes : createDefaultMapLibraries(game).biomes;
   const arsenal = activeMap?.arsenal?.length ? activeMap.arsenal : createDefaultMapLibraries(game).arsenal;
   const tomeLibrary = buildFallout4TomeMapLibrary(game);
+  const nodeTypes = tomeLibrary?.nodeTypes ?? [];
+  const activeLocationMap = tomeLibrary?.locationMaps.find((map) => map.id === activeMap.id || map.locationId === activeMap.nodes?.[0]?.locationId);
 
   function emit(nextMaps: GameMap[]) {
     onChange(nextMaps.map(normalizeTacticalMap));
@@ -498,6 +500,8 @@ export function MapEditor({ game, onChange, onBack }: Props) {
           <span><Shield size={15} /> {tomeLibrary.counts.settlements ?? 0} asentamientos</span>
           <span><Users size={15} /> {tomeLibrary.counts.factions ?? 0} facciones</span>
           <span><Boxes size={15} /> {tomeLibrary.counts.collectibles ?? 0} coleccionables</span>
+          <span><Route size={15} /> {tomeLibrary.counts.locationEvents ?? 0} eventos</span>
+          <span><Layers size={15} /> {tomeLibrary.counts.nodeTypes ?? nodeTypes.length} nodos</span>
         </div>
       )}
 
@@ -522,6 +526,7 @@ export function MapEditor({ game, onChange, onBack }: Props) {
           <button className={libraryTab === "mission" ? "selected" : ""} onClick={() => setLibraryTab("mission")}><BookOpen size={15} /> Misiones</button>
           <button className={libraryTab === "location" ? "selected" : ""} onClick={() => setLibraryTab("location")}><MapPinned size={15} /> Ubicaciones</button>
           <button className={libraryTab === "biome" ? "selected" : ""} onClick={() => setLibraryTab("biome")}><Layers size={15} /> Biomas</button>
+          <button className={libraryTab === "nodes" ? "selected" : ""} onClick={() => setLibraryTab("nodes")}><Route size={15} /> Nodos</button>
           <button className={libraryTab === "arsenal" ? "selected" : ""} onClick={() => setLibraryTab("arsenal")}><Package size={15} /> Assets</button>
         </section>
       </div>
@@ -559,9 +564,15 @@ export function MapEditor({ game, onChange, onBack }: Props) {
             {tomeLibrary && (
               <div className="world-tome-source">
                 <strong>Fuente tomos Fallout 4</strong>
-                <small>TOMO 01-10 integrados como fichas jugables para mapa/campana.</small>
+                <small>TOMO 01-10 integrados como fichas jugables: misiones, ubicaciones, bestiario, armas, equipo, asentamientos, facciones, clima y coleccionables.</small>
               </div>
             )}
+            {tomeLibrary?.tomeMatrix.map((tome) => (
+              <details key={tome.id}>
+                <summary>{tome.id}</summary>
+                {(tome.editorSurfaces ?? []).map((surface) => <button key={surface}>{surface}</button>)}
+              </details>
+            ))}
           </section>
 
           <section className="world-map-list-panel">
@@ -633,11 +644,21 @@ export function MapEditor({ game, onChange, onBack }: Props) {
               </div>
               <button onClick={() => addLibraryItem(libraryTab)}><Plus size={15} /> Agregar ficha</button>
             </header>
+            {activeLocationMap && (
+              <div className="map-tome-context">
+                <span><MapPinned size={15} /> {activeLocationMap.subzoneCount ?? activeLocationMap.subzones?.length ?? 0} subzonas</span>
+                <span><Route size={15} /> {activeLocationMap.eventCount ?? activeLocationMap.events?.length ?? 0} eventos</span>
+                <span><Crosshair size={15} /> {activeLocationMap.enemyCount ?? activeLocationMap.enemies?.length ?? 0} amenazas</span>
+                <span><Boxes size={15} /> {activeLocationMap.collectibleCount ?? activeLocationMap.collectibles?.length ?? 0} objetos/pistas</span>
+                <span><BookOpen size={15} /> {activeLocationMap.missionCount ?? activeLocationMap.missions?.length ?? 0} misiones vinculadas</span>
+              </div>
+            )}
             <nav>
               <button className={libraryTab === "mission" ? "selected" : ""} onClick={() => setLibraryTab("mission")}><BookOpen size={15} /> Misiones</button>
               <button className={libraryTab === "location" ? "selected" : ""} onClick={() => setLibraryTab("location")}><MapPinned size={15} /> Ubicaciones</button>
               <button className={libraryTab === "weather" ? "selected" : ""} onClick={() => setLibraryTab("weather")}><CloudSun size={15} /> Clima</button>
               <button className={libraryTab === "biome" ? "selected" : ""} onClick={() => setLibraryTab("biome")}><Layers size={15} /> Biomas</button>
+              <button className={libraryTab === "nodes" ? "selected" : ""} onClick={() => setLibraryTab("nodes")}><Route size={15} /> Nodos</button>
               <button className={libraryTab === "arsenal" ? "selected" : ""} onClick={() => setLibraryTab("arsenal")}><Package size={15} /> Equipo</button>
               <button className={libraryTab === "units" ? "selected" : ""} onClick={() => setLibraryTab("units")}><Users size={15} /> Unidades</button>
               <button className={libraryTab === "bestiary" ? "selected" : ""} onClick={() => setLibraryTab("bestiary")}><Crosshair size={15} /> Bestiario</button>
@@ -669,6 +690,13 @@ export function MapEditor({ game, onChange, onBack }: Props) {
                   <Layers size={16} />
                   <span><strong>{biome.name}</strong><small>{biome.description}</small></span>
                   <em>Riesgo {biome.encounterRisk ?? 1}</em>
+                </button>
+              ))}
+              {libraryTab === "nodes" && nodeTypes.map((node) => (
+                <button key={node.id} onClick={() => selectedMarker && updateSelectedMarker({ type: node.marker === "enemy" ? "enemy" : node.marker === "loot" ? "loot" : node.marker === "cover" ? "cover" : node.marker === "weather" ? "weather" : "objective", label: node.label, movementCost: node.apCost ?? 1 })}>
+                  <Route size={16} />
+                  <span><strong>{node.label}</strong><small>{node.use} {node.sourceTomes?.join(" + ")}</small></span>
+                  <em>{node.apCost ? `${node.apCost} AP` : node.defense ? `DEF ${node.defense}` : "regla"}</em>
                 </button>
               ))}
               {(libraryTab === "arsenal" || libraryTab === "units" || libraryTab === "bestiary") && arsenal

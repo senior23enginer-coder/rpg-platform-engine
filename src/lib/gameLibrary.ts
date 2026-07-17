@@ -14,6 +14,8 @@ const gameJsonModules = import.meta.glob(
     "!/public/games/**/missions/mission-details.json",
     "!/public/games/**/missions/mission-polish.json",
     "!/public/games/**/locations/location-events.json",
+    "!/public/games/**/runtime/playable-content.json",
+    "!/public/games/**/runtime/playable-editor-index.json",
   ],
   {
     eager: true,

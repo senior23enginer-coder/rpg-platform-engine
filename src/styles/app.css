@@ -15822,7 +15822,7 @@ svg {
 
 .tome-coverage-strip {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 6px;
   padding: 7px;
   border-inline: 1px solid rgba(255, 211, 107, 0.2);
@@ -15845,6 +15845,31 @@ svg {
   font-weight: 900;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.map-tome-context {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid rgba(255, 211, 107, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 211, 107, 0.045);
+}
+
+.map-tome-context span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  border: 1px solid rgba(142, 255, 186, 0.13);
+  border-radius: 5px;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .world-editor-left-panel {
