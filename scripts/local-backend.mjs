@@ -1,6 +1,6 @@
 import { createHash, pbkdf2Sync, randomBytes } from "node:crypto";
 import { createServer } from "node:http";
-import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -31,6 +31,90 @@ function readJson(filePath, fallback) {
   } catch {
     return fallback;
   }
+}
+
+function playableRuntimePath(gameId, fileName = "playable-content.json") {
+  return path.join(rootDir, "public", "games", gameId, "runtime", fileName);
+}
+
+function readPlayableRuntime(gameId, detail = false) {
+  const fullPath = playableRuntimePath(gameId, "playable-content.json");
+  const indexPath = playableRuntimePath(gameId, "playable-editor-index.json");
+  const selectedPath = detail && existsSync(fullPath) ? fullPath : indexPath;
+  return readJson(selectedPath, undefined);
+}
+
+function normalizePlayableType(type) {
+  const normalized = String(type ?? "").trim().toLowerCase();
+  const aliases = {
+    map: "locationMaps",
+    maps: "locationMaps",
+    locationmap: "locationMaps",
+    locationmaps: "locationMaps",
+    mission: "missions",
+    missions: "missions",
+    location: "locations",
+    locations: "locations",
+    enemy: "bestiary",
+    enemies: "bestiary",
+    bestiary: "bestiary",
+    weapon: "weapons",
+    weapons: "weapons",
+    equipment: "equipment",
+    gear: "equipment",
+    settlement: "settlements",
+    settlements: "settlements",
+    faction: "factions",
+    factions: "factions",
+    object: "collectibles",
+    objects: "collectibles",
+    collectible: "collectibles",
+    collectibles: "collectibles",
+    weather: "weather",
+    climate: "weather",
+    biome: "biomes",
+    biomes: "biomes",
+    node: "nodeTypes",
+    nodes: "nodeTypes",
+    nodetype: "nodeTypes",
+    nodetypes: "nodeTypes",
+  };
+  return aliases[normalized] ?? normalized;
+}
+
+function getPlayableCatalog(playable, type) {
+  const key = normalizePlayableType(type);
+  if (!playable) return [];
+  if (key === "weather") return playable.rules?.weatherEffects ?? [];
+  if (key === "biomes") return playable.rules?.biomes ?? [];
+  if (key === "nodeTypes") return playable.rules?.nodeTypes ?? [];
+  return playable.catalogs?.[key] ?? [];
+}
+
+function playableItemId(item) {
+  return String(item?.id ?? item?.locationId ?? item?.name ?? "");
+}
+
+function getPlayablePatches(database, gameId, type) {
+  const key = normalizePlayableType(type);
+  return (database.playablePatches ?? []).filter((entry) => entry.gameId === gameId && normalizePlayableType(entry.type) === key);
+}
+
+function applyPlayablePatches(items, patches) {
+  const patchById = new Map(patches.map((entry) => [entry.id, entry.patch ?? {}]));
+  return items.map((item) => {
+    const id = playableItemId(item);
+    return patchById.has(id) ? { ...item, ...patchById.get(id), id } : item;
+  });
+}
+
+function findPlayableItem(database, gameId, type, id) {
+  const detailRuntime = readPlayableRuntime(gameId, true) ?? readPlayableRuntime(gameId, false);
+  const items = getPlayableCatalog(detailRuntime, type);
+  const item = items.find((entry) => playableItemId(entry) === id);
+  if (!item) return undefined;
+  const patch = getPlayablePatches(database, gameId, type).find((entry) => entry.id === id)?.patch ?? {};
+  return { ...item, ...patch, id: playableItemId(item) };
 }
 
 function writeDatabase(database) {
@@ -135,6 +219,8 @@ function createDatabase() {
     users,
     games: seedGames(),
     maps: [],
+    playablePatches: [],
+    mapAssets: [],
     sessions: [],
     metadata: defaultMetadata(),
     chatMessages: [],
@@ -148,6 +234,8 @@ function loadDatabase() {
   database.users ??= [];
   database.games ??= [];
   database.maps ??= [];
+  database.playablePatches ??= [];
+  database.mapAssets ??= [];
   database.sessions ??= [];
   database.metadata ??= defaultMetadata();
   database.chatMessages ??= [];
@@ -323,11 +411,117 @@ async function handleApi(request, response) {
       return jsonResponse(response, 200, game);
     }
 
+    const playableSummaryMatch = pathname.match(/^\/games\/([^/]+)\/playable\/summary$/);
+    if (method === "GET" && playableSummaryMatch) {
+      const gameId = decodeURIComponent(playableSummaryMatch[1]);
+      const playable = readPlayableRuntime(gameId, false);
+      if (!playable) return jsonResponse(response, 404, { error: "PLAYABLE_CONTENT_NOT_FOUND", gameId });
+      return jsonResponse(response, 200, {
+        gameId,
+        generatedAt: playable.generatedAt,
+        source: playable.source,
+        counts: playable.counts ?? {},
+        tomeMatrix: playable.tomeMatrix ?? [],
+        catalogs: Object.fromEntries(Object.entries(playable.catalogs ?? {}).map(([key, value]) => [key, Array.isArray(value) ? value.length : 0])),
+        rules: {
+          nodeTypes: playable.rules?.nodeTypes?.length ?? 0,
+          weatherEffects: playable.rules?.weatherEffects?.length ?? 0,
+          biomes: playable.rules?.biomes?.length ?? 0,
+        },
+        patches: (database.playablePatches ?? []).filter((entry) => entry.gameId === gameId).length,
+        mapsSaved: database.maps.filter((map) => map.gameId === gameId).length,
+      });
+    }
+
+    const playableAssetsMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)\/([^/]+)\/assets$/);
+    if (playableAssetsMatch && method === "GET") {
+      const gameId = decodeURIComponent(playableAssetsMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableAssetsMatch[2]));
+      const itemId = decodeURIComponent(playableAssetsMatch[3]);
+      return jsonResponse(response, 200, (database.mapAssets ?? []).filter((asset) => asset.gameId === gameId && normalizePlayableType(asset.type) === type && asset.itemId === itemId));
+    }
+    if (playableAssetsMatch && method === "PATCH") {
+      if (requireAdmin(response, actor)) return;
+      const gameId = decodeURIComponent(playableAssetsMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableAssetsMatch[2]));
+      const itemId = decodeURIComponent(playableAssetsMatch[3]);
+      const body = await readBody(request);
+      const assets = Array.isArray(body.assets) ? body.assets : [];
+      const normalizedAssets = assets.map((asset, index) => ({
+        ...asset,
+        id: asset.id ?? stableId("asset", `${gameId}:${type}:${itemId}:${index}:${asset.path ?? asset.name ?? ""}`),
+        gameId,
+        type,
+        itemId,
+        updatedAt: nowIso(),
+      }));
+      database.mapAssets = [
+        ...normalizedAssets,
+        ...(database.mapAssets ?? []).filter((asset) => !(asset.gameId === gameId && normalizePlayableType(asset.type) === type && asset.itemId === itemId)),
+      ];
+      appendAudit(database, { action: "admin.map.update", module: "maps", actorId: actor?.user.id ?? "system", targetId: itemId, metadata: { type, assets: normalizedAssets.length } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, normalizedAssets);
+    }
+
+    const playableItemMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)\/([^/]+)$/);
+    if (playableItemMatch && method === "GET") {
+      const gameId = decodeURIComponent(playableItemMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableItemMatch[2]));
+      const itemId = decodeURIComponent(playableItemMatch[3]);
+      const item = findPlayableItem(database, gameId, type, itemId);
+      if (!item) return jsonResponse(response, 404, { error: "PLAYABLE_ITEM_NOT_FOUND", gameId, type, id: itemId });
+      return jsonResponse(response, 200, item);
+    }
+    if (playableItemMatch && method === "PATCH") {
+      if (requireAdmin(response, actor)) return;
+      const gameId = decodeURIComponent(playableItemMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableItemMatch[2]));
+      const itemId = decodeURIComponent(playableItemMatch[3]);
+      const existing = findPlayableItem(database, gameId, type, itemId);
+      if (!existing) return jsonResponse(response, 404, { error: "PLAYABLE_ITEM_NOT_FOUND", gameId, type, id: itemId });
+      const patch = { ...(await readBody(request)), id: itemId, updatedAt: nowIso() };
+      const entry = { id: itemId, gameId, type, patch, updatedAt: patch.updatedAt, actorId: actor?.user.id ?? "system" };
+      database.playablePatches = [entry, ...(database.playablePatches ?? []).filter((item) => !(item.gameId === gameId && normalizePlayableType(item.type) === type && item.id === itemId))];
+      appendAudit(database, { action: "admin.playable.update", module: type === "locationMaps" ? "maps" : "games", actorId: actor?.user.id ?? "system", targetId: itemId, metadata: { gameId, type } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, { ...existing, ...patch });
+    }
+
+    const playableListMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)$/);
+    if (playableListMatch && method === "GET") {
+      const gameId = decodeURIComponent(playableListMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableListMatch[2]));
+      const playable = readPlayableRuntime(gameId, false);
+      if (!playable) return jsonResponse(response, 404, { error: "PLAYABLE_CONTENT_NOT_FOUND", gameId });
+      const query = String(url.searchParams.get("q") ?? "").trim().toLowerCase();
+      const offset = Math.max(0, Number(url.searchParams.get("offset") ?? 0) || 0);
+      const limit = Math.max(1, Math.min(100, Number(url.searchParams.get("limit") ?? 25) || 25));
+      const patchedItems = applyPlayablePatches(getPlayableCatalog(playable, type), getPlayablePatches(database, gameId, type));
+      const filtered = query
+        ? patchedItems.filter((item) => JSON.stringify(item).toLowerCase().includes(query))
+        : patchedItems;
+      return jsonResponse(response, 200, {
+        gameId,
+        type,
+        total: filtered.length,
+        offset,
+        limit,
+        items: filtered.slice(offset, offset + limit),
+      });
+    }
+
     if (routeKey(method, pathname) === "GET /maps") {
       const gameId = url.searchParams.get("gameId");
       return jsonResponse(response, 200, gameId ? database.maps.filter((map) => map.gameId === gameId) : database.maps);
     }
     const mapMatch = pathname.match(/^\/maps\/([^/]+)$/);
+    if (method === "GET" && mapMatch) {
+      const mapId = decodeURIComponent(mapMatch[1]);
+      const map = database.maps.find((item) => item.id === mapId);
+      if (!map) return jsonResponse(response, 404, { error: "MAP_NOT_FOUND", id: mapId });
+      return jsonResponse(response, 200, map);
+    }
     if (method === "PATCH" && mapMatch) {
       if (requireAdmin(response, actor)) return;
       const map = { ...(await readBody(request)), id: decodeURIComponent(mapMatch[1]), updatedAt: nowIso() };

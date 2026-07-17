@@ -6,6 +6,7 @@ import { buildFallout4TomeMapLibrary, createFallout4LocationMaps } from "../lib/
 type Props = {
   game: GameConfig;
   onChange: (maps: GameMap[]) => void;
+  onPersistMap?: (map: GameMap) => void;
   onBack?: () => void;
 };
 
@@ -189,7 +190,7 @@ function markerGlyph(type: TacticalMarkerType) {
   return "X";
 }
 
-export function MapEditor({ game, onChange, onBack }: Props) {
+export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
   const maps = ensureMaps(game);
   const [activeMapId, setActiveMapId] = useState(maps[0]?.id ?? "");
   const [view, setView] = useState<MapEditorView>("list");
@@ -218,6 +219,11 @@ export function MapEditor({ game, onChange, onBack }: Props) {
 
   function updateMap(mapId: string, patch: Partial<GameMap>) {
     emit(maps.map((map) => (map.id === mapId ? { ...map, ...patch } : map)));
+  }
+
+  function persistActiveMap() {
+    if (!activeMap) return;
+    onPersistMap?.(normalizeTacticalMap(activeMap));
   }
 
   function addMap() {
@@ -475,7 +481,7 @@ export function MapEditor({ game, onChange, onBack }: Props) {
       <div className="world-editor-toolbar" aria-label="Herramientas rapidas del editor">
         <button title="Nuevo mapa" onClick={addMap}><FilePlus2 size={16} /></button>
         <button title="Abrir lista" onClick={() => setView("list")}><FolderOpen size={16} /></button>
-        <button title="Guardar cambios"><Save size={16} /></button>
+        <button title="Guardar cambios" onClick={persistActiveMap}><Save size={16} /></button>
         <span />
         <button title="Deshacer"><Undo2 size={16} /></button>
         <button title="Rehacer"><Redo2 size={16} /></button>

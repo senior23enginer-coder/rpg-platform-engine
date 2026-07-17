@@ -206,6 +206,10 @@ function toPlatformMapDocument(game: GameConfig, map: GameMap) {
   };
 }
 
+function toLightweightGameConfig(game: GameConfig) {
+  return normalizeGameConfig({ ...game, maps: [] });
+}
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>(() => loadSessionScreen());
   const [disabledGameIds, setDisabledGameIds] = useState<string[]>(() => loadDisabledGameIds());
@@ -688,10 +692,7 @@ export default function App() {
       }));
     }
     trackActivity(`Config admin actualizada: ${updatedGame.name}`);
-    void platformRepository.games.save(normalizeGameConfig(updatedGame)).catch(() => undefined);
-    (updatedGame.maps ?? []).forEach((map) => {
-      void platformRepository.maps.save(toPlatformMapDocument(updatedGame, map)).catch(() => undefined);
-    });
+    void platformRepository.games.save(toLightweightGameConfig(updatedGame)).catch(() => undefined);
     trackAudit("admin.game.update", "games", profile.id, updatedGame.id, { name: updatedGame.name });
   }
 
@@ -706,12 +707,29 @@ export default function App() {
     setGames(applyDisabledGames(nextGames.map((game) => normalizeGameConfig(game)), nextDisabledIds));
     trackActivity("Gestor de juegos actualizado");
     nextGames.forEach((game) => {
-      void platformRepository.games.save(normalizeGameConfig(game)).catch(() => undefined);
-      (game.maps ?? []).forEach((map) => {
-        void platformRepository.maps.save(toPlatformMapDocument(game, map)).catch(() => undefined);
-      });
+      void platformRepository.games.save(toLightweightGameConfig(game)).catch(() => undefined);
     });
     trackAudit("admin.game.update", "games", profile.id, "library", { total: nextGames.length });
+  }
+
+  function persistMap(game: GameConfig, map: GameMap) {
+    void platformRepository.maps.save(toPlatformMapDocument(game, map)).catch(() => undefined);
+    void platformRepository.playable.save(game.id, "locationMaps", map.id, {
+      name: map.name,
+      width: map.width,
+      height: map.height,
+      tileSize: map.tileSize ?? 48,
+      background: map.background,
+      backgroundMode: map.backgroundMode,
+      backgroundSourceName: map.backgroundSourceName,
+      gridOpacity: map.gridOpacity,
+      terrainOpacity: map.terrainOpacity,
+      markerScale: map.markerScale,
+      nodes: map.nodes,
+      markers: map.markers,
+    }).catch(() => undefined);
+    trackActivity(`Mapa guardado: ${map.name}`);
+    trackAudit("admin.map.update", "maps", profile.id, map.id, { gameId: game.id });
   }
 
   function updateUsers(nextUsers: PlayerProfile[]) {
@@ -1002,6 +1020,7 @@ export default function App() {
               onSelectGame={(gameId) => selectGame(gameId, screen)}
               onUpdateGame={updateGame}
               onUpdateGames={updateGames}
+              onPersistMap={persistMap}
               onAddGame={createNewGame}
               onUpdateUsers={updateUsers}
               onUpdateNews={updateNews}

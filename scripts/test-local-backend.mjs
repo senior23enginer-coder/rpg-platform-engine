@@ -80,6 +80,42 @@ try {
   assert(games.some((game) => game.id === "dungeons_dragons"), "Backend no lista Dungeons & Dragons");
   assert(games.some((game) => game.id === "warhammer_40k"), "Backend no lista Warhammer 40K");
 
+  const playableSummary = await request("/games/fallout4/playable/summary");
+  assert(playableSummary.counts?.locationMaps >= 558, "Backend no expone resumen de mapas jugables Fallout 4");
+  assert(playableSummary.rules?.nodeTypes >= 9, "Backend no expone nodos/cobertura/movimiento de tomos");
+
+  const playableMaps = await request("/games/fallout4/playable/locationMaps?limit=3");
+  assert(playableMaps.total >= 558 && playableMaps.items.length === 3, "Backend no pagina mapas jugables bajo demanda");
+  const playableMapId = playableMaps.items[0]?.id;
+  assert(Boolean(playableMapId), "Mapa jugable paginado no trae ID");
+
+  const playableMapDetail = await request(`/games/fallout4/playable/locationMaps/${encodeURIComponent(playableMapId)}`);
+  assert((playableMapDetail.events?.length ?? playableMapDetail.eventCount ?? 0) > 0, "Detalle de mapa jugable no trae eventos/subzonas reales");
+
+  const playableEnemies = await request("/games/fallout4/playable/bestiary?limit=5");
+  assert(playableEnemies.total >= 200, "Backend no expone bestiario de tomos como fichas CRUD");
+
+  const forbiddenPlayablePatch = await requestStatus(`/games/fallout4/playable/locationMaps/${encodeURIComponent(playableMapId)}`, {
+    method: "PATCH",
+    headers: { Authorization: `Bearer ${userAuth.session.id}` },
+    body: JSON.stringify({ adminNote: "no autorizado" }),
+  });
+  assert(forbiddenPlayablePatch === 403, "Usuario normal no debe editar fichas jugables");
+
+  const patchedPlayableMap = await request(`/games/fallout4/playable/locationMaps/${encodeURIComponent(playableMapId)}`, {
+    method: "PATCH",
+    headers: adminHeaders,
+    body: JSON.stringify({ adminNote: "parche local backend", coverageReview: "ok" }),
+  });
+  assert(patchedPlayableMap.adminNote === "parche local backend", "Backend no guarda parches de ficha jugable");
+
+  const playableAssets = await request(`/games/fallout4/playable/locationMaps/${encodeURIComponent(playableMapId)}/assets`, {
+    method: "PATCH",
+    headers: adminHeaders,
+    body: JSON.stringify({ assets: [{ id: "asset_backend_test", path: "/games/fallout4/assets/maps/test.webp", role: "base-image" }] }),
+  });
+  assert(playableAssets.some((asset) => asset.id === "asset_backend_test"), "Backend no guarda assets por ubicacion/mapa");
+
   const patchedGame = await request("/games/fallout4", {
     method: "PATCH",
     headers: adminHeaders,
@@ -104,6 +140,9 @@ try {
 
   const maps = await request("/maps?gameId=fallout4");
   assert(maps.some((item) => item.id === "map_backend_test"), "Backend no lista mapas filtrados por juego");
+
+  const mapDetail = await request("/maps/map_backend_test");
+  assert(mapDetail.id === "map_backend_test" && mapDetail.layers?.length, "Backend no carga detalle de mapa guardado");
 
   const news = await request("/news/news_backend_test", {
     method: "PATCH",
@@ -189,10 +228,11 @@ try {
   const backup = await request("/backup/export", { headers: adminHeaders });
   assert(backup.database?.games?.length >= games.length, "Backup export no incluye juegos");
 
-  const audit = await request("/audit?limit=12", { headers: adminHeaders });
+  const audit = await request("/audit?limit=40", { headers: adminHeaders });
   assert(audit.some((entry) => entry.action === "auth.login"), "Auditoria no registra login");
   assert(audit.some((entry) => entry.action === "chat.message.send"), "Auditoria no registra chat");
   assert(audit.some((entry) => entry.action === "support.ticket.update"), "Auditoria no registra soporte");
+  assert(audit.some((entry) => entry.action === "admin.playable.update"), "Auditoria no registra cambios de fichas jugables");
 
   await request(`/auth/sessions/${encodeURIComponent(auth.session.id)}/logout`, { method: "POST" });
 

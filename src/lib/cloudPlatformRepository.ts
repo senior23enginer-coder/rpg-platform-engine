@@ -85,6 +85,31 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
         return requestJson(endpoint, `/maps/${encodeURIComponent(map.id)}`, { method: "PATCH", body: map, token });
       },
     },
+    playable: {
+      summary(gameId: string) {
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/summary`, { token });
+      },
+      list(gameId: string, type: string, query = {}) {
+        const params = new URLSearchParams();
+        if (query.q) params.set("q", query.q);
+        if (query.offset !== undefined) params.set("offset", String(query.offset));
+        if (query.limit !== undefined) params.set("limit", String(query.limit));
+        const suffix = params.toString() ? `?${params.toString()}` : "";
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}${suffix}`, { token });
+      },
+      detail(gameId: string, type: string, id: string) {
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}`, { token });
+      },
+      save<T = Record<string, unknown>>(gameId: string, type: string, id: string, patch: Partial<T>) {
+        return requestJson<T>(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}`, { method: "PATCH", body: patch, token });
+      },
+      listAssets(gameId: string, type: string, id: string) {
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/assets`, { token });
+      },
+      saveAssets<T = Record<string, unknown>>(gameId: string, type: string, id: string, assets: T[]) {
+        return requestJson<T[]>(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/assets`, { method: "PATCH", body: { assets }, token });
+      },
+    },
     content: {
       metadata(): Promise<AppMetadata> {
         return requestJson(endpoint, "/metadata", { token });

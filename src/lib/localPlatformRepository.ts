@@ -62,6 +62,37 @@ function matchesAccount(user: PlayerProfile, value: string) {
     .some((item) => String(item).trim().toLowerCase() === normalized);
 }
 
+async function loadPlayableRuntime(gameId: string, detail = false) {
+  const fileName = detail ? "playable-content.json" : "playable-editor-index.json";
+  const response = await fetch(`/games/${gameId}/runtime/${fileName}`);
+  if (!response.ok && detail) return loadPlayableRuntime(gameId, false);
+  if (!response.ok) throw new Error("PLAYABLE_CONTENT_NOT_FOUND");
+  return response.json();
+}
+
+function normalizePlayableType(type: string) {
+  const aliases: Record<string, string> = {
+    maps: "locationMaps",
+    map: "locationMaps",
+    locationmaps: "locationMaps",
+    weather: "weather",
+    climate: "weather",
+    biomes: "biomes",
+    nodes: "nodeTypes",
+    nodetypes: "nodeTypes",
+  };
+  const key = type.trim().toLowerCase();
+  return aliases[key] ?? type;
+}
+
+function getPlayableCatalog(playable: any, type: string) {
+  const key = normalizePlayableType(type);
+  if (key === "weather") return playable.rules?.weatherEffects ?? [];
+  if (key === "biomes") return playable.rules?.biomes ?? [];
+  if (key === "nodeTypes") return playable.rules?.nodeTypes ?? [];
+  return playable.catalogs?.[key] ?? [];
+}
+
 export function createLocalPlatformRepository(): PlatformRepository {
   return {
     mode: "local",
@@ -148,6 +179,49 @@ export function createLocalPlatformRepository(): PlatformRepository {
         await savePersistentMaps([normalized, ...database.maps.filter((item) => item.id !== normalized.id)]);
         await appendPersistentAudit(createPlatformAudit({ action: "admin.map.update", module: "maps", actorId: database.currentUserId ?? "system", targetId: normalized.id }));
         return normalized;
+      },
+    },
+    playable: {
+      async summary(gameId: string) {
+        const playable = await loadPlayableRuntime(gameId, false);
+        const database = await loadPersistentDatabase();
+        return {
+          gameId,
+          generatedAt: playable.generatedAt,
+          counts: playable.counts ?? {},
+          catalogs: Object.fromEntries(Object.entries(playable.catalogs ?? {}).map(([key, value]) => [key, Array.isArray(value) ? value.length : 0])),
+          rules: {
+            nodeTypes: playable.rules?.nodeTypes?.length ?? 0,
+            weatherEffects: playable.rules?.weatherEffects?.length ?? 0,
+            biomes: playable.rules?.biomes?.length ?? 0,
+          },
+          patches: 0,
+          mapsSaved: database.maps.filter((map) => map.gameId === gameId).length,
+        };
+      },
+      async list(gameId: string, type: string, query = {}) {
+        const playable = await loadPlayableRuntime(gameId, false);
+        const q = String(query.q ?? "").trim().toLowerCase();
+        const offset = Math.max(0, Number(query.offset ?? 0) || 0);
+        const limit = Math.max(1, Math.min(100, Number(query.limit ?? 25) || 25));
+        const items = getPlayableCatalog(playable, type);
+        const filtered = q ? items.filter((item: unknown) => JSON.stringify(item).toLowerCase().includes(q)) : items;
+        return { gameId, type: normalizePlayableType(type), total: filtered.length, offset, limit, items: filtered.slice(offset, offset + limit) };
+      },
+      async detail(gameId: string, type: string, id: string) {
+        const playable = await loadPlayableRuntime(gameId, true);
+        const item = getPlayableCatalog(playable, type).find((entry: any) => String(entry.id ?? entry.locationId ?? entry.name) === id);
+        if (!item) throw new Error("PLAYABLE_ITEM_NOT_FOUND");
+        return item;
+      },
+      async save<T = Record<string, unknown>>(_gameId: string, _type: string, _id: string, patch: Partial<T>) {
+        return patch as T;
+      },
+      async listAssets() {
+        return [];
+      },
+      async saveAssets<T = Record<string, unknown>>(_gameId: string, _type: string, _id: string, assets: T[]) {
+        return assets;
       },
     },
     content: {

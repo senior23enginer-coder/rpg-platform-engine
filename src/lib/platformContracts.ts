@@ -71,6 +71,39 @@ export type PlatformMapDocument = {
   updatedAt: string;
 };
 
+export type PlatformPlayableType =
+  | "missions"
+  | "locations"
+  | "locationMaps"
+  | "bestiary"
+  | "weapons"
+  | "equipment"
+  | "settlements"
+  | "factions"
+  | "collectibles"
+  | "weather"
+  | "biomes"
+  | "nodeTypes";
+
+export type PlatformPlayableListResult<T = Record<string, unknown>> = {
+  gameId: string;
+  type: PlatformPlayableType | string;
+  total: number;
+  offset: number;
+  limit: number;
+  items: T[];
+};
+
+export type PlatformPlayableSummary = {
+  gameId: string;
+  generatedAt?: string;
+  counts: Record<string, number>;
+  catalogs: Record<string, number>;
+  rules: Record<string, number>;
+  patches: number;
+  mapsSaved: number;
+};
+
 export type PlatformChatMessage = {
   id: string;
   roomId: string;
@@ -111,6 +144,18 @@ export type PlatformRepository = {
   maps: {
     list(gameId?: string): Promise<PlatformMapDocument[]>;
     save(map: PlatformMapDocument): Promise<PlatformMapDocument>;
+  };
+  playable: {
+    summary(gameId: string): Promise<PlatformPlayableSummary>;
+    list<T = Record<string, unknown>>(
+      gameId: string,
+      type: PlatformPlayableType | string,
+      query?: { q?: string; offset?: number; limit?: number }
+    ): Promise<PlatformPlayableListResult<T>>;
+    detail<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T>;
+    save<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, patch: Partial<T>): Promise<T>;
+    listAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T[]>;
+    saveAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, assets: T[]): Promise<T[]>;
   };
   content: {
     metadata(): Promise<AppMetadata>;

@@ -31,7 +31,7 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import type { Campaign, ContentItem, GameConfig } from "../types/game";
+import type { Campaign, ContentItem, GameConfig, GameMap } from "../types/game";
 import type { AppNewsEntry, AppNotificationEntry, AppSupportTicket } from "../lib/appMetadataStorage";
 import type { PlayerProfile } from "../types/profile";
 import { resolveUserAsset } from "../lib/userLibrary";
@@ -52,6 +52,7 @@ type Props = {
   onSelectGame: (gameId: string) => void;
   onUpdateGame: (game: GameConfig) => void;
   onUpdateGames: (games: GameConfig[]) => void;
+  onPersistMap?: (game: GameConfig, map: GameMap) => void;
   onAddGame: () => void;
   onUpdateUsers: (users: PlayerProfile[]) => void;
   onUpdateNews: (news: AppNewsEntry[]) => void;
@@ -130,6 +131,7 @@ export function AdminScreen({
   onSelectGame,
   onUpdateGame,
   onUpdateGames,
+  onPersistMap,
   onAddGame,
   onUpdateUsers,
   onUpdateNews,
@@ -783,6 +785,7 @@ export function AdminScreen({
           {showMaps && mapEditorOpen && <MapEditor
             game={activeGame}
             onChange={(maps) => updateActiveGame({ maps })}
+            onPersistMap={(map) => onPersistMap?.(activeGame, map)}
             onBack={() => setMapEditorOpen(false)}
           />}
 
