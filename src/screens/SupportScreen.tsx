@@ -43,6 +43,7 @@ export function SupportScreen({ profile, tickets, isAdmin = false, onChange, onB
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<TicketStatus | "all">("all");
   const [selectedId, setSelectedId] = useState(visibleTickets[0]?.id ?? "");
+  const [detailMode, setDetailMode] = useState(false);
   const [draft, setDraft] = useState({ title: "", description: "", category: "technical" as TicketCategory, priority: "normal" as TicketPriority });
   const [reply, setReply] = useState("");
 
@@ -92,6 +93,7 @@ export function SupportScreen({ profile, tickets, isAdmin = false, onChange, onB
     };
     onChange([ticket, ...tickets]);
     setSelectedId(ticket.id);
+    setDetailMode(true);
     setDraft({ title: "", description: "", category: "technical", priority: "normal" });
   }
 
@@ -116,6 +118,72 @@ export function SupportScreen({ profile, tickets, isAdmin = false, onChange, onB
       ],
     });
     setReply("");
+  }
+
+  if (detailMode && selectedTicket) {
+    return (
+      <section className="screen-panel support-screen support-detail-screen">
+        <div className="screen-heading support-heading">
+          <div>
+            <h2><MessageCircle size={34} /> Ticket de soporte</h2>
+            <p>{selectedTicket.id} - {selectedTicket.requesterName}</p>
+          </div>
+          <button onClick={() => setDetailMode(false)}><ArrowLeft size={18} /> Lista de tickets</button>
+        </div>
+
+        <div className="support-detail-grid">
+          <article className="support-card support-ticket-detail support-ticket-detail-expanded">
+            <div className="admin-panel-title">
+              <div>
+                <strong>{selectedTicket.title}</strong>
+                <p>{selectedTicket.description}</p>
+              </div>
+              <span className="admin-status-pill">{statusLabels[selectedTicket.status]}</span>
+            </div>
+
+            <div className="support-ticket-meta">
+              <span>{categoryLabels[selectedTicket.category]}</span>
+              <span>{priorityLabels[selectedTicket.priority]}</span>
+              <span>{new Date(selectedTicket.createdAt).toLocaleString()}</span>
+              <span>{selectedTicket.assignedTo ? `Asignado: ${selectedTicket.assignedTo}` : "Sin asignar"}</span>
+            </div>
+
+            <div className="support-message-list expanded">
+              {selectedTicket.messages.map((message) => (
+                <section key={message.id} className={message.authorId === profile.id ? "own" : ""}>
+                  <strong>{message.authorName}</strong>
+                  <p>{message.body}</p>
+                  <small>{new Date(message.createdAt).toLocaleString()}</small>
+                </section>
+              ))}
+            </div>
+
+            <div className="support-reply">
+              <textarea value={reply} onChange={(event) => setReply(event.target.value)} placeholder="Escribe una respuesta o actualizacion..." />
+              <button className="green-button" disabled={!reply.trim()} onClick={sendReply}><Send size={16} /> Enviar</button>
+            </div>
+          </article>
+
+          <aside className="support-card support-ticket-control-room">
+            <strong>{isAdmin ? "Control del ticket" : "Estado de tu solicitud"}</strong>
+            {isAdmin ? (
+              <div className="support-admin-controls stacked">
+                <label><span>Estado</span><select value={selectedTicket.status} onChange={(event) => updateTicket(selectedTicket.id, { status: event.target.value as TicketStatus })}>
+                  {Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                </select></label>
+                <label><span>Prioridad</span><select value={selectedTicket.priority} onChange={(event) => updateTicket(selectedTicket.id, { priority: event.target.value as TicketPriority })}>
+                  {Object.entries(priorityLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                </select></label>
+                <label><span>Asignado a</span><input value={selectedTicket.assignedTo ?? ""} onChange={(event) => updateTicket(selectedTicket.id, { assignedTo: event.target.value })} placeholder="admin, mesa soporte..." /></label>
+              </div>
+            ) : (
+              <p>Soporte revisara tu solicitud. Puedes agregar mensajes sin crear tickets duplicados.</p>
+            )}
+            <button onClick={() => setDetailMode(false)}><ArrowLeft size={15} /> Volver a tabla</button>
+          </aside>
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -168,7 +236,7 @@ export function SupportScreen({ profile, tickets, isAdmin = false, onChange, onB
                     <td>{categoryLabels[ticket.category]}</td>
                     <td><span className={`support-priority-label priority-${ticket.priority}`}>{priorityLabels[ticket.priority]}</span></td>
                     <td><span className="admin-status-pill">{statusLabels[ticket.status]}</span></td>
-                    <td><button onClick={() => setSelectedId(ticket.id)}><MessageCircle size={15} /> Ver</button></td>
+                    <td><button onClick={() => { setSelectedId(ticket.id); setDetailMode(true); }}><MessageCircle size={15} /> Ver</button></td>
                   </tr>
                 ))}
               </tbody>

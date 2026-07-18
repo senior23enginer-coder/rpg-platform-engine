@@ -69,7 +69,10 @@ export function createLocalHttpPlatformRepository(config?: Partial<PlatformCloud
     },
     maps: {
       list: (gameId?: string) => requestJson(endpoint, gameId ? `/maps?gameId=${encodeURIComponent(gameId)}` : "/maps", { token }),
+      detail: (id: string) => requestJson(endpoint, `/maps/${encodeURIComponent(id)}`, { token }),
       save: (map: PlatformMapDocument) => requestJson(endpoint, `/maps/${encodeURIComponent(map.id)}`, { method: "PATCH", body: map, token }),
+      export: (id: string) => requestJson(endpoint, `/maps/${encodeURIComponent(id)}/export`, { token }),
+      import: (payload: Record<string, unknown>) => requestJson(endpoint, "/maps/import", { body: payload, token }),
     },
     playable: {
       summary: (gameId: string) => requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/summary`, { token }),
@@ -89,6 +92,12 @@ export function createLocalHttpPlatformRepository(config?: Partial<PlatformCloud
         requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/assets`, { token }),
       saveAssets: <T = Record<string, unknown>>(gameId: string, type: string, id: string, assets: T[]) =>
         requestJson<T[]>(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/assets`, { method: "PATCH", body: { assets }, token }),
+      export: (gameId: string, type?: string) => {
+        const suffix = type ? `?type=${encodeURIComponent(type)}` : "";
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/export${suffix}`, { token });
+      },
+      import: (gameId: string, payload: Record<string, unknown>) =>
+        requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/import`, { body: payload, token }),
     },
     content: {
       metadata: () => requestJson(endpoint, "/metadata", { token }),

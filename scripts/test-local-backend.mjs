@@ -116,6 +116,16 @@ try {
   });
   assert(playableAssets.some((asset) => asset.id === "asset_backend_test"), "Backend no guarda assets por ubicacion/mapa");
 
+  const playableExport = await request("/games/fallout4/playable/export?type=locationMaps", { headers: adminHeaders });
+  assert(playableExport.scope === "playable" && playableExport.patches?.length >= 1, "Backend no exporta contenido jugable con patches");
+
+  const playableImport = await request("/games/fallout4/playable/import", {
+    method: "POST",
+    headers: adminHeaders,
+    body: JSON.stringify({ patches: playableExport.patches, assets: playableExport.assets }),
+  });
+  assert(playableImport.gameId === "fallout4", "Backend no importa contenido jugable por juego");
+
   const patchedGame = await request("/games/fallout4", {
     method: "PATCH",
     headers: adminHeaders,
@@ -143,6 +153,16 @@ try {
 
   const mapDetail = await request("/maps/map_backend_test");
   assert(mapDetail.id === "map_backend_test" && mapDetail.layers?.length, "Backend no carga detalle de mapa guardado");
+
+  const mapExport = await request("/maps/map_backend_test/export", { headers: adminHeaders });
+  assert(mapExport.scope === "map" && mapExport.map?.id === "map_backend_test", "Backend no exporta mapa especifico");
+
+  const importedMap = await request("/maps/import", {
+    method: "POST",
+    headers: adminHeaders,
+    body: JSON.stringify({ ...mapExport, map: { ...mapExport.map, id: "map_backend_import_test", name: "Mapa importado backend test" } }),
+  });
+  assert(importedMap.id === "map_backend_import_test", "Backend no importa mapa especifico");
 
   const news = await request("/news/news_backend_test", {
     method: "PATCH",

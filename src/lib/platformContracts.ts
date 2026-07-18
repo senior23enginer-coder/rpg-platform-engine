@@ -143,7 +143,10 @@ export type PlatformRepository = {
   };
   maps: {
     list(gameId?: string): Promise<PlatformMapDocument[]>;
+    detail(id: string): Promise<PlatformMapDocument>;
     save(map: PlatformMapDocument): Promise<PlatformMapDocument>;
+    export(id: string): Promise<Record<string, unknown>>;
+    import(payload: Record<string, unknown>): Promise<PlatformMapDocument>;
   };
   playable: {
     summary(gameId: string): Promise<PlatformPlayableSummary>;
@@ -156,6 +159,8 @@ export type PlatformRepository = {
     save<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, patch: Partial<T>): Promise<T>;
     listAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T[]>;
     saveAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, assets: T[]): Promise<T[]>;
+    export(gameId: string, type?: PlatformPlayableType | string): Promise<Record<string, unknown>>;
+    import(gameId: string, payload: Record<string, unknown>): Promise<Record<string, unknown>>;
   };
   content: {
     metadata(): Promise<AppMetadata>;

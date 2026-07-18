@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, BookOpen, Boxes, BoxSelect, CloudSun, Copy, Crosshair, Download, Eraser, Eye, FilePlus2, Flag, FolderOpen, Grid3X3, HelpCircle, Image as ImageIcon, Layers, LocateFixed, Map as MapIcon, MapPinned, Maximize2, MousePointer2, Move, Package, Pencil, Play, Plus, Redo2, RotateCw, Route, Ruler, Save, Shield, SlidersHorizontal, Swords, Trash2, Undo2, Upload, Users } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
 import { buildFallout4TomeMapLibrary, createFallout4LocationMaps } from "../lib/fallout4TomeCatalog";
@@ -277,14 +277,23 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
   const [toolMode, setToolMode] = useState<ToolMode>("terrain");
   const [showGrid, setShowGrid] = useState(true);
   const [showTerrainLayer, setShowTerrainLayer] = useState(true);
+  const [showImageLayer, setShowImageLayer] = useState(true);
+  const [showMarkerLayer, setShowMarkerLayer] = useState(true);
+  const [showMissionLayer, setShowMissionLayer] = useState(true);
   const [canvasZoom, setCanvasZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [terrain, setTerrain] = useState<TacticalTerrainType>("plain");
   const [markerType, setMarkerType] = useState<TacticalMarkerType>("player");
   const [selectedMarkerId, setSelectedMarkerId] = useState(activeMap?.markers?.[0]?.id ?? "");
+  const [selectedMarkerIds, setSelectedMarkerIds] = useState<string[]>(activeMap?.markers?.[0]?.id ? [activeMap.markers[0].id] : []);
   const [libraryTab, setLibraryTab] = useState<LibraryTab>("mission");
   const [saveStatus, setSaveStatus] = useState("Cambios locales");
   const [mapLoadStatus, setMapLoadStatus] = useState(platformRepository ? "Cargando mapas desde backend..." : "Mapas locales");
+  const [history, setHistory] = useState<GameMap[][]>([]);
+  const [future, setFuture] = useState<GameMap[][]>([]);
+  const importMapInputRef = useRef<HTMLInputElement | null>(null);
   const selectedMarker = activeMap?.markers?.find((marker) => marker.id === selectedMarkerId);
+  const selectedMarkers = (activeMap?.markers ?? []).filter((marker) => selectedMarkerIds.includes(marker.id));
   const missionSheets = activeMap?.missionSheets?.length ? activeMap.missionSheets : createDefaultMapLibraries(game).missionSheets;
   const locations = activeMap?.locations?.length ? activeMap.locations : createDefaultMapLibraries(game).locations;
   const weatherEffects = activeMap?.weatherEffects?.length ? activeMap.weatherEffects : createDefaultMapLibraries(game).weatherEffects;
@@ -353,6 +362,8 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
 
   function emit(nextMaps: GameMap[]) {
     const normalized = nextMaps.map(normalizeTacticalMap);
+    setHistory((items) => [...items.slice(-24), maps.map(normalizeTacticalMap)]);
+    setFuture([]);
     if (backendMaps.length) setBackendMaps(normalized);
     onChange(normalized);
   }
@@ -415,6 +426,97 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
     } catch {
       setSaveStatus("Error guardando mapa");
     }
+  }
+
+  function restoreMaps(nextMaps: GameMap[]) {
+    const normalized = nextMaps.map(normalizeTacticalMap);
+    setBackendMaps(normalized);
+    onChange(normalized);
+    if (!normalized.some((map) => map.id === activeMapId)) setActiveMapId(normalized[0]?.id ?? "");
+  }
+
+  function undoMapChange() {
+    const previous = history[history.length - 1];
+    if (!previous) return;
+    setHistory((items) => items.slice(0, -1));
+    setFuture((items) => [maps.map(normalizeTacticalMap), ...items.slice(0, 24)]);
+    restoreMaps(previous);
+    setSaveStatus("Cambio deshecho");
+  }
+
+  function redoMapChange() {
+    const next = future[0];
+    if (!next) return;
+    setFuture((items) => items.slice(1));
+    setHistory((items) => [...items.slice(-24), maps.map(normalizeTacticalMap)]);
+    restoreMaps(next);
+    setSaveStatus("Cambio rehecho");
+  }
+
+  function downloadJson(fileName: string, payload: unknown) {
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function exportActiveMap() {
+    if (!activeMap) return;
+    try {
+      const payload = platformRepository ? await platformRepository.maps.export(activeMap.id) : { exportedAt: new Date().toISOString(), map: activeMap };
+      downloadJson(`${activeMap.id}.map-export.json`, payload);
+      setSaveStatus("Mapa exportado");
+    } catch {
+      downloadJson(`${activeMap.id}.map-export.json`, { exportedAt: new Date().toISOString(), map: normalizeTacticalMap(activeMap) });
+      setSaveStatus("Exportado desde estado local");
+    }
+  }
+
+  async function importMapFile(file?: File) {
+    if (!file) return;
+    try {
+      const payload = JSON.parse(await file.text()) as Record<string, unknown>;
+      const imported = platformRepository
+        ? await platformRepository.maps.import(payload)
+        : ((payload.map ?? payload) as PlatformMapDocument);
+      const nextMap = Array.isArray(imported.layers)
+        ? fromPlatformMapDocument(imported)
+        : normalizeTacticalMap(imported as unknown as GameMap);
+      emit([nextMap, ...maps.filter((map) => map.id !== nextMap.id)]);
+      setActiveMapId(nextMap.id);
+      setView("editor");
+      setSaveStatus("Mapa importado");
+    } catch {
+      setSaveStatus("Error importando mapa");
+    } finally {
+      if (importMapInputRef.current) importMapInputRef.current.value = "";
+    }
+  }
+
+  function duplicateSelectedMarkers() {
+    if (!selectedMarkers.length) return;
+    const stamp = Date.now();
+    const copies = selectedMarkers.map((marker, index) => ({
+      ...marker,
+      id: `marker_copy_${stamp}_${index}`,
+      x: Math.min(activeMap.width - 1, marker.x + 1),
+      y: Math.min(activeMap.height - 1, marker.y + 1),
+      label: `${marker.label} copia`,
+    }));
+    updateMap(activeMap.id, { markers: [...(activeMap.markers ?? []), ...copies] });
+    setSelectedMarkerIds(copies.map((marker) => marker.id));
+    setSelectedMarkerId(copies[0]?.id ?? "");
+  }
+
+  function deleteSelectedMarkers() {
+    if (!selectedMarkerIds.length) return;
+    const markers = (activeMap.markers ?? []).filter((marker) => !selectedMarkerIds.includes(marker.id));
+    updateMap(activeMap.id, { markers });
+    setSelectedMarkerIds(markers[0]?.id ? [markers[0].id] : []);
+    setSelectedMarkerId(markers[0]?.id ?? "");
   }
 
   function addMap() {
@@ -509,7 +611,7 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
     }
   }
 
-  function paintCell(x: number, y: number) {
+  function paintCell(x: number, y: number, additiveSelection = false) {
     if (toolMode === "terrain") {
       updateMap(activeMap.id, {
         tiles: (activeMap.tiles ?? []).map((tile) => (tile.x === x && tile.y === y ? { ...tile, terrain } : tile)),
@@ -527,11 +629,17 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
 
     const existing = (activeMap.markers ?? []).find((marker) => marker.x === x && marker.y === y);
     if (existing) {
+      if (additiveSelection) {
+        setSelectedMarkerIds((current) => current.includes(existing.id) ? current.filter((id) => id !== existing.id) : [...current, existing.id]);
+        setSelectedMarkerId(existing.id);
+        return;
+      }
       const markers = (activeMap.markers ?? []).map((marker) =>
         marker.id === existing.id ? { ...marker, type: markerType, label: marker.label || markerPalette.find((item) => item.type === markerType)?.label || markerType } : marker
       );
       updateMap(activeMap.id, { markers });
       setSelectedMarkerId(existing.id);
+      setSelectedMarkerIds([existing.id]);
       return;
     }
 
@@ -544,6 +652,7 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
     };
     updateMap(activeMap.id, { markers: [...(activeMap.markers ?? []), nextMarker] });
     setSelectedMarkerId(nextMarker.id);
+    setSelectedMarkerIds([nextMarker.id]);
   }
 
   function updateSelectedMarker(patch: Partial<NonNullable<GameMap["markers"]>[number]>) {
@@ -642,7 +751,7 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
                   <td>{map.background ? map.backgroundSourceName || "Imagen cargada" : "Sin imagen"}</td>
                   <td>{map.markers?.length ?? 0}</td>
                   <td>
-                    <button onClick={() => { setActiveMapId(map.id); setSelectedMarkerId(map.markers?.[0]?.id ?? ""); setView("editor"); }}>
+                    <button onClick={() => { setActiveMapId(map.id); setSelectedMarkerId(map.markers?.[0]?.id ?? ""); setSelectedMarkerIds(map.markers?.[0]?.id ? [map.markers[0].id] : []); setView("editor"); }}>
                       <Eye size={15} /> Abrir editor
                     </button>
                   </td>
@@ -664,7 +773,12 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
         </div>
         <label className="wasteland-project-select">
           <span>Proyecto</span>
-          <select value={activeMap.id} onChange={(event) => setActiveMapId(event.target.value)}>
+          <select value={activeMap.id} onChange={(event) => {
+            const next = maps.find((map) => map.id === event.target.value);
+            setActiveMapId(event.target.value);
+            setSelectedMarkerId(next?.markers?.[0]?.id ?? "");
+            setSelectedMarkerIds(next?.markers?.[0]?.id ? [next.markers[0].id] : []);
+          }}>
             {maps.map((map) => <option key={map.id} value={map.id}>{map.name}</option>)}
           </select>
         </label>
@@ -674,10 +788,12 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
         </div>
         <div className="wasteland-editor-actions">
           <button onClick={persistActiveMap}><Save size={15} /> Guardar</button>
-          <button><Download size={15} /> Exportar</button>
+          <button onClick={exportActiveMap}><Download size={15} /> Exportar</button>
           <button><Play size={15} /> Probar</button>
           <button onClick={() => setView("list")}><ArrowLeft size={15} /> Lista</button>
           <button onClick={addMap}><Plus size={15} /> Mapa</button>
+          <button onClick={() => importMapInputRef.current?.click()}><Upload size={15} /> Importar</button>
+          <input ref={importMapInputRef} type="file" accept="application/json,.json" hidden onChange={(event) => importMapFile(event.target.files?.[0])} />
           <button title="Ayuda"><HelpCircle size={16} /></button>
         </div>
       </div>
@@ -698,9 +814,9 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
         <button title="Rectangulo"><BoxSelect size={16} /></button>
         <button title="Lapiz"><Pencil size={16} /></button>
         <span />
-        <button title="Deshacer"><Undo2 size={16} /></button>
-        <button title="Rehacer"><Redo2 size={16} /></button>
-        <button title="Duplicar seleccion"><Copy size={16} /></button>
+        <button title="Deshacer" disabled={!history.length} onClick={undoMapChange}><Undo2 size={16} /></button>
+        <button title="Rehacer" disabled={!future.length} onClick={redoMapChange}><Redo2 size={16} /></button>
+        <button title="Duplicar seleccion" disabled={!selectedMarkerIds.length} onClick={duplicateSelectedMarkers}><Copy size={16} /></button>
         <span />
         <button className={toolMode === "terrain" ? "selected" : ""} title="Pintar terreno" onClick={() => setToolMode("terrain")}><MapIcon size={16} /></button>
         <button className={toolMode === "marker" ? "selected" : ""} title="Colocar marcador" onClick={() => setToolMode("marker")}><Flag size={16} /></button>
@@ -708,6 +824,9 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
         <span />
         <button className={showGrid ? "selected" : ""} title="Mostrar grilla" onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={16} /></button>
         <button className={showTerrainLayer ? "selected" : ""} title="Mostrar capa de terreno" onClick={() => setShowTerrainLayer((value) => !value)}><Layers size={16} /></button>
+        <button className={showMarkerLayer ? "selected" : ""} title="Mostrar marcadores" onClick={() => setShowMarkerLayer((value) => !value)}><Flag size={16} /></button>
+        <button className={showImageLayer ? "selected" : ""} title="Mostrar imagen base" onClick={() => setShowImageLayer((value) => !value)}><ImageIcon size={16} /></button>
+        <button className={showMissionLayer ? "selected" : ""} title="Mostrar misiones vinculadas" onClick={() => setShowMissionLayer((value) => !value)}><BookOpen size={16} /></button>
         <button title="Regla"><Ruler size={16} /></button>
         <button title="Centrar vista"><LocateFixed size={16} /></button>
       </div>
@@ -738,10 +857,15 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
           <small>Capas</small>
           <button className={showGrid ? "selected" : ""} onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={15} /> Grilla</button>
           <button className={showTerrainLayer ? "selected" : ""} onClick={() => setShowTerrainLayer((value) => !value)}><SlidersHorizontal size={15} /> Terreno</button>
+          <button className={showMarkerLayer ? "selected" : ""} onClick={() => setShowMarkerLayer((value) => !value)}><Flag size={15} /> Marcadores</button>
+          <button className={showImageLayer ? "selected" : ""} onClick={() => setShowImageLayer((value) => !value)}><ImageIcon size={15} /> Imagen</button>
+          <button className={showMissionLayer ? "selected" : ""} onClick={() => setShowMissionLayer((value) => !value)}><BookOpen size={15} /> Misiones</button>
         </section>
         <section>
           <small>Vista</small>
           <label><span>Zoom</span><input type="range" min={0.65} max={1.45} step={0.05} value={canvasZoom} onChange={(event) => setCanvasZoom(Number(event.target.value))} /></label>
+          <label><span>Pan X</span><input type="range" min={-260} max={260} step={10} value={pan.x} onChange={(event) => setPan((current) => ({ ...current, x: Number(event.target.value) }))} /></label>
+          <label><span>Pan Y</span><input type="range" min={-180} max={180} step={10} value={pan.y} onChange={(event) => setPan((current) => ({ ...current, y: Number(event.target.value) }))} /></label>
         </section>
         <section>
           <small>Bibliotecas</small>
@@ -775,6 +899,8 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
             </div>
             <label><input type="checkbox" checked={showGrid} onChange={() => setShowGrid((value) => !value)} /> Mostrar grilla</label>
             <label><input type="checkbox" checked={showTerrainLayer} onChange={() => setShowTerrainLayer((value) => !value)} /> Mostrar terreno</label>
+            <label><input type="checkbox" checked={showMarkerLayer} onChange={() => setShowMarkerLayer((value) => !value)} /> Mostrar marcadores</label>
+            <label><input type="checkbox" checked={showMissionLayer} onChange={() => setShowMissionLayer((value) => !value)} /> Mostrar misiones</label>
           </section>
 
           <section className="world-camera-panel">
@@ -813,6 +939,7 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
               onClick={() => {
                 setActiveMapId(map.id);
                 setSelectedMarkerId(map.markers?.[0]?.id ?? "");
+                setSelectedMarkerIds(map.markers?.[0]?.id ? [map.markers[0].id] : []);
               }}
             >
               <Route size={16} />
@@ -958,11 +1085,11 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
 
           <div className="cad-canvas-frame">
             <div
-              className={`tactical-grid ${activeMap.backgroundMode === "image" && activeMap.background ? "map-image-mode" : ""} ${!showGrid ? "grid-hidden" : ""} ${!showTerrainLayer ? "terrain-hidden" : ""}`}
+              className={`tactical-grid ${activeMap.backgroundMode === "image" && activeMap.background ? "map-image-mode" : ""} ${!showGrid ? "grid-hidden" : ""} ${!showTerrainLayer ? "terrain-hidden" : ""} ${!showImageLayer ? "image-hidden" : ""} ${!showMarkerLayer ? "markers-hidden" : ""} ${!showMissionLayer ? "missions-hidden" : ""}`}
               style={{
                 gridTemplateColumns: `repeat(${activeMap.width}, minmax(0, 1fr))`,
                 aspectRatio: `${activeMap.width} / ${activeMap.height}`,
-                transform: `scale(${canvasZoom})`,
+                transform: `translate(${pan.x}px, ${pan.y}px) scale(${canvasZoom})`,
                 transformOrigin: "top left",
                 "--map-image": activeMap.backgroundMode === "image" && activeMap.background ? `url("${activeMap.background}")` : "none",
                 "--grid-opacity": String(activeMap.gridOpacity ?? 0.55),
@@ -975,8 +1102,8 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
                 return (
                   <button
                     key={`${tile.x}-${tile.y}`}
-                    className={`tactical-tile ${activeMap.backgroundMode === "image" && activeMap.background ? "image-backed" : `terrain-${tile.terrain}`} terrain-overlay-${tile.terrain} ${marker ? `has-marker marker-${marker.type}` : ""}`}
-                    onClick={() => paintCell(tile.x, tile.y)}
+                    className={`tactical-tile ${activeMap.backgroundMode === "image" && activeMap.background ? "image-backed" : `terrain-${tile.terrain}`} terrain-overlay-${tile.terrain} ${marker ? `has-marker marker-${marker.type}` : ""} ${marker && selectedMarkerIds.includes(marker.id) ? "multi-selected" : ""} ${marker?.missionId ? "mission-linked" : ""}`}
+                    onClick={(event) => paintCell(tile.x, tile.y, event.shiftKey)}
                     title={`${tile.x}, ${tile.y} - ${tile.terrain}`}
                   >
                     {marker && <span>{markerGlyph(marker.type)}</span>}
@@ -991,6 +1118,7 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
             <span>Mapa: {activeMap.width} x {activeMap.height}</span>
             <span>Zoom: {Math.round(canvasZoom * 100)}%</span>
             <span>Marcadores: {activeMap.markers?.length ?? 0}</span>
+            <span>Seleccion: {selectedMarkerIds.length}</span>
           </div>
         </div>
 
@@ -1064,6 +1192,8 @@ export function MapEditor({ game, platformRepository, onChange, onPersistMap, on
                 <label><span>Y</span><input type="number" min={0} max={activeMap.height - 1} value={selectedMarker.y} onChange={(event) => updateSelectedMarker({ y: Number(event.target.value) || 0 })} /></label>
               </div>
               <button onClick={applyLibraryToMarker}><Shield size={15} /> Aplicar fichas base</button>
+              <button disabled={selectedMarkerIds.length < 2} onClick={duplicateSelectedMarkers}><Copy size={15} /> Duplicar seleccion</button>
+              <button className="danger-button" disabled={!selectedMarkerIds.length} onClick={deleteSelectedMarkers}><Trash2 size={15} /> Eliminar seleccion</button>
               <button className="danger-button" onClick={removeSelectedMarker}><Trash2 size={15} /> Eliminar marcador</button>
             </section>
           )}

@@ -162,6 +162,7 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
   const [playableItems, setPlayableItems] = useState<Record<string, unknown>[]>([]);
   const [playableTotal, setPlayableTotal] = useState(0);
   const [playableDetail, setPlayableDetail] = useState<Record<string, unknown> | undefined>();
+  const [playableDetailMode, setPlayableDetailMode] = useState(false);
   const [playableStatus, setPlayableStatus] = useState("Listo");
   const [playablePatchText, setPlayablePatchText] = useState("");
   const allItems = useMemo(
@@ -249,6 +250,7 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
     const id = playableId(item);
     setPlayableStatus("Cargando detalle...");
     setPlayableDetail(item);
+    setPlayableDetailMode(true);
     setPlayablePatchText(JSON.stringify({ adminNotes: String(item.adminNotes ?? "") }, null, 2));
 
     platformRepository?.playable
@@ -334,6 +336,53 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
     link.download = `${game.id}.game.config.json`;
     link.click();
     URL.revokeObjectURL(url);
+  }
+
+  if (playableDetailMode && playableDetail) {
+    return (
+      <section className="screen-panel content-screen playable-detail-screen">
+        <div className="screen-heading">
+          <div>
+            <h2><Eye size={34} /> {playableTitle(playableDetail)}</h2>
+            <p>{String(playableDetail.sourceTome ?? playableType)} - {playableId(playableDetail)}</p>
+          </div>
+          <button onClick={() => setPlayableDetailMode(false)}><ArrowLeft size={18} /> Volver a fichas</button>
+        </div>
+
+        <article className="content-section playable-detail-expanded">
+          <div className="content-section-head">
+            <div>
+              <h3>Ficha jugable</h3>
+              <p>{playableDescription(playableDetail)}</p>
+            </div>
+            <span>{playableStatus}</span>
+          </div>
+          <div className="playable-detail-grid">
+            <section className="playable-facts expanded">
+              {Object.entries(playableDetail).map(([key, value]) => (
+                <span key={key}>
+                  <strong>{key}</strong>
+                  <small>{typeof value === "object" ? JSON.stringify(value).slice(0, 240) : String(value)}</small>
+                </span>
+              ))}
+            </section>
+            <aside className="playable-patch-editor expanded">
+              {canEditPlayable ? (
+                <>
+                  <label>
+                    Cambios controlados por backend
+                    <textarea value={playablePatchText} onChange={(event) => setPlayablePatchText(event.target.value)} />
+                  </label>
+                  <button className="green-button" onClick={savePlayablePatch}><Save size={16} /> Guardar ficha</button>
+                </>
+              ) : (
+                <div className="admin-empty-state"><Eye size={22} /><strong>Solo lectura</strong><span>El detalle se consulta desde el backend local.</span></div>
+              )}
+            </aside>
+          </div>
+        </article>
+      </section>
+    );
   }
 
   return (

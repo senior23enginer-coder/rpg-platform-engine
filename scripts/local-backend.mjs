@@ -488,6 +488,21 @@ async function handleApi(request, response) {
       return jsonResponse(response, 200, { ...existing, ...patch });
     }
 
+    const playableExportEarlyMatch = pathname.match(/^\/games\/([^/]+)\/playable\/export$/);
+    if (method === "GET" && playableExportEarlyMatch) {
+      if (requireAdmin(response, actor)) return;
+      const gameId = decodeURIComponent(playableExportEarlyMatch[1]);
+      const type = url.searchParams.get("type");
+      const playable = readPlayableRuntime(gameId, true) ?? readPlayableRuntime(gameId, false);
+      if (!playable) return jsonResponse(response, 404, { error: "PLAYABLE_CONTENT_NOT_FOUND", gameId });
+      const normalizedType = type ? normalizePlayableType(type) : undefined;
+      const patches = (database.playablePatches ?? []).filter((patch) => patch.gameId === gameId && (!normalizedType || normalizePlayableType(patch.type) === normalizedType));
+      const assets = (database.mapAssets ?? []).filter((asset) => asset.gameId === gameId && (!normalizedType || normalizePlayableType(asset.type) === normalizedType));
+      appendAudit(database, { action: "admin.playable.update", module: "games", actorId: actor?.user.id ?? "system", targetId: gameId, metadata: { export: true, type: normalizedType } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, { exportedAt: nowIso(), scope: "playable", gameId, type: normalizedType ?? "all", playable, patches, assets });
+    }
+
     const playableListMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)$/);
     if (playableListMatch && method === "GET") {
       const gameId = decodeURIComponent(playableListMatch[1]);
@@ -515,7 +530,45 @@ async function handleApi(request, response) {
       const gameId = url.searchParams.get("gameId");
       return jsonResponse(response, 200, gameId ? database.maps.filter((map) => map.gameId === gameId) : database.maps);
     }
+    if (routeKey(method, pathname) === "POST /maps/import") {
+      if (requireAdmin(response, actor)) return;
+      const body = await readBody(request);
+      const importedMap = body.map ?? body;
+      if (!importedMap || typeof importedMap !== "object" || !importedMap.id || !importedMap.gameId) {
+        return jsonResponse(response, 400, { error: "INVALID_MAP_IMPORT" });
+      }
+      const map = { ...importedMap, updatedAt: nowIso() };
+      database.maps = upsertById(database.maps, map);
+      if (Array.isArray(body.assets)) {
+        database.mapAssets = [
+          ...body.assets.map((asset, index) => ({
+            ...asset,
+            id: asset.id ?? stableId("asset", `${map.gameId}:map:${map.id}:${index}:${asset.path ?? asset.name ?? ""}`),
+            gameId: map.gameId,
+            type: "locationMaps",
+            itemId: map.id,
+            updatedAt: nowIso(),
+          })),
+          ...(database.mapAssets ?? []).filter((asset) => asset.itemId !== map.id),
+        ];
+      }
+      appendAudit(database, { action: "admin.map.update", module: "maps", actorId: actor?.user.id ?? "system", targetId: map.id, metadata: { import: true } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, map);
+    }
     const mapMatch = pathname.match(/^\/maps\/([^/]+)$/);
+    const mapExportMatch = pathname.match(/^\/maps\/([^/]+)\/export$/);
+    if (method === "GET" && mapExportMatch) {
+      if (requireAdmin(response, actor)) return;
+      const mapId = decodeURIComponent(mapExportMatch[1]);
+      const map = database.maps.find((item) => item.id === mapId);
+      if (!map) return jsonResponse(response, 404, { error: "MAP_NOT_FOUND", id: mapId });
+      const assets = (database.mapAssets ?? []).filter((asset) => asset.itemId === mapId);
+      const playablePatch = (database.playablePatches ?? []).find((patch) => patch.gameId === map.gameId && normalizePlayableType(patch.type) === "locationMaps" && patch.id === mapId);
+      appendAudit(database, { action: "admin.map.update", module: "maps", actorId: actor?.user.id ?? "system", targetId: mapId, metadata: { export: true } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, { exportedAt: nowIso(), scope: "map", map, assets, playablePatch });
+    }
     if (method === "GET" && mapMatch) {
       const mapId = decodeURIComponent(mapMatch[1]);
       const map = database.maps.find((item) => item.id === mapId);
@@ -529,6 +582,53 @@ async function handleApi(request, response) {
       appendAudit(database, { action: "admin.map.update", module: "maps", actorId: actor?.user.id ?? "system", targetId: map.id });
       writeDatabase(database);
       return jsonResponse(response, 200, map);
+    }
+
+    const playableExportMatch = pathname.match(/^\/games\/([^/]+)\/playable\/export$/);
+    if (method === "GET" && playableExportMatch) {
+      if (requireAdmin(response, actor)) return;
+      const gameId = decodeURIComponent(playableExportMatch[1]);
+      const type = url.searchParams.get("type");
+      const playable = readPlayableRuntime(gameId, true) ?? readPlayableRuntime(gameId, false);
+      if (!playable) return jsonResponse(response, 404, { error: "PLAYABLE_CONTENT_NOT_FOUND", gameId });
+      const normalizedType = type ? normalizePlayableType(type) : undefined;
+      const patches = (database.playablePatches ?? []).filter((patch) => patch.gameId === gameId && (!normalizedType || normalizePlayableType(patch.type) === normalizedType));
+      const assets = (database.mapAssets ?? []).filter((asset) => asset.gameId === gameId && (!normalizedType || normalizePlayableType(asset.type) === normalizedType));
+      appendAudit(database, { action: "admin.playable.update", module: "games", actorId: actor?.user.id ?? "system", targetId: gameId, metadata: { export: true, type: normalizedType } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, { exportedAt: nowIso(), scope: "playable", gameId, type: normalizedType ?? "all", playable, patches, assets });
+    }
+
+    const playableImportMatch = pathname.match(/^\/games\/([^/]+)\/playable\/import$/);
+    if (method === "POST" && playableImportMatch) {
+      if (requireAdmin(response, actor)) return;
+      const gameId = decodeURIComponent(playableImportMatch[1]);
+      const body = await readBody(request);
+      const patches = Array.isArray(body.patches) ? body.patches : [];
+      const assets = Array.isArray(body.assets) ? body.assets : [];
+      database.playablePatches = [
+        ...patches.map((patch) => ({
+          ...patch,
+          gameId,
+          type: normalizePlayableType(patch.type),
+          id: patch.id ?? patch.itemId,
+          updatedAt: nowIso(),
+          actorId: actor?.user.id ?? "system",
+        })).filter((patch) => patch.id),
+        ...(database.playablePatches ?? []).filter((patch) => patch.gameId !== gameId),
+      ];
+      database.mapAssets = [
+        ...assets.map((asset, index) => ({
+          ...asset,
+          id: asset.id ?? stableId("asset", `${gameId}:${asset.type ?? "asset"}:${asset.itemId ?? index}`),
+          gameId,
+          updatedAt: nowIso(),
+        })),
+        ...(database.mapAssets ?? []).filter((asset) => asset.gameId !== gameId),
+      ];
+      appendAudit(database, { action: "admin.playable.update", module: "games", actorId: actor?.user.id ?? "system", targetId: gameId, metadata: { import: true, patches: patches.length, assets: assets.length } });
+      writeDatabase(database);
+      return jsonResponse(response, 200, { importedAt: nowIso(), gameId, patches: patches.length, assets: assets.length });
     }
 
     if (routeKey(method, pathname) === "GET /metadata") return jsonResponse(response, 200, database.metadata);

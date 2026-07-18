@@ -173,12 +173,27 @@ export function createLocalPlatformRepository(): PlatformRepository {
         const maps = (await loadPersistentDatabase()).maps;
         return gameId ? maps.filter((map) => map.gameId === gameId) : maps;
       },
+      async detail(id: string) {
+        const map = (await loadPersistentDatabase()).maps.find((item) => item.id === id);
+        if (!map) throw new Error("MAP_NOT_FOUND");
+        return map;
+      },
       async save(map: PlatformMapDocument) {
         const database = await loadPersistentDatabase();
         const normalized = { ...map, updatedAt: nowIso() };
         await savePersistentMaps([normalized, ...database.maps.filter((item) => item.id !== normalized.id)]);
         await appendPersistentAudit(createPlatformAudit({ action: "admin.map.update", module: "maps", actorId: database.currentUserId ?? "system", targetId: normalized.id }));
         return normalized;
+      },
+      async export(id: string) {
+        const database = await loadPersistentDatabase();
+        const map = database.maps.find((item) => item.id === id);
+        if (!map) throw new Error("MAP_NOT_FOUND");
+        return { exportedAt: nowIso(), map, assets: database.mapAssets?.filter((asset) => asset.itemId === id) ?? [] };
+      },
+      async import(payload: Record<string, unknown>) {
+        const map = (payload.map ?? payload) as PlatformMapDocument;
+        return this.save(map);
       },
     },
     playable: {
@@ -222,6 +237,17 @@ export function createLocalPlatformRepository(): PlatformRepository {
       },
       async saveAssets<T = Record<string, unknown>>(_gameId: string, _type: string, _id: string, assets: T[]) {
         return assets;
+      },
+      async export(gameId: string, type?: string) {
+        const playable = await loadPlayableRuntime(gameId, true);
+        const database = await loadPersistentDatabase();
+        return { exportedAt: nowIso(), gameId, type, playable, patches: database.playablePatches?.filter((patch) => patch.gameId === gameId && (!type || normalizePlayableType(patch.type) === normalizePlayableType(type))) ?? [] };
+      },
+      async import(gameId: string, payload: Record<string, unknown>) {
+        const database = await loadPersistentDatabase();
+        const patches = Array.isArray(payload.patches) ? payload.patches : [];
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.playable.update", module: "games", actorId: database.currentUserId ?? "system", targetId: gameId }));
+        return { gameId, importedAt: nowIso(), patches: patches.length };
       },
     },
     content: {

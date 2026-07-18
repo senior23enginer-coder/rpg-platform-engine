@@ -81,8 +81,17 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
       list(gameId?: string): Promise<PlatformMapDocument[]> {
         return requestJson(endpoint, gameId ? `/maps?gameId=${encodeURIComponent(gameId)}` : "/maps", { token });
       },
+      detail(id: string): Promise<PlatformMapDocument> {
+        return requestJson(endpoint, `/maps/${encodeURIComponent(id)}`, { token });
+      },
       save(map: PlatformMapDocument): Promise<PlatformMapDocument> {
         return requestJson(endpoint, `/maps/${encodeURIComponent(map.id)}`, { method: "PATCH", body: map, token });
+      },
+      export(id: string): Promise<Record<string, unknown>> {
+        return requestJson(endpoint, `/maps/${encodeURIComponent(id)}/export`, { token });
+      },
+      import(payload: Record<string, unknown>): Promise<PlatformMapDocument> {
+        return requestJson(endpoint, "/maps/import", { body: payload, token });
       },
     },
     playable: {
@@ -108,6 +117,13 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
       },
       saveAssets<T = Record<string, unknown>>(gameId: string, type: string, id: string, assets: T[]) {
         return requestJson<T[]>(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/assets`, { method: "PATCH", body: { assets }, token });
+      },
+      export(gameId: string, type?: string) {
+        const suffix = type ? `?type=${encodeURIComponent(type)}` : "";
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/export${suffix}`, { token });
+      },
+      import(gameId: string, payload: Record<string, unknown>) {
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/import`, { body: payload, token });
       },
     },
     content: {

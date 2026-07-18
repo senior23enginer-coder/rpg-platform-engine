@@ -28,6 +28,8 @@ export type PlatformDatabase = {
   metadata?: AppMetadata;
   games: GameConfig[];
   maps: PlatformMapDocument[];
+  playablePatches?: Array<{ id: string; gameId: string; type: string; patch?: Record<string, unknown>; updatedAt?: string; actorId?: string }>;
+  mapAssets?: Array<Record<string, unknown> & { id?: string; gameId?: string; type?: string; itemId?: string }>;
   sessions: PlatformSession[];
   chatMessages: PlatformChatMessage[];
   auditLog: PlatformAuditEntry[];
