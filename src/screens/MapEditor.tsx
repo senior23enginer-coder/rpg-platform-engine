@@ -1,5 +1,5 @@
 import { useState, type CSSProperties } from "react";
-import { ArrowLeft, BookOpen, Boxes, CloudSun, Copy, Crosshair, Eraser, Eye, FilePlus2, Flag, FolderOpen, Grid3X3, Image as ImageIcon, Layers, Map as MapIcon, MapPinned, MousePointer2, Package, Plus, Redo2, Route, Save, Shield, SlidersHorizontal, Swords, Trash2, Undo2, Upload, Users } from "lucide-react";
+import { ArrowLeft, BookOpen, Boxes, BoxSelect, CloudSun, Copy, Crosshair, Download, Eraser, Eye, FilePlus2, Flag, FolderOpen, Grid3X3, HelpCircle, Image as ImageIcon, Layers, LocateFixed, Map as MapIcon, MapPinned, Maximize2, MousePointer2, Move, Package, Pencil, Play, Plus, Redo2, RotateCw, Route, Ruler, Save, Shield, SlidersHorizontal, Swords, Trash2, Undo2, Upload, Users } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
 import { buildFallout4TomeMapLibrary, createFallout4LocationMaps } from "../lib/fallout4TomeCatalog";
 
@@ -203,6 +203,7 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
   const [markerType, setMarkerType] = useState<TacticalMarkerType>("player");
   const [selectedMarkerId, setSelectedMarkerId] = useState(activeMap?.markers?.[0]?.id ?? "");
   const [libraryTab, setLibraryTab] = useState<LibraryTab>("mission");
+  const [saveStatus, setSaveStatus] = useState("Cambios locales");
   const selectedMarker = activeMap?.markers?.find((marker) => marker.id === selectedMarkerId);
   const missionSheets = activeMap?.missionSheets?.length ? activeMap.missionSheets : createDefaultMapLibraries(game).missionSheets;
   const locations = activeMap?.locations?.length ? activeMap.locations : createDefaultMapLibraries(game).locations;
@@ -224,6 +225,7 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
   function persistActiveMap() {
     if (!activeMap) return;
     onPersistMap?.(normalizeTacticalMap(activeMap));
+    setSaveStatus("Guardado hace un momento");
   }
 
   function addMap() {
@@ -466,11 +468,28 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
 
   return (
     <article className="admin-card map-editor tactical-map-editor cad-map-editor">
-      <div className="admin-panel-title">
-        <strong><MapIcon size={18} /> Editor tactico 2D - {activeMap.name}</strong>
-        <div className="map-manager-actions">
-          <button onClick={() => setView("list")}><ArrowLeft size={15} /> Lista de mapas</button>
+      <div className="wasteland-editor-header">
+        <div className="wasteland-editor-brand">
+          <strong>WASTELAND CREATOR</strong>
+          <span>Editor de mapas tacticos para {game.name}</span>
+        </div>
+        <label className="wasteland-project-select">
+          <span>Proyecto</span>
+          <select value={activeMap.id} onChange={(event) => setActiveMapId(event.target.value)}>
+            {maps.map((map) => <option key={map.id} value={map.id}>{map.name}</option>)}
+          </select>
+        </label>
+        <div className="wasteland-save-state">
+          <CloudSun size={15} />
+          <span>{saveStatus}</span>
+        </div>
+        <div className="wasteland-editor-actions">
+          <button onClick={persistActiveMap}><Save size={15} /> Guardar</button>
+          <button><Download size={15} /> Exportar</button>
+          <button><Play size={15} /> Probar</button>
+          <button onClick={() => setView("list")}><ArrowLeft size={15} /> Lista</button>
           <button onClick={addMap}><Plus size={15} /> Mapa</button>
+          <button title="Ayuda"><HelpCircle size={16} /></button>
         </div>
       </div>
 
@@ -483,6 +502,13 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
         <button title="Abrir lista" onClick={() => setView("list")}><FolderOpen size={16} /></button>
         <button title="Guardar cambios" onClick={persistActiveMap}><Save size={16} /></button>
         <span />
+        <button className={toolMode === "marker" ? "selected" : ""} title="Seleccionar"><MousePointer2 size={16} /></button>
+        <button title="Mover"><Move size={16} /></button>
+        <button title="Rotar"><RotateCw size={16} /></button>
+        <button title="Escalar"><Maximize2 size={16} /></button>
+        <button title="Rectangulo"><BoxSelect size={16} /></button>
+        <button title="Lapiz"><Pencil size={16} /></button>
+        <span />
         <button title="Deshacer"><Undo2 size={16} /></button>
         <button title="Rehacer"><Redo2 size={16} /></button>
         <button title="Duplicar seleccion"><Copy size={16} /></button>
@@ -493,7 +519,8 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
         <span />
         <button className={showGrid ? "selected" : ""} title="Mostrar grilla" onClick={() => setShowGrid((value) => !value)}><Grid3X3 size={16} /></button>
         <button className={showTerrainLayer ? "selected" : ""} title="Mostrar capa de terreno" onClick={() => setShowTerrainLayer((value) => !value)}><Layers size={16} /></button>
-        <button title="Selector"><MousePointer2 size={16} /></button>
+        <button title="Regla"><Ruler size={16} /></button>
+        <button title="Centrar vista"><LocateFixed size={16} /></button>
       </div>
 
       {tomeLibrary && (
@@ -539,6 +566,13 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
 
       <div className="map-editor-layout tactical-layout">
         <aside className="map-list world-editor-left-panel">
+          <nav className="wasteland-side-tabs">
+            {(["mission", "location", "nodes", "arsenal"] as LibraryTab[]).map((tab) => (
+              <button key={tab} className={libraryTab === tab ? "selected" : ""} onClick={() => setLibraryTab(tab)}>
+                {tab === "mission" ? "Misiones" : tab === "location" ? "Ubicaciones" : tab === "nodes" ? "Nodos" : "Assets"}
+              </button>
+            ))}
+          </nav>
           <section className="world-minimap-panel">
             <strong><MapIcon size={15} /> Minimap</strong>
             <div className="world-minimap" style={{ aspectRatio: `${activeMap.width} / ${activeMap.height}` } as CSSProperties}>
@@ -597,68 +631,15 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
             </button>
           ))}
           </section>
-          <div className="map-format-note">
-            <strong>Formato tactico 2D</strong>
-            <small>Tiles, terreno, coste de movimiento y marcadores para combate tactico.</small>
-          </div>
-        </aside>
 
-        <div className="map-workspace">
-          <div className="map-meta-grid">
-            <label><span>ID</span><input value={activeMap.id} onChange={(event) => updateMap(activeMap.id, { id: slugify(event.target.value) || activeMap.id })} /></label>
-            <label><span>Nombre</span><input value={activeMap.name} onChange={(event) => updateMap(activeMap.id, { name: event.target.value })} /></label>
-            <label><span>Ancho tiles</span><input type="number" min={4} max={40} value={activeMap.width} onChange={(event) => resizeMap(Number(event.target.value) || activeMap.width, activeMap.height)} /></label>
-            <label><span>Alto tiles</span><input type="number" min={4} max={30} value={activeMap.height} onChange={(event) => resizeMap(activeMap.width, Number(event.target.value) || activeMap.height)} /></label>
-          </div>
-
-          <section className="map-personalization">
-            <strong><SlidersHorizontal size={16} /> Personalizacion visual</strong>
-            <label><span>Opacidad grilla</span><input type="range" min={0} max={1} step={0.05} value={activeMap.gridOpacity ?? 0.55} onChange={(event) => updateMap(activeMap.id, { gridOpacity: Number(event.target.value) })} /></label>
-            <label><span>Opacidad terreno</span><input type="range" min={0} max={1} step={0.05} value={activeMap.terrainOpacity ?? 0.38} onChange={(event) => updateMap(activeMap.id, { terrainOpacity: Number(event.target.value) })} /></label>
-            <label><span>Tamano marcadores</span><input type="range" min={0.65} max={1.55} step={0.05} value={activeMap.markerScale ?? 1} onChange={(event) => updateMap(activeMap.id, { markerScale: Number(event.target.value) })} /></label>
-          </section>
-
-          <section className="map-image-importer">
-            <div>
-              <strong><ImageIcon size={17} /> Imagen base del mapa</strong>
-              <small>{activeMap.backgroundSourceName || "Carga un PNG/JPG o pega una ruta de asset para descomponerlo en tiles."}</small>
-            </div>
-            <label className="map-image-path">
-              <span>Ruta asset / data URL</span>
-              <input
-                value={activeMap.background ?? ""}
-                onChange={(event) => updateMap(activeMap.id, { background: event.target.value, backgroundMode: event.target.value ? "image" : "none", backgroundSourceName: event.target.value ? "Asset manual" : "" })}
-                placeholder="/games/fallout4/assets/maps/concord.png"
-              />
-            </label>
-            <label>
-              <span>Tile px</span>
-              <input type="number" min={16} max={128} value={activeMap.tileSize ?? 48} onChange={(event) => updateTileSize(Number(event.target.value))} />
-            </label>
-            <label className="green-button map-file-button">
-              <Upload size={15} /> Cargar imagen
-              <input type="file" accept="image/*" onChange={(event) => loadImageFile(event.target.files?.[0])} />
-            </label>
-            <button onClick={() => activeMap.background && decomposeImage(activeMap.background, activeMap.backgroundSourceName || "Asset manual")}><Grid3X3 size={15} /> Descomponer</button>
-          </section>
-
-          <section className="map-library-panel">
+          <section className="map-library-panel wasteland-left-library">
             <header>
               <div>
-                <strong><BookOpen size={17} /> Biblioteca tactica del mapa</strong>
-                <small>Fichas del tomo: nodos, cobertura, movimiento, misiones, ubicaciones, clima, biomas, armas, equipo, unidades y bestiario.</small>
+                <strong><BookOpen size={17} /> Biblioteca tactica</strong>
+                <small>Fichas de tomos vinculables a mapa, nodo o mision.</small>
               </div>
-              <button onClick={() => addLibraryItem(libraryTab)}><Plus size={15} /> Agregar ficha</button>
+              <button onClick={() => addLibraryItem(libraryTab)}><Plus size={15} /></button>
             </header>
-            {activeLocationMap && (
-              <div className="map-tome-context">
-                <span><MapPinned size={15} /> {activeLocationMap.subzoneCount ?? activeLocationMap.subzones?.length ?? 0} subzonas</span>
-                <span><Route size={15} /> {activeLocationMap.eventCount ?? activeLocationMap.events?.length ?? 0} eventos</span>
-                <span><Crosshair size={15} /> {activeLocationMap.enemyCount ?? activeLocationMap.enemies?.length ?? 0} amenazas</span>
-                <span><Boxes size={15} /> {activeLocationMap.collectibleCount ?? activeLocationMap.collectibles?.length ?? 0} objetos/pistas</span>
-                <span><BookOpen size={15} /> {activeLocationMap.missionCount ?? activeLocationMap.missions?.length ?? 0} misiones vinculadas</span>
-              </div>
-            )}
             <nav>
               <button className={libraryTab === "mission" ? "selected" : ""} onClick={() => setLibraryTab("mission")}><BookOpen size={15} /> Misiones</button>
               <button className={libraryTab === "location" ? "selected" : ""} onClick={() => setLibraryTab("location")}><MapPinned size={15} /> Ubicaciones</button>
@@ -715,6 +696,69 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
                   </button>
                 ))}
             </div>
+          </section>
+
+          <div className="map-format-note">
+            <strong>Formato tactico 2D</strong>
+            <small>Tiles, terreno, coste de movimiento y marcadores para combate tactico.</small>
+          </div>
+        </aside>
+
+        <div className="map-workspace">
+          <div className="map-meta-grid">
+            <label><span>ID</span><input value={activeMap.id} onChange={(event) => updateMap(activeMap.id, { id: slugify(event.target.value) || activeMap.id })} /></label>
+            <label><span>Nombre</span><input value={activeMap.name} onChange={(event) => updateMap(activeMap.id, { name: event.target.value })} /></label>
+            <label><span>Ancho tiles</span><input type="number" min={4} max={40} value={activeMap.width} onChange={(event) => resizeMap(Number(event.target.value) || activeMap.width, activeMap.height)} /></label>
+            <label><span>Alto tiles</span><input type="number" min={4} max={30} value={activeMap.height} onChange={(event) => resizeMap(activeMap.width, Number(event.target.value) || activeMap.height)} /></label>
+          </div>
+
+          <section className="map-personalization">
+            <strong><SlidersHorizontal size={16} /> Personalizacion visual</strong>
+            <label><span>Opacidad grilla</span><input type="range" min={0} max={1} step={0.05} value={activeMap.gridOpacity ?? 0.55} onChange={(event) => updateMap(activeMap.id, { gridOpacity: Number(event.target.value) })} /></label>
+            <label><span>Opacidad terreno</span><input type="range" min={0} max={1} step={0.05} value={activeMap.terrainOpacity ?? 0.38} onChange={(event) => updateMap(activeMap.id, { terrainOpacity: Number(event.target.value) })} /></label>
+            <label><span>Tamano marcadores</span><input type="range" min={0.65} max={1.55} step={0.05} value={activeMap.markerScale ?? 1} onChange={(event) => updateMap(activeMap.id, { markerScale: Number(event.target.value) })} /></label>
+          </section>
+
+          <section className="map-image-importer">
+            <div>
+              <strong><ImageIcon size={17} /> Imagen base del mapa</strong>
+              <small>{activeMap.backgroundSourceName || "Carga un PNG/JPG o pega una ruta de asset para descomponerlo en tiles."}</small>
+            </div>
+            <label className="map-image-path">
+              <span>Ruta asset / data URL</span>
+              <input
+                value={activeMap.background ?? ""}
+                onChange={(event) => updateMap(activeMap.id, { background: event.target.value, backgroundMode: event.target.value ? "image" : "none", backgroundSourceName: event.target.value ? "Asset manual" : "" })}
+                placeholder="/games/fallout4/assets/maps/concord.png"
+              />
+            </label>
+            <label>
+              <span>Tile px</span>
+              <input type="number" min={16} max={128} value={activeMap.tileSize ?? 48} onChange={(event) => updateTileSize(Number(event.target.value))} />
+            </label>
+            <label className="green-button map-file-button">
+              <Upload size={15} /> Cargar imagen
+              <input type="file" accept="image/*" onChange={(event) => loadImageFile(event.target.files?.[0])} />
+            </label>
+            <button onClick={() => activeMap.background && decomposeImage(activeMap.background, activeMap.backgroundSourceName || "Asset manual")}><Grid3X3 size={15} /> Descomponer</button>
+          </section>
+
+          <section className="map-library-panel wasteland-context-strip">
+            <header>
+              <div>
+                <strong><BookOpen size={17} /> Contexto del mapa</strong>
+                <small>Resumen operativo de ubicacion, eventos, amenazas y objetos.</small>
+              </div>
+            </header>
+            {activeLocationMap && (
+              <div className="map-tome-context">
+                <span><MapPinned size={15} /> {activeLocationMap.subzoneCount ?? activeLocationMap.subzones?.length ?? 0} subzonas</span>
+                <span><Route size={15} /> {activeLocationMap.eventCount ?? activeLocationMap.events?.length ?? 0} eventos</span>
+                <span><Crosshair size={15} /> {activeLocationMap.enemyCount ?? activeLocationMap.enemies?.length ?? 0} amenazas</span>
+                <span><Boxes size={15} /> {activeLocationMap.collectibleCount ?? activeLocationMap.collectibles?.length ?? 0} objetos/pistas</span>
+                <span><BookOpen size={15} /> {activeLocationMap.missionCount ?? activeLocationMap.missions?.length ?? 0} misiones vinculadas</span>
+              </div>
+            )}
           </section>
 
           <div className="tactical-toolbar">

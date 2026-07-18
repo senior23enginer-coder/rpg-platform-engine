@@ -16211,6 +16211,407 @@ svg {
   text-transform: uppercase;
 }
 
+.wasteland-editor-header {
+  display: grid;
+  grid-template-columns: minmax(220px, 310px) minmax(260px, 1fr) auto auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 62px;
+  margin: -4px -4px 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(194, 222, 163, 0.16);
+  border-radius: 7px 7px 0 0;
+  background:
+    linear-gradient(90deg, rgba(148, 166, 109, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(14, 18, 11, 0.98), rgba(3, 5, 3, 0.98));
+}
+
+.wasteland-editor-brand {
+  display: grid;
+  gap: 2px;
+}
+
+.wasteland-editor-brand strong {
+  color: #9ebe76;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.wasteland-editor-brand span,
+.wasteland-project-select span,
+.wasteland-save-state {
+  color: #c3c9a5;
+  font-size: 12px;
+  text-transform: none;
+}
+
+.wasteland-project-select {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 4px 8px;
+  border: 1px solid rgba(194, 222, 163, 0.12);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.wasteland-project-select select {
+  width: 100%;
+  min-height: 34px;
+  border-color: transparent;
+  background: transparent;
+  text-transform: none;
+}
+
+.wasteland-save-state {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.wasteland-save-state svg {
+  color: var(--pip-green);
+}
+
+.wasteland-editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.wasteland-editor-actions button {
+  min-height: 34px;
+  padding: 0 11px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.wasteland-editor-actions button:last-child {
+  width: 36px;
+  padding: 0;
+}
+
+.cad-map-editor .world-editor-menubar {
+  margin: 0 -4px;
+  border-radius: 0;
+}
+
+.cad-map-editor .world-editor-toolbar {
+  margin: 0 -4px;
+  min-height: 48px;
+}
+
+.cad-map-editor .world-editor-toolbar button {
+  width: 38px;
+  height: 36px;
+}
+
+.cad-map-editor .tome-coverage-strip {
+  margin: 0 -4px;
+  grid-template-columns: repeat(10, minmax(112px, 1fr));
+  overflow-x: auto;
+}
+
+.cad-map-editor .cad-ribbon {
+  grid-template-columns: minmax(210px, 0.65fr) minmax(180px, 0.55fr) minmax(220px, 0.8fr) minmax(320px, 1fr);
+  margin: 8px 0;
+  padding: 8px;
+}
+
+.cad-map-editor .map-editor-layout {
+  grid-template-columns: minmax(250px, 310px) minmax(0, 1fr) minmax(280px, 340px);
+  align-items: stretch;
+  min-height: min(74vh, 860px);
+}
+
+.cad-map-editor .world-editor-left-panel,
+.cad-map-editor .node-editor {
+  max-height: min(74vh, 860px);
+  min-height: 0;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid rgba(194, 222, 163, 0.16);
+  border-radius: 5px;
+  background:
+    linear-gradient(180deg, rgba(32, 43, 25, 0.66), rgba(3, 7, 4, 0.92)),
+    rgba(0, 0, 0, 0.34);
+}
+
+.wasteland-side-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid rgba(194, 222, 163, 0.14);
+}
+
+.wasteland-side-tabs button {
+  min-height: 34px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 0;
+  color: #aeb68f;
+  background: transparent;
+  font-size: 11px;
+}
+
+.wasteland-side-tabs button.selected {
+  color: #f1d260;
+  border-bottom: 2px solid #8fdc6b;
+  background: rgba(126, 255, 87, 0.08);
+}
+
+.wasteland-left-library {
+  margin: 0;
+  padding: 8px;
+}
+
+.wasteland-left-library header {
+  align-items: start;
+}
+
+.wasteland-left-library header button {
+  width: 34px;
+  min-height: 30px;
+  padding: 0;
+}
+
+.wasteland-left-library nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.wasteland-left-library nav button {
+  min-height: 30px;
+  padding: 0 6px;
+  justify-content: flex-start;
+  font-size: 10px;
+}
+
+.wasteland-left-library .map-library-grid {
+  grid-template-columns: 1fr;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.wasteland-left-library .map-library-grid button {
+  min-height: 58px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.wasteland-left-library .map-library-grid em {
+  display: none;
+}
+
+.cad-map-editor .map-workspace {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(380px, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.cad-map-editor .map-meta-grid,
+.cad-map-editor .map-image-importer,
+.cad-map-editor .map-personalization,
+.wasteland-context-strip {
+  margin-bottom: 8px;
+  border-radius: 5px;
+}
+
+.cad-map-editor .map-meta-grid {
+  grid-template-columns: minmax(150px, 0.8fr) minmax(220px, 1.4fr) minmax(110px, 0.45fr) minmax(110px, 0.45fr);
+}
+
+.cad-map-editor .map-image-importer {
+  grid-template-columns: minmax(190px, 0.75fr) minmax(0, 1fr) 88px 132px 132px;
+}
+
+.wasteland-context-strip {
+  padding: 8px;
+}
+
+.wasteland-context-strip header {
+  margin-bottom: 6px;
+}
+
+.cad-canvas-frame {
+  position: relative;
+  display: grid;
+  place-items: start center;
+  min-height: 430px;
+  max-height: min(62vh, 720px);
+}
+
+.cad-canvas-frame::before,
+.cad-canvas-frame::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.36;
+}
+
+.cad-canvas-frame::before {
+  inset: 0 0 auto 0;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, rgba(194, 222, 163, 0.45) 0 1px, transparent 1px 24px);
+}
+
+.cad-canvas-frame::after {
+  inset: 0 auto 0 0;
+  width: 22px;
+  background: repeating-linear-gradient(0deg, rgba(194, 222, 163, 0.45) 0 1px, transparent 1px 24px);
+}
+
+.cad-map-editor .tactical-grid {
+  width: min(100%, 1120px);
+  min-width: 520px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 0 0 2px rgba(194, 222, 163, 0.15),
+    0 18px 40px rgba(0, 0, 0, 0.58);
+}
+
+.cad-map-editor .tactical-grid.map-image-mode {
+  background-size: cover;
+}
+
+.cad-map-editor .tactical-tile {
+  border-radius: 2px;
+}
+
+.cad-map-editor .tactical-tile.has-marker span {
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.8),
+    0 0 0 4px rgba(255, 211, 107, 0.45);
+}
+
+.cad-map-editor .node-editor {
+  gap: 12px;
+}
+
+.cad-map-editor .node-editor > .admin-panel-title {
+  border-bottom: 1px solid rgba(194, 222, 163, 0.12);
+  padding-bottom: 8px;
+}
+
+.cad-map-editor .terrain-palette,
+.cad-map-editor .marker-palette {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cad-map-editor .marker-editor {
+  border: 1px solid rgba(194, 222, 163, 0.14);
+  border-radius: 5px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.cad-map-editor .marker-editor > strong {
+  color: #f1d260;
+}
+
+.cad-map-editor .marker-editor label {
+  display: grid;
+  grid-template-columns: minmax(95px, 0.7fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.cad-map-editor .cad-status-bar {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-top: 8px;
+}
+
+.cad-map-editor .cad-status-bar span:nth-child(1)::before {
+  content: "Herramienta";
+  color: #f1d260;
+  margin-right: 6px;
+}
+
+.cad-map-editor .cad-status-bar span:nth-child(2)::before {
+  content: "Tamaño";
+  color: #f1d260;
+  margin-right: 6px;
+}
+
+.cad-map-editor .cad-status-bar span:nth-child(3)::before {
+  content: "Vista";
+  color: #f1d260;
+  margin-right: 6px;
+}
+
+.cad-map-editor .cad-status-bar span:nth-child(4)::before {
+  content: "Nodos";
+  color: #f1d260;
+  margin-right: 6px;
+}
+
+.cad-map-editor .cad-status-bar::after,
+.cad-map-editor .cad-status-bar::before {
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(142, 255, 186, 0.16);
+  border-radius: 6px;
+  color: #b9dcb1;
+  background: rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.cad-map-editor .cad-status-bar::before {
+  content: "Snap: 1m";
+}
+
+.cad-map-editor .cad-status-bar::after {
+  content: "Version mapa: v1.0";
+}
+
+@media (max-width: 1700px) {
+  .wasteland-editor-header {
+    grid-template-columns: minmax(220px, 280px) minmax(220px, 1fr) auto;
+  }
+
+  .wasteland-editor-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .cad-map-editor .map-editor-layout {
+    grid-template-columns: minmax(230px, 280px) minmax(0, 1fr) minmax(250px, 300px);
+  }
+}
+
+@media (max-width: 1220px) {
+  .cad-map-editor .map-editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cad-map-editor .world-editor-left-panel,
+  .cad-map-editor .node-editor {
+    max-height: none;
+  }
+
+  .cad-map-editor .map-workspace {
+    grid-template-rows: auto;
+  }
+
+  .cad-map-editor .map-meta-grid,
+  .cad-map-editor .map-image-importer,
+  .cad-map-editor .map-personalization {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cad-map-editor .cad-status-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1500px) {
   .support-layout,
   .admin-platform-settings-grid,

@@ -68,6 +68,10 @@ for (const mapFeature of ["backgroundMode", "gridOpacity", "terrainOpacity", "ma
   assert(files.mapEditor.includes(mapFeature) || files.game.includes(mapFeature), `Editor de mapas sin ${mapFeature}`);
 }
 
+for (const mapUiFeature of ["WASTELAND CREATOR", "wasteland-editor-header", "wasteland-left-library", "wasteland-context-strip", "cad-status-bar"]) {
+  assert(files.mapEditor.includes(mapUiFeature) || files.css.includes(mapUiFeature), `Editor de mapas sin UI profesional ${mapUiFeature}`);
+}
+
 for (const supportFeature of ["support-ticket-table", "statusFilter", "priority", "assignedTo", "messages"]) {
   assert(files.support.includes(supportFeature), `Soporte sin ${supportFeature}`);
 }
