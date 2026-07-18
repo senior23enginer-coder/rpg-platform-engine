@@ -8720,6 +8720,299 @@ svg {
     width: auto;
   }
 }
+
+/* Procedural tactical map generator */
+.app-frame.screen-adminGenerator .app-body {
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 12px;
+  min-height: 0;
+}
+
+.app-frame.screen-adminGenerator .sidebar {
+  display: flex;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: calc(100vh - 128px);
+  height: auto;
+  padding: 12px;
+  gap: 14px;
+}
+
+.procedural-generator {
+  display: grid;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.generator-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(255, 211, 107, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 211, 107, 0.1), transparent 46%),
+    rgba(0, 0, 0, 0.22);
+}
+
+.generator-hero small,
+.generator-controls label span,
+.generator-stats small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.generator-hero strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--amber);
+  font-size: clamp(22px, 1.8vw, 34px);
+  text-transform: uppercase;
+}
+
+.generator-hero p {
+  max-width: 880px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.generator-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 330px) minmax(420px, 1fr) minmax(300px, 420px);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.generator-controls,
+.generator-json,
+.generator-preview {
+  min-width: 0;
+  border: 1px solid rgba(140, 255, 116, 0.16);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.generator-controls {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 14px;
+}
+
+.generator-controls section,
+.generator-controls label {
+  display: grid;
+  gap: 8px;
+}
+
+.generator-controls input {
+  width: 100%;
+}
+
+.seed-row {
+  grid-template-columns: minmax(0, 1fr) 48px;
+}
+
+.seed-row span {
+  grid-column: 1 / -1;
+}
+
+.seed-row button {
+  min-width: 48px;
+  padding: 0;
+}
+
+.generator-two,
+.generator-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.generator-stats span {
+  display: grid;
+  gap: 4px;
+  min-height: 82px;
+  padding: 12px;
+  border: 1px solid rgba(255, 211, 107, 0.16);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.generator-stats svg {
+  color: var(--amber);
+}
+
+.generator-stats strong {
+  color: var(--green);
+  font-size: 23px;
+}
+
+.generator-preview {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 14px;
+}
+
+.generator-map-frame {
+  min-height: 560px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(255, 211, 107, 0.2);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 211, 107, 0.08), transparent 42%),
+    #11130f;
+}
+
+.generator-map-frame svg {
+  width: 100%;
+  max-height: 72vh;
+  aspect-ratio: 4 / 3;
+}
+
+.gen-terrain {
+  fill: #3a382f;
+}
+
+.gen-tile-forest {
+  fill: rgba(95, 103, 67, 0.62);
+}
+
+.gen-tile-mountain {
+  fill: rgba(90, 87, 82, 0.78);
+}
+
+.gen-road {
+  stroke: #b8ad91;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  opacity: 0.72;
+}
+
+.gen-building {
+  fill: #65584b;
+  stroke: #d4c4a0;
+  stroke-width: 0.28;
+}
+
+.gen-building.damage-heavy {
+  fill: #614236;
+  stroke-dasharray: 0.6 0.5;
+}
+
+.gen-building.damage-light {
+  fill: #6b5c51;
+}
+
+.generator-map-frame text {
+  fill: #f0dfbd;
+  font-size: 2.1px;
+  font-weight: 800;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.7);
+  stroke-width: 0.25;
+}
+
+.gen-node {
+  fill: #f5ead0;
+  stroke: #5c5142;
+  stroke-width: 0.16;
+}
+
+.gen-cover {
+  fill: #d64f3f;
+}
+
+.gen-loot {
+  fill: #8cff74;
+}
+
+.generator-validation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.generator-validation span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(140, 255, 116, 0.18);
+  border-radius: 8px;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.generator-json {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 10px;
+  padding: 14px;
+}
+
+.generator-json .admin-panel-title > div {
+  display: flex;
+  gap: 8px;
+}
+
+.generator-json button {
+  min-width: 42px;
+  padding: 0;
+}
+
+.generator-json textarea {
+  width: 100%;
+  min-height: 560px;
+  resize: none;
+  border: 1px solid rgba(140, 255, 116, 0.16);
+  border-radius: 8px;
+  padding: 12px;
+  color: #dcefd2;
+  background: rgba(0, 0, 0, 0.32);
+  font: 12px/1.45 Consolas, "Liberation Mono", monospace;
+}
+
+@media (max-width: 1600px) {
+  .generator-layout {
+    grid-template-columns: minmax(260px, 330px) minmax(420px, 1fr);
+  }
+
+  .generator-json {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 980px) {
+  .app-frame.screen-adminGenerator .app-body,
+  .generator-layout,
+  .generator-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .app-frame.screen-adminGenerator .sidebar {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    min-height: auto;
+  }
+
+  .generator-map-frame,
+  .generator-json textarea {
+    min-height: 380px;
+  }
+}
 /* Home dashboard fit pass for 100% browser zoom */
 .crt-shell:has(.app-frame.screen-home) {
   padding: 6px;
@@ -17181,5 +17474,566 @@ svg {
   .profile-history-head,
   .profile-history-row {
     min-width: 620px !important;
+  }
+}
+
+/* User dashboard/new-game stabilization pass */
+@media (min-width: 901px) {
+  .app-frame.screen-home,
+  .app-frame.screen-newGame {
+    height: calc(100dvh - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .app-frame.screen-home .app-body,
+  .app-frame.screen-newGame .app-body {
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .app-frame.screen-home .sidebar,
+  .app-frame.screen-newGame .sidebar {
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .app-frame.screen-home .nav-list,
+  .app-frame.screen-newGame .nav-list {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 4px !important;
+  }
+
+  .app-frame.screen-home .app-main,
+  .app-frame.screen-newGame .app-main {
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scroll-padding-top: 12px;
+  }
+
+  .app-frame.screen-home .home-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 17vw, 340px) !important;
+    grid-template-areas:
+      "hero side"
+      "campaign side"
+      "bottom bottom" !important;
+    gap: clamp(10px, 0.85vw, 16px) !important;
+    align-items: start !important;
+    align-content: start !important;
+    min-height: 0 !important;
+  }
+
+  .app-frame.screen-home .hero-panel {
+    grid-area: hero !important;
+    min-height: clamp(300px, 35vh, 440px) !important;
+    padding: clamp(26px, 2.3vw, 42px) !important;
+    align-items: end !important;
+  }
+
+  .app-frame.screen-home .hero-copy h2 {
+    font-size: clamp(58px, 5vw, 92px) !important;
+    line-height: 0.94 !important;
+  }
+
+  .app-frame.screen-home .hero-copy p {
+    max-width: min(760px, 72%) !important;
+    font-size: clamp(17px, 1.2vw, 22px) !important;
+  }
+
+  .app-frame.screen-home .hero-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    max-width: min(850px, 76%) !important;
+  }
+
+  .app-frame.screen-home .status-pill {
+    min-height: 34px !important;
+    padding: 8px 14px !important;
+    white-space: nowrap !important;
+  }
+
+  .app-frame.screen-home .continue-button {
+    position: absolute !important;
+    right: clamp(22px, 2vw, 44px) !important;
+    bottom: clamp(26px, 2vw, 42px) !important;
+    width: clamp(210px, 17vw, 300px) !important;
+    min-height: 76px !important;
+  }
+
+  .app-frame.screen-home .home-side {
+    grid-area: side !important;
+    display: grid !important;
+    gap: clamp(10px, 0.85vw, 14px) !important;
+    align-content: start !important;
+    align-self: start !important;
+  }
+
+  .app-frame.screen-home .campaign-panel {
+    grid-area: campaign !important;
+    min-height: 0 !important;
+  }
+
+  .app-frame.screen-home .campaign-body {
+    grid-template-columns: clamp(170px, 15vw, 230px) minmax(260px, 1fr) repeat(3, minmax(92px, 0.32fr)) !important;
+    gap: clamp(12px, 1vw, 18px) !important;
+  }
+
+  .app-frame.screen-home .campaign-time-row {
+    display: contents !important;
+  }
+
+  .app-frame.screen-home .bottom-grid {
+    grid-area: bottom !important;
+    display: grid !important;
+    grid-template-columns: minmax(300px, 0.95fr) minmax(360px, 1.15fr) minmax(300px, 0.95fr) !important;
+    gap: clamp(10px, 0.85vw, 16px) !important;
+    align-items: start !important;
+  }
+
+  .app-frame.screen-home .bottom-grid .list-panel {
+    min-height: clamp(210px, 24vh, 320px) !important;
+    height: auto !important;
+    align-content: start !important;
+  }
+
+  .app-frame.screen-home .recommend-grid {
+    grid-template-columns: repeat(3, minmax(110px, 1fr)) !important;
+  }
+
+  .app-frame.screen-home .wide-news:empty::after {
+    content: "Sin noticias publicadas";
+    color: #9fba92;
+  }
+
+  .app-frame.screen-newGame .new-game-layout {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    gap: clamp(12px, 1vw, 18px) !important;
+    padding: clamp(16px, 1.4vw, 26px) !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+  }
+
+  .app-frame.screen-newGame .new-game-heading {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    min-height: 0 !important;
+    padding: 0 0 clamp(12px, 1vw, 18px) !important;
+    border: 0 !important;
+    background: transparent !important;
+    align-items: end !important;
+  }
+
+  .app-frame.screen-newGame .new-game-heading h2 {
+    font-size: clamp(48px, 4.6vw, 78px) !important;
+    line-height: 0.95 !important;
+  }
+
+  .app-frame.screen-newGame .new-game-heading p {
+    display: inline-block !important;
+    margin-left: clamp(12px, 1vw, 18px) !important;
+    font-size: clamp(16px, 1.15vw, 21px) !important;
+  }
+
+  .app-frame.screen-newGame .new-game-grid {
+    display: grid !important;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(350px, 1fr) minmax(350px, 1fr) !important;
+    grid-template-areas:
+      "world loaded campaign"
+      "world mode campaign"
+      "world survival players"
+      "world content players" !important;
+    grid-auto-rows: auto !important;
+    gap: clamp(10px, 0.85vw, 14px) !important;
+    align-items: stretch !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .app-frame.screen-newGame .world-preview-panel,
+  .app-frame.screen-newGame .setup-block {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    align-content: start !important;
+  }
+
+  .app-frame.screen-newGame .world-preview-panel {
+    grid-area: world !important;
+    grid-template-rows: auto minmax(160px, 0.5fr) auto auto !important;
+    gap: 12px !important;
+  }
+
+  .app-frame.screen-newGame .world-preview {
+    height: auto !important;
+    min-height: clamp(170px, 25vh, 280px) !important;
+    aspect-ratio: 16 / 11 !important;
+  }
+
+  .app-frame.screen-newGame .setup-game-loaded { grid-area: loaded !important; }
+  .app-frame.screen-newGame .campaign-card { grid-area: campaign !important; }
+  .app-frame.screen-newGame .mode-block { grid-area: mode !important; }
+  .app-frame.screen-newGame .players-block { grid-area: players !important; }
+  .app-frame.screen-newGame .survival-block { grid-area: survival !important; }
+  .app-frame.screen-newGame .content-summary { grid-area: content !important; }
+
+  .app-frame.screen-newGame .setup-block h3 {
+    font-size: clamp(18px, 1.25vw, 24px) !important;
+    line-height: 1.05 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .app-frame.screen-newGame .large-select {
+    min-height: 70px !important;
+    grid-template-columns: 58px minmax(0, 1fr) !important;
+  }
+
+  .app-frame.screen-newGame .player-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .app-frame.screen-newGame .player-options button {
+    min-height: 130px !important;
+  }
+
+  .app-frame.screen-newGame .campaign-character-sheets {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-frame.screen-newGame .content-summary .mini-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    max-height: none !important;
+  }
+
+  .app-frame.screen-newGame .new-game-footer {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 0.45fr) !important;
+    gap: clamp(10px, 0.85vw, 14px) !important;
+    position: static !important;
+    align-items: stretch !important;
+  }
+
+  .app-frame.screen-newGame .new-game-footer p,
+  .app-frame.screen-newGame .new-game-footer .start-button {
+    position: static !important;
+    min-height: 68px !important;
+    margin: 0 !important;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 850px) {
+  .app-frame.screen-home .topbar,
+  .app-frame.screen-newGame .topbar {
+    min-height: 70px !important;
+    padding: 8px 12px !important;
+  }
+
+  .app-frame.screen-home .topbar-logo,
+  .app-frame.screen-newGame .topbar-logo {
+    grid-template-columns: 54px minmax(240px, auto) minmax(120px, 220px) !important;
+  }
+
+  .app-frame.screen-home .topbar-logo strong,
+  .app-frame.screen-newGame .topbar-logo strong {
+    font-size: clamp(30px, 2.15vw, 42px) !important;
+  }
+
+  .app-frame.screen-home .status-cluster,
+  .app-frame.screen-newGame .status-cluster {
+    grid-template-columns: 220px 140px 210px 54px 54px !important;
+  }
+
+  .app-frame.screen-home .app-body,
+  .app-frame.screen-newGame .app-body {
+    grid-template-columns: clamp(245px, 15vw, 290px) minmax(0, 1fr) !important;
+  }
+
+  .app-frame.screen-home .sidebar,
+  .app-frame.screen-newGame .sidebar {
+    padding: 10px !important;
+    gap: 8px !important;
+  }
+
+  .app-frame.screen-home .nav-list,
+  .app-frame.screen-newGame .nav-list {
+    gap: 8px !important;
+  }
+
+  .app-frame.screen-home .nav-item,
+  .app-frame.screen-newGame .nav-item {
+    min-height: 66px !important;
+    height: 66px !important;
+    grid-template-columns: 48px minmax(0, 1fr) !important;
+    padding: 8px !important;
+  }
+
+  .app-frame.screen-home .nav-icon,
+  .app-frame.screen-newGame .nav-icon {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .app-frame.screen-home .nav-item strong,
+  .app-frame.screen-newGame .nav-item strong {
+    font-size: 15px !important;
+  }
+
+  .app-frame.screen-home .nav-item small,
+  .app-frame.screen-newGame .nav-item small {
+    font-size: 10px !important;
+  }
+
+  .app-frame.screen-home .version-row,
+  .app-frame.screen-newGame .version-row {
+    min-height: 44px !important;
+  }
+
+  .app-frame.screen-home .hero-panel {
+    min-height: clamp(260px, 32vh, 360px) !important;
+  }
+
+  .app-frame.screen-home .hero-copy h2 {
+    font-size: clamp(48px, 4.4vw, 74px) !important;
+  }
+
+  .app-frame.screen-home .campaign-body {
+    grid-template-columns: clamp(140px, 13vw, 190px) minmax(220px, 1fr) repeat(3, minmax(76px, 0.28fr)) !important;
+  }
+
+  .app-frame.screen-newGame .new-game-heading h2 {
+    font-size: clamp(42px, 4vw, 64px) !important;
+  }
+
+  .app-frame.screen-newGame .world-preview {
+    min-height: 150px !important;
+  }
+
+  .app-frame.screen-newGame .player-options button {
+    min-height: 104px !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1360px) {
+  .app-frame.screen-home .home-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "hero"
+      "side"
+      "campaign"
+      "bottom" !important;
+  }
+
+  .app-frame.screen-home .home-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-frame.screen-home .bottom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .app-frame.screen-home .wide-news {
+    grid-column: 1 / -1 !important;
+  }
+
+  .app-frame.screen-newGame .new-game-grid {
+    grid-template-columns: minmax(260px, 0.62fr) minmax(0, 1fr) !important;
+    grid-template-areas:
+      "world loaded"
+      "world campaign"
+      "mode players"
+      "survival content" !important;
+  }
+}
+
+/* Playable content browser: real detail screens for tome-derived sheets */
+.playable-content-manager {
+  display: grid;
+  gap: 14px;
+}
+
+.content-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+}
+
+.content-section-head h3,
+.content-section-head p {
+  margin: 0;
+}
+
+.content-section-head span {
+  min-height: 34px;
+  display: inline-grid;
+  place-items: center;
+  padding: 6px 12px;
+  border: 1px solid rgba(126, 255, 87, 0.28);
+  border-radius: 999px;
+  color: #7fff57;
+  background: rgba(7, 30, 8, 0.72);
+}
+
+.playable-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(210px, 0.25fr) auto;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.playable-toolbar label {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  border: 1px solid rgba(126, 255, 87, 0.22);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.playable-toolbar label svg {
+  justify-self: center;
+  color: #7fff57;
+}
+
+.playable-toolbar input,
+.playable-toolbar select,
+.playable-toolbar strong {
+  min-height: 48px;
+}
+
+.playable-toolbar strong {
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  border: 1px solid rgba(126, 255, 87, 0.22);
+  border-radius: 8px;
+  color: #dfffd7;
+  background: rgba(5, 17, 7, 0.72);
+  white-space: nowrap;
+}
+
+.playable-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(520px, 1.2fr) minmax(340px, 0.8fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.playable-table-wrap {
+  max-height: min(620px, 58vh);
+  overflow: auto;
+}
+
+.playable-table td:nth-child(3) {
+  max-width: 460px;
+  color: #b8d5a5;
+}
+
+.playable-detail-panel {
+  position: sticky;
+  top: 10px;
+  display: grid;
+  gap: 12px;
+  min-height: 360px;
+  padding: 16px;
+  border: 1px solid rgba(126, 255, 87, 0.22);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(12, 37, 13, 0.72), rgba(3, 10, 4, 0.92)),
+    var(--scanlines);
+}
+
+.playable-detail-panel > small {
+  color: #ffbf47;
+  text-transform: uppercase;
+}
+
+.playable-detail-panel h3,
+.playable-detail-panel p {
+  margin: 0;
+}
+
+.playable-detail-panel h3 {
+  color: #7fff57;
+  font-size: clamp(24px, 1.9vw, 34px);
+}
+
+.playable-detail-panel p {
+  color: #dfffd7;
+  line-height: 1.35;
+}
+
+.playable-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.playable-facts span {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(126, 255, 87, 0.16);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.24);
+}
+
+.playable-facts strong,
+.playable-facts small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playable-facts strong {
+  color: #ffdf7a;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.playable-facts small {
+  color: #dfffd7;
+}
+
+.playable-patch-editor {
+  display: grid;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(126, 255, 87, 0.14);
+}
+
+.playable-patch-editor label {
+  display: grid;
+  gap: 8px;
+  color: #ffdf7a;
+  text-transform: uppercase;
+}
+
+.playable-patch-editor textarea {
+  min-height: 120px;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  text-transform: none;
+}
+
+@media (max-width: 1180px) {
+  .playable-detail-layout,
+  .playable-toolbar,
+  .content-section-head {
+    grid-template-columns: 1fr;
+  }
+
+  .playable-detail-panel {
+    position: static;
   }
 }

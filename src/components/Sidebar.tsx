@@ -4,6 +4,7 @@ import {
   BookOpen,
   Dice5,
   Folder,
+  Hammer,
   Headphones,
   Home,
   LogOut,
@@ -47,6 +48,7 @@ const items: Array<{ id: Screen; labelKey: Parameters<typeof t>[1]; hintKey: Par
 const adminItems: Array<{ id: Screen; labelKey: Parameters<typeof t>[1]; hintKey: Parameters<typeof t>[1]; icon: JSX.Element }> = [
   { id: "admin", labelKey: "nav.admin", hintKey: "nav.adminHint", icon: <ShieldCheck /> },
   { id: "adminGames", labelKey: "nav.adminGames", hintKey: "nav.adminGamesHint", icon: <BookOpen /> },
+  { id: "adminGenerator", labelKey: "nav.adminGenerator", hintKey: "nav.adminGeneratorHint", icon: <Hammer /> },
   { id: "adminMaps", labelKey: "nav.adminMaps", hintKey: "nav.adminMapsHint", icon: <Map /> },
   { id: "adminUsers", labelKey: "nav.adminUsers", hintKey: "nav.adminUsersHint", icon: <UserCog /> },
   { id: "adminNotifications", labelKey: "nav.adminNotifications", hintKey: "nav.adminNotificationsHint", icon: <Bell /> },
@@ -71,6 +73,7 @@ const uiuxIconByScreen: Partial<Record<Screen | "exit", string>> = {
   files: "/platform/uiux-icons/files.png",
   admin: "/platform/uiux-icons/settings.png",
   adminGames: "/platform/uiux-icons/library.png",
+  adminGenerator: "/platform/uiux-icons/files.png",
   adminMaps: "/platform/uiux-icons/files.png",
   adminUsers: "/platform/uiux-icons/settings.png",
   adminNotifications: "/platform/uiux-icons/settings.png",

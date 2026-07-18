@@ -1,8 +1,9 @@
-import { ArrowLeft, CheckCircle2, Download, FolderOpen, Save, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Download, Eye, FolderOpen, Save, Search, XCircle } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { ContentItem, GameConfig } from "../types/game";
 import { contentThumbnail, gameHeroVars, resolveGameAsset } from "../lib/gameLibrary";
+import type { PlatformPlayableType, PlatformRepository } from "../lib/platformContracts";
 
 type TemplateManifest = {
   scope?: string;
@@ -66,11 +67,46 @@ type RuntimeDepthManifest = {
 
 type Props = {
   game: GameConfig;
+  platformRepository?: PlatformRepository;
+  canEditPlayable?: boolean;
   onBack: () => void;
   onToggle: (category: "dlc" | "features" | "extras", itemId: string) => void;
   onSetAll: (enabled: boolean) => void;
   onEditJson: () => void;
 };
+
+const playableTypes: Array<{ type: PlatformPlayableType; label: string }> = [
+  { type: "missions", label: "Misiones" },
+  { type: "locations", label: "Ubicaciones" },
+  { type: "bestiary", label: "Bestiario" },
+  { type: "weapons", label: "Armas" },
+  { type: "equipment", label: "Equipo" },
+  { type: "factions", label: "Facciones" },
+  { type: "settlements", label: "Asentamientos" },
+  { type: "weather", label: "Clima" },
+  { type: "collectibles", label: "Objetos" },
+];
+
+function playableId(item: Record<string, unknown>) {
+  return String(item.id ?? item.locationId ?? item.name ?? "sin_id");
+}
+
+function playableTitle(item: Record<string, unknown>) {
+  return String(item.name ?? item.title ?? item.originalName ?? item.id ?? "Ficha jugable");
+}
+
+function playableDescription(item: Record<string, unknown>) {
+  return String(
+    item.summary ??
+      item.objective ??
+      item.useInPlay ??
+      item.description ??
+      item.rule ??
+      item.activation ??
+      item.location ??
+      "Ficha extraida de los tomos y disponible para el runtime."
+  );
+}
 
 function ContentCard({
   item,
@@ -117,10 +153,17 @@ function ContentCard({
   );
 }
 
-export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: Props) {
+export function ContentScreen({ game, platformRepository, canEditPlayable = false, onBack, onToggle, onSetAll, onEditJson }: Props) {
   const [templates, setTemplates] = useState<TemplateManifest | undefined>();
   const [coverage, setCoverage] = useState<CoverageManifest | undefined>();
   const [runtimeDepth, setRuntimeDepth] = useState<RuntimeDepthManifest | undefined>();
+  const [playableType, setPlayableType] = useState<PlatformPlayableType>("missions");
+  const [playableQuery, setPlayableQuery] = useState("");
+  const [playableItems, setPlayableItems] = useState<Record<string, unknown>[]>([]);
+  const [playableTotal, setPlayableTotal] = useState(0);
+  const [playableDetail, setPlayableDetail] = useState<Record<string, unknown> | undefined>();
+  const [playableStatus, setPlayableStatus] = useState("Listo");
+  const [playablePatchText, setPlayablePatchText] = useState("");
   const allItems = useMemo(
     () =>
       (["dlc", "features", "extras"] as const).flatMap((category) =>
@@ -159,6 +202,85 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
       cancelled = true;
     };
   }, [game]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setPlayableStatus("Cargando fichas...");
+    setPlayableDetail(undefined);
+
+    const load = platformRepository
+      ? platformRepository.playable.list<Record<string, unknown>>(game.id, playableType, { q: playableQuery, limit: 50 })
+      : fetch(`/games/${game.id}/runtime/playable-editor-index.json`)
+          .then((response) => (response.ok ? response.json() : undefined))
+          .then((runtime) => {
+            const catalogs = runtime?.catalogs ?? {};
+            const rules = runtime?.rules ?? {};
+            const items =
+              playableType === "weather"
+                ? rules.weatherEffects ?? []
+                : playableType === "biomes"
+                  ? rules.biomes ?? []
+                  : catalogs[playableType] ?? [];
+            const q = playableQuery.trim().toLowerCase();
+            const filtered = q ? items.filter((item: unknown) => JSON.stringify(item).toLowerCase().includes(q)) : items;
+            return { gameId: game.id, type: playableType, total: filtered.length, offset: 0, limit: 50, items: filtered.slice(0, 50) };
+          });
+
+    load
+      .then((result) => {
+        if (cancelled) return;
+        setPlayableItems(result.items ?? []);
+        setPlayableTotal(result.total ?? result.items?.length ?? 0);
+        setPlayableStatus("Listo");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPlayableItems([]);
+        setPlayableTotal(0);
+        setPlayableStatus("No se pudo cargar desde backend/local runtime");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [game.id, platformRepository, playableQuery, playableType]);
+
+  function openPlayableDetail(item: Record<string, unknown>) {
+    const id = playableId(item);
+    setPlayableStatus("Cargando detalle...");
+    setPlayableDetail(item);
+    setPlayablePatchText(JSON.stringify({ adminNotes: String(item.adminNotes ?? "") }, null, 2));
+
+    platformRepository?.playable
+      .detail<Record<string, unknown>>(game.id, playableType, id)
+      .then((detail) => {
+        setPlayableDetail(detail);
+        setPlayablePatchText(JSON.stringify({ adminNotes: String(detail.adminNotes ?? "") }, null, 2));
+        setPlayableStatus("Detalle cargado desde backend local");
+      })
+      .catch(() => setPlayableStatus("Detalle cargado desde indice local"));
+  }
+
+  function savePlayablePatch() {
+    if (!platformRepository || !playableDetail) return;
+    let patch: Record<string, unknown>;
+    try {
+      patch = JSON.parse(playablePatchText || "{}");
+    } catch {
+      setPlayableStatus("JSON de cambios invalido");
+      return;
+    }
+
+    const id = playableId(playableDetail);
+    setPlayableStatus("Guardando ficha...");
+    platformRepository.playable
+      .save<Record<string, unknown>>(game.id, playableType, id, patch)
+      .then((saved) => {
+        setPlayableDetail({ ...playableDetail, ...saved });
+        setPlayableStatus("Ficha guardada en backend local");
+      })
+      .catch(() => setPlayableStatus("Error guardando ficha en backend local"));
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -400,6 +522,85 @@ export function ContentScreen({ game, onBack, onToggle, onSetAll, onEditJson }: 
           </div>
         </article>
       )}
+
+      <section className="content-section playable-content-manager">
+        <div className="content-section-head">
+          <div>
+            <h3>Fichas jugables desde backend local</h3>
+            <p>Misiones, ubicaciones, enemigos, armas, equipo, facciones, asentamientos, clima y objetos se cargan como detalle real por ficha.</p>
+          </div>
+          <span>{playableStatus}</span>
+        </div>
+
+        <div className="playable-toolbar">
+          <label>
+            <Search size={17} />
+            <input value={playableQuery} onChange={(event) => setPlayableQuery(event.target.value)} placeholder="Buscar ficha, tomo, ubicacion o regla" />
+          </label>
+          <select value={playableType} onChange={(event) => setPlayableType(event.target.value as PlatformPlayableType)}>
+            {playableTypes.map((entry) => <option key={entry.type} value={entry.type}>{entry.label}</option>)}
+          </select>
+          <strong>{playableTotal} fichas</strong>
+        </div>
+
+        <div className="playable-detail-layout">
+          <div className="admin-table-wrap playable-table-wrap">
+            <table className="admin-data-table playable-table">
+              <thead>
+                <tr>
+                  <th>Ficha</th>
+                  <th>Fuente</th>
+                  <th>Uso jugable</th>
+                  <th>Accion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {playableItems.map((item) => (
+                  <tr key={playableId(item)} className={playableDetail && playableId(playableDetail) === playableId(item) ? "selected" : ""}>
+                    <td><strong>{playableTitle(item)}</strong><small>{playableId(item)}</small></td>
+                    <td>{String(item.sourceTome ?? item.type ?? item.category ?? "runtime")}</td>
+                    <td>{playableDescription(item).slice(0, 140)}</td>
+                    <td><button onClick={() => openPlayableDetail(item)}><Eye size={15} /> Ver ficha</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <aside className="playable-detail-panel">
+            {playableDetail ? (
+              <>
+                <small>{String(playableDetail.sourceTome ?? playableType)}</small>
+                <h3>{playableTitle(playableDetail)}</h3>
+                <p>{playableDescription(playableDetail)}</p>
+                <div className="playable-facts">
+                  {Object.entries(playableDetail).slice(0, 16).map(([key, value]) => (
+                    <span key={key}>
+                      <strong>{key}</strong>
+                      <small>{typeof value === "object" ? `${Array.isArray(value) ? value.length : Object.keys(value ?? {}).length} elementos` : String(value)}</small>
+                    </span>
+                  ))}
+                </div>
+                {canEditPlayable && (
+                  <div className="playable-patch-editor">
+                    <label>
+                      Cambios controlados
+                      <textarea value={playablePatchText} onChange={(event) => setPlayablePatchText(event.target.value)} />
+                    </label>
+                    <button className="green-button" onClick={savePlayablePatch}><Save size={16} /> Guardar ficha</button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="admin-empty-state">
+                <Eye size={22} />
+                <strong>Selecciona una ficha</strong>
+                <span>El detalle se carga desde el endpoint local correspondiente.</span>
+              </div>
+            )}
+          </aside>
+        </div>
+      </section>
 
       <div className="content-section campaign-content-section">
         <h3>Campañas</h3>

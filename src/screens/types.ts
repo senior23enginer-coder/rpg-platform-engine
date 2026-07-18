@@ -12,6 +12,7 @@ export type Screen =
   | "adminSettings"
   | "adminSupport"
   | "adminGames"
+  | "adminGenerator"
   | "adminMaps"
   | "adminUsers"
   | "adminNotifications"

@@ -13,6 +13,7 @@ import {
   Headphones,
   Eye,
   Image,
+  Hammer,
   KeyRound,
   LockKeyhole,
   Mail,
@@ -33,10 +34,12 @@ import {
 } from "lucide-react";
 import type { Campaign, ContentItem, GameConfig, GameMap } from "../types/game";
 import type { AppNewsEntry, AppNotificationEntry, AppSupportTicket } from "../lib/appMetadataStorage";
+import type { PlatformRepository } from "../lib/platformContracts";
 import type { PlayerProfile } from "../types/profile";
 import { resolveUserAsset } from "../lib/userLibrary";
 import { getPlatformRoadmapSummary } from "../lib/platformRoadmap";
 import { MapEditor } from "./MapEditor";
+import { ProceduralMapGenerator } from "./ProceduralMapGenerator";
 import { NewsEditor } from "./NewsEditor";
 import { NotificationEditor } from "./NotificationEditor";
 
@@ -49,6 +52,7 @@ type Props = {
   news: AppNewsEntry[];
   notifications: AppNotificationEntry[];
   supportTickets: AppSupportTicket[];
+  platformRepository?: PlatformRepository;
   onSelectGame: (gameId: string) => void;
   onUpdateGame: (game: GameConfig) => void;
   onUpdateGames: (games: GameConfig[]) => void;
@@ -61,7 +65,7 @@ type Props = {
 };
 
 type ContentCategory = "dlc" | "features" | "extras";
-export type AdminModule = "overview" | "games" | "maps" | "users" | "notifications" | "news";
+export type AdminModule = "overview" | "games" | "generator" | "maps" | "users" | "notifications" | "news";
 
 type GameAssetKey = "hero" | "generatedHero" | "homeHero" | "worldPreview" | "campaignImage" | "cover" | "diceCatalog";
 
@@ -128,6 +132,7 @@ export function AdminScreen({
   news,
   notifications,
   supportTickets,
+  platformRepository,
   onSelectGame,
   onUpdateGame,
   onUpdateGames,
@@ -230,6 +235,14 @@ export function AdminScreen({
       status: gamesWithoutMaps > 0 ? "Faltan mapas" : "Mapeado",
     },
     {
+      icon: <Hammer size={26} />,
+      label: "Generador procedural",
+      description: "Crea mapas urbanos 2D desde semilla, parametros tacticos y prefabs cargados por catalogo.",
+      metric: "Seed",
+      meta: "deterministico",
+      status: "Nuevo",
+    },
+    {
       icon: <UserCog size={26} />,
       label: "Usuarios y accesos",
       description: "Administra cuentas locales, roles, correos, claves y niveles de acceso.",
@@ -264,6 +277,7 @@ export function AdminScreen({
   ];
   const showOverview = module === "overview";
   const showGames = module === "games";
+  const showGenerator = module === "generator";
   const showMaps = module === "maps";
   const showUsers = module === "users";
   const showNotifications = module === "notifications";
@@ -284,6 +298,11 @@ export function AdminScreen({
       icon: <Map size={34} />,
       title: "Editor de mapas",
       subtitle: "Carga imagenes, descompone grillas y ajusta mapas tacticos comunes.",
+    },
+    generator: {
+      icon: <Hammer size={34} />,
+      title: "Generador",
+      subtitle: "Crea ciudades tacticas 2D por semilla, parametros y reglas procedurales.",
     },
     users: {
       icon: <Users size={34} />,
@@ -784,9 +803,19 @@ export function AdminScreen({
 
           {showMaps && mapEditorOpen && <MapEditor
             game={activeGame}
+            platformRepository={platformRepository}
             onChange={(maps) => updateActiveGame({ maps })}
             onPersistMap={(map) => onPersistMap?.(activeGame, map)}
             onBack={() => setMapEditorOpen(false)}
+          />}
+
+          {showGenerator && <ProceduralMapGenerator
+            game={activeGame}
+            onSaveMap={(map) => {
+              const nextMaps = [map, ...(activeGame.maps ?? []).filter((item) => item.id !== map.id)];
+              updateActiveGame({ maps: nextMaps });
+              onPersistMap?.(activeGame, map);
+            }}
           />}
 
           {showNews && <NewsEditor news={news} games={games} onChange={onUpdateNews} />}

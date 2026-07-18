@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "terrain": [
+    { "id": "dry_soil", "label": "Tierra seca", "terrain": "plain", "weight": 4 },
+    { "id": "dead_woods", "label": "Bosque muerto", "terrain": "forest", "weight": 2 },
+    { "id": "broken_asphalt", "label": "Asfalto roto", "terrain": "road", "weight": 3 },
+    { "id": "ruined_blocks", "label": "Ruinas urbanas", "terrain": "city", "weight": 2 }
+  ],
+  "buildingTemplates": [
+    { "id": "church", "label": "Iglesia", "type": "objective", "minW": 3, "maxW": 5, "minH": 4, "maxH": 6, "floors": 3, "roofAccessible": true, "importance": 10 },
+    { "id": "museum", "label": "Museo", "type": "objective", "minW": 4, "maxW": 6, "minH": 3, "maxH": 5, "floors": 2, "roofAccessible": true, "importance": 8 },
+    { "id": "library", "label": "Biblioteca", "type": "objective", "minW": 4, "maxW": 6, "minH": 3, "maxH": 5, "floors": 2, "roofAccessible": false, "importance": 7 },
+    { "id": "hardware", "label": "Ferreteria", "type": "shop", "minW": 3, "maxW": 5, "minH": 3, "maxH": 4, "floors": 1, "roofAccessible": false, "importance": 5 },
+    { "id": "city_hall", "label": "Ayuntamiento", "type": "objective", "minW": 5, "maxW": 7, "minH": 4, "maxH": 5, "floors": 3, "roofAccessible": true, "importance": 8 },
+    { "id": "brick_store", "label": "Tienda de ladrillo", "type": "loot", "minW": 3, "maxW": 5, "minH": 3, "maxH": 4, "floors": 2, "roofAccessible": false, "importance": 4 },
+    { "id": "colonial_house", "label": "Casa colonial", "type": "spawn", "minW": 2, "maxW": 4, "minH": 2, "maxH": 4, "floors": 2, "roofAccessible": false, "importance": 3 },
+    { "id": "garage", "label": "Garaje", "type": "cover", "minW": 2, "maxW": 4, "minH": 2, "maxH": 3, "floors": 1, "roofAccessible": false, "importance": 2 }
+  ],
+  "poiLabels": [
+    "Concord Church",
+    "Museum of Freedom",
+    "Public Library",
+    "Hardware Store",
+    "Concord Crossroads",
+    "Residential District",
+    "Road to Sanctuary",
+    "City Hall"
+  ],
+  "propLabels": [
+    "Auto abandonado",
+    "Barricada",
+    "Escombros",
+    "Crater",
+    "Poste caido",
+    "Contenedor",
+    "Chatarra",
+    "Arbol seco"
+  ]
+}

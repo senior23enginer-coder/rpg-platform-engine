@@ -52,7 +52,7 @@ import { playTrack, setMusicVolume, stopAudio } from "./lib/audioEngine";
 
 const bundledGames = loadBundledGames();
 const loginFallout4MainTheme = "/games/fallout4/audio/sounds/fallout_4_soundtrack_score/01%20Fallout%204%20Main%20Theme.mp3";
-const adminScreens = ["admin", "adminSettings", "adminSupport", "adminGames", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
+const adminScreens = ["admin", "adminSettings", "adminSupport", "adminGames", "adminGenerator", "adminMaps", "adminUsers", "adminNotifications", "adminNews"] as const;
 const disabledGamesKey = "rpg-platform.disabled-games.v1";
 const sessionScreenKey = "rpg-platform.session-screen.v1";
 const backendSessionKey = "rpg-platform.backend-session.v1";
@@ -71,6 +71,7 @@ const screens = [
   "adminSettings",
   "adminSupport",
   "adminGames",
+  "adminGenerator",
   "adminMaps",
   "adminUsers",
   "adminNotifications",
@@ -155,6 +156,7 @@ function isAdminScreen(screen: Screen) {
 
 function adminModuleForScreen(screen: Screen) {
   if (screen === "adminGames") return "games";
+  if (screen === "adminGenerator") return "generator";
   if (screen === "adminMaps") return "maps";
   if (screen === "adminUsers") return "users";
   if (screen === "adminNotifications") return "notifications";
@@ -224,6 +226,7 @@ export default function App() {
   const hasHydratedStorage = useRef(false);
   const hasHydratedBackend = useRef(false);
   const hasRefreshedSession = useRef(false);
+  const mainScrollRef = useRef<HTMLElement | null>(null);
   const lastActivityScreen = useRef(screen);
 
   const visibleGames = profile.role === "admin" ? games : games.filter((game) => !disabledGameIds.includes(game.id));
@@ -323,6 +326,11 @@ export default function App() {
       // Local storage can be unavailable in some native shells.
     }
   }, [profile, screen, storageReady]);
+
+  useEffect(() => {
+    mainScrollRef.current?.scrollTo({ top: 0, left: 0 });
+    window.scrollTo({ top: 0, left: 0 });
+  }, [screen]);
 
   useEffect(() => {
     if (!storageReady || hasRefreshedSession.current) return;
@@ -834,7 +842,7 @@ export default function App() {
             onExit={signOut}
           />
 
-          <main className="app-main">
+          <main className="app-main" ref={mainScrollRef}>
           {screen === "home" && (
             <HomeScreen
               game={activeGame}
@@ -865,6 +873,8 @@ export default function App() {
           {screen === "content" && (
             <ContentScreen
               game={activeGame}
+              platformRepository={platformRepository}
+              canEditPlayable={profile.role === "admin"}
               onBack={() => setScreen("home")}
               onToggle={updateContent}
               onSetAll={(enabled) => {
@@ -1017,6 +1027,7 @@ export default function App() {
               news={appMetadata.news}
               notifications={appMetadata.notifications}
               supportTickets={appMetadata.supportTickets}
+              platformRepository={platformRepository}
               onSelectGame={(gameId) => selectGame(gameId, screen)}
               onUpdateGame={updateGame}
               onUpdateGames={updateGames}

@@ -1,5 +1,6 @@
 import { mkdirSync } from "node:fs";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import { chromium } from "playwright";
 
 const baseUrl = process.env.VISUAL_URL ?? "http://localhost:1420";
@@ -14,6 +15,30 @@ const viewports = [
 
 const browser = await chromium.launch({ headless: true });
 const failures = [];
+let viteProcess;
+
+async function canReach(url) {
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(1500) });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+async function ensureServer() {
+  if (process.env.VISUAL_URL || await canReach(baseUrl)) return;
+  viteProcess = spawn(process.execPath, ["node_modules/vite/bin/vite.js", "--host", "127.0.0.1", "--port", "1420"], {
+    cwd: process.cwd(),
+    stdio: "ignore",
+    windowsHide: true,
+  });
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    if (await canReach(baseUrl)) return;
+  }
+  throw new Error(`No se pudo levantar Vite para la prueba visual en ${baseUrl}`);
+}
 
 async function tryLogin(page) {
   try {
@@ -35,29 +60,36 @@ async function tryLogin(page) {
   }
 }
 
-for (const viewport of viewports) {
-  const page = await browser.newPage({ viewport });
-  await page.goto(baseUrl, { waitUntil: "networkidle" });
-  await page.screenshot({ path: path.join(outDir, `${viewport.name}-login.png`), fullPage: true });
+try {
+  await ensureServer();
 
-  const logged = await tryLogin(page);
-  await page.screenshot({ path: path.join(outDir, `${viewport.name}-${logged ? "app" : "initial"}.png`), fullPage: true });
+  for (const viewport of viewports) {
+    const page = await browser.newPage({ viewport });
+    await page.goto(baseUrl, { waitUntil: "domcontentloaded", timeout: 30000 });
+    await page.locator("body").waitFor({ state: "visible", timeout: 10000 });
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: path.join(outDir, `${viewport.name}-login.png`), fullPage: true });
 
-  const metrics = await page.evaluate(() => ({
-    innerWidth: window.innerWidth,
-    scrollWidth: document.documentElement.scrollWidth,
-    bodyScrollWidth: document.body.scrollWidth,
-    title: document.title,
-    text: document.body.innerText.slice(0, 200),
-  }));
-  const maxWidth = Math.max(metrics.scrollWidth, metrics.bodyScrollWidth);
-  if (maxWidth > metrics.innerWidth + 4) {
-    failures.push(`${viewport.name}: overflow horizontal ${maxWidth} > ${metrics.innerWidth}`);
+    const logged = await tryLogin(page);
+    await page.screenshot({ path: path.join(outDir, `${viewport.name}-${logged ? "app" : "initial"}.png`), fullPage: true });
+
+    const metrics = await page.evaluate(() => ({
+      innerWidth: window.innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      bodyScrollWidth: document.body.scrollWidth,
+      title: document.title,
+      text: document.body.innerText.slice(0, 200),
+    }));
+    const maxWidth = Math.max(metrics.scrollWidth, metrics.bodyScrollWidth);
+    if (maxWidth > metrics.innerWidth + 4) {
+      failures.push(`${viewport.name}: overflow horizontal ${maxWidth} > ${metrics.innerWidth}`);
+    }
+    await page.close();
   }
-  await page.close();
+} finally {
+  await browser.close();
+  if (viteProcess) viteProcess.kill();
 }
-
-await browser.close();
 
 console.log("Visual responsive audit");
 console.log("=======================");

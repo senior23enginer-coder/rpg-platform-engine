@@ -1,10 +1,12 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { ArrowLeft, BookOpen, Boxes, BoxSelect, CloudSun, Copy, Crosshair, Download, Eraser, Eye, FilePlus2, Flag, FolderOpen, Grid3X3, HelpCircle, Image as ImageIcon, Layers, LocateFixed, Map as MapIcon, MapPinned, Maximize2, MousePointer2, Move, Package, Pencil, Play, Plus, Redo2, RotateCw, Route, Ruler, Save, Shield, SlidersHorizontal, Swords, Trash2, Undo2, Upload, Users } from "lucide-react";
 import type { GameConfig, GameMap, TacticalMarkerType, TacticalTerrainType } from "../types/game";
 import { buildFallout4TomeMapLibrary, createFallout4LocationMaps } from "../lib/fallout4TomeCatalog";
+import type { PlatformMapDocument, PlatformRepository } from "../lib/platformContracts";
 
 type Props = {
   game: GameConfig;
+  platformRepository?: PlatformRepository;
   onChange: (maps: GameMap[]) => void;
   onPersistMap?: (map: GameMap) => void;
   onBack?: () => void;
@@ -169,11 +171,86 @@ function normalizeTacticalMap(map: GameMap): GameMap {
   };
 }
 
-function ensureMaps(game: GameConfig) {
+function ensureMaps(game: GameConfig, limit?: number) {
   if (game.maps?.length) return game.maps.map(normalizeTacticalMap);
   const tomeLocationMaps = createFallout4LocationMaps(game);
-  if (tomeLocationMaps.length) return tomeLocationMaps.map(normalizeTacticalMap);
+  if (tomeLocationMaps.length) return tomeLocationMaps.slice(0, limit ?? tomeLocationMaps.length).map(normalizeTacticalMap);
   return [createDefaultMap(game, 0)];
+}
+
+function fromPlatformMapDocument(map: PlatformMapDocument): GameMap {
+  const terrainLayer = map.layers.find((layer) => layer.id === "terrain");
+  const markerLayer = map.layers.find((layer) => layer.id === "markers");
+  const tiles = terrainLayer?.tiles?.flatMap((row, y) =>
+    row.map((terrain, x) => ({ x, y, terrain: terrain as TacticalTerrainType }))
+  );
+
+  return normalizeTacticalMap({
+    id: map.id,
+    name: map.name,
+    width: map.width,
+    height: map.height,
+    tileSize: map.tileSize,
+    background: map.image,
+    backgroundMode: map.image ? "image" : "none",
+    nodes: [],
+    tiles,
+    markers: markerLayer?.markers?.map((marker) => ({
+      id: marker.id,
+      x: marker.x,
+      y: marker.y,
+      type: marker.type as TacticalMarkerType,
+      label: marker.label ?? marker.type,
+    })),
+  });
+}
+
+function mapFromPlayableLocation(item: Record<string, unknown>, index: number): GameMap {
+  const id = String(item.id ?? item.locationId ?? `location_map_${index}`);
+  const name = String(item.name ?? item.locationName ?? `Mapa ${index + 1}`);
+  const width = Math.max(8, Math.min(40, Number(item.width ?? 14) || 14));
+  const height = Math.max(8, Math.min(30, Number(item.height ?? 10) || 10));
+  const locationId = String(item.locationId ?? id);
+
+  return normalizeTacticalMap({
+    id,
+    name,
+    description: String(item.summary ?? item.useInPlay ?? "Mapa cargado bajo demanda desde fichas jugables."),
+    width,
+    height,
+    tileSize: 48,
+    background: String(item.image ?? item.background ?? ""),
+    backgroundMode: item.image || item.background ? "image" : "none",
+    nodes: [
+      {
+        id: `node_${locationId}`,
+        name,
+        type: item.settlement ? "settlement" : "location",
+        x: Math.max(1, Math.floor(width / 2)),
+        y: Math.max(1, Math.floor(height / 2)),
+        description: String(item.useInPlay ?? item.summary ?? ""),
+        biome: String(item.biome ?? item.category ?? "Commonwealth"),
+        danger: Number(item.risk ?? item.danger ?? 1) || 1,
+        locationId,
+        missionId: Array.isArray(item.missions) ? String((item.missions[0] as Record<string, unknown> | undefined)?.id ?? "") : undefined,
+        movementCost: item.settlement ? 1 : 2,
+        coverage: item.settlement ? "heavy" : "light",
+        connections: [],
+      },
+    ],
+    tiles: createTiles(width, height, item.settlement ? "base" : "plain"),
+    markers: [
+      {
+        id: `marker_${id}`,
+        x: Math.max(1, Math.floor(width / 2)),
+        y: Math.max(1, Math.floor(height / 2)),
+        type: item.settlement ? "shop" : "objective",
+        label: name,
+        movementCost: item.settlement ? 1 : 2,
+        coverage: item.settlement ? "heavy" : "light",
+      },
+    ],
+  });
 }
 
 function markerGlyph(type: TacticalMarkerType) {
@@ -190,8 +267,10 @@ function markerGlyph(type: TacticalMarkerType) {
   return "X";
 }
 
-export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
-  const maps = ensureMaps(game);
+export function MapEditor({ game, platformRepository, onChange, onPersistMap, onBack }: Props) {
+  const fallbackMaps = ensureMaps(game, platformRepository ? 25 : undefined);
+  const [backendMaps, setBackendMaps] = useState<GameMap[]>([]);
+  const maps = backendMaps.length ? backendMaps : fallbackMaps;
   const [activeMapId, setActiveMapId] = useState(maps[0]?.id ?? "");
   const [view, setView] = useState<MapEditorView>("list");
   const activeMap = maps.find((map) => map.id === activeMapId) ?? maps[0];
@@ -204,6 +283,7 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
   const [selectedMarkerId, setSelectedMarkerId] = useState(activeMap?.markers?.[0]?.id ?? "");
   const [libraryTab, setLibraryTab] = useState<LibraryTab>("mission");
   const [saveStatus, setSaveStatus] = useState("Cambios locales");
+  const [mapLoadStatus, setMapLoadStatus] = useState(platformRepository ? "Cargando mapas desde backend..." : "Mapas locales");
   const selectedMarker = activeMap?.markers?.find((marker) => marker.id === selectedMarkerId);
   const missionSheets = activeMap?.missionSheets?.length ? activeMap.missionSheets : createDefaultMapLibraries(game).missionSheets;
   const locations = activeMap?.locations?.length ? activeMap.locations : createDefaultMapLibraries(game).locations;
@@ -214,18 +294,127 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
   const nodeTypes = tomeLibrary?.nodeTypes ?? [];
   const activeLocationMap = tomeLibrary?.locationMaps.find((map) => map.id === activeMap.id || map.locationId === activeMap.nodes?.[0]?.locationId);
 
+  useEffect(() => {
+    let cancelled = false;
+    setBackendMaps([]);
+    setActiveMapId("");
+    setMapLoadStatus(platformRepository ? "Cargando mapas desde backend local..." : "Mapas locales");
+
+    if (!platformRepository) {
+      const next = ensureMaps(game, 25);
+      setActiveMapId(next[0]?.id ?? "");
+      setMapLoadStatus("Mapas cargados desde runtime local");
+      return;
+    }
+
+    Promise.all([
+      platformRepository.maps.list(game.id).catch(() => []),
+      platformRepository.playable.list<Record<string, unknown>>(game.id, "locationMaps", { limit: 25 }).catch(() => ({ items: [] })),
+    ])
+      .then(([savedMaps, playableMaps]) => {
+        if (cancelled) return;
+        const loaded = [
+          ...savedMaps.map(fromPlatformMapDocument),
+          ...(playableMaps.items ?? []).map(mapFromPlayableLocation),
+        ];
+        const unique = loaded.filter((map, index, array) => array.findIndex((item) => item.id === map.id) === index);
+        const nextMaps = unique.length ? unique : fallbackMaps;
+        setBackendMaps(nextMaps);
+        setActiveMapId(nextMaps[0]?.id ?? "");
+        setMapLoadStatus(`${nextMaps.length} mapas listados bajo demanda`);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setBackendMaps(fallbackMaps);
+        setActiveMapId(fallbackMaps[0]?.id ?? "");
+        setMapLoadStatus("Backend no disponible, usando indice local paginado");
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [game.id, platformRepository]);
+
+  useEffect(() => {
+    if (!platformRepository || !activeMapId) return;
+    let cancelled = false;
+    platformRepository.playable
+      .detail<Record<string, unknown>>(game.id, "locationMaps", activeMapId)
+      .then((detail) => {
+        if (cancelled) return;
+        const detailedMap = mapFromPlayableLocation(detail, 0);
+        setBackendMaps((current) => current.map((map) => (map.id === activeMapId ? { ...map, ...detailedMap, id: map.id } : map)));
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [activeMapId, game.id, platformRepository]);
+
   function emit(nextMaps: GameMap[]) {
-    onChange(nextMaps.map(normalizeTacticalMap));
+    const normalized = nextMaps.map(normalizeTacticalMap);
+    if (backendMaps.length) setBackendMaps(normalized);
+    onChange(normalized);
   }
 
   function updateMap(mapId: string, patch: Partial<GameMap>) {
     emit(maps.map((map) => (map.id === mapId ? { ...map, ...patch } : map)));
   }
 
-  function persistActiveMap() {
+  async function persistActiveMap() {
     if (!activeMap) return;
-    onPersistMap?.(normalizeTacticalMap(activeMap));
-    setSaveStatus("Guardado hace un momento");
+    const normalized = normalizeTacticalMap(activeMap);
+    setSaveStatus("Guardando...");
+    try {
+      if (platformRepository) {
+        await platformRepository.maps.save({
+          id: normalized.id,
+          gameId: game.id,
+          name: normalized.name,
+          width: normalized.width,
+          height: normalized.height,
+          tileSize: normalized.tileSize ?? 48,
+          image: normalized.background,
+          updatedAt: new Date().toISOString(),
+          layers: [
+            {
+              id: "terrain",
+              name: "Terreno",
+              visible: true,
+              opacity: normalized.terrainOpacity ?? 1,
+              tiles: Array.from({ length: normalized.height }, (_, y) =>
+                Array.from({ length: normalized.width }, (_, x) => normalized.tiles?.find((tile) => tile.x === x && tile.y === y)?.terrain ?? "plain")
+              ),
+            },
+            {
+              id: "markers",
+              name: "Marcadores",
+              visible: true,
+              opacity: normalized.markerScale ?? 1,
+              markers: normalized.markers ?? [],
+            },
+          ],
+        });
+        await platformRepository.playable.save(game.id, "locationMaps", normalized.id, {
+          name: normalized.name,
+          width: normalized.width,
+          height: normalized.height,
+          tileSize: normalized.tileSize ?? 48,
+          background: normalized.background,
+          backgroundMode: normalized.backgroundMode,
+          backgroundSourceName: normalized.backgroundSourceName,
+          gridOpacity: normalized.gridOpacity,
+          terrainOpacity: normalized.terrainOpacity,
+          markerScale: normalized.markerScale,
+          nodes: normalized.nodes,
+          markers: normalized.markers,
+        });
+      }
+      onPersistMap?.(normalized);
+      setSaveStatus("Guardado en backend local");
+    } catch {
+      setSaveStatus("Error guardando mapa");
+    }
   }
 
   function addMap() {
@@ -426,7 +615,7 @@ export function MapEditor({ game, onChange, onPersistMap, onBack }: Props) {
         <div className="admin-panel-title">
           <div>
             <strong><MapIcon size={18} /> Mapas de {game.name}</strong>
-            <p>Lista mapas existentes, crea nuevos mapas y abre el editor tactico en una pantalla aparte.</p>
+            <p>{mapLoadStatus}. Lista mapas existentes, crea nuevos mapas y abre el editor tactico en una pantalla aparte.</p>
           </div>
           <div className="map-manager-actions">
             {onBack && <button onClick={onBack}><ArrowLeft size={15} /> Juegos</button>}
