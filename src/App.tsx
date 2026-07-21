@@ -785,34 +785,73 @@ export default function App() {
   }
 
   function updateNews(news: AppNewsEntry[]) {
+    const previousById = new Map(appMetadata.news.map((entry) => [entry.id, entry]));
+    const nextById = new Map(news.map((entry) => [entry.id, entry]));
+    const removedIds = appMetadata.news.map((entry) => entry.id).filter((id) => !nextById.has(id));
+    const changedEntries = news.filter((entry) => JSON.stringify(previousById.get(entry.id)) !== JSON.stringify(entry));
     setAppMetadata((current) => ({
       ...current,
       news,
     }));
     trackActivity("Noticias actualizadas");
-    void platformRepository.content.saveNews(news).catch(() => undefined);
+    changedEntries.forEach((entry) => {
+      void platformRepository.content.saveNewsEntry(entry).catch(() => {
+        void platformRepository.content.saveNews(news).catch(() => undefined);
+      });
+    });
+    removedIds.forEach((id) => {
+      void platformRepository.content.deleteNewsEntry(id).catch(() => {
+        void platformRepository.content.saveNews(news).catch(() => undefined);
+      });
+    });
+    if (changedEntries.length === 0 && removedIds.length === 0) {
+      void platformRepository.content.saveNews(news).catch(() => undefined);
+    }
     trackAudit("admin.news.update", "news", profile.id, "news", { total: news.length });
   }
 
   function updateNotifications(notifications: AppNotificationEntry[]) {
+    const previousById = new Map(appMetadata.notifications.map((entry) => [entry.id, entry]));
+    const nextById = new Map(notifications.map((entry) => [entry.id, entry]));
+    const removedIds = appMetadata.notifications.map((entry) => entry.id).filter((id) => !nextById.has(id));
+    const changedEntries = notifications.filter((entry) => JSON.stringify(previousById.get(entry.id)) !== JSON.stringify(entry));
     setAppMetadata((current) => ({
       ...current,
       notifications,
     }));
     trackActivity("Notificaciones actualizadas");
-    void platformRepository.content.saveNotifications(notifications).catch(() => undefined);
+    changedEntries.forEach((entry) => {
+      void platformRepository.content.saveNotificationEntry(entry).catch(() => {
+        void platformRepository.content.saveNotifications(notifications).catch(() => undefined);
+      });
+    });
+    removedIds.forEach((id) => {
+      void platformRepository.content.deleteNotificationEntry(id).catch(() => {
+        void platformRepository.content.saveNotifications(notifications).catch(() => undefined);
+      });
+    });
+    if (changedEntries.length === 0 && removedIds.length === 0) {
+      void platformRepository.content.saveNotifications(notifications).catch(() => undefined);
+    }
     trackAudit("admin.notification.update", "notifications", profile.id, "notifications", { total: notifications.length });
   }
 
   function updateSupportTickets(supportTickets: AppMetadata["supportTickets"]) {
+    const previousById = new Map(appMetadata.supportTickets.map((ticket) => [ticket.id, ticket]));
+    const changedTickets = supportTickets.filter((ticket) => JSON.stringify(previousById.get(ticket.id)) !== JSON.stringify(ticket));
     setAppMetadata((current) => ({
       ...current,
       supportTickets,
     }));
     trackActivity("Soporte tecnico actualizado");
-    supportTickets.forEach((ticket) => {
+    changedTickets.forEach((ticket) => {
       void platformRepository.support.saveTicket(ticket).catch(() => undefined);
     });
+    if (changedTickets.length === 0) {
+      supportTickets.forEach((ticket) => {
+        void platformRepository.support.saveTicket(ticket).catch(() => undefined);
+      });
+    }
     trackAudit("support.ticket.update", "support", profile.id, "support", { total: supportTickets.length });
   }
 

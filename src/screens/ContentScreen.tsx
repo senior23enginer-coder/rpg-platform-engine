@@ -108,6 +108,103 @@ function playableDescription(item: Record<string, unknown>) {
   );
 }
 
+function valueText(value: unknown, fallback = "--") {
+  if (value === undefined || value === null || value === "") return fallback;
+  if (Array.isArray(value)) return value.length ? value.map((item) => typeof item === "object" ? playableTitle(item as Record<string, unknown>) : String(item)).slice(0, 4).join(", ") : fallback;
+  if (typeof value === "object") return JSON.stringify(value).slice(0, 120);
+  return String(value);
+}
+
+function playableDetailCards(type: PlatformPlayableType, item: Record<string, unknown>) {
+  const common: Array<[string, unknown]> = [
+    ["ID", playableId(item)],
+    ["Fuente", item.sourceTome ?? item.type ?? item.category ?? "runtime"],
+  ];
+  const cardsByType: Partial<Record<PlatformPlayableType, Array<[string, unknown]>>> = {
+    missions: [
+      ["Objetivo", item.objective ?? item.summary],
+      ["Ubicacion", item.locationId ?? item.location],
+      ["Nivel", item.recommendedLevel ?? item.level],
+      ["Recompensa", item.reward ?? item.rewards],
+      ["Etapas", item.stages],
+      ["NPCs", item.npcs],
+    ],
+    locations: [
+      ["Bioma", item.biome ?? item.category],
+      ["Peligro", item.danger ?? item.risk ?? item.threat],
+      ["Faccion", item.faction],
+      ["Recursos", item.resources ?? item.collectibles],
+      ["Encuentros", item.enemies ?? item.encounters],
+      ["Mapa", item.mapId ?? item.locationMapId],
+    ],
+    locationMaps: [
+      ["Tamanio", `${item.width ?? "--"} x ${item.height ?? "--"}`],
+      ["Subzonas", item.subzones ?? item.subzoneCount],
+      ["Eventos", item.events ?? item.eventCount],
+      ["Amenazas", item.enemies ?? item.enemyCount],
+      ["Misiones", item.missions ?? item.missionCount],
+      ["Objetos", item.collectibles ?? item.collectibleCount],
+    ],
+    bestiary: [
+      ["Tipo", item.type ?? item.category],
+      ["PV", item.hp ?? item.health ?? item.pv],
+      ["Defensa", item.defense ?? item.resistance],
+      ["Ataques", item.attacks ?? item.attack],
+      ["Botin", item.loot],
+      ["Comportamiento", item.behavior ?? item.tactics],
+    ],
+    weapons: [
+      ["Dano", item.damage ?? item.dano],
+      ["Alcance", item.range ?? item.alcance],
+      ["Municion", item.ammo ?? item.municion],
+      ["Cadencia", item.fireRate ?? item.cadence],
+      ["Rareza", item.rarity ?? item.rareza],
+      ["Mods", item.mods ?? item.modifications],
+    ],
+    equipment: [
+      ["Tipo", item.type ?? item.category],
+      ["Defensa", item.defense ?? item.armor],
+      ["Peso", item.weight ?? item.peso],
+      ["Efectos", item.effects],
+      ["Piezas", item.parts],
+      ["Valor", item.value ?? item.valor],
+    ],
+    factions: [
+      ["Rol", item.role],
+      ["Reputacion", item.reputation],
+      ["Aliados", item.allies],
+      ["Rivales", item.enemies ?? item.rivals],
+      ["Base", item.base ?? item.headquarters],
+      ["Recursos", item.resources],
+    ],
+    settlements: [
+      ["Poblacion", item.population],
+      ["Felicidad", item.happiness],
+      ["Comida", item.food],
+      ["Agua", item.water],
+      ["Defensa", item.defense],
+      ["Rutas", item.routes],
+    ],
+    weather: [
+      ["Visibilidad", item.visibility],
+      ["Movimiento", item.movementModifier ?? item.movement],
+      ["Dano", item.damage],
+      ["Duracion", item.duration],
+      ["Biomas", item.biomes],
+      ["Regla", item.rule],
+    ],
+    collectibles: [
+      ["Tipo", item.type ?? item.category],
+      ["Valor", item.value ?? item.valor],
+      ["Rareza", item.rarity ?? item.rareza],
+      ["Uso", item.use ?? item.useInPlay],
+      ["Ubicacion", item.location ?? item.locationId],
+      ["Etiquetas", item.tags],
+    ],
+  };
+  return [...common, ...(cardsByType[type] ?? [])].filter(([, value]) => value !== undefined && value !== null);
+}
+
 function ContentCard({
   item,
   category,
@@ -358,7 +455,16 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
             <span>{playableStatus}</span>
           </div>
           <div className="playable-detail-grid">
+            <section className="playable-operational-sheet">
+              {playableDetailCards(playableType, playableDetail).map(([label, value]) => (
+                <span key={label}>
+                  <strong>{label}</strong>
+                  <small>{valueText(value)}</small>
+                </span>
+              ))}
+            </section>
             <section className="playable-facts expanded">
+              <h4>Datos completos de la ficha</h4>
               {Object.entries(playableDetail).map(([key, value]) => (
                 <span key={key}>
                   <strong>{key}</strong>
@@ -622,6 +728,14 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
                 <small>{String(playableDetail.sourceTome ?? playableType)}</small>
                 <h3>{playableTitle(playableDetail)}</h3>
                 <p>{playableDescription(playableDetail)}</p>
+                <div className="playable-operational-sheet compact">
+                  {playableDetailCards(playableType, playableDetail).slice(0, 8).map(([label, value]) => (
+                    <span key={label}>
+                      <strong>{label}</strong>
+                      <small>{valueText(value)}</small>
+                    </span>
+                  ))}
+                </div>
                 <div className="playable-facts">
                   {Object.entries(playableDetail).slice(0, 16).map(([key, value]) => (
                     <span key={key}>
