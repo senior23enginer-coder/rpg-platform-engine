@@ -21,6 +21,7 @@
     "test:security": "node scripts/test-auth-security.mjs",
     "test:responsive": "node scripts/test-responsive-layout.mjs",
     "test:roadmap": "node scripts/test-platform-roadmap.mjs",
+    "test:total": "node scripts/test-platform-total-completion.mjs",
     "test:visual": "node scripts/test-visual-responsive.mjs",
     "lan:relay": "node scripts/lan-session-relay.mjs",
     "preview": "vite preview",

@@ -53,11 +53,44 @@
       "width": 16,
       "height": 12,
       "tileSize": 48,
-      "terrain": {},
-      "markers": [],
-      "nodes": []
+      "terrain": { "plain": "sendero", "forest": "bosque", "mountain": "colina", "city": "aldea", "water": "rio", "wall": "muralla" },
+      "markers": [
+        { "id": "dnd_spawn_party", "x": 2, "y": 8, "type": "player", "label": "Entrada del grupo", "coverage": "light", "movementCost": 1 },
+        { "id": "dnd_objective_cart", "x": 8, "y": 6, "type": "objective", "label": "Carreta perdida", "coverage": "none", "movementCost": 1 },
+        { "id": "dnd_enemy_goblins", "x": 12, "y": 4, "type": "enemy", "label": "Emboscada goblin", "coverage": "heavy", "movementCost": 2 }
+      ],
+      "nodes": [
+        { "id": "node_road", "name": "Camino viejo", "type": "route", "x": 3, "y": 8, "biome": "Bosque templado", "danger": 1, "movementCost": 1, "coverage": "light", "connections": ["node_cart"] },
+        { "id": "node_cart", "name": "Carreta saqueada", "type": "objective", "x": 8, "y": 6, "biome": "Bosque templado", "danger": 2, "movementCost": 1, "coverage": "none", "connections": ["node_road", "node_cave"] },
+        { "id": "node_cave", "name": "Cueva goblin", "type": "encounter", "x": 13, "y": 3, "biome": "Caverna", "danger": 3, "movementCost": 2, "coverage": "heavy", "connections": ["node_cart"] }
+      ],
+      "missionSheets": [
+        { "id": "dnd_mission_escort", "title": "Escolta interrumpida", "objective": "Recuperar la carreta, negociar o combatir la emboscada y descubrir la cueva.", "locationId": "node_cart", "recommendedLevel": 1, "status": "ready" }
+      ],
+      "weatherEffects": [
+        { "id": "dnd_weather_rain", "name": "Lluvia de bosque", "visibility": 70, "movementModifier": 1, "description": "El terreno se vuelve pesado y el rastreo deja huellas claras." },
+        { "id": "dnd_weather_fog", "name": "Niebla baja", "visibility": 40, "movementModifier": 0, "description": "Reduce vision y favorece emboscadas." }
+      ],
+      "biomes": [
+        { "id": "dnd_biome_forest", "name": "Bosque templado", "movementModifier": 1, "encounterRisk": 2, "description": "Cobertura vegetal, senderos y peligro de emboscada." },
+        { "id": "dnd_biome_cave", "name": "Caverna", "movementModifier": 2, "encounterRisk": 3, "description": "Oscuridad, cuellos de botella y trampas." }
+      ],
+      "arsenal": [
+        { "id": "dnd_weapon_longsword", "name": "Espada larga", "category": "weapon", "tags": ["marcial", "cuerpo a cuerpo"], "description": "Arma versatil para combate frontal." },
+        { "id": "dnd_spell_firebolt", "name": "Descarga de fuego", "category": "weapon", "tags": ["magia", "rango"], "description": "Ataque magico basico de fuego." },
+        { "id": "dnd_equipment_rope", "name": "Cuerda de explorador", "category": "equipment", "tags": ["utilidad", "exploracion"], "description": "Permite escalar, sujetar o cruzar obstaculos." },
+        { "id": "dnd_beast_goblin", "name": "Goblin saqueador", "category": "bestiary", "tags": ["humanoide", "emboscada"], "description": "Enemigo rapido con ventaja en cobertura y retirada." }
+      ]
     }
   ],
+  "rulesPack": {
+    "actionPoints": "Usa PA/AP heredados de Fallout 4 como acciones tacticas por turno.",
+    "movement": "Cada casilla o nodo consume movimiento segun terreno, carga y clima.",
+    "cover": "Cobertura ligera, pesada o total modifica defensa y linea de vision.",
+    "magic": "Los conjuros se modelan como armas/efectos con coste, alcance y condicion.",
+    "rests": "Descanso corto/largo restaura recursos segun riesgo del bioma.",
+    "loot": "Botin por nodo: monedas, componentes, pergaminos y equipo."
+  },
   "newGameSetup": {
     "labels": {
       "defaultCharacterName": "Aventurero",
@@ -67,12 +100,16 @@
     }
   },
   "content": {
-    "dlc": [],
+    "dlc": [
+      { "id": "forgotten_ruins", "name": "Ruinas olvidadas", "description": "Mazmorra modular con puertas, trampas, tesoros y jefes.", "enabled": true }
+    ],
     "features": [
       { "id": "classes", "name": "Clases", "description": "Guerrero, mago, clerigo, picaro y arquetipos.", "enabled": true },
       { "id": "spells", "name": "Magia", "description": "Conjuros, espacios y efectos por nivel.", "enabled": true },
       { "id": "dungeons", "name": "Mazmorras", "description": "Exploracion por salas, trampas y encuentros.", "enabled": true }
     ],
-    "extras": []
+    "extras": [
+      { "id": "travel_events", "name": "Eventos de viaje", "description": "Encuentros, clima, rumores y descubrimientos entre ubicaciones.", "enabled": true }
+    ]
   }
 }

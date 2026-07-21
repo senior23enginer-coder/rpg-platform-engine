@@ -53,11 +53,44 @@
       "width": 18,
       "height": 12,
       "tileSize": 48,
-      "terrain": {},
-      "markers": [],
-      "nodes": []
+      "terrain": { "plain": "plaza de guerra", "city": "ruina industrial", "wall": "barrera", "road": "corredor", "water": "zona toxica", "base": "punto de control" },
+      "markers": [
+        { "id": "wh_spawn_squad", "x": 2, "y": 9, "type": "player", "label": "Despliegue de escuadra", "coverage": "heavy", "movementCost": 1 },
+        { "id": "wh_objective_relic", "x": 9, "y": 5, "type": "objective", "label": "Reliquia activa", "coverage": "light", "movementCost": 1 },
+        { "id": "wh_enemy_patrol", "x": 15, "y": 3, "type": "enemy", "label": "Patrulla hostil", "coverage": "heavy", "movementCost": 1 }
+      ],
+      "nodes": [
+        { "id": "node_dropzone", "name": "Zona de despliegue", "type": "spawn", "x": 2, "y": 9, "biome": "Ruina industrial", "danger": 2, "movementCost": 1, "coverage": "heavy", "connections": ["node_relic"] },
+        { "id": "node_relic", "name": "Reliquia de datos", "type": "objective", "x": 9, "y": 5, "biome": "Ruina industrial", "danger": 4, "movementCost": 1, "coverage": "light", "connections": ["node_dropzone", "node_extraction"] },
+        { "id": "node_extraction", "name": "Punto de extraccion", "type": "route", "x": 16, "y": 10, "biome": "Zona toxica", "danger": 3, "movementCost": 2, "coverage": "none", "connections": ["node_relic"] }
+      ],
+      "missionSheets": [
+        { "id": "wh_mission_relic", "title": "Recuperar la reliquia", "objective": "Entrar, asegurar la reliquia, sobrevivir al contraataque y extraer la escuadra.", "locationId": "node_relic", "recommendedLevel": 1, "status": "ready" }
+      ],
+      "weatherEffects": [
+        { "id": "wh_weather_ash", "name": "Tormenta de ceniza", "visibility": 45, "movementModifier": 1, "description": "Reduce vision, bloquea sensores y aumenta riesgo de emboscada." },
+        { "id": "wh_weather_radiation", "name": "Lluvia radiactiva", "visibility": 65, "movementModifier": 1, "damage": "radiacion ligera", "description": "Drena recursos y exige equipo sellado." }
+      ],
+      "biomes": [
+        { "id": "wh_biome_ruins", "name": "Ruina industrial", "movementModifier": 1, "encounterRisk": 4, "description": "Cobertura densa, lineas de vision cortas y objetivos tecnologicos." },
+        { "id": "wh_biome_toxic", "name": "Zona toxica", "movementModifier": 2, "encounterRisk": 5, "description": "Terreno peligroso, dano ambiental y rutas limitadas." }
+      ],
+      "arsenal": [
+        { "id": "wh_weapon_bolter", "name": "Bolter", "category": "weapon", "tags": ["rango", "perforante"], "description": "Arma de escuadra para fuego sostenido." },
+        { "id": "wh_weapon_chainsword", "name": "Espada sierra", "category": "weapon", "tags": ["melee", "brutal"], "description": "Arma cuerpo a cuerpo de alto impacto." },
+        { "id": "wh_equipment_auspex", "name": "Auspex", "category": "equipment", "tags": ["sensor", "exploracion"], "description": "Detecta amenazas, rutas y objetivos ocultos." },
+        { "id": "wh_beast_traitor", "name": "Guardia traidora", "category": "bestiary", "tags": ["humanoide", "rango"], "description": "Infanteria hostil con cobertura y fuego coordinado." }
+      ]
     }
   ],
+  "rulesPack": {
+    "actionPoints": "Usa PA/AP para mover, disparar, cubrirse, interactuar y extraer.",
+    "squads": "Cada escuadra agrupa unidades con rol, moral, equipo y heridas.",
+    "cover": "Cobertura industrial modifica defensa, supresion y linea de vision.",
+    "morale": "Eventos, bajas y objetivos fallidos alteran moral y comandos disponibles.",
+    "relics": "Objetos tacticos actuan como botin, objetivo o modificador de mision.",
+    "hazards": "Radiacion, toxinas y fuego cruzado consumen recursos y armadura."
+  },
   "newGameSetup": {
     "labels": {
       "defaultCharacterName": "Comandante",
@@ -67,12 +100,16 @@
     }
   },
   "content": {
-    "dlc": [],
+    "dlc": [
+      { "id": "sector_relics", "name": "Reliquias del sector", "description": "Objetivos tecnologicos, corrupcion, extraccion y control territorial.", "enabled": true }
+    ],
     "features": [
       { "id": "factions", "name": "Facciones", "description": "Imperium, herejia, xenos y fuerzas independientes.", "enabled": true },
       { "id": "squads", "name": "Escuadras", "description": "Unidades, roles, equipo y moral.", "enabled": true },
       { "id": "campaign_ops", "name": "Operaciones", "description": "Misiones tacticas, objetivos y extraccion.", "enabled": true }
     ],
-    "extras": []
+    "extras": [
+      { "id": "battlefield_events", "name": "Eventos de campo de batalla", "description": "Bombardeos, interferencia, refuerzos y amenazas ambientales.", "enabled": true }
+    ]
   }
 }

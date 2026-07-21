@@ -33,6 +33,18 @@
         "navigation": "sidebar becomes horizontal scroll rail",
         "content": "single-column screens with internal scroll and contained wide tables"
       }
+    },
+    "pwa": {
+      "status": "ready",
+      "manifest": "public/manifest.webmanifest",
+      "validation": "npm run build",
+      "installSurfaces": ["desktop", "android", "ios"],
+      "responsiveBreakpoints": [1180, 980, 560],
+      "mobileShell": {
+        "topbar": "compact stacked header with status cards",
+        "navigation": "touch rail with role-aware modules",
+        "content": "single-column cards, tables in horizontal safe containers and no viewport clipping"
+      }
     }
   }
 }
