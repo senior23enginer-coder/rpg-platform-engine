@@ -613,7 +613,7 @@ export default function App() {
       updatedAt: now,
     }).catch(() => undefined);
     trackActivity(`Partida cargada: ${save.name}`);
-    setScreen(save.gameId === "fallout4" && save.campaignId === "sanctuary_commonwealth" ? "fallout4Campaign" : "home");
+    setScreen(save.gameId === "fallout4" ? "fallout4Campaign" : "home");
   }
 
   function persistActiveSaveProgress(patch: Partial<PlayerSave>) {
@@ -976,22 +976,31 @@ export default function App() {
               onContent={() => setScreen("content")}
               onBack={() => setScreen("home")}
               onStart={(characterName, attributes, options) => {
-                const campaignId = activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
+                const campaignId = options?.mode === "free" ? "free_exploration" : activeCampaign?.id ?? activeGame.campaigns[0]?.id ?? "free_exploration";
                 const now = new Date().toISOString();
                 const saveId = `${activeGame.id}_${Date.now()}`;
                 const storagePath = getSaveGamePath(activeGame.id, profile.id, saveId);
-                const route = activeCampaign?.simulation?.route ?? [];
+                const route = options?.mode === "free" ? [activeGame.name, "Mapa libre", "Encuentro emergente"] : activeCampaign?.simulation?.route ?? [];
                 let pendingSaveDocument: ReturnType<typeof createSaveGameDocument> | undefined;
                 setProfile((current) => {
                   const newSave = {
                     saveId,
                     gameId: activeGame.id,
                     campaignId,
+                    gameMode: options?.mode ?? "guided",
                     userId: current.id,
                     storagePath,
                     playerName: characterName,
+                    playerCount: options?.players ?? 1,
+                    characterOriginId: options?.originId,
+                    characterOriginName: options?.originName,
+                    characterGender: options?.gender,
+                    characterAge: options?.age,
+                    characterNotes: options?.notes,
+                    selectedCharacterIds: options?.selectedCharacterIds,
+                    survivalEnabled: Boolean(options?.survival),
                     name: `${characterName} - ${activeGame.name}`,
-                    currentMission: activeCampaign?.title ?? "Explorando Yermo",
+                    currentMission: options?.mode === "free" ? "Modo libre" : activeCampaign?.title ?? "Explorando Yermo",
                     currentZone: route[0] ?? activeGame.name,
                     progressPercent: route.length ? Math.round(100 / route.length) : 0,
                     route,
@@ -1004,6 +1013,19 @@ export default function App() {
                     lastLoadedAt: now,
                     daysElapsed: 0,
                     inGameDayStartedAt: now,
+                    campaignState: {
+                      sceneId: activeGame.id === "fallout4" ? "vault111" : undefined,
+                      nodeId: activeGame.id === "fallout4" ? "cryo" : undefined,
+                      ap: activeGame.id === "fallout4" ? 11 : undefined,
+                      turn: 1,
+                      actionLog: [`Partida ${options?.mode === "free" ? "libre" : "guiada"} creada para ${characterName}`],
+                      activeMissionId: options?.mode === "free" ? "FREE-EXPLORATION" : "M-0170",
+                      unlockedMissionIds: options?.mode === "free" ? ["FREE-EXPLORATION"] : ["M-0170"],
+                      survival: options?.survival
+                        ? { hunger: 1, thirst: 1, sleep: 0, disease: 0, radiation: 0, fatigue: 0 }
+                        : { hunger: 0, thirst: 0, sleep: 0, disease: 0, radiation: 0, fatigue: 0 },
+                      inventory: options?.mode === "free" ? ["Equipo libre inicial"] : ["Pip-Boy pendiente"],
+                    },
                     createdAt: now,
                     updatedAt: now,
                   };
@@ -1027,7 +1049,7 @@ export default function App() {
                 if (pendingSaveDocument) void savePersistentGameDocument(pendingSaveDocument);
                 if (pendingSaveDocument) void platformRepository.saves.save(pendingSaveDocument.save).catch(() => undefined);
                 trackActivity(`Partida creada: ${characterName} - ${activeGame.name}`);
-                setScreen(activeGame.id === "fallout4" && options?.mode === "guided" ? "fallout4Campaign" : "home");
+                setScreen(activeGame.id === "fallout4" ? "fallout4Campaign" : "home");
               }}
             />
           )}

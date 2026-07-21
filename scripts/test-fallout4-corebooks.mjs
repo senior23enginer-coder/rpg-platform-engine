@@ -98,18 +98,23 @@ const outOfTimeMissionSteps = [
   "M-0170:arrive-concord",
 ];
 
-const coreBookDir = file("core-book");
+const coreBookCandidate = file("core-book");
+const docsCandidate = file("docs");
+const coreBookDir = existsSync(coreBookCandidate)
+  && readdirSync(coreBookCandidate).filter((entry) => entry.endsWith(".txt")).length >= 10
+  ? coreBookCandidate
+  : docsCandidate;
 const coreBookFiles = existsSync(coreBookDir) ? readdirSync(coreBookDir).filter((entry) => entry.endsWith(".txt")) : [];
-assert(coreBookFiles.length === 10, "Deben existir 10 tomos en core-book", `encontrados: ${coreBookFiles.length}`);
+assert(coreBookFiles.length === 10, "Deben existir 10 tomos en docs/core-book", `encontrados: ${coreBookFiles.length}`);
 for (const tome of expectedTomes) {
   const match = coreBookFiles.find((entry) => entry.startsWith(tome));
-  assert(Boolean(match), `Falta ${tome} en core-book`);
+  assert(Boolean(match), `Falta ${tome} en docs/core-book`);
   if (match) {
-    const content = readText("core-book", match);
+    const content = readFileSync(path.join(coreBookDir, match), "utf8");
     assert(content.length > 1000, `${tome} parece demasiado corto`, `${content.length} caracteres`);
   }
 }
-pass("Core-book: 10 tomos presentes y legibles.");
+pass("Docs/Core-book: 10 tomos presentes y legibles.");
 
 const game = readJson("public", "games", "fallout4", "game.config.json");
 const rules = readJson("public", "games", "fallout4", "rules", "rules.json");

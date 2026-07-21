@@ -7,7 +7,17 @@ import { gameHeroVars, loadGameCharacterSheet, resolveGameAsset } from "../lib/g
 type Props = {
   game: GameConfig;
   characters: CharacterSheetConfig;
-  onStart: (characterName: string, attributes: Record<string, number>, options?: { mode: "guided" | "free" }) => void;
+  onStart: (characterName: string, attributes: Record<string, number>, options?: {
+    mode: "guided" | "free";
+    players: number;
+    survival: boolean;
+    originId?: string;
+    originName?: string;
+    gender?: string;
+    age?: string;
+    notes?: string;
+    selectedCharacterIds?: string[];
+  }) => void;
   onContent: () => void;
   onBack: () => void;
 };
@@ -194,11 +204,28 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
   }
 
   function handleStart() {
+    const origin = origins.find((item) => item.id === originId);
+    const commonOptions = {
+      mode,
+      players,
+      survival,
+      originId,
+      originName: origin?.name,
+      gender: gender.trim(),
+      age: age.trim(),
+      notes: notes.trim(),
+    };
+
     if (guidedUsesPrebuiltCharacters) {
       const selectedCharacters = selectedCampaignCharacters.slice(0, players);
       const name = selectedCharacters.map((character) => character.name).join(" / ") || "Superviviente";
       const characterAttributes = selectedCharacters[0]?.attributes ?? attributes;
-      onStart(name, characterAttributes, { mode });
+      onStart(name, characterAttributes, {
+        ...commonOptions,
+        selectedCharacterIds: selectedCharacters.map((character) => character.id),
+        originId: "vault111_prebuilt",
+        originName: "Personaje precreado de campana",
+      });
       return;
     }
 
@@ -207,7 +234,7 @@ export function NewGameScreen({ game, characters, onStart, onContent, onBack }: 
       return;
     }
 
-    onStart(characterName.trim() || "Superviviente", attributes, { mode });
+    onStart(characterName.trim() || "Superviviente", attributes, commonOptions);
   }
 
   function applySeed(seedId: string) {

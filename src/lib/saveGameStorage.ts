@@ -14,10 +14,21 @@ export type SavedGameDocument = {
     name: string;
     configPath?: string;
   };
-  state: {
-    characterName: string;
-    attributes?: Record<string, number>;
-    campaign: {
+    state: {
+      characterName: string;
+      attributes?: Record<string, number>;
+      characterSetup?: {
+        mode?: "guided" | "free";
+        playerCount?: number;
+        originId?: string;
+        originName?: string;
+        gender?: string;
+        age?: string;
+        notes?: string;
+        selectedCharacterIds?: string[];
+        survivalEnabled?: boolean;
+      };
+      campaign: {
       id: string;
       progressPercent: number;
       currentMission?: string;
@@ -93,6 +104,17 @@ export function createSaveGameDocument({
     state: {
       characterName: save.playerName,
       attributes,
+      characterSetup: {
+        mode: save.gameMode,
+        playerCount: save.playerCount,
+        originId: save.characterOriginId,
+        originName: save.characterOriginName,
+        gender: save.characterGender,
+        age: save.characterAge,
+        notes: save.characterNotes,
+        selectedCharacterIds: save.selectedCharacterIds,
+        survivalEnabled: save.survivalEnabled,
+      },
       campaign: {
         id: save.campaignId,
         progressPercent: save.progressPercent ?? 0,

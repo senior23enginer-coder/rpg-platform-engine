@@ -31,9 +31,18 @@ export type PlayerSave = {
   saveId: string;
   gameId: string;
   campaignId: string;
+  gameMode?: "guided" | "free";
   userId?: string;
   storagePath?: string;
   playerName: string;
+  playerCount?: number;
+  characterOriginId?: string;
+  characterOriginName?: string;
+  characterGender?: string;
+  characterAge?: string;
+  characterNotes?: string;
+  selectedCharacterIds?: string[];
+  survivalEnabled?: boolean;
   name: string;
   currentMission?: string;
   currentZone: string;

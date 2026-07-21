@@ -11,7 +11,25 @@
     "power armor"
   ],
   "templateFuture": false,
-  "campaigns": [],
+  "campaigns": [
+    {
+      "id": "sanctuary_commonwealth",
+      "title": "Vault 111 -> Sanctuary Hills -> Concord",
+      "description": "Campana guiada inicial de Fallout 4 con ruta, misiones y mapas enlazados desde los tomos.",
+      "implemented": true,
+      "image": "assets/campaigns/sanctuary-commonwealth.png",
+      "simulation": {
+        "style": "text_turn_based",
+        "route": [
+          "vault111",
+          "vault_exit",
+          "sanctuary_hills",
+          "red_rocket",
+          "concord"
+        ]
+      }
+    }
+  ],
   "content": {
     "dlc": [],
     "features": [],

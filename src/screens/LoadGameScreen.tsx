@@ -47,6 +47,7 @@ export function LoadGameScreen({ game, saves, activeSaveId, onLoad }: Props) {
               <p><UserRound size={16} /><span>Personaje</span><strong>{activeSave.playerName}</strong></p>
               <p><MapPin size={16} /><span>Zona</span><strong>{activeSave.currentZone}</strong></p>
               <p><ShieldCheck size={16} /><span>Campana</span><strong>{campaignName(game, activeSave)}</strong></p>
+              <p><ShieldCheck size={16} /><span>Modo</span><strong>{activeSave.gameMode === "free" ? "Modo libre" : "Campana guiada"}</strong></p>
               <p><Clock3 size={16} /><span>Horas</span><strong>{activeSave.playTimeHours ?? 0}</strong></p>
             </div>
           ) : (
@@ -71,7 +72,10 @@ export function LoadGameScreen({ game, saves, activeSaveId, onLoad }: Props) {
 
               <div className="save-meta-grid">
                 <p><UserRound size={16} /><span>{save.playerName}</span></p>
+                <p><UserRound size={16} /><span>{save.playerCount ?? 1} jugador{(save.playerCount ?? 1) > 1 ? "es" : ""}</span></p>
                 <p><MapPin size={16} /><span>{save.currentZone}</span></p>
+                <p><ShieldCheck size={16} /><span>{save.gameMode === "free" ? "Modo libre" : "Campana"}</span></p>
+                <p><ShieldCheck size={16} /><span>{save.survivalEnabled ? "Supervivencia" : "Normal"}</span></p>
                 <p><CalendarClock size={16} /><span>{formatDate(save.updatedAt)}</span></p>
                 <p><FolderOpen size={16} /><span>{save.storagePath ?? "Guardado local"}</span></p>
               </div>

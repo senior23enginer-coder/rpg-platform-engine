@@ -28,6 +28,7 @@ import {
   resolveFallout4FactionReputation,
   resolveFallout4Combat,
   resolveFallout4SettlementBuild,
+  resolveFallout4Trade,
   resolveFallout4WeatherTick,
   rollFallout4Test,
 } from "../lib/fallout4PlayableEngine";
@@ -941,6 +942,33 @@ function buildMissionRuntimeSteps(
   });
 }
 
+function resolveAtlasNode(location: TomeLocation | undefined, subzoneIndex: number) {
+  const subzones = location?.subzones?.length
+    ? location.subzones
+    : [{ name: "Acceso principal", role: "Exploracion" }];
+  const index = Math.max(0, Math.min(subzoneIndex, subzones.length - 1));
+  const node = subzones[index];
+  return {
+    index,
+    key: `${location?.id ?? "atlas"}:${index}:${node.name}`,
+    node,
+    movementCost: fallout4MovementCost({ base: 1, terrain: `${location?.biome ?? ""} ${location?.category ?? ""}` }),
+    riskDifficulty: riskDifficulty(location?.risk),
+  };
+}
+
+function resolveMissionObjectiveStep(steps: MissionObjectiveStep[], index: number) {
+  return steps[Math.max(0, Math.min(index, Math.max(0, steps.length - 1)))] ?? outOfTimeSteps[0];
+}
+
+function resolveFreeAtlasLocation(locations: TomeLocation[], seed = "free_exploration") {
+  if (!locations.length) return undefined;
+  const preferred = locations.find((location) =>
+    /asentamiento|ciudad|punto de interes|rural/i.test(`${location.category ?? ""} ${location.summary ?? ""}`)
+  );
+  return preferred ?? locations[deterministicIndex(seed, locations.length)];
+}
+
 function patchLocationState(
   states: NonNullable<PlayerSave["campaignState"]>["atlasLocationStates"] | undefined,
   locationId: string,
@@ -1101,7 +1129,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const route = templateCatalog?.routeTemplates?.find((item) => item.id === "out-of-time-base-route");
     return route?.nodes?.length ? route.nodes : ["U-0001", "U-0002", "U-0003", "U-0011"];
   }, [templateCatalog]);
-  const atlasLocation = atlasLocations.find((item) => item.id === atlasLocationId) ?? atlasLocations[0];
+  const atlasLocation = atlasLocations.find((item) => item.id === atlasLocationId)
+    ?? (save?.gameMode === "free" ? resolveFreeAtlasLocation(atlasLocations, save.saveId) : undefined)
+    ?? atlasLocations[0];
   const atlasMission = atlasMissions.find((item) => item.id === activeMissionId) ?? atlasMissions.find((item) => item.id === "M-0170") ?? atlasMissions[0];
   const atlasSubzones = atlasLocation?.subzones?.length
     ? atlasLocation.subzones
@@ -1113,6 +1143,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const atlasSubzone = atlasSubzones[Math.min(atlasSubzoneIndex, atlasSubzones.length - 1)];
   const atlasKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzone?.name ?? "subzona"}` : "atlas:pendiente";
   const atlasInternalKey = atlasLocation ? `${atlasLocation.id}:${atlasSubzoneIndex}:${atlasSubzone?.name ?? "nodo"}` : "atlas:pendiente";
+  const resolvedAtlasNode = resolveAtlasNode(atlasLocation, atlasSubzoneIndex);
   const atlasRouteIndex = atlasWorldRoute.indexOf(atlasLocation?.id ?? atlasLocationId);
   const atlasConnectedLocationIds = [
     atlasRouteIndex > 0 ? atlasWorldRoute[atlasRouteIndex - 1] : undefined,
@@ -1130,7 +1161,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     [atlasLocations, atlasMission, atlasWorldRoute, missionDetails]
   );
   const activeMissionDetails = missionDetails?.missions?.find((item) => item.id === activeMissionId);
-  const activeObjectiveStep = missionSteps[Math.min(activeMissionStep, missionSteps.length - 1)] ?? missionSteps[0];
+  const activeObjectiveStep = resolveMissionObjectiveStep(missionSteps, activeMissionStep);
   const missionStepLocationId = activeObjectiveStep?.locationId ?? atlasWorldRoute[Math.min(activeMissionStep, atlasWorldRoute.length - 1)] ?? atlasWorldRoute[0];
   const missionStepLocation = atlasLocations.find((location) => location.id === missionStepLocationId);
   const currentMissionStepKey = `${activeMissionId}:${activeObjectiveStep?.id ?? missionStepLocationId}`;
@@ -1529,7 +1560,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
   function moveAtlasInternalNode(index: number) {
     if (!atlasLocation || index === atlasSubzoneIndex || !connectedInternalIndexes.includes(index)) return;
-    const movementCost = fallout4MovementCost({ base: 1, terrain: `${atlasLocation.biome ?? ""} ${atlasLocation.category ?? ""}` });
+    const movementCost = resolvedAtlasNode.movementCost;
     if (!spend(movementCost)) return;
     const target = atlasSubzones[index];
     const targetKey = `${atlasLocation.id}:${index}:${target.name}`;
@@ -1556,6 +1587,36 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       apValue: ap - movementCost,
       logValue: nextLog,
       lastAction: `atlas:mover-nodo:${index}`,
+    });
+  }
+
+  function resolveAtlasTrade() {
+    if (!atlasLocation) return;
+    const trade = resolveFallout4Trade({
+      caps,
+      basePrice: 8 + resolvedAtlasNode.riskDifficulty * 3,
+      charisma: 5 + Math.min(3, perkState.difficultyReduction),
+      perkState,
+      mode: "buy",
+      ruleState,
+    });
+    const item = atlasLoot || "Suministro del yermo";
+    const nextInventory = trade.allowed ? [...new Set([item, ...inventory])] : inventory;
+    const nextLog = writeLog(
+      trade.allowed
+        ? `Comercio: comprado ${item} por ${trade.finalPrice} chapas en ${atlasLocation.name}.`
+        : `Comercio: chapas insuficientes para ${item}. Requiere ${trade.finalPrice}.`,
+      `Chapas: ${trade.capsAfter}. Descuento aplicado: ${trade.discountPercent}%.`
+    );
+    setCaps(trade.capsAfter);
+    setInventory(nextInventory);
+    setRuleState(trade.ruleState);
+    progressAtlasPatch({
+      inventoryValue: nextInventory,
+      capsValue: trade.capsAfter,
+      ruleStateValue: trade.ruleState,
+      logValue: nextLog,
+      lastAction: `atlas:comercio:${atlasLocation.id}`,
     });
   }
 
@@ -2261,6 +2322,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
                   </button>
                   <button onClick={improveSettlement} disabled={!atlasLocation.settlement}>
                     <Package size={18} /> Asentamiento
+                  </button>
+                  <button onClick={resolveAtlasTrade}>
+                    <Package size={18} /> Comercio
                   </button>
                   <button onClick={() => equipNextLoadout("weapon")}>
                     <Swords size={18} /> Cambiar arma

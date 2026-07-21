@@ -19,6 +19,7 @@
     "test:fallout4:maps": "node scripts/test-fallout4-tome-map-catalog.mjs",
     "test:fallout4:playable": "node scripts/test-fallout4-playable-engine.mjs",
     "test:fallout4:zero-pending": "node scripts/test-fallout4-zero-pending.mjs",
+    "test:playable-flow": "node scripts/test-playable-flow-complete.mjs",
     "test:critical": "node scripts/test-platform-critical-coverage.mjs",
     "test:local": "node scripts/test-local-environment.mjs",
     "test:security": "node scripts/test-auth-security.mjs",
