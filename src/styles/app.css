@@ -18104,8 +18104,91 @@ svg {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 10px;
-  max-height: calc(100vh - 320px);
+  max-height: min(520px, calc(100vh - 320px));
   overflow: auto;
+}
+
+.playable-tome-pack {
+  display: grid;
+  gap: 14px;
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(126, 255, 87, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(9, 42, 22, 0.86), rgba(4, 12, 8, 0.94)),
+    var(--scanlines);
+}
+
+.playable-tome-pack h4 {
+  margin: 0;
+  color: #ffcf55;
+}
+
+.playable-pack-strip,
+.playable-pack-columns,
+.playable-panel-list,
+.playable-mini-pack {
+  display: grid;
+  gap: 10px;
+}
+
+.playable-pack-strip {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.playable-pack-columns {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.playable-panel-list {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  max-height: 300px;
+  overflow: auto;
+}
+
+.playable-pack-strip span,
+.playable-pack-columns article,
+.playable-panel-list article,
+.playable-mini-pack span {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid rgba(126, 255, 87, 0.14);
+  border-radius: 8px;
+  background: rgba(4, 18, 11, 0.74);
+}
+
+.playable-pack-strip strong,
+.playable-pack-strip small,
+.playable-pack-columns strong,
+.playable-pack-columns p,
+.playable-panel-list strong,
+.playable-panel-list p,
+.playable-mini-pack strong,
+.playable-mini-pack small {
+  display: block;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.playable-pack-strip strong,
+.playable-pack-columns strong,
+.playable-panel-list strong {
+  color: #ffdf7a;
+  text-transform: uppercase;
+}
+
+.playable-pack-strip small,
+.playable-pack-columns p,
+.playable-panel-list p {
+  margin: 4px 0 0;
+  color: #dfffd7;
+  line-height: 1.35;
+}
+
+.playable-mini-pack {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .playable-patch-editor.expanded,
@@ -18184,6 +18267,10 @@ svg {
 @media (max-width: 1180px) {
   .playable-detail-grid,
   .support-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playable-mini-pack {
     grid-template-columns: 1fr;
   }
 

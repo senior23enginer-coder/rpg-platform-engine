@@ -156,6 +156,7 @@ export type PlatformRepository = {
       query?: { q?: string; offset?: number; limit?: number }
     ): Promise<PlatformPlayableListResult<T>>;
     detail<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T>;
+    detailPack<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T>;
     save<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, patch: Partial<T>): Promise<T>;
     listAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string): Promise<T[]>;
     saveAssets<T = Record<string, unknown>>(gameId: string, type: PlatformPlayableType | string, id: string, assets: T[]): Promise<T[]>;

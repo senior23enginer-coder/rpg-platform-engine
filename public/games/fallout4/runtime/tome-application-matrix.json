@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "gameId": "fallout4",
-  "generatedAt": "2026-07-21T17:53:50.211Z",
+  "generatedAt": "2026-07-21T18:11:14.203Z",
   "purpose": "Matriz verificable de aplicacion de los 10 tomos al juego Fallout 4: datos, reglas, editor, backend y runtime.",
   "counts": {
     "tomes": 10,

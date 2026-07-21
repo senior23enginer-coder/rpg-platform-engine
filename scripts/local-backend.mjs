@@ -44,6 +44,11 @@ function readPlayableRuntime(gameId, detail = false) {
   return readJson(selectedPath, undefined);
 }
 
+function readPlayableDetailPack(gameId) {
+  const detailPackPath = playableRuntimePath(gameId, "playable-detail-pack.json");
+  return readJson(detailPackPath, undefined);
+}
+
 function normalizePlayableType(type) {
   const normalized = String(type ?? "").trim().toLowerCase();
   const aliases = {
@@ -114,7 +119,9 @@ function findPlayableItem(database, gameId, type, id) {
   const item = items.find((entry) => playableItemId(entry) === id);
   if (!item) return undefined;
   const patch = getPlayablePatches(database, gameId, type).find((entry) => entry.id === id)?.patch ?? {};
-  return { ...item, ...patch, id: playableItemId(item) };
+  const detailType = normalizePlayableType(type);
+  const detail = readPlayableDetailPack(gameId)?.catalogs?.[detailType]?.find((entry) => playableItemId(entry) === id);
+  return { ...item, detailPack: detail, ...patch, id: playableItemId(item) };
 }
 
 function writeDatabase(database) {
@@ -462,6 +469,17 @@ async function handleApi(request, response) {
       appendAudit(database, { action: "admin.map.update", module: "maps", actorId: actor?.user.id ?? "system", targetId: itemId, metadata: { type, assets: normalizedAssets.length } });
       writeDatabase(database);
       return jsonResponse(response, 200, normalizedAssets);
+    }
+
+    const playableDetailPackMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)\/([^/]+)\/detail-pack$/);
+    if (playableDetailPackMatch && method === "GET") {
+      const gameId = decodeURIComponent(playableDetailPackMatch[1]);
+      const type = normalizePlayableType(decodeURIComponent(playableDetailPackMatch[2]));
+      const itemId = decodeURIComponent(playableDetailPackMatch[3]);
+      const detailPack = readPlayableDetailPack(gameId);
+      const detail = detailPack?.catalogs?.[type]?.find((entry) => playableItemId(entry) === itemId);
+      if (!detail) return jsonResponse(response, 404, { error: "PLAYABLE_DETAIL_PACK_NOT_FOUND", gameId, type, id: itemId });
+      return jsonResponse(response, 200, detail);
     }
 
     const playableItemMatch = pathname.match(/^\/games\/([^/]+)\/playable\/([^/]+)\/([^/]+)$/);

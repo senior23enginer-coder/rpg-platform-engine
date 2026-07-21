@@ -71,6 +71,12 @@ async function loadPlayableRuntime(gameId: string, detail = false) {
   return response.json();
 }
 
+async function loadPlayableDetailPack(gameId: string) {
+  const response = await fetch(`/games/${gameId}/runtime/playable-detail-pack.json`);
+  if (!response.ok) throw new Error("PLAYABLE_DETAIL_PACK_NOT_FOUND");
+  return response.json();
+}
+
 function normalizePlayableType(type: string) {
   const aliases: Record<string, string> = {
     maps: "locationMaps",
@@ -246,7 +252,15 @@ export function createLocalPlatformRepository(): PlatformRepository {
         const item = getPlayableCatalog(playable, type).find((entry: any) => playableItemId(entry) === id);
         if (!item) throw new Error("PLAYABLE_ITEM_NOT_FOUND");
         const patch = database.playablePatches?.find((entry) => entry.gameId === gameId && normalizePlayableType(entry.type) === normalizedType && entry.id === id)?.patch ?? {};
-        return { ...item, ...patch, id: playableItemId(item) };
+        const detailPack = (await loadPlayableDetailPack(gameId).catch(() => undefined))?.catalogs?.[normalizedType]?.find((entry: any) => playableItemId(entry) === id);
+        return { ...item, detailPack, ...patch, id: playableItemId(item) };
+      },
+      async detailPack(gameId: string, type: string, id: string) {
+        const normalizedType = normalizePlayableType(type);
+        const detailPack = await loadPlayableDetailPack(gameId);
+        const detail = detailPack.catalogs?.[normalizedType]?.find((entry: any) => playableItemId(entry) === id);
+        if (!detail) throw new Error("PLAYABLE_DETAIL_PACK_NOT_FOUND");
+        return detail;
       },
       async save<T = Record<string, unknown>>(gameId: string, type: string, id: string, patch: Partial<T>) {
         const database = await loadPersistentDatabase();

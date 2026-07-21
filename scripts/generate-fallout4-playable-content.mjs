@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 const root = process.cwd();
 const gameRoot = path.join(root, "public", "games", "fallout4");
@@ -445,3 +446,9 @@ console.log(`Playable Fallout 4 content generated: ${path.relative(root, outputP
 console.log(`Editor index generated: ${path.relative(root, editorIndexPath)}`);
 console.log(`Tome matrix generated: ${path.relative(root, tomeMatrixPath)}`);
 console.log(`Maps: ${locationMaps.length}, missions: ${missionSheets.length}, events: ${playableContent.counts.locationEvents}`);
+
+const detailPackResult = spawnSync(process.execPath, ["scripts/generate-fallout4-playable-detail-pack.mjs"], {
+  cwd: root,
+  stdio: "inherit",
+});
+if (detailPackResult.status !== 0) process.exit(detailPackResult.status ?? 1);

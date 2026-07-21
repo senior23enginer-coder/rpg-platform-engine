@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "gameId": "fallout4",
-  "generatedAt": "2026-07-21T17:53:50.211Z",
+  "generatedAt": "2026-07-21T18:11:14.203Z",
   "source": {
     "playableContent": "public/games/fallout4/runtime/playable-content.json",
     "purpose": "Indice ligero para editor visual; el JSON completo queda disponible para backend/local."

@@ -78,12 +78,15 @@ type Props = {
 const playableTypes: Array<{ type: PlatformPlayableType; label: string }> = [
   { type: "missions", label: "Misiones" },
   { type: "locations", label: "Ubicaciones" },
+  { type: "locationMaps", label: "Mapas" },
   { type: "bestiary", label: "Bestiario" },
   { type: "weapons", label: "Armas" },
   { type: "equipment", label: "Equipo" },
   { type: "factions", label: "Facciones" },
   { type: "settlements", label: "Asentamientos" },
   { type: "weather", label: "Clima" },
+  { type: "biomes", label: "Biomas" },
+  { type: "nodeTypes", label: "Nodos" },
   { type: "collectibles", label: "Objetos" },
 ];
 
@@ -203,6 +206,20 @@ function playableDetailCards(type: PlatformPlayableType, item: Record<string, un
     ],
   };
   return [...common, ...(cardsByType[type] ?? [])].filter(([, value]) => value !== undefined && value !== null);
+}
+
+function playableDetailPack(item: Record<string, unknown>) {
+  return (item.detailPack && typeof item.detailPack === "object" ? item.detailPack : item) as Record<string, unknown>;
+}
+
+function detailPackArray(pack: Record<string, unknown>, key: string) {
+  const value = pack[key];
+  return Array.isArray(value) ? value : [];
+}
+
+function detailPackObject(pack: Record<string, unknown>, key: string) {
+  const value = pack[key];
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 }
 
 function ContentCard({
@@ -352,8 +369,14 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
 
     platformRepository?.playable
       .detail<Record<string, unknown>>(game.id, playableType, id)
-      .then((detail) => {
-        setPlayableDetail(detail);
+      .then(async (detail) => {
+        let detailPack: Record<string, unknown> | undefined;
+        try {
+          detailPack = await platformRepository.playable.detailPack<Record<string, unknown>>(game.id, playableType, id);
+        } catch {
+          detailPack = detail.detailPack && typeof detail.detailPack === "object" ? detail.detailPack as Record<string, unknown> : undefined;
+        }
+        setPlayableDetail({ ...detail, ...(detailPack ? { detailPack } : {}) });
         setPlayablePatchText(JSON.stringify({ adminNotes: String(detail.adminNotes ?? "") }, null, 2));
         setPlayableStatus("Detalle cargado desde backend local");
       })
@@ -436,6 +459,12 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
   }
 
   if (playableDetailMode && playableDetail) {
+    const pack = playableDetailPack(playableDetail);
+    const panels = detailPackArray(pack, "panels") as Array<{ id?: string; title?: string; fields?: Record<string, unknown> }>;
+    const editableFields = detailPackArray(pack, "editableFields");
+    const relationIds = detailPackArray(pack, "relationIds");
+    const mapBindings = detailPackObject(pack, "mapEditorBindings");
+    const validation = detailPackObject(pack, "validation");
     return (
       <section className="screen-panel content-screen playable-detail-screen">
         <div className="screen-heading">
@@ -471,6 +500,41 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
                   <small>{typeof value === "object" ? JSON.stringify(value).slice(0, 240) : String(value)}</small>
                 </span>
               ))}
+            </section>
+            <section className="playable-tome-pack expanded">
+              <h4>Paquete operativo desde tomos</h4>
+              <div className="playable-pack-strip">
+                <span><strong>Tomos</strong><small>{detailPackArray(pack, "sourceTomes").join(", ") || "--"}</small></span>
+                <span><strong>Editor</strong><small>{valueText(pack.editorScreen)}</small></span>
+                <span><strong>Endpoint</strong><small>{valueText(pack.detailEndpoint)}</small></span>
+                <span><strong>Relacionados</strong><small>{relationIds.length}</small></span>
+              </div>
+              <div className="playable-pack-columns">
+                <article>
+                  <strong>Campos editables</strong>
+                  <p>{editableFields.map(String).join(", ") || "Sin campos declarados"}</p>
+                </article>
+                <article>
+                  <strong>Editor de mapas</strong>
+                  <p>{Object.entries(mapBindings).map(([key, value]) => `${key}: ${valueText(value)}`).join(" / ") || "Sin enlace"}</p>
+                </article>
+                <article>
+                  <strong>Validacion</strong>
+                  <p>{Object.entries(validation).map(([key, value]) => `${key}: ${valueText(value)}`).join(" / ") || "Sin validacion"}</p>
+                </article>
+                <article>
+                  <strong>Relaciones</strong>
+                  <p>{relationIds.map(String).slice(0, 16).join(", ") || "Sin relaciones"}</p>
+                </article>
+              </div>
+              <div className="playable-panel-list">
+                {panels.map((panel) => (
+                  <article key={panel.id ?? panel.title}>
+                    <strong>{panel.title ?? panel.id}</strong>
+                    <p>{Object.entries(panel.fields ?? {}).map(([key, value]) => `${key}: ${valueText(value)}`).join(" / ")}</p>
+                  </article>
+                ))}
+              </div>
             </section>
             <aside className="playable-patch-editor expanded">
               {canEditPlayable ? (
@@ -725,6 +789,12 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
           <aside className="playable-detail-panel">
             {playableDetail ? (
               <>
+                {(() => {
+                  const pack = playableDetailPack(playableDetail);
+                  const relationIds = detailPackArray(pack, "relationIds");
+                  const editableFields = detailPackArray(pack, "editableFields");
+                  return (
+                    <>
                 <small>{String(playableDetail.sourceTome ?? playableType)}</small>
                 <h3>{playableTitle(playableDetail)}</h3>
                 <p>{playableDescription(playableDetail)}</p>
@@ -744,6 +814,14 @@ export function ContentScreen({ game, platformRepository, canEditPlayable = fals
                     </span>
                   ))}
                 </div>
+                <div className="playable-mini-pack">
+                  <span><strong>{editableFields.length}</strong><small>campos editables</small></span>
+                  <span><strong>{relationIds.length}</strong><small>relaciones</small></span>
+                  <span><strong>{valueText(pack.editorScreen)}</strong><small>editor</small></span>
+                </div>
+                    </>
+                  );
+                })()}
                 {canEditPlayable && (
                   <div className="playable-patch-editor">
                     <label>

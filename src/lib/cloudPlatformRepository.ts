@@ -109,6 +109,9 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
       detail(gameId: string, type: string, id: string) {
         return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}`, { token });
       },
+      detailPack(gameId: string, type: string, id: string) {
+        return requestJson(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}/detail-pack`, { token });
+      },
       save<T = Record<string, unknown>>(gameId: string, type: string, id: string, patch: Partial<T>) {
         return requestJson<T>(endpoint, `/games/${encodeURIComponent(gameId)}/playable/${encodeURIComponent(type)}/${encodeURIComponent(id)}`, { method: "PATCH", body: patch, token });
       },
