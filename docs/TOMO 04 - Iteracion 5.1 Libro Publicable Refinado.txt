@@ -1,0 +1,4043 @@
+TOMO 04 — ARMAS
+
+Fuente de armas, munición, daño, rasgos, obtención y balance ofensivo.
+
+Edición 5.1 — Versión refinada para lectura de libro
+
+Nota editorial: esta versión conserva la información útil de las iteraciones anteriores, unifica fichas heredadas bajo IDs maestros y retira del cuerpo principal títulos técnicos repetidos, separadores visuales y marcas internas de trabajo. Las fuentes, alias y notas de trazabilidad no se pierden: se conservan en apéndice cuando corresponde.
+## Balance ofensivo para publicación
+
+Las armas se publican con sus valores conservados, pero cada una debe poder ubicarse en una etapa de juego. Si un arma queda fuera de etapa, no se elimina: se marca como única, rara, avanzada, modificada, legendaria o requiere balance.
+
+### Prueba de arma
+1. Comparar daño contra enemigos de amenaza 1-3, 4-6 y 7-9.
+2. Revisar coste AP frente al daño esperado.
+3. Revisar munición disponible en campaña, libre y supervivencia.
+4. Confirmar si ignora defensa por rasgo real o por error.
+
+TOMO 04 — ARMAS: MUNICION, ETAPAS Y BALANCE OFENSIVO
+
+1. ETAPAS DE ARMAS
+| Etapa | Armas esperadas | Funcion |
+|---|---|---|
+| Inicio | pistola 10mm, pipe, melee simple | resolver amenazas 1-3 |
+| Temprana | escopeta, rifle de caza, laser basico | amenazas 3-5 |
+| Media | combate, plasma, explosivos limitados | amenazas 5-7 |
+| Alta | pesadas, legendarias, modificadas | amenazas 7-9 |
+| Final | armas unicas optimizadas | jefes y amenazas 9-10 |
+
+2. MUNICION EXACTA VS NARRATIVA
+Este tomo conserva municion y calibres. En mesa puede usarse:
+- Exacta: contar cada bala/proyectil.
+- Narrativa: 1 carga por escena.
+- Supervivencia: exacta para municion rara; narrativa para comun.
+
+3. ARMA INUTIL O DEMASIADO FUERTE
+Marcar REQUIERE_BALANCE_OFENSIVO si:
+- no supera dano minimo contra enemigos de su etapa,
+- mata amenazas medias en 1 turno sin costo alto,
+- tiene coste AP demasiado bajo para su dano,
+- ignora DR/ER/RR sin rasgo que lo justifique.
+
+
+Resultado de auditoría:
+- No se modifican daños, municiones, AP ni valores de armas.
+- Las armas quedan clasificadas por función: inicio, estándar, especial, pesada, legendaria o final.
+- Arma con daño bajo + AP alto = REQUIERE_REVISIÓN_DE_UTILIDAD.
+- Arma con daño alto + AP bajo = REQUIERE_REVISIÓN_DE_LETALIDAD.
+- Arma explosiva, nuclear o pesada no debe balancearse contra enemigos normales; se prueba contra grupos, cobertura, robots pesados, servoarmaduras o jefes.
+- Información eliminada: 0.
+
+Criterio aplicado:
+- No se cambian valores de PV, AP, daño, DR, ER ni RR en fichas existentes.
+- La simulación se agrega como capa de auditoría para decidir ajustes posteriores sin destruir datos.
+- AP sigue significando Puntos de Acción.
+- Fórmula provisional de test: mitigación por tramo de defensa + daño mínimo táctico. No reemplaza Tomo 01; sirve para detectar bloqueos.
+
+### Distribución real detectada en los tomos
+| Métrica | Muestras | P10 | P25 | P50 | P75 | P90 |
+|---|---:|---:|---:|---:|---:|---:|
+| PV enemigos Tomo 03 | 213 | 85.0 | 210.0 | 500.0 | 1000.0 | 1800.0 |
+| DR enemigos Tomo 03 | 213 | 15.0 | 45.0 | 95.0 | 180.0 | 260.0 |
+| ER enemigos Tomo 03 | 213 | 5.0 | 35.0 | 80.0 | 140.0 | 208.0 |
+| Amenaza enemigos Tomo 03 | 213 | 1.1 | 1.5 | 2.2 | 3.1 | 4.2 |
+| Daño base armas Tomo 04 | 106 | 22.0 | 28.0 | 45.0 | 55.0 | 150.0 |
+| Coste AP armas Tomo 04 | 99 | 20.0 | 25.0 | 28.0 | 35.0 | 42.0 |
+| DR armaduras Tomo 05 | 293 | 0.0 | 5.0 | 35.0 | 35.0 | 35.0 |
+| ER armaduras Tomo 05 | 293 | 0.0 | 5.0 | 35.0 | 35.0 | 35.0 |
+
+### Fórmula de test usada en esta simulación
+- Defensa 0–25: reduce 0 daño.
+- Defensa 26–75: reduce 5 daño.
+- Defensa 76–150: reduce 10 daño.
+- Defensa 151–250: reduce 20 daño.
+- Defensa 251–400: reduce 35 daño.
+- Defensa 401+: reduce 50 daño.
+- Si el arma puede afectar al objetivo pero el cálculo baja a 0, usar daño mínimo táctico: máximo entre 1 y 10% del daño base.
+- Rondas de referencia: se calcula con presupuesto abstracto de 100 AP tácticos para comparar armas; no sustituye la economía oficial del Tomo 01.
+
+### Resultado de simulación representativa
+| Arma | Enemigo | Amenaza | PV | DR/ER | Daño efectivo | Impactos | Rondas ref. | Estado |
+|---|---|---:|---:|---:|---:|---:|---:|---|
+| Pipe pistol | B-137 Cat | 1.1 | 10 | 0/0 | 16.0 | 1 | 1 | OK |
+| Pipe pistol | B-092 Raider | 1.0 | 70 | 10/5 | 16.0 | 5 | 1 | OK |
+| Pipe pistol | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 16.0 | 3 | 1 | OK |
+| Pipe pistol | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 11.0 | 20 | 4 | LARGO |
+| Pipe pistol | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 1.6 | 625 | 125 | OK |
+| Pipe pistol | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 1.6 | 563 | 113 | OK |
+| Pipe pistol | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 1.6 | 1750 | 350 | OK |
+| Pipe pistol | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 1.6 | 2625 | 525 | OK |
+| Pipe pistol | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 11.0 | 17 | 4 | OK |
+| Pipe pistol | B-154 F6-33 | 2.5 | 500 | 90/130 | 6.0 | 84 | 17 | LARGO |
+| 10mm Pistol | B-137 Cat | 1.1 | 10 | 0/0 | 18.0 | 1 | 1 | OK |
+| 10mm Pistol | B-092 Raider | 1.0 | 70 | 10/5 | 18.0 | 4 | 1 | OK |
+| 10mm Pistol | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 18.0 | 3 | 1 | OK |
+| 10mm Pistol | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 13.0 | 17 | 4 | OK |
+| 10mm Pistol | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 1.8 | 556 | 112 | OK |
+| 10mm Pistol | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 1.8 | 500 | 100 | OK |
+| 10mm Pistol | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 1.8 | 1556 | 312 | OK |
+| 10mm Pistol | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 1.8 | 2334 | 467 | OK |
+| 10mm Pistol | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 13.0 | 14 | 3 | OK |
+| 10mm Pistol | B-154 F6-33 | 2.5 | 500 | 90/130 | 8.0 | 63 | 13 | LARGO |
+| Combat Rifle | B-137 Cat | 1.1 | 10 | 0/0 | 33.0 | 1 | 1 | OK |
+| Combat Rifle | B-092 Raider | 1.0 | 70 | 10/5 | 33.0 | 3 | 1 | OK |
+| Combat Rifle | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 33.0 | 2 | 1 | OK |
+| Combat Rifle | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 28.0 | 8 | 2 | OK |
+| Combat Rifle | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 13.0 | 77 | 20 | OK |
+| Combat Rifle | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 13.0 | 70 | 18 | OK |
+| Combat Rifle | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 3.3 | 849 | 213 | OK |
+| Combat Rifle | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 3.3 | 1273 | 319 | OK |
+| Combat Rifle | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 28.0 | 7 | 2 | OK |
+| Combat Rifle | B-154 F6-33 | 2.5 | 500 | 90/130 | 23.0 | 22 | 6 | LARGO |
+| Combat shotgun | B-137 Cat | 1.1 | 10 | 0/0 | 55.0 | 1 | 1 | OK |
+| Combat shotgun | B-092 Raider | 1.0 | 70 | 10/5 | 55.0 | 2 | 1 | OK |
+| Combat shotgun | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 55.0 | 1 | 1 | OK |
+| Combat shotgun | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 50.0 | 5 | 3 | OK |
+| Combat shotgun | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 35.0 | 29 | 15 | OK |
+| Combat shotgun | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 35.0 | 26 | 13 | OK |
+| Combat shotgun | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 20.0 | 140 | 70 | OK |
+| Combat shotgun | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 20.0 | 210 | 105 | OK |
+| Combat shotgun | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 50.0 | 4 | 2 | OK |
+| Combat shotgun | B-154 F6-33 | 2.5 | 500 | 90/130 | 45.0 | 12 | 6 | OK |
+| Láser Rifle | B-137 Cat | 1.1 | 10 | 0/0 | 24.0 | 1 | 1 | OK |
+| Láser Rifle | B-092 Raider | 1.0 | 70 | 10/5 | 24.0 | 3 | 1 | OK |
+| Láser Rifle | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 24.0 | 2 | 1 | OK |
+| Láser Rifle | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 24.0 | 10 | 3 | OK |
+| Láser Rifle | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 4.0 | 250 | 63 | OK |
+| Láser Rifle | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 4.0 | 225 | 57 | OK |
+| Láser Rifle | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 2.4 | 1167 | 292 | OK |
+| Láser Rifle | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 4.0 | 1050 | 263 | OK |
+| Láser Rifle | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 24.0 | 8 | 2 | OK |
+| Láser Rifle | B-154 F6-33 | 2.5 | 500 | 90/130 | 14.0 | 36 | 9 | LARGO |
+| Plasma Rifle | B-137 Cat | 1.1 | 10 | 0/0 | 48.0 | 1 | 1 | OK |
+| Plasma Rifle | B-092 Raider | 1.0 | 70 | 10/5 | 48.0 | 2 | 1 | OK |
+| Plasma Rifle | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 48.0 | 1 | 1 | OK |
+| Plasma Rifle | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 43.0 | 6 | 2 | OK |
+| Plasma Rifle | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 8.0 | 125 | 42 | OK |
+| Plasma Rifle | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 8.0 | 113 | 38 | OK |
+| Plasma Rifle | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 4.8 | 584 | 195 | OK |
+| Plasma Rifle | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 4.0 | 1050 | 350 | OK |
+| Plasma Rifle | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 43.0 | 5 | 2 | OK |
+| Plasma Rifle | B-154 F6-33 | 2.5 | 500 | 90/130 | 28.0 | 18 | 6 | OK |
+| Gauss Rifle | B-137 Cat | 1.1 | 10 | 0/0 | 110.0 | 1 | 1 | OK |
+| Gauss Rifle | B-092 Raider | 1.0 | 70 | 10/5 | 110.0 | 1 | 1 | OK |
+| Gauss Rifle | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 110.0 | 1 | 1 | OK |
+| Gauss Rifle | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 105.0 | 3 | 2 | OK |
+| Gauss Rifle | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 90.0 | 12 | 6 | OK |
+| Gauss Rifle | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 90.0 | 10 | 5 | OK |
+| Gauss Rifle | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 75.0 | 38 | 19 | OK |
+| Gauss Rifle | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 75.0 | 56 | 28 | OK |
+| Gauss Rifle | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 105.0 | 2 | 1 | OK |
+| Gauss Rifle | B-154 F6-33 | 2.5 | 500 | 90/130 | 100.0 | 5 | 3 | OK |
+| Super Sledge | B-137 Cat | 1.1 | 10 | 0/0 | 40.0 | 1 | 1 | OK |
+| Super Sledge | B-092 Raider | 1.0 | 70 | 10/5 | 40.0 | 2 | 1 | OK |
+| Super Sledge | B-001 Feral Ghoul | 1.5 | 45 | 5/0 | 40.0 | 2 | 1 | OK |
+| Super Sledge | B-004 Withered Feral Ghoul | 2.1 | 220 | 45/25 | 35.0 | 7 | 4 | OK |
+| Super Sledge | B-150 Synth eradicator | 4.0 | 1000 | 180/240 | 20.0 | 50 | 25 | OK |
+| Super Sledge | B-181 Gunner con servoarmadura | 4.2 | 900 | 220/180 | 20.0 | 45 | 23 | OK |
+| Super Sledge | B-132 Legendary Deathclaw | 7.0 | 2800 | 350/260 | 5.0 | 560 | 280 | OK |
+| Super Sledge | B-068 Ancient Behemoth | 5.8 | 4200 | 320/160 | 5.0 | 840 | 420 | OK |
+| Super Sledge | B-022 Red Widow Bloodbug | 1.6 | 180 | 35/20 | 35.0 | 6 | 3 | OK |
+| Super Sledge | B-154 F6-33 | 2.5 | 500 | 90/130 | 30.0 | 17 | 9 | OK |
+
+
+### Banderas de balance detectadas
+| Arma | Enemigo | Diagnóstico |
+|---|---|---|
+| Pipe pistol | B-004 Withered Feral Ghoul | LARGO |
+| Pipe pistol | B-154 F6-33 | LARGO |
+| 10mm Pistol | B-154 F6-33 | LARGO |
+| Combat Rifle | B-154 F6-33 | LARGO |
+| Láser Rifle | B-154 F6-33 | LARGO |
+
+
+### Decisión de balance I4.6
+- No se ajustan fichas automáticamente.
+- Una ficha marcada LARGO no se nerfea ni se elimina; se revisa si su rol táctico justifica duración alta.
+- Una ficha marcada BLOQUEO_DEFENSA requiere salida táctica: daño mínimo, punto débil, arma antiarmadura, entorno, sigilo, explosivo o condición especial.
+- Una ficha marcada DEMASIADO_LETAL requiere verificar si el arma es única, pesada, explosiva, consume munición escasa o tiene coste AP alto.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 permanecen intactos y no se incluyen en esta entrega.
+- No se elimina información importante ni relevante.
+- Lo heredado se conserva como alias, soporte, índice no operativo, material fusionado o revisión manual.
+- Las correcciones se aplican como capa técnica: control de cruce, tabla de balance, ficha individual mínima o regla de uso.
+- Si un dato exacto no existe en el tomo fuente, no se inventa: se marca como pendiente de validación fina.
+- AP se conserva siempre como Puntos de Acción. No se introduce PA como término de acciones.
+
+## Cierre I4.5 del Tomo 04 — Balance ofensivo listo para simulación
+
+Ajuste no destructivo aplicado:
+- No se cambian daños, AP, munición, peso ni valor de las armas.
+- Los IDs `W-xxxx` son la referencia maestra; los IDs `WIKI-W-xxxx` quedan como alias heredado.
+- Se agrega matriz de uso para validar armas contra enemigos y armaduras.
+
+### Matriz ofensiva I4.5
+| Categoría de arma | Daño esperado | Coste AP esperado | Riesgo de balance |
+|---|---:|---:|---|
+| Improvisada / baja | Bajo | Bajo | Inútil si no supera defensa mínima. |
+| Pistola / ligera | Bajo-medio | Bajo | Debe servir contra amenaza baja y media temprana. |
+| Rifle / escopeta | Medio | Medio | Debe ser columna de combate estándar. |
+| Energía | Medio-alto | Medio | Debe importar contra ER, robots y synths. |
+| Pesada | Alto | Alto | Debe consumir recursos, AP o munición escasa. |
+| Explosiva | Pico alto / área | Alto o limitado | Debe ser fuerte, pero no trivializar jefes. |
+| Cuerpo a cuerpo | Variable | Bajo-medio | Debe compensar riesgo de distancia. |
+
+### Regla de prueba de arma
+Un arma queda marcada `REQUIERE_BALANCE_NUMERICO` si:
+- No puede dañar enemigos comunes de su etapa.
+- Mata elites o jefes en menos de 2 rondas sin coste serio.
+- Cuesta tanto AP que nunca conviene usarla.
+- Ignora demasiado DR/ER/RR sin una propiedad explícita.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 permanecen intactos; se usan solo como referencia de canon y supervivencia avanzada.
+- No se elimina información importante ni relevante.
+- Las correcciones se aplican como capas de normalización: ID maestro, alias heredado, apéndice operativo, matriz de cruce o marca de revisión.
+- Si un dato no puede validarse con seguridad, se conserva como referencia y no se borra.
+- Los textos heredados que contradicen un ID maestro dejan de ser operativos, pero se mantienen como alias histórico o material fusionado.
+
+## Cierre I4.4 del Tomo 04 — Armas y balance ofensivo
+
+Matriz ofensiva aprobada para prueba de mesa:
+| Tipo de arma | Coste AP recomendado | Daño base esperado | Rol táctico | Riesgo de balance |
+|---|---:|---:|---|---|
+| Pistola ligera / pipe | 1-2 AP | 10-35 | Inicio, respaldo, bajo coste | Bajo |
+| Pistola pesada / revólver | 2 AP | 25-55 | Daño puntual | Medio |
+| Rifle estándar | 2-3 AP | 35-85 | Alcance y precisión | Medio |
+| Escopeta | 2-3 AP | 45-120 cercano | Alto daño a corta distancia | Alto si ignora DR |
+| Automática | 2-4 AP | 15-45 por impacto/ráfaga | Presión y control | Alto por multiimpacto |
+| Energía | 2-4 AP | 30-100 | Contrapeso a DR físico | Medio-alto |
+| Pesada | 3-5 AP | 90+ | Escena, jefe, grupos | Crítico |
+| Explosiva | 3-5 AP | 120+ / área | Control de grupos | Crítico |
+| Melee ligera | 1-2 AP | 15-45 | Bajo recurso, sigilo | Bajo-medio |
+| Melee pesada | 2-4 AP | 40-120 | Alto daño, exposición | Medio-alto |
+
+Regla de cierre:
+- El ID maestro `W-xxxx` es el operativo.
+- El ID `WIKI-W-xxx` se conserva como alias heredado y no se elimina.
+- Si un arma pesada o explosiva mata jefes en menos de 2 rondas sin coste, marcar `REQUIERE_BALANCE_NUMERICO`.
+- Si un arma común no supera nunca DR básico, marcar `REQUIERE_BALANCE_NUMERICO`.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 NO se modifican ni se incluyen en esta entrega.
+- No se elimina información importante: los IDs, textos y fichas heredadas se conservan como alias, apoyo o revisión manual.
+- Los ajustes nuevos se aplican como capa técnica para que el contenido heredado no compita con IDs maestros.
+- Si un dato no puede validarse contra Tomo 06, queda marcado como REQUIERE_VALIDACION_MANUAL o REQUIERE_MAPEO_U.
+
+## Ajuste Tomo 04 — Preparación para balance matemático
+
+Esta Iteración 4.3 no cambia estadísticas numéricas de forma destructiva. Se añade criterio de prueba: cualquier ajuste futuro de PV, daño, DR/ER/RR o AP debe hacerse contra la matriz Tomo 03 ↔ Tomo 04 ↔ Tomo 05. Si una ficha parece desbalanceada, marcar `REQUIERE_BALANCE` antes de modificar valores.
+
+Criterio aplicado:
+- Tomo 01 y Tomo 10 NO se modifican.
+- No se elimina información importante ni relevante.
+- Las correcciones se agregan como capa de normalización, alias, cruce o apéndice operativo.
+- Si un dato no puede validarse con seguridad, se conserva y se marca como REQUIERE REVISIÓN MANUAL.
+- Los IDs heredados se conservan como alias para no romper búsquedas ni referencias anteriores.
+- AP se mantiene como Puntos de Acción. No se introduce PA como término de acciones.
+
+## Ajuste específico Tomo 04 — Armas
+
+Objetivo 4.1:
+- No reemplazar IDs heredados `WIKI-W-xxx`; se conservan como alias.
+- Agregar ID maestro limpio `W-xxxx` para futuras referencias desde misiones, enemigos, botín y balance.
+- Mantener daño, munición, coste AP, peso, valor y notas originales.
+
+Corrección aplicada: 95 armas recibieron ID maestro `W-xxxx` con alias heredado conservado.
+
+### Regla de balance ofensivo
+Hasta balance final, toda arma debe evaluarse contra:
+- PV y defensa de Tomo 03.
+- DR/ER/RR de Tomo 05.
+- Coste AP y turnos definidos por Tomo 01.
+- Penalizaciones avanzadas de supervivencia solo desde Tomo 10.
+
+
+Criterio V3:
+- No se elimina contenido del Tomo 01, Tomo 02 ni Tomo 10.
+- Tomo 01 conserva reglas core; se ajusta por notas de alineación, no por recorte.
+- Tomo 02 conserva todas las misiones, entradas locales, referencias reconstruidas y contenido pendiente de reclasificación; nada se borra sin validación manual.
+- Tomo 10 conserva reglas de supervivencia y referencias recuperadas; los contenidos fuera del juego base se tratan como referencia/apéndice, no como pérdida de reglas.
+- Los demás tomos quedan alineados al canon global de cruce: Tomo 03 estadísticas, Tomo 04 armas, Tomo 05 equipo, Tomo 06 ubicaciones/mapas, Tomo 07 asentamientos, Tomo 08 facciones y Tomo 09 coleccionables.
+- Cualquier contenido dudoso debe marcarse como “requiere revisión” antes de moverse o separarse en tomo/apéndice de expansión.
+
+ROL V3 DEL TOMO 04: fuente de armas, daño, munición, mods, obtención y balance ofensivo.
+
+CANON GLOBAL DE CRUCE ENTRE TOMOS — EDICIÓN AJUSTADA
+Alcance V3 de esta colección: Fallout 4 juego base como núcleo principal. Si este tomo conserva contenido DLC, Creation Club o referencias no base, debe marcarse para apéndice o tomo de expansión, no mezclarse con la regla base.
+
+Reglas compartidas entre tomos:
+- AP significa siempre Puntos de Acción. No usar PA para acciones.
+- Zona significa ubicación, punto de interés, interior, exterior, edificio, cueva, vault, tramo de ruta o área jugable completa.
+- Ruta significa cadena de zonas conectadas.
+- Ubicación significa lugar físico consultable en el Tomo 06.
+- Subzona significa elemento interno explorable: sala, calle, casa, puente, pasillo, azotea, patio, túnel, garaje, muelle, escalera, zona de cobertura o sector de combate.
+- Enemigo propio de misión: se define en Tomo 02 y sus estadísticas se consultan en Tomo 03.
+- Enemigo normal de ubicación: se define en Tomo 06 y sus estadísticas se consultan en Tomo 03.
+- Asentamiento: Tomo 06 lo describe como mapa/ubicación explorable; Tomo 07 lo desarrolla como sistema construible, población, defensa, recursos y economía.
+- Bioma, clima y hora: Tomo 06 los explica como lectura básica del entorno; Tomo 10 contiene las reglas avanzadas de supervivencia.
+- Coleccionable: Tomo 09 es la fuente principal; Tomo 06 indica su punto físico exacto si forma parte del mapa; Tomo 02 solo lo menciona si es requerido por una misión.
+- Facción: Tomo 08 es la fuente política y de reputación; Tomo 02 usa facciones en misiones; Tomo 06 en territorios; Tomo 03 en enemigos/NPC.
+
+Lista canónica básica de climas del juego base para Tomo 01, 06 y 10:
+Soleado; Despejado templado; Nublado; Viento fuerte; Polvo / ceniza; Lluvia ligera; Lluvia fuerte; Niebla ligera; Niebla densa; Calor extremo; Frío extremo; Tormenta de nieve; Tormenta eléctrica; Tormenta radiactiva.
+
+ROL DE ESTE TOMO EN EL CRUCE GLOBAL:
+Este tomo es la fuente única de armas, daño, munición, mods y obtención de armas del juego base.
+
+Biomas oficiales de supervivencia usados como etiqueta de lectura de entorno:
+Desierto / yermo seco; Bosque templado; Bosque boreal; Tundra / zona fría; Bioma acuático; Pantano; Mar Resplandeciente; Urbano; Costa; Rural; Subterráneo.
+
+
+Criterio aplicado en esta iteración:
+- Tomo 01 y Tomo 10 quedan intactos. No se modifica su texto, reglas ni orden interno.
+- Este tomo se ajusta para alinearse con Tomo 01 como regla core y Tomo 10 como supervivencia avanzada, sin duplicarlos.
+- No se elimina información: lo dudoso se conserva como referencia, alias o apéndice de revisión.
+- Se refuerzan IDs, cruces, separación base/DLC/Creation Club/cortado/local y uso correcto de AP como Puntos de Acción.
+- Las fichas principales conservan su contenido; los ajustes nuevos son capas de normalización editorial y jugable.
+
+## Ajuste específico del Tomo 04 — Armas
+
+Estado después del ajuste: el Tomo 04 queda preparado para balance ofensivo. No se eliminan armas ni mods; se agregan reglas de lectura para daño, coste AP, munición y cruce contra Tomo 03 y Tomo 05.
+
+### Regla provisional de balance ofensivo
+Cada arma debe poder responder:
+- Daño base físico, energético, radiación, explosivo o especial.
+- Coste AP por ataque normal.
+- Cadencia o número de impactos si aplica.
+- Munición requerida.
+- Alcance táctico.
+- Mods que alteran daño, AP, precisión, peso o ruido.
+- Etapa de campaña recomendada: inicio, temprano, medio, alto o final.
+
+### Fórmula provisional de daño contra defensa
+Hasta prueba definitiva, usar esta lectura:
+- Si el daño golpea DR, usar defensa física.
+- Si el daño golpea ER, usar defensa energética.
+- Si el daño es radiación, usar RR.
+- La defensa no debe reducir el daño por debajo de 1 salvo inmunidad explícita.
+- Armas pesadas, explosivas o antiarmadura pueden ignorar parcialmente defensa si la ficha lo indica.
+
+### Coste AP recomendado por tipo de arma
+| Tipo | Coste AP sugerido | Nota de balance |
+|---|---:|---|
+| Pistola ligera | 1-2 AP | Buena para inicio y disparos frecuentes. |
+| Rifle estándar | 2-3 AP | Daño estable, alcance medio/largo. |
+| Escopeta | 2-3 AP | Fuerte en corta distancia, penalizada a larga. |
+| Arma automática | 3-4 AP | Debe gastar más munición o generar ráfaga. |
+| Arma pesada | 4-6 AP | Alto daño, peso alto, munición limitada. |
+| Cuerpo a cuerpo ligero | 1-2 AP | Bajo coste, riesgo por proximidad. |
+| Cuerpo a cuerpo pesado | 3-4 AP | Alto daño, lento. |
+| Explosivo | 3-5 AP | Control de área, riesgo de fuego amigo. |
+
+### Prueba obligatoria contra Tomo 03
+Un arma común de etapa temprana no debería tardar más de 3-5 impactos en derrotar enemigos menores, 6-9 impactos contra enemigos medios y debe ser ineficiente contra amenazas altas sin táctica, mods o ventaja.
+
+### Prueba obligatoria contra Tomo 05
+Si una armadura media vuelve inútiles las armas tempranas, se debe ajustar defensa, penetración o disponibilidad de munición antiarmadura; no subir daño de todo el arsenal sin control.
+
+
+Fichas detectadas: 140
+Fichas incompletas detectadas: 0
+Pendientes editoriales detectados: 128
+
+Nota de auditoría aplicada:
+- Se corrigió mojibake/acentos rotos en el tomo.
+- Se convirtió el índice estadístico a tabla Markdown.
+- Se agregó referencia rápida por arma, economía/disponibilidad y reglas de cruce con misiones, bestiario y facciones.
+- Los textos "pendiente" restantes se consideran pendientes editoriales de integración, no fichas faltantes completas.
+- No se integran imágenes en esta pasada.
+
+
+INDICE ESTADISTICO
+| Categoría | Fichas |
+| --- | --- |
+| Balística - rifle única | 11 |
+| Melee - contundente | 11 |
+| Explosivo - arrojadizo | 10 |
+| Energía - láser única | 9 |
+| Explosivo - mina | 9 |
+| Energía - láser | 8 |
+| Pesada | 8 |
+| Melee - filo | 7 |
+| Pesada única | 7 |
+| Balística - pipe | 6 |
+| Unarmed | 6 |
+| Balística - rifle | 5 |
+| Melee - filo única | 5 |
+| Balística - pistola única | 4 |
+| Especial | 4 |
+| Energía - plasma | 3 |
+| Melee - contundente única | 3 |
+| Arma balística | 2 |
+| Arma balística única | 2 |
+| Arma de energía | 2 |
+| Balística - escopeta | 2 |
+| Balística - escopeta única | 2 |
+| Balística - pistola | 2 |
+| Energía - plasma única | 2 |
+| Radiación | 2 |
+| Radiación única | 2 |
+| Arma balística avanzada | 1 |
+| Arma pesada | 1 |
+| Arma pesada explosiva | 1 |
+| Melee | 1 |
+
+
+4. ARSENAL DEL YERMO // ARMAS ÚNICAS Y NORMALES
+## [PAGEBREAK]
+PORTADA DE SECCIÓN - ARMAS ÚNICAS Y NORMALES
+Esta sección organiza el arsenal completo como fichas técnicas. Las armas se explican por categoría, daño, munición, cargador, cadencia, alcance, precisión, coste AP, crítico, DPS, peso, valor, perks, mods, obtención, uso recomendado y limitaciones. Su objetivo es permitir comparaciones útiles entre estilos de juego.
+Qué encontrarás en esta sección:
+- Descripción general del contenido.
+- Categorías internas para consultar rápido.
+- Fichas, tablas o listas según el tipo de información.
+- Relación práctica con combate, exploración, historia o construcción.
+[PAGEBREAK]
+TABLA DE CONTENIDO DE SECCIÓN - ARMAS ÚNICAS Y NORMALES
+1. Ficha técnica de armas
+2. Pistolas
+3. Rifles
+4. Escopetas
+5. Automáticas
+6. Energía
+7. Radiación
+8. Pesadas
+9. Explosivas
+10. Melee
+11. Unarmed
+12. Especiales
+13. Únicas
+[PAGEBREAK]
+INTRODUCCIÓN DE SECCIÓN:
+Esta sección organiza las armas como fichas técnicas. Cada arma se describe por tipo de daño, munición, cargador,
+cadencia, alcance, precisión, coste AP en VATS, crítico, DPS referencial, peso, valor, perks recomendados, mods,
+Esta es la única sección principal de armas.
+daño, munición, cargador, cadencia, alcance, precisión, AP, crítico, DPS, peso, valor,
+perks, mods, obtención y uso.
+---
+------------------------------------------------------------------------------------------------
+---
+4.0 GUÍA DE FICHA TÉCNICA DE ARMAS
+---
+------------------------------------------------------------------------------------------------
+---
+| Campo | Significado |
+| --- | --- |
+| Nombre | Nombre del arma o variante única. |
+| Categoría | Balística, energía, pesada, explosiva, melee, unarmed o especial. |
+| Subtipo | Pistola, rifle, escopeta, arma automática, arma pesada, etc. |
+| Daño físico | Daño balístico o de impacto. |
+| Daño energía | Daño láser, plasma, eléctrico o tecnológico. |
+| Daño radiación/fuego/veneno | Daño elemental o secundario. |
+| Munición | Tipo de munición consumida. |
+| Cargador | Número de disparos antes de recargar. |
+| Cadencia | Velocidad de disparo. |
+| Alcance | Distancia útil. |
+| Precisión | Estabilidad y probabilidad de impacto. |
+| Coste AP VATS | AP aproximado consumido por ataque en VATS. |
+| Crítico | Multiplicador o utilidad del golpe crítico. |
+| DPS referencial | Daño por segundo práctico considerando cadencia. |
+| Peso | Peso del arma. |
+| Valor | Precio base aproximado. |
+| Perks | Perks que mejoran el arma. |
+| Mods | Mejoras recomendadas. |
+| Obtención | Dónde se consigue o qué enemigo la usa. |
+| Uso recomendado | Build o situación ideal. |
+| Limitación | Debilidad táctica del arma. |
+---
+----------------------------------------------------------------------------------------------
+---
+34.2 CATEGORÍAS MAESTRAS DE ARMAS
+---
+----------------------------------------------------------------------------------------------
+---
+| Categoría | Armas incluidas |
+| --- | --- |
+| Escopetas | Double-Barrel Shotgun, Combat Shotgun, Le Fusil Terribles, Handmade Shotgun CC. |
+| Armas de energía | Láser, Institute Laser, Plasma, Gatling Laser, Tesla Cannon, Alien Blaster. |
+| Melee | Baseball Bat, Machete, Chinese Officer Sword, Shishkebab, Super Sledge, Atom's Judgment. |
+| Unarmed | Power Fist, Deathclaw Gauntlet, Knuckles, Boxing Glove. |
+---
+----------------------------------------------------------------------------------------------
+---
+34.3 FICHAS MEJORADAS DE ARMAS REPRESENTATIVAS
+---
+----------------------------------------------------------------------------------------------
+---
+REFERENCIA RÁPIDA DE ARMAS
+| Arma | Categoría | Subtipo | Munición | Origen | Uso rápido |
+| --- | --- | --- | --- | --- | --- |
+| 10mm Pistol | Arma balística | Pistola | 10mm | Base | Pistola VATS, sigilo temprano, secundaria confiable |
+| Deliverer | Arma balística única | Pistola silenciada | 10mm | Base | Build de pistola VATS y sigilo |
+| Combat Rifle | Arma balística | Rifle | .45 / .308 mod | Base | Rifle principal de campaña |
+| Overseer's Guardian | Arma balística única | Rifle | .45 / .308 mod | Base | Rifle principal top para casi todo el juego |
+| Gauss Rifle | Arma balística avanzada | Rifle electromagnético | 2mm EC | Base | Sniper endgame |
+| Láser Rifle | Arma de energía | Rifle/Pistola láser | Fusion cell | Base | Build energía fiable |
+| Plasma Rifle | Arma de energía | Rifle/Pistola plasma | Plasma cartridge | Base | Daño mixto contra enemigos resistentes |
+| Minigun | Arma pesada | Ametralladora rotativa | 5mm | Base | Supresión y enemigos grandes |
+| Fat Man | Arma pesada explosiva | Lanzador nuclear | Mini nuke | Base | Bosses, grupos grandes |
+| Super Sledge | Melee | Mazo pesado | Ninguna | Base | Melee tanque |
+| Power Fist | Unarmed | Puño mecánico | Ninguna | Base | Unarmed fuerte |
+| .44 pistol | Balística - pistola | Pistola | 10mm / .44 / .38 según arma | Base | Arma secundaria, VATS y exploración temprana |
+| Pipe pistol | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Pipe revolver pistol | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Pipe bolt-action pistol | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Hunting rifle | Balística - rifle | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Assault rifle | Balística - rifle | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Submachine gun | Balística - rifle | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Double-barrel shotgun | Balística - escopeta | Escopeta | Shell de escopeta | Base | Corto alcance, interiores y stagger |
+| Combat shotgun | Balística - escopeta | Escopeta | Shell de escopeta | Base | Corto alcance, interiores y stagger |
+| Pipe rifle | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Pipe revolver rifle | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Pipe bolt-action rifle | Balística - pipe | Pipe / improvisada | .38 / .45 / .308 según conversión | Base | Inicio, enemigos comunes y munición abundante |
+| Láser pistol | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Institute pistol | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Institute rifle | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Láser musket | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Gatling láser | Pesada | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Plasma pistol | Energía - plasma | Plasma | Plasma cartridge | Base | Híbrido físico/energía de alto daño |
+| Plasma gun | Energía - plasma | Plasma | Plasma cartridge | Base | Híbrido físico/energía de alto daño |
+| Plasma thrower | Energía - plasma | Plasma | Plasma cartridge | Base | Híbrido físico/energía de alto daño |
+| Alien blaster pistol | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Gamma gun | Radiación | Radiación | Gamma round / .45 radium | Base | Humanos y enemigos sin inmunidad rad |
+| Flamer | Pesada | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Missile launcher | Pesada | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Broadsider | Pesada | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Junk Jet | Especial | Especial | Especial / variable | Base | Herramienta táctica o de rol |
+| Cryolator | Energía - láser | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Syringer | Especial | Especial | Especial / variable | Base | Herramienta táctica o de rol |
+| Railway rifle | Balística - rifle | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Cannonball launcher | Pesada | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Fragmentation grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Molotov cocktail | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Pulse grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Plasma grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Cryogenic grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Nuka grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Baseball grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| HalluciGen gas grenade | Explosivo - arrojadizo | Granada / arrojadizo | Consumible arrojadizo | Base | Control de grupos y cobertura |
+| Fragmentation mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Bottlecap mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Pulse mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Plasma mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Cryo mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Nuke mine | Explosivo - mina | Mina / trampa | Consumible colocado | Base | Defensa, emboscada y control de rutas |
+| Machete | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Combat knife | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Chinese officer sword | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Revolutionary sword | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Shishkebab | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Ripper | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Switchblade | Melee - filo | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Pickman blade | Melee - filo única | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Kremvh's Tooth | Melee - filo única | Melee filo | No usa | Base | Sigilo, ahorro de munición |
+| Baseball bat | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Board | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Lead pipe | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Pipe wrench | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Tire iron | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Walking cane | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Sledgehammer | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Pool cue | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Rolling pin | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Security baton | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Baton | Melee - contundente | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Boxing glove | Unarmed | Unarmed | No usa | Base | Combate cercano y builds de fuerza |
+| Knuckles | Unarmed | Unarmed | No usa | Base | Combate cercano y builds de fuerza |
+| Deathclaw gauntlet | Unarmed | Unarmed | No usa | Base | Combate cercano y builds de fuerza |
+| 2076 World Series baseball bat | Melee - contundente única | Melee contundente | No usa | Base | Romper armadura y stagger |
+| Kellogg's pistol | Balística - pistola única | Pistola | 10mm / .44 / .38 según arma | Base | Arma secundaria, VATS y exploración temprana |
+| The Gainer | Balística - pistola única | Pistola | 10mm / .44 / .38 según arma | Base | Arma secundaria, VATS y exploración temprana |
+| Eddie's Peace | Balística - pistola única | Pistola | 10mm / .44 / .38 según arma | Base | Arma secundaria, VATS y exploración temprana |
+| Wastelander's Friend | Balística - pistola única | Pistola | 10mm / .44 / .38 según arma | Base | Arma secundaria, VATS y exploración temprana |
+| Righteous Authority | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Old Faithful | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Good Intentions | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Prototype UP77 Limitless Potential | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Wazer Wifle | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Survivor's Special | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Virgil's rifle | Energía - láser única | Láser | Fusion cell | Base | Daño energético limpio y buena precisión |
+| Experiment 18-A | Energía - plasma única | Plasma | Plasma cartridge | Base | Híbrido físico/energía de alto daño |
+| Sentinel's Plasmacaster | Energía - plasma única | Plasma | Plasma cartridge | Base | Híbrido físico/energía de alto daño |
+| Big Boy | Pesada única | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Partystarter | Pesada única | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| Ashmaker | Pesada única | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+| The Last Minute | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Reba | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Reba II | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Tinker Tom Special | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Justice | Balística - escopeta única | Escopeta | Shell de escopeta | Base | Corto alcance, interiores y stagger |
+| Le Fusil Terribles | Balística - escopeta única | Escopeta | Shell de escopeta | Base | Corto alcance, interiores y stagger |
+| Spray n' Pray | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Silver submachine gun | Balística - rifle única | Rifle | .308 / .45 / 5.56 / 7.62 según arma | Base | Combate medio-largo y daño confiable |
+| Lorenzo's Artifact gun | Radiación única | Radiación | Gamma round / .45 radium | Base | Humanos y enemigos sin inmunidad rad |
+| Final Judgment | Pesada única | Arma pesada | 5mm / misil / mini nuke / harpoon / cannonball | Base | Jefes, grupos y servoarmaduras |
+
+ECONOMÍA Y DISPONIBILIDAD
+| Tipo de arma | Disponibilidad sugerida | Uso económico en mesa |
+| --- | --- | --- |
+| Pistolas y armas pipe | Común | Premio temprano, arma secundaria, botín de saqueadores o colonos. |
+| Rifles balísticos | Común a rara | Recompensa principal de misión, arma de patrulla, mejora de campaña. |
+| Energía y plasma | Media a rara | Botín tecnológico, facciones avanzadas, laboratorios, Brotherhood o Institute. |
+| Pesadas y explosivas | Rara | Recompensa de alto riesgo, jefe, arsenal militar o botín con coste logístico. |
+| Melee y unarmed | Común a rara | Identidad de enemigo, duelos, arenas, saqueadores, builds de fuerza. |
+
+CRUCES DE USO CON OTROS TOMOS
+- Usuarios: asignar armas por facción y rol antes que por daño puro. Raiders y colonos usan pipe, pistolas y escopetas; Gunners usan rifles y armadura; Brotherhood usa energía/pesadas; Institute usa láser/plasma; Children of Atom favorece radiación.
+- Misiones: usar armas únicas como recompensa, pista, soborno, pago de facción o consecuencia de elección.
+- Bestiario: humanos, synths y robots armados deben tomar armas de este tomo; criaturas naturales solo usan armas si la ficha lo justifica.
+- Economía: las armas comunes pueden circular como botín; las raras deben exigir ubicación, contacto, coste, reputación o riesgo.
+- Mods: tratar mods clave como recompensas pequeñas y materiales como coste de preparación.
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: 10mm Pistol
+Categoría: Arma balística
+Subtipo: Pistola
+Descripción: Pistola semiautomática inicial, ligera, confiable y muy modificable.
+Estadísticas medibles:
+DAÑO_FISICO: 18
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: 10mm
+CARGADOR: 12
+CADENCIA: 46
+ALCANCE: 119
+PRECISIÓN: 61
+COSTE_AP_VATS: 20
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 80-160
+PESO: 3.5
+VALOR: 50
+Perks recomendados: Gunslinger o Commando si se vuelve automática
+Mods clave: Advanced receiver, suppressor, reflex sight, large magazine
+Botín/obtención: Vault 111/inicio, botín común, vendedores
+Uso recomendado: Pistola VATS, sigilo temprano, secundaria confiable
+Limitaciones/debilidades: Daño bajo contra armadura pesada sin mods
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Deliverer
+Categoría: Arma balística única
+Subtipo: Pistola silenciada
+Descripción: Pistola única del Ferrocarril, excelente en VATS por bajo coste de AP.
+Estadísticas medibles:
+DAÑO_FISICO: 25
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: 10mm
+CARGADOR: 12
+CADENCIA: 66
+ALCANCE: 119
+PRECISIÓN: 67
+COSTE_AP_VATS: 18
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 120-220
+PESO: 4.4
+VALOR: 774
+Perks recomendados: Gunslinger, Sneak, Ninja, Mister Sandman, Better Criticals
+Mods clave: Advanced receiver, grip mejorado; viene silenciada
+Botín/obtención: Recompensa del Ferrocarril en Tradecraft
+Uso recomendado: Build de pistola VATS y sigilo
+Limitaciones/debilidades: Menor alcance que rifles
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Combat Rifle
+Categoría: Arma balística
+Subtipo: Rifle
+Descripción: Rifle modular para semiautomatico o automático; una de las armas mas versatiles.
+Estadísticas medibles:
+DAÑO_FISICO: 33
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: .45 / .308 mod
+CARGADOR: 20
+CADENCIA: 33
+ALCANCE: 203
+PRECISIÓN: 72
+COSTE_AP_VATS: 25
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 160-350
+PESO: 11.1
+VALOR: 144
+Perks recomendados: Rifleman o Commando
+Mods clave: Advanced receiver, .308 receiver, suppressor, reflex/recon scope
+Botín/obtención: Botín de Gunners, vendors, zonas medias
+Uso recomendado: Rifle principal de campaña
+Limitaciones/debilidades: Consume munición si automático
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Overseer's Guardian
+Categoría: Arma balística única
+Subtipo: Rifle
+Descripción: Combat Rifle único con efecto Two Shot; extremadamente fuerte desde temprano.
+Estadísticas medibles:
+DAÑO_FISICO: 55 ref
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: .45 / .308 mod
+CARGADOR: 20
+CADENCIA: 33
+ALCANCE: 203
+PRECISIÓN: 72
+COSTE_AP_VATS: 28
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 250-500
+PESO: 15.7
+VALOR: 3138
+Perks recomendados: Rifleman, Gun Nut, Better Criticals
+Mods clave:  .308 receiver, long ported barrel, suppressor, recon/reflex
+Botín/obtención: Comprable en Vault 81
+Uso recomendado: Rifle principal top para casi todo el juego
+Limitaciones/debilidades: Precio alto y retroceso mayor
+---
+--------------------------------------------------------------------------------------
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Gauss Rifle
+Categoría: Arma balística avanzada
+Subtipo: Rifle electromagnético
+Descripción: Rifle de carga electromagnetica con daño enorme por disparo.
+Estadísticas medibles:
+DAÑO_FISICO: 110
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: 2mm EC
+CARGADOR: 7
+CADENCIA: Carga
+ALCANCE: 203+
+PRECISIÓN: 69
+COSTE_AP_VATS: 40
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 250-800
+PESO: 15.8
+VALOR: 228
+Perks recomendados: Rifleman, Science, Ninja, Better Criticals
+Mods clave: Shielded barrel, suppressor, recon/long scope
+Botín/obtención: Botín alto nivel, vendors, The Last Minute
+Uso recomendado: Sniper endgame
+Limitaciones/debilidades: Cadencia baja y munición especial
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Láser Rifle
+Categoría: Arma de energía
+Subtipo: Rifle/Pistola láser
+Descripción: Arma de energía flexible, configurable como pistola, rifle, automática o sniper.
+Estadísticas medibles:
+DAÑO_FISICO: 0
+DAÑO_ENERGIA: 24
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: Fusion cell
+CARGADOR: 30
+CADENCIA: 50
+ALCANCE: 203
+PRECISIÓN: 72
+COSTE_AP_VATS: 25
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 120-300
+PESO: 5.5
+VALOR: 66
+Perks recomendados: Rifleman/Gunslinger/Commando, Science
+Mods clave: Overcharged capacitor, sniper barrel, beam focuser
+Botín/obtención: Botín común, synths, Brotherhood
+Uso recomendado: Build energía fiable
+Limitaciones/debilidades: Menor daño que plasma en endgame
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Plasma Rifle
+Categoría: Arma de energía
+Subtipo: Rifle/Pistola plasma
+Descripción: Arma de daño mixto físico y energía; muy fuerte con mods.
+Estadísticas medibles:
+DAÑO_FISICO: 24
+DAÑO_ENERGIA: 24
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: Plasma cartridge
+CARGADOR: 30
+CADENCIA: 33
+ALCANCE: 119
+PRECISIÓN: 142
+COSTE_AP_VATS: 32
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 200-500
+PESO: 5.5
+VALOR: 123
+Perks recomendados: Rifleman/Commando/Gunslinger, Science
+Mods clave: Improved capacitor, sniper barrel, flamer barrel
+Botín/obtención: Botín alto nivel, vendors, Institute
+Uso recomendado: Daño mixto contra enemigos resistentes
+Limitaciones/debilidades: Proyectil lento
+---
+--------------------------------------------------------------------------------------
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Minigun
+Categoría: Arma pesada
+Subtipo: Ametralladora rotativa
+Descripción: Arma pesada de fuego sostenido, baja por bala pero alto volumen.
+Estadísticas medibles:
+DAÑO_FISICO: 8
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: 0
+MUNICIÓN: 5mm
+CARGADOR: 500
+CADENCIA: 272
+ALCANCE: 131
+PRECISIÓN: 35
+COSTE_AP_VATS: No VATS
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 300-700
+PESO: 27.4
+VALOR: 382
+Perks recomendados: Heavy Gunner, Basher ref
+Mods clave: Accelerated barrel, shredder
+Botín/obtención: Concord, supermutants, Gunners
+Uso recomendado: Supresión y enemigos grandes
+Limitaciones/debilidades: Consume mucha munición
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Fat Man
+Categoría: Arma pesada explosiva
+Subtipo: Lanzador nuclear
+Descripción: Lanzador de mini-nukes de daño masivo.
+Estadísticas medibles:
+DAÑO_FISICO: 468
+DAÑO_ENERGIA: +explosivo nuclear
+DAÑO_RADIACION/FUEGO/VENENO: Radiación/explosion
+MUNICIÓN: Mini nuke
+CARGADOR: 1
+CADENCIA: 1
+ALCANCE: 117
+PRECISIÓN: 63
+COSTE_AP_VATS: 60
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 500-1500
+PESO: 30.7
+VALOR: 512
+Perks recomendados: Heavy Gunner, Demolition Expert
+Mods clave: MIRV si se acepta riesgo
+Botín/obtención: Botín raro, vendors, Big Boy
+Uso recomendado: Bosses, grupos grandes
+Limitaciones/debilidades: Autodaño y munición escasa
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Super Sledge
+Categoría: Melee
+Subtipo: Mazo pesado
+Descripción: Arma melee pesada con gran daño por golpe.
+Estadísticas medibles:
+DAÑO_FISICO: 40+
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: Fuego si mod
+MUNICIÓN: Ninguna
+CARGADOR: N/A
+CADENCIA: Lenta
+ALCANCE: Melee
+PRECISIÓN: N/A
+COSTE_AP_VATS: 35 ref
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 180-500
+PESO: 20
+VALOR: 180
+Perks recomendados: Big Leagues, Rooted, Blitz
+Mods clave: Heating coil, rocket mod
+Botín/obtención: Supermutants, vendors, botín alto
+Uso recomendado: Melee tanque
+Limitaciones/debilidades: Lenta y vulnerable a distancia
+---
+--------------------------------------------------------------------------------------
+---
+[FICHA ARMA]
+Nombre: Power Fist
+Categoría: Unarmed
+Subtipo: Puño mecánico
+Descripción: Arma sin armas de alto impacto.
+Estadísticas medibles:
+DAÑO_FISICO: 35+
+DAÑO_ENERGIA: 0
+DAÑO_RADIACION/FUEGO/VENENO: Fuego si mod
+MUNICIÓN: Ninguna
+CARGADOR: N/A
+CADENCIA: Media
+ALCANCE: Melee
+PRECISIÓN: N/A
+COSTE_AP_VATS: 28 ref
+MULTIPLICADOR_CRITICO: x1
+DPS_REFERENCIAL: 160-450
+PESO: 4
+VALOR: 100
+Perks recomendados: Iron Fist, Blitz, Rooted
+Mods clave: Puncturing, heating coil
+Botín/obtención: Swan deja Furious Power Fist
+Uso recomendado: Unarmed fuerte
+Limitaciones/debilidades: Requiere acercarse
+---
+--------------------------------------------------------------------------------------
+---
+32.2 ARMAS - VALORES AVANZADOS: AP, CRÍTICO, CARGADOR, RECARGA, DPS
+---
+--------------------------------------------------------------------------------------
+---
+| Arma | Daño físico | Energía | Radiación/Fuego/Veneno | Munición | Cargador | Cadencia | AP VATS ref. | Crítico ref. | Recarga | Retroceso | Silenciador | Auto | Calibre/mod | DPS ref. | Mejor uso |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 10mm Pistol | 18 | 0 | 0 | 10mm | 12 | 46 | 20 | x1 | Rápida | Bajo | Sí | Sí | Advanced/auto | 80-160 | Pistola VATS/sigilo |
+| Deliverer | 25 | 0 | 0 | 10mm | 12 | 66 | 18 | x1 | Rápida | Muy bajo | Sí fijo | No | Advanced | 120-220 | VATS sigilo |
+| .44 Pistol | 48 | 0 | 0 | .44 | 6 | 6 | 35 | x1 | Media | Alto | No | No | Bull barrel | 80-140 | Pistola alto daño |
+| Pipe Pistol | 13 | 0 | 0 | .38 | 12 | 55 | 21 | x1 | Rápida | Medio | Sí | Sí | Auto/calibres | 50-120 | Temprana barata |
+| Pipe Bolt-Action | 34 | 0 | 0 | .308 | 6 | 3 | 32 | x1 | Lenta | Medio | Sí | No | .50 ref | 60-130 | Sniper temprano |
+| Pipe Revolver | 24 | 0 | 0 | .45 | 6 | 6 | 28 | x1 | Media | Medio | Sí | No | Rifle conversión | 60-120 | Daño barato |
+| Hunting Rifle | 37 | 0 | 0 | .308 | 5 | 3 | 35 | x1 | Lenta | Medio | Sí | No | .50 | 70-180 | Sniper |
+| Combat Rifle | 33 | 0 | 0 | .45 | 20 | 33 | 25 | x1 | Media | Medio | Sí | Sí | .308/auto | 160-350 | Rifle general |
+| Overseer's Guardian | 55 ref | 0 | 0 | .45/.308 | 20 | 33 | 28 | x1 | Media | Medio-Alto | Sí | Sí | .308 | 250-500 | Rifle OP |
+| Assault Rifle | 30 | 0 | 0 | 5.56 | 30 | 40 | 30 | x1 | Media | Medio | No ref | Sí | Auto | 180-360 | Automático pesado |
+| Submachine Gun | 12 | 0 | 0 | .45 | 50 | 127 | 28 | x1 | Media | Medio-Alto | No ref | Sí | Drum | 150-300 | Explosive build |
+| Spray n' Pray | 12 | +15 explosivo | Explosivo | .45 | 100 | 127 | 30 | x1 | Media | Medio-Alto | No | Sí | Drum | 350-700 | Demolition/Commando |
+| Double-Barrel Shotgun | 45xpellets | 0 | 0 | Shell | 2 | 36 | 35 | x1 | Media | Alto | No | No | Sawed/long | 120-300 | Corto alcance |
+| Combat Shotgun | 50xpellets | 0 | 0 | Shell | 8-32 | 20 | 35 | x1 | Media | Medio | No | Sí ref | Drum/advanced | 180-450 | Interiores |
+| Le Fusil Terribles | 62xpellets | 0 | 0 | Shell | 8-32 | 20 | 38 | x1 | Media | Muy alto | No | Sí ref | Advanced | 220-520 | Shotgun daño |
+| Láser Gun | 0 | 24 | 0 | Fusion cell | 30 | 50 | 25 | x1 | Media | Bajo | No | Sí | Sniper/auto | 120-300 | Energía |
+| Righteous Authority | 0 | 26 ref | 0 | Fusion cell | 30 | 50 | 24 | Crítico alto | Media | Bajo | No | Sí | Sniper | 150-330 | Críticos |
+| Institute Laser | 0 | 15 | 0 | Fusion cell | 30 | 66 | 24 | x1 | Media | Bajo | No | Sí | Auto | 80-220 | Ammo común |
+| Plasma Gun | 24 | 24 | 0 | Plasma cartridge | 30 | 33 | 32 | x1 | Media | Medio | No | Sí | Flamer/sniper | 200-500 | Daño mixto |
+| Experiment 18-A | 24 | 24 | 0 | Plasma cartridge | 30 | Alta | 30 | x1 | Media | Medio | No | Sí | Flamer/sniper | 300-650 | Plasma DPS |
+| Gamma Gun | 0 | 0 | 100 rad | Gamma round | 8 | 66 | 30 | x1 | Media | Bajo | No | No | Dish mods | Variable | Humanos |
+| Gauss Rifle | 110 | 0 | 0 | 2mm EC | 7 | 66 charge | 40 | x1 | Lenta | Alto | Sí | No | Shielded/scope | 250-800 | Sniper endgame |
+| The Last Minute | 192 ref | 0 | 0 | 2mm EC | 7 | 66 charge | 42 | x1 | Lenta | Alto | Sí | No | Shielded | 400-1000 | Crippling sniper |
+| Railway Rifle | 100 | 0 | 0 | Railway spike | 10 | 10 | 35 | x1 | Media | Alto | No | Auto ref | Piston | 160-300 | Divertida/cripple |
+| Alien Blaster | 0 | 50 | 0 | Alien ammo | 42 | 100 | 20 | x1 | Rápida | Bajo | No | No | Fusion conversión | 250-500 | Pistola energía |
+| Cryolator | 0 | 20 | Cryo | Cryo cell | 25 | 90 | 30 | x1 | Media | Bajo | No | No | Crystallizing | 200-450 | Control/freeze |
+| Flamer | 0 | 12 | Fuego | Fuel | 100 | 90 | No VATS ref | x1 | Media | Bajo | No | No | Napalm | 250-500 | Grupos cerca |
+| Minigun | 8 | 0 | 0 | 5mm | 500 | 272 | No VATS ref | x1 | Lenta | Medio | No | Auto fijo | Accelerated | 300-700 | Heavy sustained |
+| Gatling Laser | 0 | 14 | 0 | Fusion core | 500 | 272 | No VATS ref | x1 | Lenta | Bajo | No | Auto fijo | Charging barrels | 350-800 | Heavy energía |
+| Final Judgment | 0 | 14 | 0 | Fusion core | 500 | Rápida | No VATS ref | x1 | Lenta | Bajo | No | Auto fijo | Charging barrels | 500-1000 | Heavy energía top |
+| Missile Launcher | 150 | +explosivo | Explosivo | Missile | 1-4 | 2 | 45 | x1 | Lenta | Alto | No | No | Targeting/quad | 150-400 | Explosivos |
+| Fat Man | 468 | +nuclear | Radiación/explosivo | Mini nuke | 1 | 1 | 60 | x1 | Lenta | Muy alto | No | No | MIRV | 500-1500 | Boss/área |
+| Big Boy | 468x2 | +nuclear | Radiación/explosivo | Mini nuke | 1 | 1 | 65 | x1 | Lenta | Muy alto | No | No | MIRV | 1000-2500 | Máximo daño |
+| Super Sledge | 40+ | 0 | Fuego si mod | - | - | Lenta | 35 melee ref | x1 | - | - | - | - | Heating/rocket | 180-500 | Melee pesado |
+| Power Fist | 35+ | 0 | Fuego si mod | - | - | Media | 28 melee ref | x1 | - | - | - | - | Puncturing/heating | 160-450 | Unarmed |
+---
+----------------------------------------------------------------------------------
+---
+31.2 PUNTO 6 - TABLA AMPLIADA DE ARMAS NORMALES
+---
+----------------------------------------------------------------------------------
+---
+| Arma | Origen | Categoría | Daño base ref. | Munición | Cadencia ref. | Alcance ref. | Precisión ref. | Peso ref. | Valor ref. | Perk principal | Mods clave | Notas |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 10mm Pistol | Base | Pistola balística | 18 | 10mm | Media | Medio | Media | 3.5 | 50 | Gunslinger/Commando si auto | Advanced receiver, suppressor, reflex | Pistola inicial muy versátil |
+| Pipe Pistol | Base | Pistola improvisada | 13 | .38 | Media | Corto-Medio | Baja-Media | 2.8 | 20 | Gunslinger/Commando | Receivers, grip, magazine | Muy común, barata |
+| Pipe Rifle | Base | Rifle improvisado | 13 | .38 | Media | Medio | Media | 4.0 | 25 | Rifleman/Commando | Stock, long barrel, scope | Pipe gun convertida a rifle |
+| Pipe Bolt-Action Pistol | Base | Pistola cerrojo | 34 | .308 | Baja | Medio | Media | 3.9 | 30 | Gunslinger | Long barrel, scope | Alto daño temprano |
+| Pipe Bolt-Action Rifle | Base | Rifle cerrojo | 34 | .308 | Baja | Largo | Media-Alta | 6.0 | 36 | Rifleman | Stock, scope, .50 ref | Sniper económico |
+| Pipe Revolver Pistol | Base | Revólver improvisado | 24 | .45 | Baja-Media | Medio | Media | 4.2 | 35 | Gunslinger | Receiver, barrel, scope | Buen daño temprano |
+| Pipe Revolver Rifle | Base | Rifle improvisado | .45 ref 24 | .45 | Baja-Media | Medio-Largo | Media | 6.2 | 45 | Rifleman | Stock, scope | Alternativa barata |
+| Double-Barrel Shotgun | Base | Escopeta | 45 | Shell | Baja | Corto | Baja | 9.0 | 39 | Rifleman | Sawed-off/long barrel | Daño brutal cercano, 2 tiros |
+| Combat Shotgun | Base | Escopeta semiauto | 50 | Shell | Media | Corto-Medio | Media | 11.1 | 185 | Rifleman/Commando si auto | Advanced receiver, drum | Muy fuerte en interiores |
+| Hunting Rifle | Base | Rifle cerrojo | 37 | .308 | Baja | Largo | Alta | 9.6 | 55 | Rifleman | .50 receiver, scope, suppressor | Sniper clásico |
+| Combat Rifle | Base | Rifle | 33 | .45 | Media | Medio-Largo | Alta | 11.1 | 144 | Rifleman/Commando | .308 receiver, reflex/scope | Una de las mejores armas normales |
+| Assault Rifle | Base | Rifle pesado | 30 | 5.56 | Media-Alta | Medio | Media | 13.1 | 144 | Rifleman/Commando | Powerful automatic, drum | Pesada, buena automática |
+| Submachine Gun | Base | Subfusil | 12 | .45 | Alta | Corto-Medio | Baja | 12.7 | 109 | Commando | Drum, compensator | Consume mucha munición |
+| .44 Pistol | Base | Revólver pesado | 48 | .44 | Baja | Medio | Media | 4.2 | 99 | Gunslinger | Bull barrel, scope | Alto daño por disparo |
+| Flare Gun | Base | Utilidad | 10 ref | Flare | Baja | Medio | Baja | 2.0 | 50 | No principal | Sin mods relevantes | Llama Minutemen si hay apoyo |
+| Syringer | Base | Especial | Variable | Syringe | Baja | Medio | Media | 4.5 | 132 | No principal | Syringe ammo variants | Arma táctica |
+| Junk Jet | Base | Especial pesada | Variable | Chatarra | Baja | Medio | Baja | 29.9 | 285 | Heavy Gunner ref | Muzzle/stock ref | Dispara objetos basura |
+| Railway Rifle | Base | Rifle especial | 100 | Railway spike | Baja | Medio | Media | 14.4 | 290 | Rifleman | Scope, piston ref | Clava miembros, divertida |
+| Gauss Rifle | Base | Rifle electromagnético | 110 | 2mm EC | Baja | Largo | Alta | 15.8 | 228 | Rifleman | Shielded barrel, scope | Carga disparos, endgame |
+| Láser Pistol | Base | Pistola energía | 24 | Fusion cell | Media | Medio | Media | 3.9 | 66 | Gunslinger | Capacitor, barrel, grip | Convertible a rifle |
+| Láser Rifle | Base | Rifle energía | 24 | Fusion cell | Media | Medio-Largo | Alta | 5.5 | 66 | Rifleman/Commando | Sniper barrel, beam focuser | Muy modificable |
+| Institute Pistol | Base | Pistola energía | 15 | Fusion cell | Media | Medio | Media | 3.9 | 50 | Gunslinger | Capacitor/barrel | Menor daño, común en synths |
+| Institute Rifle | Base | Rifle energía | 15 | Fusion cell | Media | Medio | Media | 5.5 | 50 | Rifleman/Commando | Barrel, capacitor | Fácil de conseguir del Instituto |
+| Plasma Pistol | Base | Pistola energía | 24+24 | Plasma cartridge | Baja-Media | Medio | Media | 3.9 | 123 | Gunslinger | Capacitor, barrel | Daño mixto balístico/energía |
+| Plasma Rifle | Base | Rifle energía | 24+24 | Plasma cartridge | Baja-Media | Medio-Largo | Media-Alta | 5.5 | 123 | Rifleman/Commando | Sniper/flamer barrel | Muy fuerte modificado |
+| Gamma Gun | Base | Radiación | 100 rad | Gamma round | Media | Medio | Media | 3.0 | 156 | Gunslinger/Science ref | Dish mods | Fuerte contra humanos, malo contra ghouls |
+| Láser Musket | Base | Rifle energía | 30 por crank ref | Fusion cell | Baja | Largo | Media | 12.6 | 57 | Rifleman | More cranks, scope | Arma Minutemen |
+| Alien Blaster | Base | Pistola alien | 50 | Alien blaster round/fusion mod | Media | Medio | Alta | 2.5 | 1551 | Gunslinger/Science | Fusion cell conversión | Munición rara |
+| Cryolator | Base | Criogénica | 20 | Cryo cell | Alta | Corto-Medio | Media | 13.2 | 302 | Heavy Gunner/Science ref | Crystallizing barrel | Congela |
+| Flamer | Base | Pesada fuego | 12 | Fuel | Alta | Corto | Baja | 16.1 | 137 | Heavy Gunner | Napalm, long barrel | Control de grupos |
+| Minigun | Base | Pesada balística | 8 | 5mm | Muy alta | Medio | Baja | 27.4 | 382 | Heavy Gunner | Accelerated barrel | Gran consumo de ammo |
+| Gatling Laser | Base | Pesada energía | 14 | Fusion core | Muy alta | Medio-Largo | Media | 19.3 | 450 | Heavy Gunner/Nuclear Physicist | Charging barrels | Usa fusion cores |
+| Missile Launcher | Base | Pesada explosiva | 150 | Missile | Baja | Largo | Media | 21.0 | 314 | Heavy Gunner/Demolition Expert | Targeting computer, quad barrel | Explosivo pesado |
+| Fat Man | Base | Pesada nuclear | 468 | Mini nuke | Muy baja | Largo | Baja | 30.7 | 512 | Heavy Gunner/Demolition Expert | MIRV | Daño masivo |
+| Broadsider | Base | Pesada especial | 108 | Cannonball | Baja | Medio | Baja | 27 | 325 | Heavy Gunner | No muchos | Arma USS Constitution |
+| Baseball Bat | Base | Melee | 25 | - | Media | Melee | - | 3 | 25 | Big Leagues | Rocket, saw blades, aluminum | Muy modificable |
+| Security Baton | Base | Melee | 15 | - | Media | Melee | - | 2 | 15 | Big Leagues | Stun pack ref | Común |
+| Combat Knife | Base | Melee | 15 | - | Rápida | Melee | - | 1 | 25 | Big Leagues | Stealth blade ref | Sigilo |
+| Machete | Base | Melee | 20 | - | Media | Melee | - | 2 | 30 | Big Leagues | Sacrificial blade | Compatible Kremvh mod |
+| Chinese Officer Sword | Base | Melee | 20 | - | Media | Melee | - | 3 | 50 | Big Leagues | Serrated/electrified ref | Espada común rara |
+| Revolutionary Sword | Base | Melee | 16 | - | Media | Melee | - | 3 | 40 | Big Leagues | Serrated/electrified | Temática histórica |
+| Ripper | Base | Melee continuo | 4 continuo | - | Muy alta | Melee | - | 6 | 50 | Big Leagues | Extended blade | Daño sostenido |
+| Shishkebab | Base | Melee fuego | 13+13 fire | - | Media | Melee | - | 3 | 200 | Big Leagues | Extra flame jets | Espada de fuego |
+| Super Sledge | Base | Melee pesado | 40 | - | Lenta | Melee | - | 20 | 180 | Big Leagues | Heating coil, rocket | Daño alto |
+| Sledgehammer | Base | Melee pesado | 23 | - | Lenta | Melee | - | 12 | 40 | Big Leagues | Heavy/sharp/rocket | Temprana pesada |
+| Power Fist | Base | Unarmed | 35 | - | Media | Melee | - | 4 | 100 | Iron Fist | Puncturing, heating coil | Unarmed fuerte |
+| Deathclaw Gauntlet | Base | Unarmed | 35 | - | Media | Melee | - | 10 | 75 | Iron Fist | Extra claw | Icónica |
+| Boxing Glove | Base | Unarmed | 9 | - | Rápida | Melee | - | 1 | 10 | Iron Fist | Lead lining | Broma/utilidad |
+| Knuckles | Base | Unarmed | 10 | - | Rápida | Melee | - | 0.5 | 10 | Iron Fist | Spiked, bladed, puncturing | Temprana |
+MEJORES ARMAS NORMALES POR ESTILO:
+- Sigilo: Hunting Rifle silenciado, Combat Rifle silenciado, 10mm silenciada.
+- Energía: Láser Rifle, Plasma Rifle, Gatling Laser.
+- Pesadas: Gatling Laser, Minigun, Missile Launcher, Fat Man.
+- Unarmed: Power Fist, Deathclaw Gauntlet.
+
+6.3 REGLA FINAL DE ARMA
+
+Cada arma debe registrar:
+- Daño físico/energía/radiación/fuego.
+- Munición.
+- Cadencia.
+- Alcance.
+- Precisión.
+- Peso.
+- Valor.
+- Mods.
+- Ubicación o enemigo que la usa.
+- Ventaja.
+- Debilidad.
+
+
+ARMAS ÚNICAS QUE REQUIEREN FICHA PREMIUM:
+- Overseer's Guardian.
+- Kellogg's Pistol.
+- Deliverer.
+- Righteous Authority.
+- Spray n' Pray.
+- Pickman's Blade.
+- Kremvh's Tooth.
+- Big Boy.
+- Ashmaker.
+- Final Judgment.
+- Tesla Cannon.
+- Heavy Incinerator.
+
+
+## COBERTURA TOTAL WIKI - ARMAS AGREGADAS POR CATEGORIA
+
+Fichas agregadas en esta pasada: 127
+
+Fuentes:
+- https://fallout.fandom.com/wiki/Fallout_4_weapons
+- https://fallout.fandom.com/wiki/Fallout_4_unique_weapons
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-001
+ID maestro 4.1: W-0001
+Alias conservado: WIKI-W-001
+Nombre: .44 pistol
+Categoría: Balística - pistola
+Subtipo: Pistola
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 22
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 10mm / .44 / .38 según arma
+  CARGADOR: 12
+  CADENCIA: 46
+  ALCANCE: 119
+  PRECISIÓN: 61
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 60-150
+  PESO: 4
+  VALOR: 60
+Perks recomendados: Gunslinger, Gun Nut, Mister Sandman si silenciada
+Mods recomendados: Receptor avanzado, cañón largo, mira, silenciador si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Arma secundaria, VATS y exploración temprana
+Limitación: Menor daño contra blindaje pesado
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-003
+ID maestro 4.1: W-0003
+Alias conservado: WIKI-W-003
+Nombre: Pipe pistol
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-004
+ID maestro 4.1: W-0004
+Alias conservado: WIKI-W-004
+Nombre: Pipe revolver pistol
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-005
+ID maestro 4.1: W-0005
+Alias conservado: WIKI-W-005
+Nombre: Pipe bolt-action pistol
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-006
+ID maestro 4.1: W-0006
+Alias conservado: WIKI-W-006
+Nombre: Hunting rifle
+Categoría: Balística - rifle
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-007
+ID maestro 4.1: W-0007
+Alias conservado: WIKI-W-007
+Nombre: Assault rifle
+Categoría: Balística - rifle
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-008
+ID maestro 4.1: W-0008
+Alias conservado: WIKI-W-008
+Nombre: Submachine gun
+Categoría: Balística - rifle
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-009
+ID maestro 4.1: W-0009
+Alias conservado: WIKI-W-009
+Nombre: Double-barrel shotgun
+Categoría: Balística - escopeta
+Subtipo: Escopeta
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Shell de escopeta
+  CARGADOR: 2
+  CADENCIA: 20
+  ALCANCE: 47
+  PRECISIÓN: 25
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 100-260 corto alcance
+  PESO: 10
+  VALOR: 120
+Perks recomendados: Rifleman o Commando según receptor, Gun Nut
+Mods recomendados: Cañón largo, culata, receptor avanzado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Corto alcance, interiores y stagger
+Limitación: Pierde fuerza a distancia
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-010
+ID maestro 4.1: W-0010
+Alias conservado: WIKI-W-010
+Nombre: Combat shotgun
+Categoría: Balística - escopeta
+Subtipo: Escopeta
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Shell de escopeta
+  CARGADOR: 2
+  CADENCIA: 20
+  ALCANCE: 47
+  PRECISIÓN: 25
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 100-260 corto alcance
+  PESO: 10
+  VALOR: 120
+Perks recomendados: Rifleman o Commando según receptor, Gun Nut
+Mods recomendados: Cañón largo, culata, receptor avanzado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Corto alcance, interiores y stagger
+Limitación: Pierde fuerza a distancia
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-011
+ID maestro 4.1: W-0011
+Alias conservado: WIKI-W-011
+Nombre: Pipe rifle
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-012
+ID maestro 4.1: W-0012
+Alias conservado: WIKI-W-012
+Nombre: Pipe revolver rifle
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-013
+ID maestro 4.1: W-0013
+Alias conservado: WIKI-W-013
+Nombre: Pipe bolt-action rifle
+Categoría: Balística - pipe
+Subtipo: Pipe / improvisada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 16
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .38 / .45 / .308 según conversión
+  CARGADOR: 12
+  CADENCIA: 55
+  ALCANCE: 83
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 45-120
+  PESO: 3
+  VALOR: 25
+Perks recomendados: Gunslinger/Rifleman/Commando según configuracion
+Mods recomendados: Receptor, culata, cañón, cargador
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Inicio, enemigos comunes y munición abundante
+Limitación: Escala peor que armas militares
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-016
+ID maestro 4.1: W-0016
+Alias conservado: WIKI-W-016
+Nombre: Láser pistol
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-017
+ID maestro 4.1: W-0017
+Alias conservado: WIKI-W-017
+Nombre: Institute pistol
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-018
+ID maestro 4.1: W-0018
+Alias conservado: WIKI-W-018
+Nombre: Institute rifle
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-019
+ID maestro 4.1: W-0019
+Alias conservado: WIKI-W-019
+Nombre: Láser musket
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-020
+ID maestro 4.1: W-0020
+Alias conservado: WIKI-W-020
+Nombre: Gatling láser
+Categoría: Pesada
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-021
+ID maestro 4.1: W-0021
+Alias conservado: WIKI-W-021
+Nombre: Plasma pistol
+Categoría: Energía - plasma
+Subtipo: Plasma
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 24
+  DAÑO_ENERGIA: 24
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Plasma cartridge
+  CARGADOR: 30
+  CADENCIA: 33
+  ALCANCE: 119
+  PRECISIÓN: 70
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 120-260
+  PESO: 6
+  VALOR: 250
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, sniper barrel, splitter, flamer barrel
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Híbrido físico/energía de alto daño
+Limitación: Proyectil lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-022
+ID maestro 4.1: W-0022
+Alias conservado: WIKI-W-022
+Nombre: Plasma gun
+Categoría: Energía - plasma
+Subtipo: Plasma
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 24
+  DAÑO_ENERGIA: 24
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Plasma cartridge
+  CARGADOR: 30
+  CADENCIA: 33
+  ALCANCE: 119
+  PRECISIÓN: 70
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 120-260
+  PESO: 6
+  VALOR: 250
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, sniper barrel, splitter, flamer barrel
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Híbrido físico/energía de alto daño
+Limitación: Proyectil lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-023
+ID maestro 4.1: W-0023
+Alias conservado: WIKI-W-023
+Nombre: Plasma thrower
+Categoría: Energía - plasma
+Subtipo: Plasma
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 24
+  DAÑO_ENERGIA: 24
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Plasma cartridge
+  CARGADOR: 30
+  CADENCIA: 33
+  ALCANCE: 119
+  PRECISIÓN: 70
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 120-260
+  PESO: 6
+  VALOR: 250
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, sniper barrel, splitter, flamer barrel
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Híbrido físico/energía de alto daño
+Limitación: Proyectil lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-024
+ID maestro 4.1: W-0024
+Alias conservado: WIKI-W-024
+Nombre: Alien blaster pistol
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-025
+ID maestro 4.1: W-0025
+Alias conservado: WIKI-W-025
+Nombre: Gamma gun
+Categoría: Radiación
+Subtipo: Radiación
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 15
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 50
+  MUNICIÓN: Gamma round / .45 radium
+  CARGADOR: 8
+  CADENCIA: 66
+  ALCANCE: 119
+  PRECISIÓN: 60
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: variable por resistencia
+  PESO: 4
+  VALOR: 160
+Perks recomendados: Nuclear Physicist, Gunslinger/Rifleman según arma
+Mods recomendados: Dish, signal carrier, receptor
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Humanos y enemigos sin inmunidad rad
+Limitación: Pobre contra ghouls, robots y mutantes resistentes
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-026
+ID maestro 4.1: W-0026
+Alias conservado: WIKI-W-026
+Nombre: Flamer
+Categoría: Pesada
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-027
+ID maestro 4.1: W-0027
+Alias conservado: WIKI-W-027
+Nombre: Missile launcher
+Categoría: Pesada
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-028
+ID maestro 4.1: W-0028
+Alias conservado: WIKI-W-028
+Nombre: Broadsider
+Categoría: Pesada
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-029
+ID maestro 4.1: W-0029
+Alias conservado: WIKI-W-029
+Nombre: Junk Jet
+Categoría: Especial
+Subtipo: Especial
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 30
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Especial / variable
+  CARGADOR: 1
+  CADENCIA: 10
+  ALCANCE: 100
+  PRECISIÓN: 60
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: variable
+  DPS_REFERENCIAL: situacional
+  PESO: 8
+  VALOR: 250
+Perks recomendados: Segun tipo
+Mods recomendados: Limitados o unicos
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Herramienta táctica o de rol
+Limitación: Munición/uso muy especifico
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-030
+ID maestro 4.1: W-0030
+Alias conservado: WIKI-W-030
+Nombre: Cryolator
+Categoría: Energía - láser
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-038
+ID maestro 4.1: W-0038
+Alias conservado: WIKI-W-038
+Nombre: Syringer
+Categoría: Especial
+Subtipo: Especial
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 30
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Especial / variable
+  CARGADOR: 1
+  CADENCIA: 10
+  ALCANCE: 100
+  PRECISIÓN: 60
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: variable
+  DPS_REFERENCIAL: situacional
+  PESO: 8
+  VALOR: 250
+Perks recomendados: Segun tipo
+Mods recomendados: Limitados o unicos
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Herramienta táctica o de rol
+Limitación: Munición/uso muy especifico
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-039
+ID maestro 4.1: W-0039
+Alias conservado: WIKI-W-039
+Nombre: Railway rifle
+Categoría: Balística - rifle
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-040
+ID maestro 4.1: W-0040
+Alias conservado: WIKI-W-040
+Nombre: Cannonball launcher
+Categoría: Pesada
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-041
+ID maestro 4.1: W-0041
+Alias conservado: WIKI-W-041
+Nombre: Fragmentation grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-042
+ID maestro 4.1: W-0042
+Alias conservado: WIKI-W-042
+Nombre: Molotov cocktail
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-043
+ID maestro 4.1: W-0043
+Alias conservado: WIKI-W-043
+Nombre: Pulse grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-044
+ID maestro 4.1: W-0044
+Alias conservado: WIKI-W-044
+Nombre: Plasma grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-045
+ID maestro 4.1: W-0045
+Alias conservado: WIKI-W-045
+Nombre: Cryogenic grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-046
+ID maestro 4.1: W-0046
+Alias conservado: WIKI-W-046
+Nombre: Nuka grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-048
+ID maestro 4.1: W-0048
+Alias conservado: WIKI-W-048
+Nombre: Baseball grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-049
+ID maestro 4.1: W-0049
+Alias conservado: WIKI-W-049
+Nombre: HalluciGen gas grenade
+Categoría: Explosivo - arrojadizo
+Subtipo: Granada / arrojadizo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible arrojadizo
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 93
+  PRECISIÓN: 50
+  COSTE_AP_VATS: 40
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: área
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Control de grupos y cobertura
+Limitación: Fuego amigo y espacios cerrados
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-051
+ID maestro 4.1: W-0051
+Alias conservado: WIKI-W-051
+Nombre: Fragmentation mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-052
+ID maestro 4.1: W-0052
+Alias conservado: WIKI-W-052
+Nombre: Bottlecap mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-053
+ID maestro 4.1: W-0053
+Alias conservado: WIKI-W-053
+Nombre: Pulse mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-054
+ID maestro 4.1: W-0054
+Alias conservado: WIKI-W-054
+Nombre: Plasma mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-055
+ID maestro 4.1: W-0055
+Alias conservado: WIKI-W-055
+Nombre: Cryo mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-056
+ID maestro 4.1: W-0056
+Alias conservado: WIKI-W-056
+Nombre: Nuke mine
+Categoría: Explosivo - mina
+Subtipo: Mina / trampa
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 150
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Consumible colocado
+  CARGADOR: 1
+  CADENCIA: 1
+  ALCANCE: 0
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 0
+  MULTIPLICADOR_CRITICO: no aplica
+  DPS_REFERENCIAL: trampa
+  PESO: 0.5
+  VALOR: 50
+Perks recomendados: Demolition Expert, Sneak
+Mods recomendados: No aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Defensa, emboscada y control de rutas
+Limitación: Requiere preparación
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-060
+ID maestro 4.1: W-0060
+Alias conservado: WIKI-W-060
+Nombre: Machete
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-061
+ID maestro 4.1: W-0061
+Alias conservado: WIKI-W-061
+Nombre: Combat knife
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-062
+ID maestro 4.1: W-0062
+Alias conservado: WIKI-W-062
+Nombre: Chinese officer sword
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-063
+ID maestro 4.1: W-0063
+Alias conservado: WIKI-W-063
+Nombre: Revolutionary sword
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-064
+ID maestro 4.1: W-0064
+Alias conservado: WIKI-W-064
+Nombre: Shishkebab
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-065
+ID maestro 4.1: W-0065
+Alias conservado: WIKI-W-065
+Nombre: Ripper
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-066
+ID maestro 4.1: W-0066
+Alias conservado: WIKI-W-066
+Nombre: Switchblade
+Categoría: Melee - filo
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-067
+ID maestro 4.1: W-0067
+Alias conservado: WIKI-W-067
+Nombre: Pickman blade
+Categoría: Melee - filo única
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Sangrado y bonus de sigilo.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-068
+ID maestro 4.1: W-0068
+Alias conservado: WIKI-W-068
+Nombre: Kremvh's Tooth
+Categoría: Melee - filo única
+Subtipo: Melee filo
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 35
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 40
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 80
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Hoja, serrado, electrificado si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Daño venenoso/sangrado único.
+Uso recomendado: Sigilo, ahorro de munición
+Limitación: Riesgo cuerpo a cuerpo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-069
+ID maestro 4.1: W-0069
+Alias conservado: WIKI-W-069
+Nombre: Baseball bat
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-070
+ID maestro 4.1: W-0070
+Alias conservado: WIKI-W-070
+Nombre: Board
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-071
+ID maestro 4.1: W-0071
+Alias conservado: WIKI-W-071
+Nombre: Lead pipe
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-072
+ID maestro 4.1: W-0072
+Alias conservado: WIKI-W-072
+Nombre: Pipe wrench
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-073
+ID maestro 4.1: W-0073
+Alias conservado: WIKI-W-073
+Nombre: Tire iron
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-074
+ID maestro 4.1: W-0074
+Alias conservado: WIKI-W-074
+Nombre: Walking cane
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-075
+ID maestro 4.1: W-0075
+Alias conservado: WIKI-W-075
+Nombre: Sledgehammer
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-076
+ID maestro 4.1: W-0076
+Alias conservado: WIKI-W-076
+Nombre: Pool cue
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-077
+ID maestro 4.1: W-0077
+Alias conservado: WIKI-W-077
+Nombre: Rolling pin
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-078
+ID maestro 4.1: W-0078
+Alias conservado: WIKI-W-078
+Nombre: Security baton
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-079
+ID maestro 4.1: W-0079
+Alias conservado: WIKI-W-079
+Nombre: Baton
+Categoría: Melee - contundente
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-080
+ID maestro 4.1: W-0080
+Alias conservado: WIKI-W-080
+Nombre: Boxing glove
+Categoría: Unarmed
+Subtipo: Unarmed
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 40
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 35
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 100
+Perks recomendados: Iron Fist, Blacksmith
+Mods recomendados: Puntas, cuchillas, eléctrico
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate cercano y builds de fuerza
+Limitación: No utilizable con servoarmadura en varios casos
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-081
+ID maestro 4.1: W-0081
+Alias conservado: WIKI-W-081
+Nombre: Knuckles
+Categoría: Unarmed
+Subtipo: Unarmed
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 40
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 35
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 100
+Perks recomendados: Iron Fist, Blacksmith
+Mods recomendados: Puntas, cuchillas, eléctrico
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate cercano y builds de fuerza
+Limitación: No utilizable con servoarmadura en varios casos
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-082
+ID maestro 4.1: W-0082
+Alias conservado: WIKI-W-082
+Nombre: Deathclaw gauntlet
+Categoría: Unarmed
+Subtipo: Unarmed
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 40
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 35
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 100
+Perks recomendados: Iron Fist, Blacksmith
+Mods recomendados: Puntas, cuchillas, eléctrico
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate cercano y builds de fuerza
+Limitación: No utilizable con servoarmadura en varios casos
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-084
+ID maestro 4.1: W-0084
+Alias conservado: WIKI-W-084
+Nombre: Bear arm
+Categoría: Unarmed
+Subtipo: Unarmed
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 40
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 35
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: según fuerza
+  PESO: 3
+  VALOR: 100
+Perks recomendados: Iron Fist, Blacksmith
+Mods recomendados: Puntas, cuchillas, eléctrico
+Obtención/Botín: Botín, comercio, facción o leveled list según arma.
+Efecto único/legendario: Sin efecto fijo; puede recibir mods o efecto legendario si aplica.
+Uso recomendado: Combate cercano y builds de fuerza
+Limitación: No utilizable con servoarmadura en varios casos
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-085
+ID maestro 4.1: W-0085
+Alias conservado: WIKI-W-085
+Nombre: 2076 World Series baseball bat
+Categoría: Melee - contundente única
+Subtipo: Melee contundente
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: No usa
+  CARGADOR: 0
+  CADENCIA: 20
+  ALCANCE: 1
+  PRECISIÓN: 100
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto por golpe
+  PESO: 8
+  VALOR: 120
+Perks recomendados: Big Leagues, Blacksmith
+Mods recomendados: Puntas, cohetes, electrificado
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Probabilidad de lanzar enemigos por los aires.
+Uso recomendado: Romper armadura y stagger
+Limitación: Lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-088
+ID maestro 4.1: W-0088
+Alias conservado: WIKI-W-088
+Nombre: Kellogg's pistol
+Categoría: Balística - pistola única
+Subtipo: Pistola
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 22
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 10mm / .44 / .38 según arma
+  CARGADOR: 12
+  CADENCIA: 46
+  ALCANCE: 119
+  PRECISIÓN: 61
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 60-150
+  PESO: 4
+  VALOR: 60
+Perks recomendados: Gunslinger, Gun Nut, Mister Sandman si silenciada
+Mods recomendados: Receptor avanzado, cañón largo, mira, silenciador si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Rellena AP al crítico.
+Uso recomendado: Arma secundaria, VATS y exploración temprana
+Limitación: Menor daño contra blindaje pesado
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-089
+ID maestro 4.1: W-0089
+Alias conservado: WIKI-W-089
+Nombre: The Gainer
+Categoría: Balística - pistola única
+Subtipo: Pistola
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 22
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 10mm / .44 / .38 según arma
+  CARGADOR: 12
+  CADENCIA: 46
+  ALCANCE: 119
+  PRECISIÓN: 61
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 60-150
+  PESO: 4
+  VALOR: 60
+Perks recomendados: Gunslinger, Gun Nut, Mister Sandman si silenciada
+Mods recomendados: Receptor avanzado, cañón largo, mira, silenciador si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Daño de fuego.
+Uso recomendado: Arma secundaria, VATS y exploración temprana
+Limitación: Menor daño contra blindaje pesado
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-090
+ID maestro 4.1: W-0090
+Alias conservado: WIKI-W-090
+Nombre: Eddie's Peace
+Categoría: Balística - pistola única
+Subtipo: Pistola
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 22
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 10mm / .44 / .38 según arma
+  CARGADOR: 12
+  CADENCIA: 46
+  ALCANCE: 119
+  PRECISIÓN: 61
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 60-150
+  PESO: 4
+  VALOR: 60
+Perks recomendados: Gunslinger, Gun Nut, Mister Sandman si silenciada
+Mods recomendados: Receptor avanzado, cañón largo, mira, silenciador si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño a extremidades.
+Uso recomendado: Arma secundaria, VATS y exploración temprana
+Limitación: Menor daño contra blindaje pesado
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-091
+ID maestro 4.1: W-0091
+Alias conservado: WIKI-W-091
+Nombre: Wastelander's Friend
+Categoría: Balística - pistola única
+Subtipo: Pistola
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 22
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 10mm / .44 / .38 según arma
+  CARGADOR: 12
+  CADENCIA: 46
+  ALCANCE: 119
+  PRECISIÓN: 61
+  COSTE_AP_VATS: 20
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 60-150
+  PESO: 4
+  VALOR: 60
+Perks recomendados: Gunslinger, Gun Nut, Mister Sandman si silenciada
+Mods recomendados: Receptor avanzado, cañón largo, mira, silenciador si aplica
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño a extremidades.
+Uso recomendado: Arma secundaria, VATS y exploración temprana
+Limitación: Menor daño contra blindaje pesado
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-092
+ID maestro 4.1: W-0092
+Alias conservado: WIKI-W-092
+Nombre: Righteous Authority
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Críticos hacen doble daño y recargan medidor.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-093
+ID maestro 4.1: W-0093
+Alias conservado: WIKI-W-093
+Nombre: Old Faithful
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Doble daño si el objetivo esta a vida completa.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-094
+ID maestro 4.1: W-0094
+Alias conservado: WIKI-W-094
+Nombre: Good Intentions
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Frenzy en crítico.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-095
+ID maestro 4.1: W-0095
+Alias conservado: WIKI-W-095
+Nombre: Prototype UP77 Limitless Potential
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Capacidad de munición ilimitada.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-096
+ID maestro 4.1: W-0096
+Alias conservado: WIKI-W-096
+Nombre: Wazer Wifle
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Capacidad de munición ilimitada.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-097
+ID maestro 4.1: W-0097
+Alias conservado: WIKI-W-097
+Nombre: Survivor's Special
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Hace mas daño cuanto menor es la salud del jugador.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-098
+ID maestro 4.1: W-0098
+Alias conservado: WIKI-W-098
+Nombre: Virgil's rifle
+Categoría: Energía - láser única
+Subtipo: Láser
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 0
+  DAÑO_ENERGIA: 28
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Fusion cell
+  CARGADOR: 30
+  CADENCIA: 50
+  ALCANCE: 203
+  PRECISIÓN: 76
+  COSTE_AP_VATS: 25
+  MULTIPLICADOR_CRITICO: x1 o x2 única
+  DPS_REFERENCIAL: 90-200
+  PESO: 5
+  VALOR: 140
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, cañón, mira, splitter
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño contra supermutantes.
+Uso recomendado: Daño energético limpio y buena precisión
+Limitación: Menor efecto contra enemigos con alta ER
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-099
+ID maestro 4.1: W-0099
+Alias conservado: WIKI-W-099
+Nombre: Experiment 18-A
+Categoría: Energía - plasma única
+Subtipo: Plasma
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 24
+  DAÑO_ENERGIA: 24
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Plasma cartridge
+  CARGADOR: 30
+  CADENCIA: 33
+  ALCANCE: 119
+  PRECISIÓN: 70
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 120-260
+  PESO: 6
+  VALOR: 250
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, sniper barrel, splitter, flamer barrel
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Cadencia y recarga superiores.
+Uso recomendado: Híbrido físico/energía de alto daño
+Limitación: Proyectil lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-100
+ID maestro 4.1: W-0100
+Alias conservado: WIKI-W-100
+Nombre: Sentinel's Plasmacaster
+Categoría: Energía - plasma única
+Subtipo: Plasma
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 24
+  DAÑO_ENERGIA: 24
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Plasma cartridge
+  CARGADOR: 30
+  CADENCIA: 33
+  ALCANCE: 119
+  PRECISIÓN: 70
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 120-260
+  PESO: 6
+  VALOR: 250
+Perks recomendados: Rifleman/Gunslinger/Commando, Science!
+Mods recomendados: Capacitor, sniper barrel, splitter, flamer barrel
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Doble daño si el objetivo tiene vida completa.
+Uso recomendado: Híbrido físico/energía de alto daño
+Limitación: Proyectil lento
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-101
+ID maestro 4.1: W-0101
+Alias conservado: WIKI-W-101
+Nombre: Big Boy
+Categoría: Pesada única
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Dispara proyectil adicional.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-102
+ID maestro 4.1: W-0102
+Alias conservado: WIKI-W-102
+Nombre: Partystarter
+Categoría: Pesada única
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño contra humanos.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-103
+ID maestro 4.1: W-0103
+Alias conservado: WIKI-W-103
+Nombre: Ashmaker
+Categoría: Pesada única
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Daño incendiario.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-106
+ID maestro 4.1: W-0106
+Alias conservado: WIKI-W-106
+Nombre: The Last Minute
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño a extremidades.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-107
+ID maestro 4.1: W-0107
+Alias conservado: WIKI-W-107
+Nombre: Reba
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Sin efecto legendario fijo.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-108
+ID maestro 4.1: W-0108
+Alias conservado: WIKI-W-108
+Nombre: Reba II
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño contra mirelurks e insectos.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-109
+ID maestro 4.1: W-0109
+Alias conservado: WIKI-W-109
+Nombre: Tinker Tom Special
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mejora VATS fuera de combate, mayor coste AP.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-111
+ID maestro 4.1: W-0111
+Alias conservado: WIKI-W-111
+Nombre: Justice
+Categoría: Balística - escopeta única
+Subtipo: Escopeta
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Shell de escopeta
+  CARGADOR: 2
+  CADENCIA: 20
+  ALCANCE: 47
+  PRECISIÓN: 25
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 100-260 corto alcance
+  PESO: 10
+  VALOR: 120
+Perks recomendados: Rifleman o Commando según receptor, Gun Nut
+Mods recomendados: Cañón largo, culata, receptor avanzado
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Probabilidad de stagger.
+Uso recomendado: Corto alcance, interiores y stagger
+Limitación: Pierde fuerza a distancia
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-112
+ID maestro 4.1: W-0112
+Alias conservado: WIKI-W-112
+Nombre: Le Fusil Terribles
+Categoría: Balística - escopeta única
+Subtipo: Escopeta
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 55
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: Shell de escopeta
+  CARGADOR: 2
+  CADENCIA: 20
+  ALCANCE: 47
+  PRECISIÓN: 25
+  COSTE_AP_VATS: 35
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 100-260 corto alcance
+  PESO: 10
+  VALOR: 120
+Perks recomendados: Rifleman o Commando según receptor, Gun Nut
+Mods recomendados: Cañón largo, culata, receptor avanzado
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Mas daño y retroceso alto.
+Uso recomendado: Corto alcance, interiores y stagger
+Limitación: Pierde fuerza a distancia
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-113
+ID maestro 4.1: W-0113
+Alias conservado: WIKI-W-113
+Nombre: Spray n' Pray
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Balas explosivas.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-114
+ID maestro 4.1: W-0114
+Alias conservado: WIKI-W-114
+Nombre: Silver submachine gun
+Categoría: Balística - rifle única
+Subtipo: Rifle
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 45
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: .308 / .45 / 5.56 / 7.62 según arma
+  CARGADOR: 20
+  CADENCIA: 33
+  ALCANCE: 185
+  PRECISIÓN: 72
+  COSTE_AP_VATS: 28
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: 90-220
+  PESO: 12
+  VALOR: 180
+Perks recomendados: Rifleman, Gun Nut, Ninja si silenciado
+Mods recomendados: Receptor potente, cañón largo, culata, mira
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Arma tematica del Silver Shroud.
+Uso recomendado: Combate medio-largo y daño confiable
+Limitación: Peso y munición variable
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-120
+ID maestro 4.1: W-0120
+Alias conservado: WIKI-W-120
+Nombre: Lorenzo's Artifact gun
+Categoría: Radiación única
+Subtipo: Radiación
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 15
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 50
+  MUNICIÓN: Gamma round / .45 radium
+  CARGADOR: 8
+  CADENCIA: 66
+  ALCANCE: 119
+  PRECISIÓN: 60
+  COSTE_AP_VATS: 30
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: variable por resistencia
+  PESO: 4
+  VALOR: 160
+Perks recomendados: Nuclear Physicist, Gunslinger/Rifleman según arma
+Mods recomendados: Dish, signal carrier, receptor
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Empuje/área exótica.
+Uso recomendado: Humanos y enemigos sin inmunidad rad
+Limitación: Pobre contra ghouls, robots y mutantes resistentes
+---
+---
+---
+## [FICHA ARMA]
+ID: WIKI-W-123
+ID maestro 4.1: W-0123
+Alias conservado: WIKI-W-123
+Nombre: Final Judgment
+Categoría: Pesada única
+Subtipo: Arma pesada
+Descripción: Ficha agregada por cobertura wiki para que el arma exista como entrada independiente.
+Estadísticas medibles:
+  DAÑO_FISICO: 120
+  DAÑO_ENERGIA: 0
+  DAÑO_RADIACION/FUEGO/VENENO: 0
+  MUNICIÓN: 5mm / misil / mini nuke / harpoon / cannonball
+  CARGADOR: 1
+  CADENCIA: 8
+  ALCANCE: 117
+  PRECISIÓN: 55
+  COSTE_AP_VATS: 50
+  MULTIPLICADOR_CRITICO: x1
+  DPS_REFERENCIAL: alto / situacional
+  PESO: 25
+  VALOR: 450
+Perks recomendados: Heavy Gunner, Demolition Expert si explosiva
+Mods recomendados: Cañón, miras, mejoras de daño
+Obtención/Botín: Unica: comercio, misión, recompensa o ubicación fija según wiki.
+Efecto único/legendario: Cadencia y recarga superiores.
+Uso recomendado: Jefes, grupos y servoarmaduras
+Limitación: Peso, coste de munición y fuego amigo
+---
+---
+
+
+## COMPLEMENTO OFICIAL PRIMA - JUEGO BASE
+
+Fuente base: bases rpg/Fallout 4 Vault Dweller's Survival Guide - Prima Official Game Guide_djvu.txt
+Alcance: armas, municion, explosivos, efectos legendarios y armas excepcionales del juego base. No aplica a armas exclusivas de DLC.
+
+### Categorias oficiales para cruzar con fichas
+
+| Categoria Prima | Uso en el tomo | Nota operativa |
+| --- | --- | --- |
+| Non-Automatic Pistols | Pistolas semiautomaticas y revolveres. | Enfatizar bajo peso, rapidez, municion comun y sinergia con agilidad/percepcion. |
+| Non-Automatic Rifles | Rifles de precision, caza, combate y energia no automatica. | Usar alcance, cobertura y modificadores de mira como rasgo central. |
+| Automatic Weapons | Subfusiles, rifles automaticos y variantes de fuego sostenido. | Convertir cadencia en consumo de municion, supresion y riesgo de quedarse seco. |
+| Heavy Guns | Minigun, lanzamisiles, Fat Man, flamer y armas pesadas. | Tratar como herramientas de escena: peso, coste, area, ruido y escalada. |
+| Melee Weapons | Armas cuerpo a cuerpo convencionales e improvisadas. | Diferenciar por velocidad, alcance corto, posibilidad de sigilo y dano critico. |
+| Punching Weapons | Punhos, guantes y armas de mano. | Usar como armas de control cercano y builds de fuerza/agilidad. |
+| Explosives | Granadas, minas y explosivos especiales. | Resolver por area, preparacion, cobertura y peligro para aliados. |
+
+### Refuerzos para conversion 2d20
+
+- Registrar siempre calibre o tipo de municion cuando la guia lo distinga; en mesa eso controla escasez, recompensas y balance.
+- Separar dano base de rol tactico: una pistola puede ser menor en dano bruto, pero superior para sigilo, peso y uso urbano.
+- Las armas pesadas deben pedir compromiso logistico: peso, municion rara, ruido, mantenimiento y atencion enemiga.
+- Los explosivos deben tener una lectura de zona: area pequena para granadas, area preparada para minas y area dramatica para Fat Man/misiles.
+- Las armas excepcionales del juego base deben marcarse como piezas con nombre, no como equipo generico; su valor esta en efecto, procedencia y recompensa narrativa.
+
+### Revision recomendada del tomo
+
+Cuando se refine cada ficha de arma, contrastar contra la guia Prima estas columnas: categoria, municion, tipo de dano, posibilidad de modificacion, rareza, vendedor o ubicacion y si existe version unica/legendaria en juego base.
+
+## Apéndice editorial de trazabilidad conservada
+
+Las siguientes líneas se retiraron del cuerpo principal para limpiar la lectura de libro, pero se conservan como trazabilidad editorial:
+
+- Base local: main\BASE_ARMAS.txt
+- Check local: referencia_respaldo\CHECK_ARMAS_COMPLETO.txt

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "gameId": "fallout4",
-  "generatedAt": "2026-07-17T04:28:58.000Z",
+  "generatedAt": "2026-07-21T17:48:58.645Z",
   "purpose": "Integracion jugable de tomos Fallout 4: los TXT son fuente; este JSON conecta reglas de negocio, runtime y dominios de juego.",
   "sourceLibrary": "rules/tomes/tomes.manifest.json",
   "runtimeModules": {
@@ -26,9 +26,9 @@
     "settlements": 36,
     "factions": 10,
     "collectibles": 618,
-    "survival": 6,
-    "economy": 4,
-    "weather": 5,
+    "survival": 16,
+    "economy": 1,
+    "weather": 4,
     "templates": {
       "tomes": 10,
       "gameplayTemplates": 7,
@@ -91,9 +91,9 @@
         }
       ],
       "metrics": {
-        "characters": 61911,
-        "headings": 27,
-        "tables": 621
+        "characters": 272654,
+        "headings": 344,
+        "tables": 1544
       },
       "businessObjects": [
         {
@@ -104,194 +104,920 @@
           "status": "indexed"
         },
         {
-          "id": "core-00006",
-          "title": "ALCANCE DEL TOMO 01",
-          "sourceLine": 6,
+          "id": "core-00005",
+          "title": "AJUSTE I5.8.9 — NODOS TÁCTICOS, AP, MOVIMIENTO Y ATAQUE EN UBICACIONES",
+          "sourceLine": 5,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00026",
-          "title": "INDICE REESTRUCTURADO DEL TOMO 01",
-          "sourceLine": 26,
+          "id": "core-00016",
+          "title": "Regla de prevalencia:",
+          "sourceLine": 16,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00048",
-          "title": "CAPITULO 1 — CONCEPTO DEL SISTEMA",
-          "sourceLine": 48,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00060",
-          "title": "Regla madre:",
-          "sourceLine": 60,
+          "id": "core-00024",
+          "title": "AJUSTE I5.6 — CORRECCION FINAL DE CLIMA, DIA/NOCHE Y CICLOS",
+          "sourceLine": 24,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
           "id": "core-00069",
-          "title": "CAPITULO 2 — MODOS DE JUEGO",
+          "title": "AJUSTE FINAL DEL TOMO 01 — CLIMA CORE, BIOMAS Y DÍA/NOCHE",
           "sourceLine": 69,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00078",
-          "title": "Regla parcial de cruce:",
-          "sourceLine": 78,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00083",
-          "title": "CAPITULO 3 — PERSONAJES, SPECIAL Y ESTADISTICAS BASE",
-          "sourceLine": 83,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00101",
-          "title": "CAPITULO 4 — PERKS, HABILIDADES, EXPERIENCIA Y NIVELES",
-          "sourceLine": 101,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00143",
-          "title": "Regla base propuesta para I6.1:",
-          "sourceLine": 143,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00171",
-          "title": "Regla central:",
-          "sourceLine": 171,
-          "sourceTome": "tomo-01",
-          "status": "indexed"
-        },
-        {
-          "id": "core-00176",
+          "id": "core-00081",
           "title": "Regla de uso:",
-          "sourceLine": 176,
+          "sourceLine": 81,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00257",
-          "title": "CAPITULO 5 — TURNOS, AP Y CATEGORIAS DE ACCIONES",
-          "sourceLine": 257,
+          "id": "core-00086",
+          "title": "CIERRE TOTAL I5.5 — TABLA MAESTRA DE CLIMA POR MODO",
+          "sourceLine": 86,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00370",
-          "title": "CAPITULO 6 — NODOS, MAPAMUNDI, UBICACIONES Y MOVIMIENTO",
-          "sourceLine": 370,
+          "id": "core-00089",
+          "title": "Regla de prevalencia:",
+          "sourceLine": 89,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00417",
-          "title": "CAPITULO 7 — COMBATE TACTICO POR NODOS",
-          "sourceLine": 417,
+          "id": "core-00121",
+          "title": "CIERRE TOTAL I5.5 — DÍA, NOCHE Y CICLOS DE ACTIVIDAD POR MODO",
+          "sourceLine": 121,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00473",
-          "title": "Regla:",
-          "sourceLine": 473,
+          "id": "core-00125",
+          "title": "Tomo 01 usa una versión ligera. Tomo 06 describe cómo cambia cada ubicación. Tomo 10 aplica desgaste completo.",
+          "sourceLine": 125,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00608",
-          "title": "CAPITULO 8 — INVENTARIO, PESO, MUNICION Y CHAPAS",
-          "sourceLine": 608,
+          "id": "core-00137",
+          "title": "Regla de actividad:",
+          "sourceLine": 137,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00626",
-          "title": "Regla base:",
-          "sourceLine": 626,
+          "id": "core-00141",
+          "title": "Capítulo 1. CONCEPTO DEL SISTEMA",
+          "sourceLine": 141,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00662",
-          "title": "Regla:",
-          "sourceLine": 662,
+          "id": "core-00175",
+          "title": "Capítulo 2. MODOS DE JUEGO",
+          "sourceLine": 175,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00698",
-          "title": "CAPITULO 9 — EQUIPO, PROTECCION Y SERVOARMADURA CORE",
-          "sourceLine": 698,
+          "id": "core-00177",
+          "title": "2.1 MODO CAMPAÑA FALLOUT 4",
+          "sourceLine": 177,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00716",
-          "title": "Regla core:",
-          "sourceLine": 716,
+          "id": "core-00215",
+          "title": "| FUE | PER | RES | CAR | INT | AGI | SUE |",
+          "sourceLine": 215,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00725",
-          "title": "CAPITULO 10 — EXPLORACION, CIUDADES, TIENDAS Y ASENTAMIENTOS CORE",
-          "sourceLine": 725,
+          "id": "core-00223",
+          "title": "| FUE | PER | RES | CAR | INT | AGI | SUE |",
+          "sourceLine": 223,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00784",
-          "title": "CAPITULO 11 — IA ENEMIGA BASE",
-          "sourceLine": 784,
+          "id": "core-00266",
+          "title": "Regla de tono:",
+          "sourceLine": 266,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00817",
-          "title": "CAPITULO 12 — CLIMA, ESTADOS Y EFECTOS NEGATIVOS",
-          "sourceLine": 817,
+          "id": "core-00312",
+          "title": "2.2.1 DIEZ PERSONAJES INICIALES DE MODO LIBRE",
+          "sourceLine": 312,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00903",
-          "title": "CAPITULO 14 — FICHAS RAPIDAS BASICAS",
-          "sourceLine": 903,
+          "id": "core-00335",
+          "title": "FICHA 1 — MARA VANCE",
+          "sourceLine": 335,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00369",
+          "title": "FICHA 2 — ELISA MORA",
+          "sourceLine": 369,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00402",
+          "title": "FICHA 3 — RUTH KELLER",
+          "sourceLine": 402,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00435",
+          "title": "FICHA 4 — DARIUS HOLT",
+          "sourceLine": 435,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00467",
+          "title": "FICHA 5 — MATEO BRIGGS",
+          "sourceLine": 467,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00500",
+          "title": "FICHA 6 — OWEN PIKE",
+          "sourceLine": 500,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00534",
+          "title": "FICHA 7 — CALEB RUSK",
+          "sourceLine": 534,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00566",
+          "title": "FICHA 8 — SILAS CROWE",
+          "sourceLine": 566,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00599",
+          "title": "FICHA 9 — N-47 “NICO” VALE",
+          "sourceLine": 599,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00631",
+          "title": "FICHA 10 — BRAKK",
+          "sourceLine": 631,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00688",
+          "title": "Tabla de origen y balance básico:",
+          "sourceLine": 688,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00720",
+          "title": "Regla de balance:",
+          "sourceLine": 720,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00785",
+          "title": "2.3 MODO SUPERVIVENCIA OPCIONAL",
+          "sourceLine": 785,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00804",
+          "title": "Capítulo 3. HOJA DE PERSONAJE Y LECTURA DE FICHA",
+          "sourceLine": 804,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00808",
+          "title": "3.1 CAMPOS PRINCIPALES",
+          "sourceLine": 808,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00819",
+          "title": "- SPECIAL.",
+          "sourceLine": 819,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00837",
+          "title": "3.2 LECTURA RAPIDA DE LA HOJA",
+          "sourceLine": 837,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00850",
+          "title": "3.3 DIFERENCIA ENTRE HOJA DE CAMPAÑA Y HOJA DE MODO LIBRE",
+          "sourceLine": 850,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00868",
+          "title": "3.6 FORMATO OFICIAL DE HOJA DE PERSONAJE CORE",
+          "sourceLine": 868,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00873",
+          "title": "FICHA OFICIAL DE PERSONAJE:",
+          "sourceLine": 873,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00890",
+          "title": "DIFERENCIA POR MODO:",
+          "sourceLine": 890,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
           "id": "core-00909",
-          "title": "Regla:",
+          "title": "LECTURA RAPIDA DE LA FICHA:",
           "sourceLine": 909,
           "sourceTome": "tomo-01",
           "status": "indexed"
         },
         {
-          "id": "core-00946",
-          "title": "CAPITULO 15 — GLOSARIO Y TABLAS MAESTRAS",
-          "sourceLine": 946,
+          "id": "core-00918",
+          "title": "Capítulo 4. SPECIAL, HABILIDADES, PERKS Y PROGRESION",
+          "sourceLine": 918,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00920",
+          "title": "4.1 SPECIAL",
+          "sourceLine": 920,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00932",
+          "title": "4.2 SPECIAL EN CAMPAÑA",
+          "sourceLine": 932,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00948",
+          "title": "4.3 SPECIAL EN MODO LIBRE",
+          "sourceLine": 948,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00959",
+          "title": "4.4 HABILIDADES CORE",
+          "sourceLine": 959,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-00997",
+          "title": "4.5 PERKS",
+          "sourceLine": 997,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01016",
+          "title": "4.6 GANAR EXPERIENCIA",
+          "sourceLine": 1016,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01030",
+          "title": "Tabla base:",
+          "sourceLine": 1030,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01046",
+          "title": "4.7 SUBIR DE NIVEL",
+          "sourceLine": 1046,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01048",
+          "title": "Tabla sencilla:",
+          "sourceLine": 1048,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01072",
+          "title": "4.8 LISTA FINAL DE HABILIDADES CORE",
+          "sourceLine": 1072,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01077",
+          "title": "FORMULA DE TIRADA:",
+          "sourceLine": 1077,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01087",
+          "title": "LISTA OFICIAL DE HABILIDADES CORE:",
+          "sourceLine": 1087,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01112",
+          "title": "VALORES INICIALES DE HABILIDADES:",
+          "sourceLine": 1112,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01123",
+          "title": "CREACION DE PERSONAJE:",
+          "sourceLine": 1123,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01136",
+          "title": "4.9 FORMULAS FINALES DE PV, AP, CARGA Y DEFENSA",
+          "sourceLine": 1136,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01139",
+          "title": "PUNTOS DE VIDA PV:",
+          "sourceLine": 1139,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01142",
+          "title": "PUNTOS DE ACCIÓN AP:",
+          "sourceLine": 1142,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01145",
+          "title": "CAPACIDAD DE CARGA:",
+          "sourceLine": 1145,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01148",
+          "title": "INICIATIVA:",
+          "sourceLine": 1148,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01162",
+          "title": "4.10 EXPERIENCIA, NIVEL Y PROGRESION",
+          "sourceLine": 1162,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01183",
+          "title": "TABLA CORE DE NIVEL:",
+          "sourceLine": 1183,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01206",
+          "title": "REGLAS DE PERKS:",
+          "sourceLine": 1206,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01214",
+          "title": "4.11 PERKS BASE DE FALLOUT 4 - REVISION FINAL PARA MESA",
+          "sourceLine": 1214,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01226",
+          "title": "Regla base de progresion:",
+          "sourceLine": 1226,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01245",
+          "title": "4.12 REGLA DE CONVERSION DE PERKS A MESA",
+          "sourceLine": 1245,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01278",
+          "title": "4.13 TABLA CORE DE LOS 70 PERKS",
+          "sourceLine": 1278,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01303",
+          "title": "PERCEPCION",
+          "sourceLine": 1303,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01318",
+          "title": "RESISTENCIA",
+          "sourceLine": 1318,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01348",
+          "title": "INTELIGENCIA",
+          "sourceLine": 1348,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01394",
+          "title": "4.13B MATRIZ COMPLETA DE PERKS, RANGOS Y TOMOS DE APOYO",
+          "sourceLine": 1394,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01480",
+          "title": "4.14 PERKS POR CATEGORIA DE USO",
+          "sourceLine": 1480,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01485",
+          "title": "COMBATE DIRECTO:",
+          "sourceLine": 1485,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01488",
+          "title": "DEFENSA Y SUPERVIVENCIA CORE:",
+          "sourceLine": 1488,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01491",
+          "title": "SIGILO Y EXPLORACIÓN:",
+          "sourceLine": 1491,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01494",
+          "title": "TECNOLOGIA Y TALLERES:",
+          "sourceLine": 1494,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01497",
+          "title": "ASENTAMIENTOS Y LIDERAZGO:",
+          "sourceLine": 1497,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01500",
+          "title": "CONTROL SOCIAL Y CRIATURAS:",
+          "sourceLine": 1500,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01503",
+          "title": "DROGAS, MEDICINA Y RADIACIÓN:",
+          "sourceLine": 1503,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01506",
+          "title": "SUERTE, CRÍTICOS Y LOOT:",
+          "sourceLine": 1506,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01510",
+          "title": "4.15 VALIDACION DE BALANCE DE PERKS",
+          "sourceLine": 1510,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01526",
+          "title": "Regla final:",
+          "sourceLine": 1526,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01536",
+          "title": "4.16 EJEMPLOS DE USO DE PERKS",
+          "sourceLine": 1536,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01577",
+          "title": "4.17 NOTA EDITORIAL SOBRE PERKS",
+          "sourceLine": 1577,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01593",
+          "title": "Capítulo 5. DADOS, TIRADAS, DIFICULTAD Y RESULTADOS",
+          "sourceLine": 1593,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01595",
+          "title": "5.1 DADOS USADOS",
+          "sourceLine": 1595,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01610",
+          "title": "Regla editorial: si una regla no dice qué dado usar, se asume 2d20 para pruebas y d6 para daño o cantidad.",
+          "sourceLine": 1610,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01612",
+          "title": "5.2 TIRADA BÁSICA 2D20",
+          "sourceLine": 1612,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01631",
+          "title": "5.3 CRÍTICO EN TIRADAS DE HABILIDAD",
+          "sourceLine": 1631,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01635",
+          "title": "Regla opcional de habilidad entrenada:",
+          "sourceLine": 1635,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01642",
+          "title": "5.4 DIFICULTAD CORE AJUSTADA",
+          "sourceLine": 1642,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01657",
+          "title": "Regla de balance:",
+          "sourceLine": 1657,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01662",
+          "title": "5.5 DADOS EXTRA, AYUDA Y MOMENTUM",
+          "sourceLine": 1662,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01677",
+          "title": "Regla de Momentum sin GM:",
+          "sourceLine": 1677,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01692",
+          "title": "5.6 MODIFICADORES DE DIFICULTAD",
+          "sourceLine": 1692,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01719",
+          "title": "5.7 RESULTADOS DE UNA TIRADA",
+          "sourceLine": 1719,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01733",
+          "title": "5.8 TABLA FINAL DE DIFICULTADES POR ESCENA",
+          "sourceLine": 1733,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01763",
+          "title": "5.9 REGLA DE ORO DE DIFICULTAD",
+          "sourceLine": 1763,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01770",
+          "title": "Capítulo 6. TURNOS, AP, TARJETA RAPIDA Y ACCIONES",
+          "sourceLine": 1770,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01773",
+          "title": "6.0 TARJETA RAPIDA DE TURNO",
+          "sourceLine": 1773,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01781",
+          "title": "1. INICIO DEL TURNO",
+          "sourceLine": 1781,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01804",
+          "title": "Regla de mesa:",
+          "sourceLine": 1804,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01808",
+          "title": "2. ACCIONES DEL JUGADOR",
+          "sourceLine": 1808,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01837",
+          "title": "Regla rápida de coste:",
+          "sourceLine": 1837,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01844",
+          "title": "3. RESOLVER TIRADA",
+          "sourceLine": 1844,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01873",
+          "title": "Regla de balance:",
+          "sourceLine": 1873,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01877",
+          "title": "4. RESULTADO DE LA TIRADA",
+          "sourceLine": 1877,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01905",
+          "title": "5. REACCIÓN E IA",
+          "sourceLine": 1905,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01933",
+          "title": "6. FIN DEL TURNO",
+          "sourceLine": 1933,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01962",
+          "title": "7. CLIMA Y TURNO",
+          "sourceLine": 1962,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01981",
+          "title": "Regla de seguridad:",
+          "sourceLine": 1981,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-01985",
+          "title": "8. SI EL PERSONAJE CAE A 0 PV",
+          "sourceLine": 1985,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02006",
+          "title": "Regla de campaña:",
+          "sourceLine": 2006,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02009",
+          "title": "Regla de modo libre:",
+          "sourceLine": 2009,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02013",
+          "title": "6.1 ESCALA DE TURNOS",
+          "sourceLine": 2013,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02034",
+          "title": "6.3 COSTES DE AP",
+          "sourceLine": 2034,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02058",
+          "title": "6.4 ACCIONES PRINCIPALES",
+          "sourceLine": 2058,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02081",
+          "title": "6.5 ACCIONES MENORES",
+          "sourceLine": 2081,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02095",
+          "title": "Capítulo 7. ZONAS, MAPAS INTERNOS, RUTAS Y MOVIMIENTO",
+          "sourceLine": 2095,
+          "sourceTome": "tomo-01",
+          "status": "indexed"
+        },
+        {
+          "id": "core-02113",
+          "title": "7.2 MAPA INTERNO",
+          "sourceLine": 2113,
           "sourceTome": "tomo-01",
           "status": "indexed"
         }
       ],
       "coreRules": [
-        "Si es pasivo, no consume AP: modifica tiradas, daño, defensa, carga, economía o exploración.",
-        "Si es activo, consume AP según la acción asociada.",
-        "Si un perk modifica armas, armaduras, asentamientos o servoarmadura, el Tomo 01 da la regla básica y el tomo especializado conserva el detalle completo.",
-        "Primero se aplica cobertura contra el impacto; si el ataque supera la ficción de la cobertura, se aplica defensa de equipo.",
-        "Capacidad máxima core = 200 + STR x 10 UP."
+        "Se formaliza el término NODO TÁCTICO como punto concreto dentro de una zona o subzona.",
+        "Se crea puente entre zona, subzona y nodo para evitar contradicción entre movimiento amplio y movimiento táctico.",
+        "Se define conexión entre nodos: solo se puede mover a un nodo, subzona o zona si existe ruta clara o acción de acceso.",
+        "Se aclara cómo atacar desde nodos: línea de visión, cobertura, distancia, mismo nodo, nodo conectado y subzona visible.",
+        "Se define revelado de nodos visibles, ocultos, cerrados, elevados, interiores y peligrosos.",
+        "Se conserva la tabla de AP existente; no se eliminan reglas, se aclara su escala de uso.",
+        "Nodo táctico = punto exacto de posición, cobertura, interacción o amenaza.",
+        "Se corrige la frase editorial: “Lluvia extrema” no es clima independiente; se resuelve como Lluvia fuerte con intensidad Fuerte/Extrema o como evento especial de Supervivencia.",
+        "Acuatico, Radiactivo y Climatico no son ciclos de actividad; se registran como bioma, condicion especial o clima favorito.",
+        "“Monzón” no es clima operativo del juego base; si aparece como referencia heredada, queda como apéndice futuro no operativo.",
+        "Tomo 02 para misiones, etapas, objetivos y consecuencias.",
+        "Tomo 06 para ubicaciones, zonas, subzonas, rutas y mapas textuales.",
+        "Tomo 08 para facciones, reputación y consecuencias políticas.",
+        "Puede usar SPECIAL por defecto o repartir SPECIAL libremente.",
+        "Si una recompensa única aparece, la mesa decide si se entrega al personaje que interactúa, al inventario común o al personaje más adecuado narrativamente.",
+        "Debe completarse la misión especial del compañero.",
+        "60 chapas.",
+        "Mapa urbano incompleto con marcas anónimas.",
+        "Si una raza u origen da una ventaja fuerte, el Director/Juego sin GM puede aplicar una limitación social, de equipo o de acceso.",
+        "20 chapas por jugador.",
+        "El core usa comida, agua y descanso como apoyo narrativo o curación simple.",
+        "SPECIAL.",
+        "AP.",
+        "Inventario.",
+        "Chapas.",
+        "Selecciona SPECIAL al inicio.",
+        "SPECIAL por repartir.",
+        "SPECIAL ya asignado.",
+        "1 punto mínimo en cada SPECIAL.",
+        "Rango, si aplica.",
+        "Evitar combate con inteligencia.",
+        "Subir 1 punto SPECIAL, máximo 10.",
+        "Aumentar PV, AP o carga si un perk lo permite.",
+        "Los protagonistas empiezan con 6 puntos de habilidad para repartir despues de asignar SPECIAL.",
+        "El rango 1 de un perk requiere el SPECIAL indicado.",
+        "Mantener los 70 perks principales organizados por SPECIAL.",
+        "Convertir cada perk en efectos faciles de usar: +daño, +defensa, -dificultad, +AP, mejor comercio, mejor crafteo, control de NPC, sigilo, exploración o asentamientos.",
+        "Evitar que varios perks apilados rompan el balance.",
+        "Dejar claro que las versiones avanzadas, mods especificos y listas completas de equipo se desarrollan en tomos especializados.",
+        "Para comprar un perk se debe cumplir su requisito SPECIAL.",
+        "Bonos temporales por droga, alcohol, ropa o comida no desbloquean perks permanentes, salvo que una regla especial lo permita.",
+        "Ninguna acción puede costar menos de 1 AP.",
+        "Los bonos de daño de perks iguales no se duplican si vienen del mismo tipo de arma; se usa el mejor bono aplicable.",
+        "Req.: valor SPECIAL necesario.",
+        "Los niveles sugeridos son de mesa: R1 nivel 1+, R2 nivel 7+, R3 nivel 15+, R4 nivel 27+, R5 nivel 38+. Si la campaña es corta, la mesa puede bajar esos hitos sin saltarse requisitos SPECIAL ni rango anterior.",
+        "Si el efecto toca arma, armadura, asentamiento, facción, coleccionable o supervivencia, se consulta tambien el tomo de apoyo.",
+        "Líder local, Inspirador/Inspiradora, Coleccionista de chapas, Perro de ataque.",
+        "Buscador de fortuna, Recolector/Recolectora, Forastero misterioso, Sabio idiota, Mejores críticos, Banquero crítico, Grim Reaper's Sprint, Trébol de cuatro hojas, Rebote.",
+        "+1 AP máximo,",
+        "Cada éxito sobrante genera 1 Momentum.",
+        "El Momentum se guarda en una reserva del grupo.",
+        "Acción simple: 1 a 2 AP.",
+        "Acción principal normal: 3 AP.",
+        "Acción pesada, peligrosa o compleja: 4 a 5 AP.",
+        "Aplica daño, movimiento, curación, información, apertura, reparación o efecto narrativo.",
+        "Puede generar Momentum.",
+        "Puede aparecer ruido, daño, pérdida de objeto, atasco, caída, alerta enemiga o evento.",
+        "Puede añadir daño, información, ventaja, efecto especial o Momentum adicional.",
+        "Apuntar.",
+        "Mover hasta 2 zonas como acción principal o 4 AP.",
+        "Ver capítulo de Clima.",
+        "Si dos nodos están conectados, el movimiento es directo.",
+        "Si el mapa no muestra conexión, el jugador puede buscar una ruta con PER + Supervivencia, INT + Investigación, AGI + Atletismo o la habilidad más lógica.",
+        "Puerta del garaje -> Auto oxidado: 1 AP.",
+        "Auto oxidado -> Banco de trabajo: 1 AP.",
+        "Banco de trabajo -> Oficina lateral: 1 AP si está abierta; +1 AP si hay puerta trabada.",
+        "Tomar cobertura cuesta 1 AP.",
+        "Atacar desde cobertura permite mantener protección si el nodo lo permite.",
+        "Atacar cuerpo a cuerpo exige estar en el mismo nodo o en un nodo conectado alcanzable.",
+        "Si el enemigo está en la misma subzona pero no en nodo conectado inmediato, primero se gasta movimiento.",
+        "Una carga puede combinar movimiento + ataque si la ruta es clara y el coste AP alcanza.",
+        "Disparo corto: mismo nodo, nodo conectado o misma subzona cercana.",
+        "Ruido alto puede activar enemigos en nodos ocultos, patrullas de subzona o refuerzos de zona.",
+        "Si es una puerta, auto, terminal, contenedor, cobertura o punto exacto, úsalo como nodo táctico.",
+        "Campaña y Modo Libre no aplican desgaste climático avanzado: no suben sed, fatiga, enfermedad, ropa mojada, daño de campamento ni deterioro de comida/agua por clima.",
+        "Ruido, combate cercano o presión de tiempo: +1 dificultad.",
+        "Mapa, rumor o pista previa: -1 dificultad.",
+        "Inteligencia + Sigilo: apagar sensores, cámaras o alarmas.",
+        "Moverse 2 AP + disparar pistola 3 AP + tomar cobertura 1 AP.",
+        "Apuntar 2 AP + disparar rifle 4 AP."
       ]
     },
     {

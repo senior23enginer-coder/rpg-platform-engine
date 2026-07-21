@@ -21,10 +21,14 @@ import {
   defaultFallout4PerkState,
   defaultFallout4RuleState,
   fallout4Defense,
+  fallout4MovementCost,
   fallout4RiskDifficulty,
   fallout4WeaponDamage,
   mergeFallout4RuleState,
+  resolveFallout4FactionReputation,
   resolveFallout4Combat,
+  resolveFallout4SettlementBuild,
+  resolveFallout4WeatherTick,
   rollFallout4Test,
 } from "../lib/fallout4PlayableEngine";
 import type { GameConfig } from "../types/game";
@@ -1184,6 +1188,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     visitedValue = visited,
     securedValue = secured,
     enemyHpValue = enemyHp,
+    survivalValue = survival,
     logValue = log,
     lastAction,
   }: {
@@ -1194,6 +1199,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     visitedValue?: Set<string>;
     securedValue?: Set<string>;
     enemyHpValue?: Record<string, number>;
+    survivalValue?: SurvivalState;
     logValue?: string[];
     lastAction?: string;
   }) {
@@ -1243,7 +1249,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         ammo,
         factionReputation,
         settlementStates,
-        survival,
+        survival: survivalValue,
         xp,
         caps,
         inventory,
@@ -1372,10 +1378,19 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
   function startTurn() {
     const nextTurn = turn + 1;
+    const nextSurvival = resolveFallout4WeatherTick({
+      survival,
+      weather: { name: scene.biome, movementModifier: 0 },
+      dayPhase: nextTurn % 3 === 0 ? "night" : "day",
+    });
     setTurn(nextTurn);
     setAp(AP_MAX);
-    const nextLog = writeLog(`Turno ${nextTurn}: AP recuperado a ${AP_MAX}. Cada 3 turnos puede entrar evento menor segun Tomo 1.`);
-    progressPatch({ apValue: AP_MAX, turnValue: nextTurn, logValue: nextLog, lastAction: "nuevo_turno" });
+    setSurvival(nextSurvival);
+    const nextLog = writeLog(
+      `Turno ${nextTurn}: AP recuperado a ${AP_MAX}. Cada 3 turnos puede entrar evento menor segun Tomo 1.`,
+      `Tomo 10: supervivencia actualizada. Hambre ${nextSurvival.hunger}, sed ${nextSurvival.thirst}, fatiga ${nextSurvival.fatigue}.`
+    );
+    progressPatch({ apValue: AP_MAX, turnValue: nextTurn, survivalValue: nextSurvival, logValue: nextLog, lastAction: "nuevo_turno" });
   }
 
   function spend(cost: number) {
@@ -1514,12 +1529,14 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
   function moveAtlasInternalNode(index: number) {
     if (!atlasLocation || index === atlasSubzoneIndex || !connectedInternalIndexes.includes(index)) return;
-    if (!spend(1)) return;
+    const movementCost = fallout4MovementCost({ base: 1, terrain: `${atlasLocation.biome ?? ""} ${atlasLocation.category ?? ""}` });
+    if (!spend(movementCost)) return;
     const target = atlasSubzones[index];
     const targetKey = `${atlasLocation.id}:${index}:${target.name}`;
     const nextVisitedInternal = new Set(atlasVisitedInternalNodes).add(targetKey);
     const nextRule = nextRuleState({
-      actionPointsSpent: ruleState.actionPointsSpent + 1,
+      actionPointsSpent: ruleState.actionPointsSpent + movementCost,
+      travelActions: ruleState.travelActions + 1,
     });
     const nextState = patchLocationState(atlasLocationStates, atlasLocation.id, {
       visitedNodes: [...new Set([...currentLocationState.visitedNodes, targetKey])],
@@ -1528,7 +1545,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     setAtlasVisitedInternalNodes(nextVisitedInternal);
     setAtlasLocationStates(nextState);
     const nextLog = writeLog(
-      `Mapa interno: movimiento a ${target.name}. Coste 1 AP.`,
+      `Mapa interno: movimiento a ${target.name}. Coste ${movementCost} AP.`,
       target.role ?? "Nodo interno de la ubicacion definida por Tomo 6."
     );
     progressAtlasPatch({
@@ -1536,7 +1553,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       visitedInternalNodes: nextVisitedInternal,
       locationStates: nextState,
       ruleStateValue: nextRule,
-      apValue: ap - 1,
+      apValue: ap - movementCost,
       logValue: nextLog,
       lastAction: `atlas:mover-nodo:${index}`,
     });
@@ -1790,8 +1807,18 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       writeLog("Esta ubicacion no esta marcada como asentamiento en Tomo 6/7.");
       return;
     }
-    if (!spend(2)) return;
     const settlementId = activeSettlement?.id ?? `settlement:${atlasLocation.id}`;
+    const settlementBuild = resolveFallout4SettlementBuild({
+      settlement: { id: settlementId, name: activeSettlement?.name ?? atlasLocation.name },
+      caps,
+      ruleState,
+      focus: "defense",
+    });
+    if (!settlementBuild.allowed) {
+      writeLog(`Asentamiento: faltan chapas para mejorar ${activeSettlement?.name ?? atlasLocation.name}.`, `Necesitas ${settlementBuild.cost} chapas.`);
+      return;
+    }
+    if (!spend(2)) return;
     const current = settlementStates?.[settlementId] ?? { population: 1, food: 0, water: 0, beds: 0, defense: 0, linked: false };
     const nextSettlementStates = {
       ...(settlementStates ?? {}),
@@ -1805,24 +1832,27 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       },
     };
     const factionId = activeFaction?.id ?? "F-001";
+    const reputation = resolveFallout4FactionReputation({ current: factionReputation[factionId] ?? 0, delta: 1 });
     const nextFactionReputation = {
       ...factionReputation,
-      [factionId]: (factionReputation[factionId] ?? 0) + 1,
+      [factionId]: reputation.reputation,
     };
-    const nextRule = nextRuleState({
-      actionPointsSpent: ruleState.actionPointsSpent + 2,
-      socialChecks: ruleState.socialChecks + 1,
+    const nextRule = mergeRuleState(settlementBuild.ruleState, {
+      socialChecks: settlementBuild.ruleState.socialChecks + 1,
     });
     setSettlementStates(nextSettlementStates);
     setFactionReputation(nextFactionReputation);
+    setCaps(settlementBuild.capsAfter);
+    setRuleState(nextRule);
     const nextLog = writeLog(
-      `Asentamiento: ${activeSettlement?.name ?? atlasLocation.name} mejorado. +comida, +agua, +camas, +defensa.`,
-      `Faccion: ${activeFaction?.name ?? "Minutemen"} reputacion +1.`
+      `Asentamiento: ${activeSettlement?.name ?? atlasLocation.name} mejorado por ${settlementBuild.cost} chapas. +comida, +agua, +camas, +defensa.`,
+      `Faccion: ${activeFaction?.name ?? "Minutemen"} reputacion ${reputation.reputation} (${reputation.status}).`
     );
     progressAtlasPatch({
       settlementStatesValue: nextSettlementStates,
       factionReputationValue: nextFactionReputation,
       ruleStateValue: nextRule,
+      capsValue: settlementBuild.capsAfter,
       apValue: ap - 2,
       logValue: nextLog,
       lastAction: `settlement:improve:${settlementId}`,
@@ -1831,12 +1861,17 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
 
   function restAndRecover() {
     if (!spend(1)) return;
+    const weatherSurvival = resolveFallout4WeatherTick({
+      survival,
+      weather: { name: atlasLocation?.biome ?? scene.biome, movementModifier: 0 },
+      dayPhase: "night",
+    });
     const nextSurvival = {
-      hunger: Math.min(10, survival.hunger + 1),
-      thirst: Math.min(10, survival.thirst + 1),
-      sleep: Math.max(0, survival.sleep - 2),
-      disease: survival.disease,
-      radiation: survival.radiation,
+      hunger: weatherSurvival.hunger,
+      thirst: weatherSurvival.thirst,
+      sleep: Math.max(0, weatherSurvival.sleep - 3),
+      disease: weatherSurvival.disease,
+      radiation: weatherSurvival.radiation,
       fatigue: Math.max(0, survival.fatigue - 2),
     };
     const nextRule = nextRuleState({

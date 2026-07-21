@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-07-17T04:28:58.000Z",
+  "generatedAt": "2026-07-21T17:48:58.645Z",
   "sourceMap": [
     {
       "tomeId": "tomo-01",
       "number": 1,
       "domain": "core",
       "sourcePath": "rules/tomes/tomo-01-reglas-core.txt",
-      "indexedHeadings": 27,
-      "indexedTables": 621,
+      "indexedHeadings": 344,
+      "indexedTables": 1544,
       "runtimeTargets": [
         "rules/rules.json",
         "characters/characters.json",

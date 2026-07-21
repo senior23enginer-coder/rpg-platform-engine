@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "gameId": "fallout4",
+  "generatedAt": "2026-07-21T17:53:50.211Z",
+  "purpose": "Matriz verificable de aplicacion de los 10 tomos al juego Fallout 4: datos, reglas, editor, backend y runtime.",
+  "counts": {
+    "tomes": 10,
+    "gameplayTemplates": 7,
+    "missions": 216,
+    "locations": 558,
+    "bestiary": 213,
+    "weapons": 95,
+    "equipment": 288,
+    "settlements": 36,
+    "factions": 10,
+    "collectibles": 618,
+    "coreSkills": 20,
+    "companions": 13,
+    "freeModeSeeds": 10,
+    "missionStages": 1640,
+    "locationEvents": 12692,
+    "terminals": 324,
+    "locks": 1183,
+    "locationEnemies": 3094,
+    "locationLoot": 2521,
+    "locationMaps": 558,
+    "biomes": 5,
+    "nodeTypes": 9
+  },
+  "tomes": [
+    {
+      "id": "TOMO 01",
+      "fileName": "TOMO 01 - Iteracion 5.8.9 Nodos AP Movimiento Ataque.txt",
+      "role": "AP, turnos, 2d20, dificultad, Momentum, SPECIAL, campa?a, modo libre, compa?eros, combate, progresi?n y econom?a core.",
+      "runtimeSystems": [
+        "turn_based_ap",
+        "2d20_tests",
+        "momentum",
+        "noise_complications",
+        "special_character_seed",
+        "companions",
+        "free_mode",
+        "survival_flags"
+      ],
+      "catalogCounts": {},
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 01 - Iteracion 5.8.9 Nodos AP Movimiento Ataque.txt",
+      "gameplaySystems": [
+        "SPECIAL",
+        "2d20",
+        "AP",
+        "nodos tacticos",
+        "movimiento",
+        "ataque",
+        "cobertura",
+        "linea de vision",
+        "inventario",
+        "dialogos",
+        "progresion"
+      ],
+      "editorSurfaces": [
+        "reglas",
+        "nodos",
+        "cobertura",
+        "movimiento",
+        "economia",
+        "combate"
+      ],
+      "engineHooks": [
+        "resolveFallout4NodeAction",
+        "fallout4MovementCost",
+        "fallout4CoverageModifier",
+        "rollFallout4Test",
+        "resolveFallout4Combat"
+      ],
+      "backendCatalogs": [
+        "rules",
+        "nodeTypes",
+        "characters",
+        "saves"
+      ]
+    },
+    {
+      "id": "TOMO 02",
+      "fileName": "TOMO 02 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Objetivos, pasos, enemigos de mision, contactos, cierres y desbloqueos.",
+      "runtimeSystems": [
+        "mission_catalog",
+        "active_mission_tracker",
+        "out_of_time_objectives",
+        "mission_unlocks",
+        "mission_prerequisites"
+      ],
+      "catalogCounts": {
+        "missions": 216
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 02 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "misiones",
+        "objetivos",
+        "etapas",
+        "recompensas",
+        "consecuencias",
+        "rutas de campana"
+      ],
+      "editorSurfaces": [
+        "misiones",
+        "etapas",
+        "objetivos",
+        "recompensas",
+        "desbloqueos"
+      ],
+      "engineHooks": [
+        "resolveFallout4MissionStep",
+        "awardFallout4Caps"
+      ],
+      "backendCatalogs": [
+        "missions",
+        "missionDetails",
+        "missionRuntime",
+        "saves"
+      ]
+    },
+    {
+      "id": "TOMO 03",
+      "fileName": "TOMO 03 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Fichas de enemigos, criaturas, companeros, amenaza y escalado.",
+      "runtimeSystems": [
+        "bestiary_catalog",
+        "encounter_threats",
+        "enemy_hp_templates",
+        "location_enemy_matching"
+      ],
+      "catalogCounts": {
+        "bestiary": 213
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 03 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "bestiario",
+        "NPC",
+        "companeros",
+        "IA",
+        "encuentros",
+        "amenaza"
+      ],
+      "editorSurfaces": [
+        "bestiario",
+        "encuentros",
+        "unidades",
+        "amenaza"
+      ],
+      "engineHooks": [
+        "resolveFallout4Combat",
+        "fallout4RiskDifficulty"
+      ],
+      "backendCatalogs": [
+        "bestiary",
+        "companions",
+        "encounters"
+      ]
+    },
+    {
+      "id": "TOMO 04",
+      "fileName": "TOMO 04 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Armas, dano, municion, mods y uso tactico.",
+      "runtimeSystems": [
+        "weapon_catalog",
+        "weapon_rewards",
+        "ammo_and_mod_hooks"
+      ],
+      "catalogCounts": {
+        "weapons": 95
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 04 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "armas",
+        "municion",
+        "mods",
+        "dano",
+        "alcance",
+        "rareza"
+      ],
+      "editorSurfaces": [
+        "armas",
+        "municion",
+        "mods",
+        "botin"
+      ],
+      "engineHooks": [
+        "fallout4AmmoTypeForWeapon",
+        "fallout4WeaponDamage",
+        "resolveFallout4Trade"
+      ],
+      "backendCatalogs": [
+        "weapons",
+        "mods",
+        "ammo",
+        "loot"
+      ]
+    },
+    {
+      "id": "TOMO 05",
+      "fileName": "TOMO 05 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Armaduras, ropa, servoarmaduras, defensas, carga y mods.",
+      "runtimeSystems": [
+        "equipment_catalog",
+        "armor_and_outfit_hooks",
+        "carry_and_defense_hooks"
+      ],
+      "catalogCounts": {
+        "equipment": 288
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 05 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "armaduras",
+        "equipo",
+        "servoarmadura",
+        "resistencia",
+        "piezas",
+        "desgaste"
+      ],
+      "editorSurfaces": [
+        "equipo",
+        "armaduras",
+        "servoarmadura",
+        "objetos"
+      ],
+      "engineHooks": [
+        "fallout4Defense",
+        "resolveFallout4Trade"
+      ],
+      "backendCatalogs": [
+        "equipment",
+        "armor",
+        "powerArmor",
+        "inventory"
+      ]
+    },
+    {
+      "id": "TOMO 06",
+      "fileName": "TOMO 06 - Iteracion 5.6 Atlas Correccion Final Clima DiaNoche Ciclos.txt",
+      "role": "Ubicaciones, subzonas, biomas, rutas, enemigos normales y loot.",
+      "runtimeSystems": [
+        "world_atlas_locations",
+        "internal_location_maps",
+        "subzone_navigation",
+        "world_route_connections",
+        "biome_risk_enemy_loot_context"
+      ],
+      "catalogCounts": {
+        "locations": 558
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 06 - Iteracion 5.6 Atlas Correccion Final Clima DiaNoche Ciclos.txt",
+      "gameplaySystems": [
+        "atlas",
+        "ubicaciones",
+        "subzonas",
+        "biomas",
+        "rutas",
+        "mapas tacticos",
+        "eventos"
+      ],
+      "editorSurfaces": [
+        "ubicaciones",
+        "mapas",
+        "subzonas",
+        "biomas",
+        "rutas"
+      ],
+      "engineHooks": [
+        "resolveFallout4NodeAction",
+        "fallout4MovementCost",
+        "resolveFallout4WeatherTick"
+      ],
+      "backendCatalogs": [
+        "locations",
+        "locationMaps",
+        "locationEvents",
+        "biomes"
+      ]
+    },
+    {
+      "id": "TOMO 07",
+      "fileName": "TOMO 07 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Construccion, poblacion, recursos, defensa, economia y rutas.",
+      "runtimeSystems": [
+        "settlement_catalog",
+        "settlement_resource_loop",
+        "population_food_water_beds_defense"
+      ],
+      "catalogCounts": {
+        "settlements": 36
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 07 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "asentamientos",
+        "poblacion",
+        "recursos",
+        "defensa",
+        "rutas comerciales",
+        "ataques"
+      ],
+      "editorSurfaces": [
+        "asentamientos",
+        "recursos",
+        "defensa",
+        "rutas comerciales"
+      ],
+      "engineHooks": [
+        "resolveFallout4SettlementBuild",
+        "resolveFallout4Trade"
+      ],
+      "backendCatalogs": [
+        "settlements",
+        "resources",
+        "routes"
+      ]
+    },
+    {
+      "id": "TOMO 08",
+      "fileName": "TOMO 08 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Reputacion, politica, territorios, hostilidad y contratos.",
+      "runtimeSystems": [
+        "faction_catalog",
+        "reputation_hooks",
+        "hostility_and_contract_hooks"
+      ],
+      "catalogCounts": {
+        "factions": 10
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 08 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "facciones",
+        "reputacion",
+        "rangos",
+        "territorio",
+        "hostilidad",
+        "alianzas"
+      ],
+      "editorSurfaces": [
+        "facciones",
+        "reputacion",
+        "territorios",
+        "hostilidad"
+      ],
+      "engineHooks": [
+        "resolveFallout4FactionReputation",
+        "resolveFallout4MissionStep"
+      ],
+      "backendCatalogs": [
+        "factions",
+        "reputation",
+        "territories"
+      ]
+    },
+    {
+      "id": "TOMO 09",
+      "fileName": "TOMO 09 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "role": "Terminales, notas, holocintas, revistas, llaves y pistas.",
+      "runtimeSystems": [
+        "collectibles_catalog",
+        "terminal_note_holotape_keys",
+        "location_subzone_collectible_matching"
+      ],
+      "catalogCounts": {
+        "collectibles": 618
+      },
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 09 - Iteracion 5.1 Libro Publicable Refinado.txt",
+      "gameplaySystems": [
+        "coleccionables",
+        "objetos unicos",
+        "terminales",
+        "llaves",
+        "notas",
+        "holocintas"
+      ],
+      "editorSurfaces": [
+        "coleccionables",
+        "terminales",
+        "notas",
+        "llaves",
+        "pistas"
+      ],
+      "engineHooks": [
+        "resolveFallout4LockOrTerminal",
+        "resolveFallout4NodeAction"
+      ],
+      "backendCatalogs": [
+        "collectibles",
+        "terminals",
+        "locks",
+        "keys",
+        "notes"
+      ]
+    },
+    {
+      "id": "TOMO 10",
+      "fileName": "TOMO 10 - Iteracion 5.6 Supervivencia Correccion Final Clima DiaNoche Ciclos.txt",
+      "role": "Clima, hambre, sed, sueno, enfermedad, radiacion avanzada y desgaste.",
+      "runtimeSystems": [
+        "survival_optional_layer",
+        "weather_hunger_thirst_sleep_disease_radiation_fatigue"
+      ],
+      "catalogCounts": {},
+      "applied": true,
+      "completeness": "runtime-editor-backend",
+      "sourceDocument": "docs/TOMO 10 - Iteracion 5.6 Supervivencia Correccion Final Clima DiaNoche Ciclos.txt",
+      "gameplaySystems": [
+        "supervivencia",
+        "hambre",
+        "sed",
+        "sueno",
+        "fatiga",
+        "radiacion",
+        "clima",
+        "dia/noche",
+        "campamento"
+      ],
+      "editorSurfaces": [
+        "clima",
+        "dia-noche",
+        "supervivencia",
+        "radiacion",
+        "fatiga"
+      ],
+      "engineHooks": [
+        "applyFallout4SurvivalTurn",
+        "resolveFallout4WeatherTick"
+      ],
+      "backendCatalogs": [
+        "survival",
+        "weather",
+        "biomes",
+        "saves"
+      ]
+    }
+  ]
+}

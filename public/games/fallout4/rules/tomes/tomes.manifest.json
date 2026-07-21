@@ -2,8 +2,10 @@
   "id": "fallout4-2d20-core-library",
   "gameId": "fallout4",
   "title": "Biblioteca Fallout 4 2d20",
-  "version": "Iteraciones 5.1 / 5.6 / 6.3",
+  "version": "Iteraciones 5.1 / 5.6 / 5.8.9",
   "usage": "Fuente principal de reglas de Fallout 4 y base mecanica reusable para otros juegos de la plataforma.",
+  "sourceRoot": "docs",
+  "normalizedRoot": "public/games/fallout4/rules/tomes",
   "sharedMechanics": [
     "2d20",
     "acciones por AP",
@@ -24,7 +26,8 @@
       "title": "Reglas core",
       "category": "core",
       "summary": "Base jugable: personajes, SPECIAL, AP, nodos, combate, inventario, equipo, clima, IA y minicampana.",
-      "path": "tomo-01-reglas-core.txt"
+      "path": "tomo-01-reglas-core.txt",
+      "sourceDocument": "docs/TOMO 01 - Iteracion 5.8.9 Nodos AP Movimiento Ataque.txt"
     },
     {
       "id": "tomo-02",
@@ -32,7 +35,8 @@
       "title": "Misiones, campana y contratos",
       "category": "missions",
       "summary": "Campana, misiones secundarias, facciones, contratos libres, decisiones y consecuencias.",
-      "path": "tomo-02-misiones.txt"
+      "path": "tomo-02-misiones.txt",
+      "sourceDocument": "docs/TOMO 02 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-03",
@@ -40,7 +44,8 @@
       "title": "Bestiario, NPCs, companeros e IA",
       "category": "actors",
       "summary": "Enemigos, criaturas, NPC, companeros, conducta tactica y fichas operativas.",
-      "path": "tomo-03-bestiario-npcs-ia.txt"
+      "path": "tomo-03-bestiario-npcs-ia.txt",
+      "sourceDocument": "docs/TOMO 03 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-04",
@@ -48,7 +53,8 @@
       "title": "Armas, municion y mods",
       "category": "equipment",
       "summary": "Armas completas, municion, modificaciones, variantes y valores extendidos.",
-      "path": "tomo-04-armas-municion-mods.txt"
+      "path": "tomo-04-armas-municion-mods.txt",
+      "sourceDocument": "docs/TOMO 04 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-05",
@@ -56,7 +62,8 @@
       "title": "Armaduras, equipo y servoarmadura",
       "category": "equipment",
       "summary": "Armaduras, ropa, equipo, servoarmaduras, piezas y proteccion.",
-      "path": "tomo-05-armaduras-equipo-servoarmadura.txt"
+      "path": "tomo-05-armaduras-equipo-servoarmadura.txt",
+      "sourceDocument": "docs/TOMO 05 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-06",
@@ -64,7 +71,8 @@
       "title": "Atlas de ubicaciones, biomas y mapas",
       "category": "atlas",
       "summary": "Ubicaciones, rutas, submapas, biomas, clima, ciclos, lectura tactica y atlas del mundo.",
-      "path": "tomo-06-atlas-ubicaciones-clima.txt"
+      "path": "tomo-06-atlas-ubicaciones-clima.txt",
+      "sourceDocument": "docs/TOMO 06 - Iteracion 5.6 Atlas Correccion Final Clima DiaNoche Ciclos.txt"
     },
     {
       "id": "tomo-07",
@@ -72,7 +80,8 @@
       "title": "Asentamientos, produccion y economia",
       "category": "settlements",
       "summary": "Asentamientos avanzados, produccion, defensa, economia local y gestion.",
-      "path": "tomo-07-asentamientos-economia.txt"
+      "path": "tomo-07-asentamientos-economia.txt",
+      "sourceDocument": "docs/TOMO 07 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-08",
@@ -80,7 +89,8 @@
       "title": "Facciones, reputacion y politica",
       "category": "factions",
       "summary": "Facciones, reputacion, relaciones politicas, consecuencias y control territorial.",
-      "path": "tomo-08-facciones-reputacion.txt"
+      "path": "tomo-08-facciones-reputacion.txt",
+      "sourceDocument": "docs/TOMO 08 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-09",
@@ -88,7 +98,8 @@
       "title": "Coleccionables y objetos unicos",
       "category": "loot",
       "summary": "Coleccionables, notas, holocintas, llaves, objetos unicos y recompensas especiales.",
-      "path": "tomo-09-coleccionables-objetos-unicos.txt"
+      "path": "tomo-09-coleccionables-objetos-unicos.txt",
+      "sourceDocument": "docs/TOMO 09 - Iteracion 5.1 Libro Publicable Refinado.txt"
     },
     {
       "id": "tomo-10",
@@ -96,7 +107,8 @@
       "title": "Supervivencia, clima y ciclos",
       "category": "survival",
       "summary": "Hambre, sed, sueno, enfermedad, desgaste, campamento, clima severo, dia/noche y ciclos.",
-      "path": "tomo-10-supervivencia-clima-ciclos.txt"
+      "path": "tomo-10-supervivencia-clima-ciclos.txt",
+      "sourceDocument": "docs/TOMO 10 - Iteracion 5.6 Supervivencia Correccion Final Clima DiaNoche Ciclos.txt"
     }
   ]
 }

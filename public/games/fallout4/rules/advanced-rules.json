@@ -68,6 +68,102 @@
       "weapons": 95,
       "equipment": 288,
       "modsHook": "Tomo 04/05 proveen mods; runtime aplica bono abstracto hasta ficha fina"
+    },
+    "nodes": {
+      "sourceTomes": [
+        "TOMO 01",
+        "TOMO 06"
+      ],
+      "movementCost": "coste base por nodo + terreno + clima + carga",
+      "attackCost": "1 AP para ataque normal; ataques pesados o armas complejas pueden subir a 2 AP",
+      "lineOfSight": "bloqueada por cobertura pesada, muros, interiores y clima severo",
+      "coverage": {
+        "none": 0,
+        "light": 1,
+        "heavy": 2,
+        "blocked": 3
+      },
+      "inspectorFields": [
+        "tipo de nodo",
+        "coste AP",
+        "cobertura",
+        "bioma",
+        "clima",
+        "faccion",
+        "botin",
+        "enemigos",
+        "mision vinculada",
+        "linea de vision"
+      ]
+    },
+    "missions": {
+      "sourceTome": "TOMO 02",
+      "runtime": "216 misiones con etapas, recompensas y ubicaciones vinculadas",
+      "statusFlow": [
+        "locked",
+        "active",
+        "completed",
+        "failed"
+      ],
+      "rewardHooks": [
+        "chapas",
+        "arma",
+        "equipo",
+        "objeto unico",
+        "reputacion",
+        "desbloqueo de mapa"
+      ]
+    },
+    "locations": {
+      "sourceTome": "TOMO 06",
+      "runtime": "558 ubicaciones/mapas bajo demanda",
+      "layers": [
+        "imagen base",
+        "terreno",
+        "nodos",
+        "cobertura",
+        "clima",
+        "misiones",
+        "enemigos",
+        "loot",
+        "rutas"
+      ],
+      "mapEditorHook": "cada ubicacion puede tener mapa tactico independiente con imagen base y assets propios"
+    },
+    "bestiary": {
+      "sourceTome": "TOMO 03",
+      "runtime": "fichas de criatura/NPC con HP, amenaza, conducta y botin",
+      "encounterHook": "ubicaciones y misiones instancian enemigos reales del catalogo"
+    },
+    "weapons": {
+      "sourceTome": "TOMO 04",
+      "runtime": "armas, municion y mods aplicables a dano, alcance y comercio",
+      "ammoPolicy": "cada ataque consume municion salvo melee; municion cero fuerza fallo operativo"
+    },
+    "equipment": {
+      "sourceTome": "TOMO 05",
+      "runtime": "armaduras, equipo y servoarmadura aplican defensa, desgaste y ventajas",
+      "armorPolicy": "defensa combina armadura + perks + cobertura con techo operativo"
+    },
+    "settlements": {
+      "sourceTome": "TOMO 07",
+      "runtime": "asentamientos con comida, agua, camas, defensa, rutas y ataques",
+      "buildHook": "gastar AP y chapas para mejorar defensa/recursos y abrir beneficios de campana"
+    },
+    "factions": {
+      "sourceTome": "TOMO 08",
+      "runtime": "reputacion por faccion, hostilidad, alianzas, rangos y consecuencias",
+      "reputationScale": "-100 a 100 con estados hostile, neutral, allied"
+    },
+    "collectibles": {
+      "sourceTome": "TOMO 09",
+      "runtime": "notas, holocintas, llaves, terminales, revistas y objetos unicos",
+      "lockTerminalHook": "aplicar Ciencia/Cerraduras, dificultad, recompensa y consecuencia"
+    },
+    "survival": {
+      "sourceTome": "TOMO 10",
+      "runtime": "hambre, sed, sueno, enfermedad, radiacion, fatiga, clima y dia/noche",
+      "tickPolicy": "cada turno o viaje puede aumentar necesidades; clima severo modifica movimiento y riesgo"
     }
   }
 }

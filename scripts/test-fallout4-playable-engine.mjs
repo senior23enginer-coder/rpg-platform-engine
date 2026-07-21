@@ -8,6 +8,7 @@ const files = {
   api: readFileSync("public/platform/api-contract.json", "utf8"),
   playable: JSON.parse(readFileSync("public/games/fallout4/runtime/playable-content.json", "utf8")),
   index: JSON.parse(readFileSync("public/games/fallout4/runtime/playable-editor-index.json", "utf8")),
+  tomeMatrix: JSON.parse(readFileSync("public/games/fallout4/runtime/tome-application-matrix.json", "utf8")),
   rules: JSON.parse(readFileSync("public/games/fallout4/rules/integrated/business-rules.json", "utf8")),
   advancedRules: JSON.parse(readFileSync("public/games/fallout4/rules/advanced-rules.json", "utf8")),
 };
@@ -26,6 +27,15 @@ for (const exportedRule of [
   "fallout4Defense",
   "fallout4WeaponDamage",
   "applyFallout4Difficulty",
+  "fallout4MovementCost",
+  "fallout4CoverageModifier",
+  "resolveFallout4NodeAction",
+  "resolveFallout4WeatherTick",
+  "resolveFallout4Trade",
+  "resolveFallout4SettlementBuild",
+  "resolveFallout4FactionReputation",
+  "resolveFallout4MissionStep",
+  "resolveFallout4LockOrTerminal",
 ]) {
   assert(files.engine.includes(`export function ${exportedRule}`), `Motor jugable sin ${exportedRule}`);
 }
@@ -52,6 +62,10 @@ for (const runtimeField of [
 for (const uiHook of [
   "resolveFallout4Combat",
   "awardFallout4Caps",
+  "fallout4MovementCost",
+  "resolveFallout4SettlementBuild",
+  "resolveFallout4FactionReputation",
+  "resolveFallout4WeatherTick",
   "setCaps",
   "setAmmo",
   "ammoValue: nextAmmo",
@@ -75,12 +89,24 @@ assert(counts.settlements >= 36, "No estan disponibles los asentamientos");
 assert(counts.factions >= 10, "No estan disponibles las facciones");
 assert(counts.collectibles >= 618, "No estan disponibles los objetos/coleccionables");
 assert(counts.locationEvents >= 12692, "No estan disponibles eventos de ubicacion suficientes");
+assert(files.playable.source?.tomes === "docs/TOMO 01-10", "Playable content no apunta a docs/TOMO 01-10");
+assert(files.playable.source?.applicationMatrix?.includes("tome-application-matrix"), "Playable content sin matriz de aplicacion");
+
+assert(files.tomeMatrix.tomes?.length === 10, "Matriz de tomos no cubre los 10 tomos");
+for (const tome of files.tomeMatrix.tomes ?? []) {
+  assert(tome.applied === true, `Tomo no marcado aplicado: ${tome.id}`);
+  assert(tome.sourceDocument?.startsWith("docs/TOMO"), `Tomo sin fuente docs: ${tome.id}`);
+  assert((tome.gameplaySystems ?? []).length >= 4, `Tomo sin sistemas jugables suficientes: ${tome.id}`);
+  assert((tome.editorSurfaces ?? []).length >= 3, `Tomo sin superficies de editor suficientes: ${tome.id}`);
+  assert((tome.engineHooks ?? []).length >= 1, `Tomo sin hooks de motor: ${tome.id}`);
+  assert((tome.backendCatalogs ?? []).length >= 1, `Tomo sin catalogos backend: ${tome.id}`);
+}
 
 for (const playableDomain of ["rules", "missions", "locations", "creatures", "weapons", "equipment", "settlements", "factions", "collectibles", "survival", "economy", "weather"]) {
   assert(Object.hasOwn(files.rules.playableCounts ?? {}, playableDomain), `business-rules sin dominio jugable ${playableDomain}`);
 }
 
-for (const advancedDomain of ["tests", "combat", "perks", "economy", "loadout"]) {
+for (const advancedDomain of ["tests", "combat", "perks", "economy", "loadout", "nodes", "missions", "locations", "bestiary", "weapons", "equipment", "settlements", "factions", "collectibles", "survival"]) {
   assert(Object.hasOwn(files.advancedRules.rules ?? {}, advancedDomain), `advanced-rules sin ${advancedDomain}`);
 }
 

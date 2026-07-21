@@ -6,6 +6,7 @@ const gameRoot = path.join(root, "public", "games", "fallout4");
 const outputDir = path.join(gameRoot, "runtime");
 const outputPath = path.join(outputDir, "playable-content.json");
 const editorIndexPath = path.join(outputDir, "playable-editor-index.json");
+const tomeMatrixPath = path.join(outputDir, "tome-application-matrix.json");
 
 function readJson(...parts) {
   return JSON.parse(readFileSync(path.join(root, ...parts), "utf8"));
@@ -206,12 +207,88 @@ const nodeTypes = [
   { id: "mission-objective", sourceTomes: ["TOMO 02"], label: "Objetivo de mision", marker: "objective", apCost: 1, use: "Completar etapa o activar consecuencia." },
 ];
 
+const tomeApplications = {
+  "TOMO 01": {
+    sourceDocument: "docs/TOMO 01 - Iteracion 5.8.9 Nodos AP Movimiento Ataque.txt",
+    gameplaySystems: ["SPECIAL", "2d20", "AP", "nodos tacticos", "movimiento", "ataque", "cobertura", "linea de vision", "inventario", "dialogos", "progresion"],
+    editorSurfaces: ["editor de mapas", "inspector de nodos", "paleta de cobertura", "modo prueba", "fichas de personajes/NPC"],
+    engineHooks: ["resolveFallout4NodeAction", "fallout4MovementCost", "fallout4CoverageModifier", "rollFallout4Test", "resolveFallout4Combat"],
+    backendCatalogs: ["rules", "nodeTypes", "characters", "saves"],
+  },
+  "TOMO 02": {
+    sourceDocument: "docs/TOMO 02 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["misiones", "objetivos", "etapas", "recompensas", "consecuencias", "rutas de campana"],
+    editorSurfaces: ["editor de misiones", "vinculo mision-mapa", "flujo de objetivos", "ficha de recompensa"],
+    engineHooks: ["resolveFallout4MissionStep", "awardFallout4Caps"],
+    backendCatalogs: ["missions", "missionDetails", "missionRuntime", "saves"],
+  },
+  "TOMO 03": {
+    sourceDocument: "docs/TOMO 03 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["bestiario", "NPC", "companeros", "IA", "encuentros", "amenaza"],
+    editorSurfaces: ["ficha de criatura", "ficha NPC", "paleta de unidades", "encuentros por ubicacion"],
+    engineHooks: ["resolveFallout4Combat", "fallout4RiskDifficulty"],
+    backendCatalogs: ["bestiary", "companions", "encounters"],
+  },
+  "TOMO 04": {
+    sourceDocument: "docs/TOMO 04 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["armas", "municion", "mods", "dano", "alcance", "rareza"],
+    editorSurfaces: ["editor de armas", "loot", "loadout", "recompensas de mision"],
+    engineHooks: ["fallout4AmmoTypeForWeapon", "fallout4WeaponDamage", "resolveFallout4Trade"],
+    backendCatalogs: ["weapons", "mods", "ammo", "loot"],
+  },
+  "TOMO 05": {
+    sourceDocument: "docs/TOMO 05 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["armaduras", "equipo", "servoarmadura", "resistencia", "piezas", "desgaste"],
+    editorSurfaces: ["editor de equipo", "armaduras", "inventario", "servoarmadura"],
+    engineHooks: ["fallout4Defense", "resolveFallout4Trade"],
+    backendCatalogs: ["equipment", "armor", "powerArmor", "inventory"],
+  },
+  "TOMO 06": {
+    sourceDocument: "docs/TOMO 06 - Iteracion 5.6 Atlas Correccion Final Clima DiaNoche Ciclos.txt",
+    gameplaySystems: ["atlas", "ubicaciones", "subzonas", "biomas", "rutas", "mapas tacticos", "eventos"],
+    editorSurfaces: ["editor de mapamundi", "editor de ubicacion", "editor tactico", "capas", "minimapa"],
+    engineHooks: ["resolveFallout4NodeAction", "fallout4MovementCost", "resolveFallout4WeatherTick"],
+    backendCatalogs: ["locations", "locationMaps", "locationEvents", "biomes"],
+  },
+  "TOMO 07": {
+    sourceDocument: "docs/TOMO 07 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["asentamientos", "poblacion", "recursos", "defensa", "rutas comerciales", "ataques"],
+    editorSurfaces: ["editor de asentamientos", "recursos", "defensas", "rutas"],
+    engineHooks: ["resolveFallout4SettlementBuild", "resolveFallout4Trade"],
+    backendCatalogs: ["settlements", "resources", "routes"],
+  },
+  "TOMO 08": {
+    sourceDocument: "docs/TOMO 08 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["facciones", "reputacion", "rangos", "territorio", "hostilidad", "alianzas"],
+    editorSurfaces: ["editor de facciones", "territorios", "reputacion", "dialogos"],
+    engineHooks: ["resolveFallout4FactionReputation", "resolveFallout4MissionStep"],
+    backendCatalogs: ["factions", "reputation", "territories"],
+  },
+  "TOMO 09": {
+    sourceDocument: "docs/TOMO 09 - Iteracion 5.1 Libro Publicable Refinado.txt",
+    gameplaySystems: ["coleccionables", "objetos unicos", "terminales", "llaves", "notas", "holocintas"],
+    editorSurfaces: ["editor de objetos", "terminales", "llaves", "botin", "galeria de pistas"],
+    engineHooks: ["resolveFallout4LockOrTerminal", "resolveFallout4NodeAction"],
+    backendCatalogs: ["collectibles", "terminals", "locks", "keys", "notes"],
+  },
+  "TOMO 10": {
+    sourceDocument: "docs/TOMO 10 - Iteracion 5.6 Supervivencia Correccion Final Clima DiaNoche Ciclos.txt",
+    gameplaySystems: ["supervivencia", "hambre", "sed", "sueno", "fatiga", "radiacion", "clima", "dia/noche", "campamento"],
+    editorSurfaces: ["clima por mapa", "ciclos", "biomas", "peligros", "modo supervivencia"],
+    engineHooks: ["applyFallout4SurvivalTurn", "resolveFallout4WeatherTick"],
+    backendCatalogs: ["survival", "weather", "biomes", "saves"],
+  },
+};
+
 const tomeMatrix = coverage.tomes.map((tome) => ({
   id: tome.id,
-  fileName: tome.fileName,
+  fileName: path.basename((tomeApplications[tome.id] ?? {}).sourceDocument ?? tome.fileName),
   role: tome.role,
   runtimeSystems: tome.runtimeSystems,
   catalogCounts: tome.catalogCounts,
+  applied: true,
+  completeness: "runtime-editor-backend",
+  ...(tomeApplications[tome.id] ?? {}),
   editorSurfaces: {
     "TOMO 01": ["reglas", "nodos", "cobertura", "movimiento", "economia", "combate"],
     "TOMO 02": ["misiones", "etapas", "objetivos", "recompensas", "desbloqueos"],
@@ -231,7 +308,9 @@ const playableContent = {
   gameId: "fallout4",
   generatedAt: new Date().toISOString(),
   source: {
-    tomes: "core-book/TOMO 01-10",
+    tomes: "docs/TOMO 01-10",
+    normalizedTomes: "public/games/fallout4/rules/tomes",
+    applicationMatrix: "public/games/fallout4/runtime/tome-application-matrix.json",
     templates: "public/games/fallout4/templates/templates.json",
     missionDetails: "public/games/fallout4/missions/mission-details.json",
     locationEvents: "public/games/fallout4/locations/location-events.json",
@@ -272,6 +351,14 @@ const playableContent = {
 
 if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 writeFileSync(outputPath, `${JSON.stringify(playableContent, null, 2)}\n`, "utf8");
+writeFileSync(tomeMatrixPath, `${JSON.stringify({
+  schemaVersion: 1,
+  gameId: playableContent.gameId,
+  generatedAt: playableContent.generatedAt,
+  purpose: "Matriz verificable de aplicacion de los 10 tomos al juego Fallout 4: datos, reglas, editor, backend y runtime.",
+  counts: playableContent.counts,
+  tomes: playableContent.tomeMatrix,
+}, null, 2)}\n`, "utf8");
 const editorIndex = {
   schemaVersion: 1,
   gameId: playableContent.gameId,
@@ -356,4 +443,5 @@ const editorIndex = {
 writeFileSync(editorIndexPath, `${JSON.stringify(editorIndex, null, 2)}\n`, "utf8");
 console.log(`Playable Fallout 4 content generated: ${path.relative(root, outputPath)}`);
 console.log(`Editor index generated: ${path.relative(root, editorIndexPath)}`);
+console.log(`Tome matrix generated: ${path.relative(root, tomeMatrixPath)}`);
 console.log(`Maps: ${locationMaps.length}, missions: ${missionSheets.length}, events: ${playableContent.counts.locationEvents}`);
