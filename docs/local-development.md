@@ -61,4 +61,30 @@ npm run test:security
 npm run test:critical
 npm run build
 ```
+## Validacion local completa
+
+Para cerrar una tanda de cambios local sin simular cloud, ejecuta:
+
+```powershell
+npm.cmd run test:release-local
+```
+
+Ese comando valida:
+
+- ambiente local y backend HTTP/JSON en disco;
+- seguridad, sesiones, roles y permisos;
+- CRUD critico de usuarios, juegos, mapas, noticias, notificaciones, tickets, chat y guardados;
+- Fallout 4 con TOMO 01-10, 216 misiones, 558 mapas/ubicaciones y fichas jugables;
+- flujo de nueva partida, crear personaje, modo libre, campana, cargar partida y guardado;
+- responsive base;
+- build de produccion y presupuesto de bundles.
+
+Si solo necesitas revisar el peso de la salida ya compilada:
+
+```powershell
+npm.cmd run build
+npm.cmd run test:build-budget
+```
+
+El presupuesto actual mantiene el chunk inicial por debajo de 3.8 MB sin comprimir, Fallout 4 diferido por debajo de 10 MB y CSS por debajo de 400 KB. Si Fallout 4 crece por encima de ese limite, hay que dividir mas pantalla, inspector, atlas o paneles de combate en imports diferidos.
 
