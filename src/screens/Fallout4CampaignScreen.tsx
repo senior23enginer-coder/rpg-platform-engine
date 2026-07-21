@@ -15,6 +15,18 @@ import {
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { gameHeroVars, resolveGameAsset } from "../lib/gameLibrary";
+import {
+  applyFallout4Difficulty,
+  awardFallout4Caps,
+  defaultFallout4PerkState,
+  defaultFallout4RuleState,
+  fallout4Defense,
+  fallout4RiskDifficulty,
+  fallout4WeaponDamage,
+  mergeFallout4RuleState,
+  resolveFallout4Combat,
+  rollFallout4Test,
+} from "../lib/fallout4PlayableEngine";
 import type { GameConfig } from "../types/game";
 import type { PlayerSave } from "../types/profile";
 
@@ -747,11 +759,7 @@ function isSceneId(value?: string): value is SceneId {
 }
 
 function roll2d20(difficulty: number) {
-  const dice: [number, number] = [Math.ceil(Math.random() * 20), Math.ceil(Math.random() * 20)];
-  const successes = dice.filter((die) => die <= 12).length;
-  const criticalSuccesses = dice.filter((die) => die === 1).length;
-  const criticalFailures = dice.filter((die) => die === 20).length;
-  return { dice, successes, passed: successes >= difficulty, criticalSuccesses, criticalFailures };
+  return rollFallout4Test(difficulty);
 }
 
 function nodeIcon(kind: NodeKind) {
@@ -763,10 +771,7 @@ function nodeIcon(kind: NodeKind) {
 }
 
 function riskDifficulty(risk?: string) {
-  const value = (risk ?? "").toLowerCase();
-  if (value.includes("alto")) return 3;
-  if (value.includes("medio")) return 2;
-  return 1;
+  return fallout4RiskDifficulty(risk);
 }
 
 function readableThreat(enemy?: TomeBestiary) {
@@ -790,42 +795,15 @@ function pickCatalogItem<T extends TomeCatalogItem>(items: T[], seed: string) {
 }
 
 function defaultRuleState(): RuleState {
-  return {
-    actionPointsSpent: 0,
-    testsRolled: 0,
-    combatRounds: 0,
-    socialChecks: 0,
-    technicalChecks: 0,
-    travelActions: 0,
-    failures: 0,
-    complications: [],
-    criticalSuccesses: 0,
-    criticalFailures: 0,
-    damageDealt: 0,
-    damageTaken: 0,
-    defenseApplied: 0,
-    capsEarned: 0,
-    capsSpent: 0,
-  };
+  return defaultFallout4RuleState();
 }
 
 function mergeRuleState(current: RuleState | undefined, patch: Partial<RuleState>): RuleState {
-  return {
-    ...defaultRuleState(),
-    ...(current ?? {}),
-    ...patch,
-    complications: patch.complications ?? current?.complications ?? [],
-  };
+  return mergeFallout4RuleState(current, patch);
 }
 
 function defaultPerkState(): PerkState {
-  return {
-    active: [],
-    pendingPerkChoices: 0,
-    damageBonus: 0,
-    defenseBonus: 0,
-    difficultyReduction: 0,
-  };
+  return defaultFallout4PerkState();
 }
 
 function deriveActionKind(step?: MissionObjectiveStep, role = "") {
@@ -837,19 +815,15 @@ function deriveActionKind(step?: MissionObjectiveStep, role = "") {
 }
 
 function applyAdvancedDifficulty(base: number, kind: string, perkState: PerkState, survival: SurvivalState) {
-  const survivalPenalty = survival.hunger >= 7 || survival.thirst >= 7 || survival.fatigue >= 7 ? 1 : 0;
-  const perkReduction = kind === "combat" ? 0 : perkState.difficultyReduction;
-  return Math.max(0, base + survivalPenalty - perkReduction);
+  return applyFallout4Difficulty(base, kind, perkState, survival);
 }
 
 function calculateDefense(armor?: TomeCatalogItem, perkState?: PerkState, cover = false) {
-  const armorBase = armor?.name ? Math.max(1, Math.min(4, Math.ceil(armor.name.length / 18))) : 0;
-  return Math.min(6, armorBase + (perkState?.defenseBonus ?? 0) + (cover ? 1 : 0));
+  return fallout4Defense(armor, perkState, cover);
 }
 
 function calculateWeaponDamage(weapon?: TomeCatalogItem, perkState?: PerkState, criticalSuccesses = 0) {
-  const weaponBase = weapon?.name ? Math.max(2, Math.min(8, Math.ceil(weapon.name.length / 8))) : 2;
-  return weaponBase + (perkState?.damageBonus ?? 0) + criticalSuccesses;
+  return fallout4WeaponDamage(weapon, perkState, criticalSuccesses);
 }
 
 function missionSeed(missionId: string, missionName = "") {
@@ -992,7 +966,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
   const [turn, setTurn] = useState(save?.campaignState?.turn ?? 1);
   const [hp] = useState(35);
   const [rad] = useState(0);
-  const [caps] = useState(18);
+  const [caps, setCaps] = useState(save?.campaignState?.caps ?? 18);
   const [visited, setVisited] = useState<Set<string>>(() => new Set(save?.campaignState?.visitedNodes ?? [`${initialSceneId}:${initialNodeId}`]));
   const [secured, setSecured] = useState<Set<string>>(() => new Set(save?.campaignState?.securedNodes ?? []));
   const [enemyHp, setEnemyHp] = useState<Record<string, number>>(() => {
@@ -1303,6 +1277,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     settlementStatesValue = settlementStates,
     survivalValue = survival,
     xpValue = xp,
+    capsValue = caps,
     inventoryValue = inventory,
     logValue = log,
     apValue = ap,
@@ -1333,6 +1308,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     settlementStatesValue?: NonNullable<PlayerSave["campaignState"]>["settlementStates"];
     survivalValue?: NonNullable<PlayerSave["campaignState"]>["survival"];
     xpValue?: number;
+    capsValue?: number;
     inventoryValue?: string[];
     logValue?: string[];
     apValue?: number;
@@ -1381,7 +1357,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
         settlementStates: settlementStatesValue,
         survival: survivalValue,
         xp: xpValue,
-        caps,
+        caps: capsValue,
         inventory: inventoryValue,
         updatedAt: new Date().toISOString(),
       },
@@ -1609,6 +1585,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     const nextDiscoveredCollectibles = new Set(discoveredCollectibles);
     let nextLocationStates = atlasLocationStates;
     const nextXp = result.passed ? xp + 25 : xp + 5;
+    let nextCaps = caps;
     const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
     const nextMomentum = momentum + generatedMomentum;
     const nextNoise = result.passed ? noise : noise + 1;
@@ -1623,6 +1600,9 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       completed.add(atlasKey);
       if (isInternalLoot && atlasLoot && !nextInventory.includes(atlasLoot)) {
         nextInventory.push(atlasLoot);
+      }
+      if (isInternalLoot || activeObjectiveStep?.kind === "loot") {
+        nextCaps = awardFallout4Caps(caps, 5, ruleState).caps;
       }
       const directCollectible = atlasCollectibles.find((item) => item.name === atlasLoot);
       if (directCollectible) nextDiscoveredCollectibles.add(directCollectible.id);
@@ -1666,7 +1646,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       criticalFailures: (ruleState.criticalFailures ?? 0) + criticalFailures,
       damageTaken: (ruleState.damageTaken ?? 0) + incomingDamage,
       defenseApplied: (ruleState.defenseApplied ?? 0) + defense,
-      capsEarned: (ruleState.capsEarned ?? 0) + (result.passed && activeObjectiveStep?.kind === "loot" ? 5 : 0),
+      capsEarned: (ruleState.capsEarned ?? 0) + (nextCaps - caps),
       complications: result.passed
         ? ruleState.complications
         : [`${atlasLocation.name}: ${atlasSubzone.name}`, ...ruleState.complications].slice(0, 8),
@@ -1681,6 +1661,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     setMomentum(nextMomentum);
     setNoise(nextNoise);
     setXp(nextXp);
+    setCaps(nextCaps);
     setInventory(nextInventory);
     const nextLog = writeLog(
       `Mapa interno: ${atlasLocation.name} / ${atlasSubzone.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. ${result.passed ? "Nodo interno completado." : "Complicacion sin cerrar este nodo."}`,
@@ -1699,6 +1680,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       noiseValue: nextNoise,
       ruleStateValue: nextRule,
       xpValue: nextXp,
+      capsValue: nextCaps,
       inventoryValue: nextInventory,
       locationStates: nextLocationStates,
       logValue: nextLog,
@@ -1711,13 +1693,23 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     if (!atlasLocation) return;
     if (!spend(1)) return;
     const difficulty = applyAdvancedDifficulty(Math.max(2, riskDifficulty(atlasLocation.risk)), "combat", perkState, survival);
-    const result = roll2d20(difficulty);
+    const combat = resolveFallout4Combat({
+      difficulty,
+      weapon: equippedWeapon,
+      armor: equippedArmor,
+      enemy: atlasEnemy,
+      enemyHp: atlasEnemyStates?.[atlasInternalKey]?.hp,
+      ammo,
+      perkState,
+      cover: true,
+    });
+    const result = combat.roll;
     setRoll(result);
     const nextAp = ap - 1;
     const nextXp = result.passed ? xp + 35 : xp + 10;
-    const generatedMomentum = result.passed ? Math.max(0, result.successes - difficulty) : 0;
+    const generatedMomentum = combat.momentumGenerated;
     const nextMomentum = momentum + generatedMomentum;
-    const nextNoise = result.passed ? noise : noise + 1;
+    const nextNoise = noise + combat.noiseDelta;
     const maxHp = Math.max(4, Math.min(40, Math.round((atlasEnemy?.hp ?? 10) / 10)));
     const existingEnemy = atlasEnemyStates?.[atlasInternalKey] ?? {
       enemyId: atlasEnemy?.id ?? "enemy-local",
@@ -1726,16 +1718,16 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       maxHp,
       defeated: false,
     };
-    const damageDie = Math.ceil(Math.random() * 6);
-    const weaponDamage = calculateWeaponDamage(equippedWeapon, perkState, result.criticalSuccesses);
-    const damage = result.passed ? Math.max(1, damageDie + generatedMomentum + weaponDamage) : 0;
-    const nextEnemyHp = result.passed ? Math.max(0, existingEnemy.hp - damage) : existingEnemy.hp;
+    const damageDie = combat.damageDie;
+    const damage = combat.damageDealt;
+    const nextEnemyHp = combat.enemyHpAfter;
     const nextEnemyState = {
       ...existingEnemy,
       hp: nextEnemyHp,
-      defeated: nextEnemyHp <= 0,
+      defeated: combat.defeated,
     };
     const nextEnemyStates = { ...(atlasEnemyStates ?? {}), [atlasInternalKey]: nextEnemyState };
+    const nextAmmo = combat.ammoType === "melee" ? ammo : { ...ammo, [combat.ammoType]: combat.ammoAfter };
     const nextInventory = [...inventory];
     const nextDiscoveredCollectibles = new Set(discoveredCollectibles);
     if (nextEnemyState.defeated && atlasLoot && !nextInventory.includes(atlasLoot)) {
@@ -1743,8 +1735,8 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     }
     const directCollectible = atlasCollectibles.find((item) => item.name === atlasLoot);
     if (nextEnemyState.defeated && directCollectible) nextDiscoveredCollectibles.add(directCollectible.id);
-    const defense = calculateDefense(equippedArmor, perkState, true);
-    const incomingDamage = result.passed ? 0 : Math.max(0, Math.ceil(maxHp / 4) + (result.criticalFailures ?? 0) - defense);
+    const defense = combat.defense;
+    const incomingDamage = combat.incomingDamage;
     const nextRule = nextRuleState({
       actionPointsSpent: ruleState.actionPointsSpent + 1,
       testsRolled: ruleState.testsRolled + 1,
@@ -1763,10 +1755,11 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
     setMomentum(nextMomentum);
     setNoise(nextNoise);
     setAtlasEnemyStates(nextEnemyStates);
+    setAmmo(nextAmmo);
     setInventory(nextInventory);
     setDiscoveredCollectibles(nextDiscoveredCollectibles);
     const nextLog = writeLog(
-      `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Arma ${equippedWeapon?.name ?? "improvisada"}, d6=${damageDie}, dano=${damage}.`,
+      `Encuentro: ${nextEnemyState.name}. Tirada ${result.dice.join(" / ")} contra D${difficulty}. Arma ${equippedWeapon?.name ?? "improvisada"}, municion ${combat.ammoType}: ${Number.isFinite(combat.ammoBefore) ? `${combat.ammoBefore}->${combat.ammoAfter}` : "melee"}, d6=${damageDie}, dano=${damage}.`,
       result.passed
         ? `${nextEnemyState.defeated ? "Amenaza derrotada" : `PV enemigo ${nextEnemyHp}/${nextEnemyState.maxHp}`}. Momentum +${generatedMomentum}.`
         : `La amenaza queda activa: defensa ${defense}, dano recibido ${incomingDamage}, ruido ${nextNoise}; conviene gastar AP en cobertura o nuevo turno.`
@@ -1779,6 +1772,7 @@ export function Fallout4CampaignScreen({ game, save, onBack, onDice, onProgress 
       momentumValue: nextMomentum,
       noiseValue: nextNoise,
       ruleStateValue: nextRule,
+      ammoValue: nextAmmo,
       logValue: nextLog,
       apValue: nextAp,
       lastAction: `atlas:encuentro:${atlasLocation.id}`,

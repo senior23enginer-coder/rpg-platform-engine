@@ -16,6 +16,7 @@
     "test:backend": "node scripts/test-local-backend.mjs",
     "test:fallout4": "node scripts/test-fallout4-corebooks.mjs",
     "test:fallout4:maps": "node scripts/test-fallout4-tome-map-catalog.mjs",
+    "test:fallout4:playable": "node scripts/test-fallout4-playable-engine.mjs",
     "test:critical": "node scripts/test-platform-critical-coverage.mjs",
     "test:local": "node scripts/test-local-environment.mjs",
     "test:security": "node scripts/test-auth-security.mjs",

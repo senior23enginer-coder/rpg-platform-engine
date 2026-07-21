@@ -6,10 +6,10 @@
   "updatedAt": "2026-07-17",
   "authHeader": "Authorization: Bearer <session-id>",
   "permissions": {
-    "public": ["GET /games", "GET /maps", "GET /metadata", "GET /news", "GET /notifications", "POST /support/public"],
+    "public": ["GET /games", "GET /maps", "GET /metadata", "GET /news", "GET /notifications", "GET /games/:gameId/playable/summary", "GET /games/:gameId/playable/:catalog", "GET /games/:gameId/playable/:catalog/:itemId", "POST /support/public"],
     "authenticated": ["POST /audit", "POST /chat/rooms/:roomId/channels/:channelId/messages"],
     "selfOrAdmin": ["PATCH /users/:userId", "GET /users/:userId/saves", "PATCH /users/:userId/saves/:saveId", "PATCH /support/tickets/:ticketId"],
-    "admin": ["PATCH /games/:gameId", "PATCH /maps/:mapId", "PATCH /metadata", "POST /news", "PATCH /news/:newsId", "DELETE /news/:newsId", "POST /notifications", "PATCH /notifications/:notificationId", "DELETE /notifications/:notificationId", "GET /audit", "GET /backup/export", "POST /backup/import"]
+    "admin": ["PATCH /games/:gameId", "PATCH /maps/:mapId", "PATCH /metadata", "PATCH /games/:gameId/playable/:catalog/:itemId", "PATCH /games/:gameId/playable/:catalog/:itemId/assets", "GET /games/:gameId/playable/export", "POST /games/:gameId/playable/import", "POST /news", "PATCH /news/:newsId", "DELETE /news/:newsId", "POST /notifications", "PATCH /notifications/:notificationId", "DELETE /notifications/:notificationId", "GET /audit", "GET /backup/export", "POST /backup/import"]
   },
   "modules": {
     "auth": {
@@ -33,6 +33,16 @@
       "save": "PATCH /maps/:mapId",
       "export": "GET /maps/:mapId/export",
       "import": "POST /maps/import"
+    },
+    "playable": {
+      "summary": "GET /games/:gameId/playable/summary",
+      "listCatalog": "GET /games/:gameId/playable/:catalog?limit=:limit&offset=:offset&q=:search",
+      "detail": "GET /games/:gameId/playable/:catalog/:itemId",
+      "saveDetail": "PATCH /games/:gameId/playable/:catalog/:itemId",
+      "assets": "GET /games/:gameId/playable/:catalog/:itemId/assets",
+      "saveAssets": "PATCH /games/:gameId/playable/:catalog/:itemId/assets",
+      "export": "GET /games/:gameId/playable/export?type=:catalog",
+      "import": "POST /games/:gameId/playable/import"
     },
     "content": {
       "metadata": "GET /metadata",
