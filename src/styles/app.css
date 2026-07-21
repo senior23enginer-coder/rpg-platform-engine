@@ -18149,3 +18149,327 @@ svg {
     position: static;
   }
 }
+
+/* Final responsive hardening for TV, laptop, tablet and mobile shells */
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+.crt-shell,
+.app-frame,
+.app-body,
+.app-main,
+.screen-panel,
+.admin-card,
+.admin-data-manager,
+.topbar,
+.sidebar,
+.auth-shell {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.topbar {
+  grid-template-columns: minmax(260px, 1fr) minmax(0, auto);
+  align-items: center;
+  gap: clamp(10px, 1.3vw, 18px);
+}
+
+.topbar-logo {
+  min-width: 0;
+}
+
+.topbar-logo strong,
+.topbar-logo span,
+.status-card span,
+.nav-item span,
+.screen-heading h2 {
+  overflow-wrap: anywhere;
+}
+
+.status-cluster {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(72px, auto));
+  gap: clamp(8px, 1vw, 14px);
+  align-items: stretch;
+  justify-content: end;
+  min-width: 0;
+}
+
+.status-card,
+.topbar-action-button {
+  min-width: 0;
+  min-height: 64px;
+}
+
+.version-status-card {
+  min-width: 132px;
+}
+
+.app-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width, 330px) minmax(0, 1fr);
+  min-height: 0;
+}
+
+.sidebar {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: calc(100vh - var(--topbar-height, 120px) - 32px);
+  overflow: hidden;
+}
+
+.nav-list {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+}
+
+.version-row {
+  min-height: 56px;
+  align-items: center;
+}
+
+.app-main {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-platform-settings-grid,
+.support-layout,
+.discord-chat-shell,
+.home-layout,
+.dashboard-grid,
+.admin-dashboard-grid,
+.new-game-layout,
+.new-game-grid,
+.profile-layout,
+.profile-grid,
+.admin-data-layout,
+.map-editor-shell,
+.wasteland-editor-layout {
+  min-width: 0;
+}
+
+.admin-platform-settings-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.45fr);
+}
+
+.admin-localized-text-grid,
+.admin-form-grid,
+.notification-grid,
+.news-form-grid,
+.support-admin-controls {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-table-wrap,
+.support-ticket-table-wrap,
+.playable-table-wrap {
+  overflow: auto;
+  max-width: 100%;
+}
+
+.admin-data-table,
+.support-ticket-table,
+.playable-table {
+  min-width: 760px;
+}
+
+.wasteland-editor-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(520px, 1fr) minmax(260px, 340px);
+}
+
+.cad-canvas-frame {
+  max-width: 100%;
+  overflow: auto;
+}
+
+.tactical-grid {
+  will-change: transform;
+}
+
+.auth-main,
+.auth-panel-body {
+  min-width: 0;
+}
+
+.auth-support-entry {
+  width: 100%;
+}
+
+@media (min-width: 1600px) {
+  .topbar {
+    grid-template-columns: minmax(520px, 1fr) minmax(760px, auto);
+  }
+
+  .status-cluster {
+    grid-template-columns: minmax(220px, 260px) minmax(140px, 170px) minmax(220px, 260px) 76px 76px;
+  }
+
+  .app-body {
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1360px) {
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .status-cluster {
+    grid-template-columns: repeat(5, minmax(68px, 1fr));
+    justify-content: stretch;
+  }
+
+  .status-card span small {
+    font-size: 11px;
+  }
+
+  .topbar-logo strong {
+    font-size: clamp(30px, 5vw, 58px);
+  }
+
+  .wasteland-editor-layout {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  }
+
+  .wasteland-editor-layout > .tactical-side-panel {
+    grid-column: 1 / -1;
+    position: static;
+  }
+
+  .admin-platform-settings-grid,
+  .support-layout,
+  .discord-chat-shell,
+  .profile-grid,
+  .new-game-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .app-body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .brand-block,
+  .version-row {
+    display: none;
+  }
+
+  .nav-list {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(160px, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+  }
+
+  .nav-item {
+    min-height: 74px;
+  }
+
+  .status-cluster {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .status-card.profile-card {
+    grid-column: span 2;
+  }
+
+  .auth-main {
+    grid-template-columns: 1fr;
+  }
+
+  .wasteland-editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .world-left-rail,
+  .tactical-side-panel {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .topbar,
+  .auth-topbar {
+    padding: 10px;
+  }
+
+  .topbar-logo {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .topbar-logo strong {
+    font-size: 28px;
+  }
+
+  .topbar-logo span {
+    display: none;
+  }
+
+  .status-cluster,
+  .auth-status {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .status-card,
+  .topbar-action-button {
+    min-height: 56px;
+    padding: 8px;
+  }
+
+  .profile-card {
+    grid-column: 1 / -1;
+  }
+
+  .screen-heading {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .screen-heading h2 {
+    font-size: clamp(36px, 13vw, 58px);
+  }
+
+  .admin-data-table,
+  .support-ticket-table,
+  .playable-table {
+    min-width: 640px;
+  }
+
+  .admin-data-toolbar,
+  .news-editor-stats,
+  .notification-stats,
+  .support-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel-body,
+  .auth-tabs,
+  .auth-status-public {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-social {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

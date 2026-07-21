@@ -191,6 +191,13 @@ export async function loadPersistentDatabase() {
   return createDatabase();
 }
 
+export async function savePersistentDatabase(database: PlatformDatabase) {
+  const nextDatabase = normalizeDatabase({ ...database, updatedAt: new Date().toISOString() });
+  window.localStorage.setItem(DATABASE_KEY, JSON.stringify(nextDatabase));
+  await writeJsonFile(DATABASE_INDEX_PATH, nextDatabase);
+  return nextDatabase;
+}
+
 export async function loadPersistentUsers() {
   const database = await loadPersistentDatabase();
   return database.users;
@@ -275,6 +282,8 @@ function createDatabase(partial: Partial<PlatformDatabase> = {}): PlatformDataba
     metadata: partial.metadata,
     games: partial.games ?? [],
     maps: partial.maps ?? [],
+    playablePatches: partial.playablePatches ?? [],
+    mapAssets: partial.mapAssets ?? [],
     sessions: partial.sessions ?? [],
     chatMessages: partial.chatMessages ?? [],
     auditLog: partial.auditLog ?? partial.metadata?.auditLog ?? [],
@@ -298,6 +307,8 @@ function normalizeDatabase(database: Partial<PlatformDatabase>): PlatformDatabas
     cloud: database.cloud,
     games: Array.isArray(database.games) ? database.games : [],
     maps: Array.isArray(database.maps) ? database.maps : [],
+    playablePatches: Array.isArray(database.playablePatches) ? database.playablePatches : [],
+    mapAssets: Array.isArray(database.mapAssets) ? database.mapAssets : [],
     sessions: Array.isArray(database.sessions) ? database.sessions : [],
     chatMessages: Array.isArray(database.chatMessages) ? database.chatMessages : [],
     auditLog: Array.isArray(database.auditLog) ? database.auditLog : database.metadata?.auditLog ?? [],

@@ -22,7 +22,7 @@ import type { Screen } from "./screens/types";
 import type { AudioManifest, GameConfig, GameJsonFile, GameMap } from "./types/game";
 import type { GameHistoryEntry, PlayerProfile, PlayerSave, UserSettings } from "./types/profile";
 import { createActivity, createAuditEntry, loadAppMetadata, normalizeMetadata } from "./lib/appMetadataStorage";
-import type { AppMetadata, AppNewsEntry, AppNotificationEntry } from "./lib/appMetadataStorage";
+import type { AppMetadata, AppNewsEntry, AppNotificationEntry, AppSupportTicket } from "./lib/appMetadataStorage";
 import { createPlatformRepository } from "./lib/platformRepository";
 import type { PlatformSession } from "./lib/platformContracts";
 import { seedAudioManifest, seedCharacters } from "./lib/seedLibrary";
@@ -535,6 +535,38 @@ export default function App() {
     await platformRepository.auth.requestPasswordReset(usernameOrEmail).catch(() => undefined);
   }
 
+  async function createPublicSupportTicket(message: string) {
+    const now = new Date().toISOString();
+    const fallbackTicket: AppSupportTicket = {
+      id: `ticket_public_${Date.now()}`,
+      title: "Soporte desde login",
+      description: message,
+      requesterId: "public_guest",
+      requesterName: "Visitante login",
+      status: "open",
+      priority: "normal",
+      category: "account",
+      createdAt: now,
+      updatedAt: now,
+      messages: [
+        {
+          id: `msg_public_${Date.now()}`,
+          authorId: "public_guest",
+          authorName: "Visitante login",
+          body: message,
+          createdAt: now,
+        },
+      ],
+    };
+    const ticket = await platformRepository.support.createPublicTicket(fallbackTicket).catch(() => fallbackTicket);
+    setAppMetadata((current) => ({
+      ...current,
+      supportTickets: [ticket, ...current.supportTickets.filter((item) => item.id !== ticket.id)],
+    }));
+    trackActivity("Ticket publico creado desde login");
+    trackAudit("support.ticket.update", "support", "public_guest", ticket.id);
+  }
+
   function accessUser(nextProfile: PlayerProfile) {
     const enforcedProfile = enforceFixedUserRole(nextProfile);
     setProfile(enforcedProfile);
@@ -810,6 +842,7 @@ export default function App() {
           onRegister={registerUser}
           onLogin={loginUser}
           onPasswordReset={requestPasswordReset}
+          onPublicSupport={createPublicSupportTicket}
         />
       </div>
     );

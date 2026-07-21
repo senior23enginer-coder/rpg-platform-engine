@@ -133,16 +133,37 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
       saveMetadata(metadata: AppMetadata): Promise<AppMetadata> {
         return requestJson(endpoint, "/metadata", { method: "PATCH", body: metadata, token });
       },
+      listNews(): Promise<AppNewsEntry[]> {
+        return requestJson(endpoint, "/news", { token });
+      },
       saveNews(news: AppNewsEntry[]): Promise<AppNewsEntry[]> {
         return requestJson(endpoint, "/news", { method: "POST", body: { news }, token });
       },
+      saveNewsEntry(news: AppNewsEntry): Promise<AppNewsEntry> {
+        return requestJson(endpoint, `/news/${encodeURIComponent(news.id)}`, { method: "PATCH", body: news, token });
+      },
+      deleteNewsEntry(newsId: string): Promise<void> {
+        return requestJson(endpoint, `/news/${encodeURIComponent(newsId)}`, { method: "DELETE", token });
+      },
+      listNotifications(): Promise<AppNotificationEntry[]> {
+        return requestJson(endpoint, "/notifications", { token });
+      },
       saveNotifications(notifications: AppNotificationEntry[]): Promise<AppNotificationEntry[]> {
         return requestJson(endpoint, "/notifications", { method: "POST", body: { notifications }, token });
+      },
+      saveNotificationEntry(notification: AppNotificationEntry): Promise<AppNotificationEntry> {
+        return requestJson(endpoint, `/notifications/${encodeURIComponent(notification.id)}`, { method: "PATCH", body: notification, token });
+      },
+      deleteNotificationEntry(notificationId: string): Promise<void> {
+        return requestJson(endpoint, `/notifications/${encodeURIComponent(notificationId)}`, { method: "DELETE", token });
       },
     },
     support: {
       listTickets(): Promise<AppSupportTicket[]> {
         return requestJson(endpoint, "/support/tickets", { token });
+      },
+      createPublicTicket(ticket: Partial<AppSupportTicket>): Promise<AppSupportTicket> {
+        return requestJson(endpoint, "/support/public", { body: ticket });
       },
       saveTicket(ticket: AppSupportTicket): Promise<AppSupportTicket> {
         return requestJson(endpoint, `/support/tickets/${encodeURIComponent(ticket.id)}`, { method: "PATCH", body: ticket, token });
@@ -171,6 +192,14 @@ export function createCloudPlatformRepository(config: PlatformCloudConfig, token
       },
       list(limit = 100): Promise<PlatformAuditEntry[]> {
         return requestJson(endpoint, `/audit?limit=${limit}`, { token });
+      },
+    },
+    backup: {
+      export(): Promise<Record<string, unknown>> {
+        return requestJson(endpoint, "/backup/export", { token });
+      },
+      import(payload: Record<string, unknown>): Promise<Record<string, unknown>> {
+        return requestJson(endpoint, "/backup/import", { body: payload, token });
       },
     },
   };

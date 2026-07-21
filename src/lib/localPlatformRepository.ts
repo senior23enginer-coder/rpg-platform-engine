@@ -7,6 +7,7 @@ import {
   appendPersistentChatMessage,
   loadPersistentDatabase,
   revokePersistentSession,
+  savePersistentDatabase,
   savePersistentGames,
   savePersistentMaps,
   savePersistentMetadata,
@@ -91,6 +92,18 @@ function getPlayableCatalog(playable: any, type: string) {
   if (key === "biomes") return playable.rules?.biomes ?? [];
   if (key === "nodeTypes") return playable.rules?.nodeTypes ?? [];
   return playable.catalogs?.[key] ?? [];
+}
+
+function playableItemId(item: any) {
+  return String(item?.id ?? item?.locationId ?? item?.name ?? "");
+}
+
+function applyPlayablePatches(items: any[], patches: Array<{ id: string; patch?: Record<string, unknown> }>) {
+  const patchById = new Map(patches.map((entry) => [entry.id, entry.patch ?? {}]));
+  return items.map((item) => {
+    const id = playableItemId(item);
+    return patchById.has(id) ? { ...item, ...patchById.get(id), id } : item;
+  });
 }
 
 export function createLocalPlatformRepository(): PlatformRepository {
@@ -216,38 +229,98 @@ export function createLocalPlatformRepository(): PlatformRepository {
       },
       async list(gameId: string, type: string, query = {}) {
         const playable = await loadPlayableRuntime(gameId, false);
+        const database = await loadPersistentDatabase();
         const q = String(query.q ?? "").trim().toLowerCase();
         const offset = Math.max(0, Number(query.offset ?? 0) || 0);
         const limit = Math.max(1, Math.min(100, Number(query.limit ?? 25) || 25));
-        const items = getPlayableCatalog(playable, type);
+        const normalizedType = normalizePlayableType(type);
+        const patches = database.playablePatches?.filter((patch) => patch.gameId === gameId && normalizePlayableType(patch.type) === normalizedType) ?? [];
+        const items = applyPlayablePatches(getPlayableCatalog(playable, type), patches);
         const filtered = q ? items.filter((item: unknown) => JSON.stringify(item).toLowerCase().includes(q)) : items;
-        return { gameId, type: normalizePlayableType(type), total: filtered.length, offset, limit, items: filtered.slice(offset, offset + limit) };
+        return { gameId, type: normalizedType, total: filtered.length, offset, limit, items: filtered.slice(offset, offset + limit) };
       },
       async detail(gameId: string, type: string, id: string) {
         const playable = await loadPlayableRuntime(gameId, true);
-        const item = getPlayableCatalog(playable, type).find((entry: any) => String(entry.id ?? entry.locationId ?? entry.name) === id);
+        const database = await loadPersistentDatabase();
+        const normalizedType = normalizePlayableType(type);
+        const item = getPlayableCatalog(playable, type).find((entry: any) => playableItemId(entry) === id);
         if (!item) throw new Error("PLAYABLE_ITEM_NOT_FOUND");
-        return item;
+        const patch = database.playablePatches?.find((entry) => entry.gameId === gameId && normalizePlayableType(entry.type) === normalizedType && entry.id === id)?.patch ?? {};
+        return { ...item, ...patch, id: playableItemId(item) };
       },
-      async save<T = Record<string, unknown>>(_gameId: string, _type: string, _id: string, patch: Partial<T>) {
-        return patch as T;
+      async save<T = Record<string, unknown>>(gameId: string, type: string, id: string, patch: Partial<T>) {
+        const database = await loadPersistentDatabase();
+        const normalizedType = normalizePlayableType(type);
+        const nextPatch = {
+          id,
+          gameId,
+          type: normalizedType,
+          patch: patch as Record<string, unknown>,
+          updatedAt: nowIso(),
+          actorId: database.currentUserId ?? "system",
+        };
+        await savePersistentDatabase({
+          ...database,
+          playablePatches: [nextPatch, ...(database.playablePatches ?? []).filter((entry) => !(entry.gameId === gameId && normalizePlayableType(entry.type) === normalizedType && entry.id === id))],
+        });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.playable.update", module: "games", actorId: database.currentUserId ?? "system", targetId: id, metadata: { gameId, type: normalizedType } }));
+        return this.detail(gameId, type, id) as Promise<T>;
       },
-      async listAssets() {
-        return [];
+      async listAssets<T = Record<string, unknown>>(_gameId: string, type: string, id: string) {
+        const database = await loadPersistentDatabase();
+        const normalizedType = normalizePlayableType(type);
+        return (database.mapAssets ?? []).filter((asset) => normalizePlayableType(String(asset.type ?? "")) === normalizedType && asset.itemId === id) as T[];
       },
-      async saveAssets<T = Record<string, unknown>>(_gameId: string, _type: string, _id: string, assets: T[]) {
+      async saveAssets<T = Record<string, unknown>>(gameId: string, type: string, id: string, assets: T[]) {
+        const database = await loadPersistentDatabase();
+        const normalizedType = normalizePlayableType(type);
+        const normalizedAssets = assets.map((asset, index) => ({
+          ...(asset as Record<string, unknown>),
+          id: String((asset as Record<string, unknown>).id ?? `asset_${gameId}_${normalizedType}_${id}_${index}`),
+          gameId,
+          type: normalizedType,
+          itemId: id,
+          updatedAt: nowIso(),
+        }));
+        await savePersistentDatabase({
+          ...database,
+          mapAssets: [
+            ...normalizedAssets,
+            ...(database.mapAssets ?? []).filter((asset) => !(asset.gameId === gameId && normalizePlayableType(String(asset.type ?? "")) === normalizedType && asset.itemId === id)),
+          ],
+        });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.map.update", module: "maps", actorId: database.currentUserId ?? "system", targetId: id, metadata: { gameId, type: normalizedType, assets: normalizedAssets.length } }));
         return assets;
       },
       async export(gameId: string, type?: string) {
         const playable = await loadPlayableRuntime(gameId, true);
         const database = await loadPersistentDatabase();
-        return { exportedAt: nowIso(), gameId, type, playable, patches: database.playablePatches?.filter((patch) => patch.gameId === gameId && (!type || normalizePlayableType(patch.type) === normalizePlayableType(type))) ?? [] };
+        return {
+          exportedAt: nowIso(),
+          gameId,
+          type,
+          playable,
+          patches: database.playablePatches?.filter((patch) => patch.gameId === gameId && (!type || normalizePlayableType(patch.type) === normalizePlayableType(type))) ?? [],
+          assets: database.mapAssets?.filter((asset) => asset.gameId === gameId && (!type || normalizePlayableType(String(asset.type ?? "")) === normalizePlayableType(type))) ?? [],
+        };
       },
       async import(gameId: string, payload: Record<string, unknown>) {
         const database = await loadPersistentDatabase();
         const patches = Array.isArray(payload.patches) ? payload.patches : [];
+        const assets = Array.isArray(payload.assets) ? payload.assets : [];
+        await savePersistentDatabase({
+          ...database,
+          playablePatches: [
+            ...patches.map((patch: any) => ({ ...patch, gameId, type: normalizePlayableType(String(patch.type ?? "")), updatedAt: nowIso() })),
+            ...(database.playablePatches ?? []).filter((patch) => patch.gameId !== gameId),
+          ],
+          mapAssets: [
+            ...assets.map((asset: any) => ({ ...asset, gameId, updatedAt: nowIso() })),
+            ...(database.mapAssets ?? []).filter((asset) => asset.gameId !== gameId),
+          ],
+        });
         await appendPersistentAudit(createPlatformAudit({ action: "admin.playable.update", module: "games", actorId: database.currentUserId ?? "system", targetId: gameId }));
-        return { gameId, importedAt: nowIso(), patches: patches.length };
+        return { gameId, importedAt: nowIso(), patches: patches.length, assets: assets.length };
       },
     },
     content: {
@@ -260,11 +333,40 @@ export function createLocalPlatformRepository(): PlatformRepository {
         await savePersistentMetadata(normalized);
         return normalized;
       },
+      async listNews() {
+        const database = await loadPersistentDatabase();
+        return normalizeMetadata(database.metadata ?? loadAppMetadata()).news;
+      },
       async saveNews(news: AppNewsEntry[]) {
         const database = await loadPersistentDatabase();
         const metadata = normalizeMetadata({ ...(database.metadata ?? loadAppMetadata()), news });
         await savePersistentMetadata(metadata);
         return metadata.news;
+      },
+      async saveNewsEntry(news: AppNewsEntry) {
+        const database = await loadPersistentDatabase();
+        const metadata = normalizeMetadata(database.metadata ?? loadAppMetadata());
+        const existing = metadata.news.find((entry) => entry.id === news.id);
+        if (existing?.status === "published" && news.status !== "archived" && news.status !== "published") {
+          throw new Error("NEWS_PUBLISHED_LOCKED");
+        }
+        const nextNews = { ...existing, ...news, updatedAt: nowIso() };
+        await savePersistentMetadata({
+          ...metadata,
+          news: [nextNews, ...metadata.news.filter((entry) => entry.id !== nextNews.id)],
+        });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.news.update", module: "news", actorId: database.currentUserId ?? "system", targetId: nextNews.id }));
+        return nextNews;
+      },
+      async deleteNewsEntry(newsId: string) {
+        const database = await loadPersistentDatabase();
+        const metadata = normalizeMetadata(database.metadata ?? loadAppMetadata());
+        await savePersistentMetadata({ ...metadata, news: metadata.news.filter((entry) => entry.id !== newsId) });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.news.update", module: "news", actorId: database.currentUserId ?? "system", targetId: newsId }));
+      },
+      async listNotifications() {
+        const database = await loadPersistentDatabase();
+        return normalizeMetadata(database.metadata ?? loadAppMetadata()).notifications;
       },
       async saveNotifications(notifications: AppNotificationEntry[]) {
         const database = await loadPersistentDatabase();
@@ -272,10 +374,50 @@ export function createLocalPlatformRepository(): PlatformRepository {
         await savePersistentMetadata(metadata);
         return metadata.notifications;
       },
+      async saveNotificationEntry(notification: AppNotificationEntry) {
+        const database = await loadPersistentDatabase();
+        const metadata = normalizeMetadata(database.metadata ?? loadAppMetadata());
+        const nextNotification = { ...metadata.notifications.find((entry) => entry.id === notification.id), ...notification, updatedAt: nowIso() };
+        await savePersistentMetadata({
+          ...metadata,
+          notifications: [nextNotification, ...metadata.notifications.filter((entry) => entry.id !== nextNotification.id)],
+        });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.notification.update", module: "notifications", actorId: database.currentUserId ?? "system", targetId: nextNotification.id }));
+        return nextNotification;
+      },
+      async deleteNotificationEntry(notificationId: string) {
+        const database = await loadPersistentDatabase();
+        const metadata = normalizeMetadata(database.metadata ?? loadAppMetadata());
+        await savePersistentMetadata({ ...metadata, notifications: metadata.notifications.filter((entry) => entry.id !== notificationId) });
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.notification.update", module: "notifications", actorId: database.currentUserId ?? "system", targetId: notificationId }));
+      },
     },
     support: {
       async listTickets() {
         return normalizeMetadata((await loadPersistentDatabase()).metadata ?? loadAppMetadata()).supportTickets;
+      },
+      async createPublicTicket(ticket: Partial<AppSupportTicket>) {
+        const metadata = normalizeMetadata((await loadPersistentDatabase()).metadata ?? loadAppMetadata());
+        const now = nowIso();
+        const nextTicket: AppSupportTicket = {
+          id: ticket.id ?? `ticket_public_${Date.now()}`,
+          title: ticket.title ?? "Solicitud desde login",
+          description: ticket.description ?? "",
+          requesterId: ticket.requesterId ?? "public_guest",
+          requesterName: ticket.requesterName ?? "Invitado",
+          status: ticket.status ?? "open",
+          priority: ticket.priority ?? "normal",
+          category: ticket.category ?? "account",
+          assignedTo: ticket.assignedTo,
+          createdAt: ticket.createdAt ?? now,
+          updatedAt: now,
+          messages: ticket.messages ?? [],
+        };
+        await savePersistentMetadata({
+          ...metadata,
+          supportTickets: [nextTicket, ...metadata.supportTickets.filter((item) => item.id !== nextTicket.id)],
+        });
+        return nextTicket;
       },
       async saveTicket(ticket: AppSupportTicket) {
         const metadata = normalizeMetadata((await loadPersistentDatabase()).metadata ?? loadAppMetadata());
@@ -321,6 +463,20 @@ export function createLocalPlatformRepository(): PlatformRepository {
       },
       async list(limit = 100) {
         return (await loadPersistentDatabase()).auditLog.slice(0, limit);
+      },
+    },
+    backup: {
+      async export() {
+        const database = await loadPersistentDatabase();
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.settings.update", module: "settings", actorId: database.currentUserId ?? "system", targetId: "backup-export" }));
+        return { exportedAt: nowIso(), schemaVersion: database.schemaVersion, database };
+      },
+      async import(payload: Record<string, unknown>) {
+        const imported = (payload.database ?? payload) as Partial<Awaited<ReturnType<typeof loadPersistentDatabase>>>;
+        const current = await loadPersistentDatabase();
+        const nextDatabase = await savePersistentDatabase({ ...current, ...imported, mode: "local", updatedAt: nowIso() } as Awaited<ReturnType<typeof loadPersistentDatabase>>);
+        await appendPersistentAudit(createPlatformAudit({ action: "admin.settings.update", module: "settings", actorId: nextDatabase.currentUserId ?? "system", targetId: "backup-import" }));
+        return { ok: true, importedAt: nowIso() };
       },
     },
   };

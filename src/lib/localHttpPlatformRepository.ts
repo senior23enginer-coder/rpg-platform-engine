@@ -102,11 +102,19 @@ export function createLocalHttpPlatformRepository(config?: Partial<PlatformCloud
     content: {
       metadata: () => requestJson(endpoint, "/metadata", { token }),
       saveMetadata: (metadata: AppMetadata) => requestJson(endpoint, "/metadata", { method: "PATCH", body: metadata, token }),
+      listNews: () => requestJson(endpoint, "/news", { token }),
       saveNews: (news: AppNewsEntry[]) => requestJson(endpoint, "/news", { method: "POST", body: { news }, token }),
+      saveNewsEntry: (news: AppNewsEntry) => requestJson(endpoint, `/news/${encodeURIComponent(news.id)}`, { method: "PATCH", body: news, token }),
+      deleteNewsEntry: (newsId: string) => requestJson(endpoint, `/news/${encodeURIComponent(newsId)}`, { method: "DELETE", token }),
+      listNotifications: () => requestJson(endpoint, "/notifications", { token }),
       saveNotifications: (notifications: AppNotificationEntry[]) => requestJson(endpoint, "/notifications", { method: "POST", body: { notifications }, token }),
+      saveNotificationEntry: (notification: AppNotificationEntry) =>
+        requestJson(endpoint, `/notifications/${encodeURIComponent(notification.id)}`, { method: "PATCH", body: notification, token }),
+      deleteNotificationEntry: (notificationId: string) => requestJson(endpoint, `/notifications/${encodeURIComponent(notificationId)}`, { method: "DELETE", token }),
     },
     support: {
       listTickets: () => requestJson(endpoint, "/support/tickets", { token }),
+      createPublicTicket: (ticket: Partial<AppSupportTicket>) => requestJson(endpoint, "/support/public", { body: ticket }),
       saveTicket: (ticket: AppSupportTicket) => requestJson(endpoint, `/support/tickets/${encodeURIComponent(ticket.id)}`, { method: "PATCH", body: ticket, token }),
     },
     chat: {
@@ -126,6 +134,10 @@ export function createLocalHttpPlatformRepository(config?: Partial<PlatformCloud
     audit: {
       append: (entry: PlatformAuditEntry) => requestJson(endpoint, "/audit", { body: entry, token }),
       list: (limit = 100) => requestJson(endpoint, `/audit?limit=${limit}`, { token }),
+    },
+    backup: {
+      export: () => requestJson(endpoint, "/backup/export", { token }),
+      import: (payload: Record<string, unknown>) => requestJson(endpoint, "/backup/import", { body: payload, token }),
     },
   };
 }

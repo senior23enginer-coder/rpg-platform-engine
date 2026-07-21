@@ -40,6 +40,7 @@ type Props = {
   onRegister: (account: { email: string; username: string; password?: string; passwordHash?: string; role?: "user" | "admin" }) => void;
   onLogin?: (credentials: { usernameOrEmail: string; password: string; remember: boolean }) => Promise<PlayerProfile | undefined>;
   onPasswordReset?: (usernameOrEmail: string) => Promise<void>;
+  onPublicSupport?: (message: string) => Promise<void>;
 };
 
 type AuthMode = "login" | "register";
@@ -119,7 +120,7 @@ function publicNews(items: NewsItem[]) {
     .sort((left, right) => new Date(right.publishedAt ?? right.date ?? 0).getTime() - new Date(left.publishedAt ?? left.date ?? 0).getTime());
 }
 
-export function AuthScreen({ profile, users, games, news = [], platformName = "RPG Platform Engine", appVersion = "0.10-1625", releaseChannel = "Pre-release", onAccess, onRegister, onLogin, onPasswordReset }: Props) {
+export function AuthScreen({ profile, users, games, news = [], platformName = "RPG Platform Engine", appVersion = "0.10-1625", releaseChannel = "Pre-release", onAccess, onRegister, onLogin, onPasswordReset, onPublicSupport }: Props) {
   const rememberedLogin = readLocalStorage(rememberedLoginKey);
   const [mode, setMode] = useState<AuthMode>("login");
   const [emailOrUser, setEmailOrUser] = useState(rememberedLogin || "");
@@ -299,7 +300,7 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
     setRecoveryMessage(`Codigo generado: ${resetCode}. Se preparo el correo de restablecimiento.`);
   }
 
-  function sendSupportMessage() {
+  async function sendSupportMessage() {
     const body = supportMessage.trim();
     if (!body) return;
     setSupportMessages((current) => [
@@ -318,6 +319,19 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
       },
     ]);
     setSupportMessage("");
+    try {
+      await onPublicSupport?.(body);
+    } catch {
+      setSupportMessages((current) => [
+        ...current,
+        {
+          id: `support_error_${Date.now()}`,
+          author: "Sistema",
+          body: "No pude guardar el ticket en el backend local, pero el mensaje quedo visible en esta sesion.",
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+    }
   }
 
   return (
@@ -508,11 +522,11 @@ export function AuthScreen({ profile, users, games, news = [], platformName = "R
                 value={supportMessage}
                 onChange={(event) => setSupportMessage(event.target.value)}
                 onKeyDown={(event) => {
-                  if (event.key === "Enter") sendSupportMessage();
+                  if (event.key === "Enter") void sendSupportMessage();
                 }}
                 placeholder="Escribe tu solicitud de soporte..."
               />
-              <button type="button" className="green-button" onClick={sendSupportMessage}><Send size={18} /> Enviar</button>
+              <button type="button" className="green-button" onClick={() => void sendSupportMessage()}><Send size={18} /> Enviar</button>
             </div>
           </article>
         </div>

@@ -30,6 +30,19 @@ for (const key of ["auth", "users", "games", "maps", "content", "support", "chat
   assert(files.contracts.includes(`${key}: {`), `Contrato sin modulo ${key}`);
 }
 
+for (const granularMethod of [
+  "listNews",
+  "saveNewsEntry",
+  "deleteNewsEntry",
+  "listNotifications",
+  "saveNotificationEntry",
+  "deleteNotificationEntry",
+  "createPublicTicket",
+  "backup: {",
+]) {
+  assert(files.contracts.includes(granularMethod), `Contrato sin metodo granular ${granularMethod}`);
+}
+
 for (const method of [
   "login(credentials",
   "refreshSession",
@@ -96,8 +109,12 @@ assert(blockedStatuses.length === 0, `Hay areas sin avance real: ${blockedStatus
 const apiContract = JSON.parse(files.apiContract);
 assert(apiContract.environment === "local", "API contract debe declarar ambiente local");
 assert(String(apiContract.basePath).startsWith("http://127.0.0.1"), "API contract debe usar backend local");
-for (const moduleId of ["auth", "users", "games", "maps", "content", "support", "chat", "saves", "audit"]) {
+for (const moduleId of ["auth", "users", "games", "maps", "content", "support", "chat", "saves", "audit", "backup"]) {
   assert(apiContract.modules[moduleId], `API contract sin modulo ${moduleId}`);
+}
+
+for (const mapEndpoint of ["detail", "export", "import"]) {
+  assert(apiContract.modules.maps[mapEndpoint], `API contract de mapas sin ${mapEndpoint}`);
 }
 
 const dnd = JSON.parse(files.dnd);

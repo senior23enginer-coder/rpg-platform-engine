@@ -165,11 +165,18 @@ export type PlatformRepository = {
   content: {
     metadata(): Promise<AppMetadata>;
     saveMetadata(metadata: AppMetadata): Promise<AppMetadata>;
+    listNews(): Promise<AppNewsEntry[]>;
     saveNews(news: AppNewsEntry[]): Promise<AppNewsEntry[]>;
+    saveNewsEntry(news: AppNewsEntry): Promise<AppNewsEntry>;
+    deleteNewsEntry(newsId: string): Promise<void>;
+    listNotifications(): Promise<AppNotificationEntry[]>;
     saveNotifications(notifications: AppNotificationEntry[]): Promise<AppNotificationEntry[]>;
+    saveNotificationEntry(notification: AppNotificationEntry): Promise<AppNotificationEntry>;
+    deleteNotificationEntry(notificationId: string): Promise<void>;
   };
   support: {
     listTickets(): Promise<AppSupportTicket[]>;
+    createPublicTicket(ticket: Partial<AppSupportTicket>): Promise<AppSupportTicket>;
     saveTicket(ticket: AppSupportTicket): Promise<AppSupportTicket>;
   };
   chat: {
@@ -183,5 +190,9 @@ export type PlatformRepository = {
   audit: {
     append(entry: PlatformAuditEntry): Promise<PlatformAuditEntry>;
     list(limit?: number): Promise<PlatformAuditEntry[]>;
+  };
+  backup: {
+    export(): Promise<Record<string, unknown>>;
+    import(payload: Record<string, unknown>): Promise<Record<string, unknown>>;
   };
 };

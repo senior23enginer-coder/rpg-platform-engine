@@ -29,7 +29,10 @@
     },
     "maps": {
       "list": "GET /maps?gameId=:gameId",
-      "save": "PATCH /maps/:mapId"
+      "detail": "GET /maps/:mapId",
+      "save": "PATCH /maps/:mapId",
+      "export": "GET /maps/:mapId/export",
+      "import": "POST /maps/import"
     },
     "content": {
       "metadata": "GET /metadata",
